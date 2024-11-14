@@ -3,7 +3,7 @@ from os import path, walk
 from typing import Generator
 
 import constants
-from custom_types import ImportHandlerDict, ImportType, Statement
+from custom_types import ImportFromHandlerDict, ImportHandlerDict, ImportType, Statement,NodeHandlerDict
 
 
 def read_codebase(root) -> dict | None:
@@ -20,12 +20,11 @@ def read_codebase(root) -> dict | None:
                 # -------------------------
 
                 if isinstance(node, ast.Import):
-                    data: dict = handle_import(node)
+                    data: NodeHandlerDict = handle_import(node)
                     print(data)
                 elif isinstance(node, ast.ImportFrom):
-                    path_to: str = str(node.module)
-                    modules: list[str] = [i.name for i in node.names]
-                    print(f"ImportFrom - module: '{path_to}', {modules}")
+                    data:NodeHandlerDict = handle_import_from(node)
+                    print(data)
 
                 # -------------------------
                 # Constants - Assign | AnnAssign
@@ -70,7 +69,7 @@ def read_codebase(root) -> dict | None:
             # Get assertions - Assert
 
 
-def iterate(root: str) -> Generator[str, str]:
+def iterate(root: str) -> Generator:
     for dirpath, _, files in walk(root):
         for file in files:
             yield path.join(dirpath, file)
@@ -133,5 +132,13 @@ def handle_import(node: ast.Import) -> ImportHandlerDict:
         mods['modules'][mod] = mod_data.copy()
 
     data: ImportHandlerDict = {'statement': Statement.Import, **mods}
+
+    return data
+
+
+def handle_import_from(node: ast.ImportFrom) -> ImportFromHandlerDict:
+    mods = {'path': node.module, 'modules': [i.name for i in node.names]}
+
+    data: ImportFromHandlerDict = {'statement': Statement.ImportFrom, **mods}
 
     return data

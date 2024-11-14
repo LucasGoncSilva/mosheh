@@ -28,3 +28,7 @@ ImportDict: TypeAlias = dict[str, ImportType | str | None]
 ModuleDict: TypeAlias = dict[str, ImportDict]
 
 ImportHandlerDict: TypeAlias = dict[str, Statement | ModuleDict]
+
+ImportFromHandlerDict: TypeAlias = dict[str, Statement | list[str]]
+
+NodeHandlerDict:TypeAlias=ImportHandlerDict | ImportFromHandlerDict
