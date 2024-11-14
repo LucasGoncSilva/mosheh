@@ -1,42 +1,47 @@
 from argparse import ArgumentParser
-from ast import Call, Name, parse
-from ast import walk as astwalk
-from os import path, walk
-from types import ModuleType, SimpleNamespace
+from os import path
+from types import SimpleNamespace
+
+from doc import Lang, generate_doc
+from python import count_calls
 
 
 def main():
     parser: ArgumentParser = ArgumentParser(description='To be defined.')
 
     parser.add_argument('root', type=str, help='Root, base dir.')
+    parser.add_argument(
+        '--lang', type=str, default=Lang.EN, help='Path for doc output.'
+    )
+    parser.add_argument(
+        '--repo-name',
+        type=str,
+        default='GitHub',
+        help='Repo name.',
+    )
+    parser.add_argument(
+        '--repo-url',
+        type=str,
+        default='https://github.com/',
+        help='Repo URL.',
+    )
+    parser.add_argument('--exit', type=str, default='.', help='Path for doc output')
 
     args: SimpleNamespace = parser.parse_args()
 
+    ROOT: str = args.root
+    PROJ_NAME: str = path.abspath(path.curdir).split(path.sep)[-1].upper()
+    LANG: str = args.lang
+    REPO_NAME: str = args.repo_name
+    REPO_URL: str = args.repo_url
+    EXIT: str = args.exit
+
     call_name: str = 'ExampleTest'
 
-    total: int = count_calls(args.root, call_name)
+    total: int = count_calls(ROOT, call_name)
     print(f"'{call_name}' was called {total}x")
 
-
-def count_calls(dir_name: str, callable: str) -> int:
-    count: int = 0
-
-    for dirpath, _, files in walk(dir_name):
-        for file in files:
-            if file.endswith('.py'):
-                f_path: str = path.join(dirpath, file)
-
-                with open(f_path, encoding='utf-8') as f:
-                    codigo: str = f.read()
-
-                arvore: ModuleType = parse(codigo, filename=f_path)
-
-                for node in astwalk(arvore):
-                    if isinstance(node, Call):
-                        if isinstance(node.func, Name) and node.func.id == callable:
-                            count += 1
-
-    return count
+    generate_doc(EXIT, PROJ_NAME, '', LANG, REPO_NAME, REPO_URL)
 
 
 if __name__ == '__main__':
