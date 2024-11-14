@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class Lang(Enum):
-    PT_BR: str = 'pt-BR'
-    EN: str = 'en'
+    PT_BR = 'pt-BR'
+    EN = 'en'
 
 
 def generate_doc(

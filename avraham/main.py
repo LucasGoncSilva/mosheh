@@ -1,18 +1,15 @@
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from os import path
-from types import SimpleNamespace
 
 from doc import Lang, generate_doc
-from python import count_calls
+from python import read_codebase
 
 
 def main():
     parser: ArgumentParser = ArgumentParser(description='To be defined.')
 
     parser.add_argument('root', type=str, help='Root, base dir.')
-    parser.add_argument(
-        '--lang', type=str, default=Lang.EN, help='Path for doc output.'
-    )
+    parser.add_argument('--lang', type=str, default='en', help='Path for doc output.')
     parser.add_argument(
         '--repo-name',
         type=str,
@@ -27,21 +24,19 @@ def main():
     )
     parser.add_argument('--exit', type=str, default='.', help='Path for doc output')
 
-    args: SimpleNamespace = parser.parse_args()
+    args: Namespace = parser.parse_args()
 
     ROOT: str = args.root
     PROJ_NAME: str = path.abspath(path.curdir).split(path.sep)[-1].upper()
-    LANG: str = args.lang
     REPO_NAME: str = args.repo_name
     REPO_URL: str = args.repo_url
     EXIT: str = args.exit
 
-    call_name: str = 'ExampleTest'
+    LANG: Lang = {'pt-BR': Lang.PT_BR, 'en': Lang.EN}.get(args.lang, Lang.EN)
 
-    total: int = count_calls(ROOT, call_name)
-    print(f"'{call_name}' was called {total}x")
+    data: dict | None = read_codebase(ROOT)
 
-    generate_doc(EXIT, PROJ_NAME, '', LANG, REPO_NAME, REPO_URL)
+    generate_doc(EXIT, PROJ_NAME, LANG, '', REPO_NAME, REPO_URL)
 
 
 if __name__ == '__main__':

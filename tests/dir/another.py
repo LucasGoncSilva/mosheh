@@ -1,7 +1,8 @@
-from tests.example import ExampleTest, create_example_class
+from tests.example import ExampleTest as ET
+from tests.example import create_example_class
 
 
-class AnotherExampleTest(ExampleTest):
+class AnotherExampleTest(ET):
     """
     Simple description.
 
@@ -14,7 +15,10 @@ class AnotherExampleTest(ExampleTest):
         return self.SOME_CONST
 
     def custom_create(self) -> None:
-        _cls: ExampleTest = create_example_class()
+        _cls: ET = create_example_class()
         random_str: str = f'{self.get_constant()}{_cls}'
 
         del random_str
+
+
+another_instance = AnotherExampleTest()

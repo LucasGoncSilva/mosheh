@@ -1,4 +1,5 @@
 import string
+import time
 from abc import ABC
 from math import sin, sqrt
 
@@ -19,6 +20,7 @@ class ExampleTest(ABC):
     SOME_CONST: str = 'Random String'
 
     def __init__(self, num: int) -> None:
+        time.sleep(1)
         self.value: str = CONSTANT * num
 
 
