@@ -189,6 +189,7 @@ def handle_constant(node: ast.Constant) -> str:
 
 def handle_assign(node: ast.Assign) -> AssignHandlerDict:
     tokens: list[str] = [i.id for i in node.targets]
+    value: str | CallHandlerDict = ''
 
     if isinstance(node.value, ast.Constant):
         value = handle_constant(node.value)
@@ -409,6 +410,10 @@ def handle_assert(node: ast.Assert) -> AssertHandlerDict:
 
     msg: str | None = node.msg.id if node.msg else None
 
-    data: AssertHandlerDict = {'statement': Statement.Assert, 'test': test, 'msg': msg,}
+    data: AssertHandlerDict = {
+        'statement': Statement.Assert,
+        'test': test,
+        'msg': msg,
+    }
 
     return data
