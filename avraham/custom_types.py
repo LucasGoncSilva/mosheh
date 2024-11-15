@@ -22,13 +22,24 @@ class ImportType(Enum):
 
 
 Categorie: TypeAlias = dict[str, str]
-
 ImportDict: TypeAlias = dict[str, ImportType | str | None]
-
 ModuleDict: TypeAlias = dict[str, ImportDict]
-
 ImportHandlerDict: TypeAlias = dict[str, Statement | ModuleDict]
 
 ImportFromHandlerDict: TypeAlias = dict[str, Statement | list[str]]
 
-NodeHandlerDict:TypeAlias=ImportHandlerDict | ImportFromHandlerDict
+CallHandlerDict: TypeAlias = dict[str, Statement | list[str]]
+
+BinOpHandlerDict: TypeAlias = dict[str, Statement | str | CallHandlerDict]
+
+AssignHandlerDict: TypeAlias = dict[str, Statement | list[str] | CallHandlerDict | str]
+
+AnnAssignHandlerDict: TypeAlias = dict[str, Statement | str | CallHandlerDict]
+
+NodeHandlerDict: TypeAlias = (
+    ImportHandlerDict
+    | ImportFromHandlerDict
+    | AssignHandlerDict
+    | BinOpHandlerDict
+    | AnnAssignHandlerDict
+)

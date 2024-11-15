@@ -3,7 +3,17 @@ from os import path, walk
 from typing import Generator
 
 import constants
-from custom_types import ImportFromHandlerDict, ImportHandlerDict, ImportType, Statement,NodeHandlerDict
+from custom_types import (
+    AnnAssignHandlerDict,
+    AssignHandlerDict,
+    BinOpHandlerDict,
+    CallHandlerDict,
+    ImportFromHandlerDict,
+    ImportHandlerDict,
+    ImportType,
+    NodeHandlerDict,
+    Statement,
+)
 
 
 def read_codebase(root) -> dict | None:
@@ -23,45 +33,25 @@ def read_codebase(root) -> dict | None:
                     data: NodeHandlerDict = handle_import(node)
                     print(data)
                 elif isinstance(node, ast.ImportFrom):
-                    data:NodeHandlerDict = handle_import_from(node)
+                    data: NodeHandlerDict = handle_import_from(node)
                     print(data)
 
                 # -------------------------
                 # Constants - Assign | AnnAssign
                 # -------------------------
 
-                elif isinstance(node, ast.Assign):
-                    print(f'Assign - {node} = {node.value}')
+                elif isinstance(node, ast.Assign) and any(
+                    map(str.isupper, [i.id for i in node.targets])
+                ):
+                    data = handle_assign(node)
+                    print(data)
                 elif (
                     isinstance(node, ast.AnnAssign)
                     and isinstance(node.target, ast.Name)
                     and node.target.id.isupper()
                 ):
-                    name: str = node.target.id
-                    typ: str = node.annotation.id
-                    value: str = ''
-                    if isinstance(node.value, ast.Constant):
-                        value += node.value.value
-                    elif isinstance(node.value, ast.Call):
-                        value += node.value.func.id
-                        if isinstance(node.value.args[0], ast.BinOp):
-                            left: str = node.value.args[0].left.func.id
-                            right: str = node.value.args[0].right.func.id
-
-                            op: str = ''
-
-                            match type(node.value.args[0].op):
-                                case ast.Add:
-                                    op += '+'
-                                case ast.Sub:
-                                    op += '-'
-                                case ast.Mult:
-                                    op += '*'
-                                case ast.Div:
-                                    op += '/'
-
-                            value += f'({left} {op} {right})'
-                    print(f'AnnAssign - {name}: {typ} = {value}')
+                    data = handle_annassign(node)
+                    print(data)
 
             # Get constants - Assign
             # Get functions - FunctionDef/AsyncFunctionDef
@@ -140,5 +130,122 @@ def handle_import_from(node: ast.ImportFrom) -> ImportFromHandlerDict:
     mods = {'path': node.module, 'modules': [i.name for i in node.names]}
 
     data: ImportFromHandlerDict = {'statement': Statement.ImportFrom, **mods}
+
+    return data
+
+
+def handle_call(node: ast.Call) -> CallHandlerDict:
+    call_obj: str = node.func.id
+
+    args: list[str] = [i.id for i in node.args if isinstance(i, ast.Name)]
+    args += [f'*{i.value.id}' for i in node.args if isinstance(i, ast.Starred)]
+
+    kwargs: list[str] = []
+    for param in node.keywords:
+        if param.arg:
+            kwargs.append(f'{param.value.id}={param.arg}')
+        else:
+            kwargs.append(f'**{param.arg}')
+
+    data: CallHandlerDict = {
+        'statement': Statement.Call,
+        'call_obj': call_obj,
+        'args': args,
+        'kwargs': kwargs,
+    }
+
+    return data
+
+
+def handle_constant(node: ast.Constant) -> str:
+    return node.value
+
+
+def handle_assign(node: ast.Assign) -> AssignHandlerDict:
+    tokens: list[str] = [i.id for i in node.targets]
+
+    if isinstance(node.value, ast.Constant):
+        value = handle_constant(node.value)
+    elif isinstance(node.value, ast.Call):
+        value = handle_call(node.value)
+
+    data: AssignHandlerDict = {
+        'statement': Statement.Assign,
+        'tokens': tokens,
+        'value': value,
+    }
+
+    return data
+
+
+def handle_binop(node: ast.BinOp) -> BinOpHandlerDict:
+    pre_left = node.left
+
+    if isinstance(pre_left, ast.Constant):
+        left = handle_constant(pre_left)
+    elif isinstance(pre_left, ast.Call):
+        left = handle_call(pre_left)
+
+    pre_right = node.right
+
+    if isinstance(pre_right, ast.Constant):
+        right = handle_constant(pre_right)
+    elif isinstance(pre_right, ast.Call):
+        right = handle_call(pre_right)
+
+    op: str = ''
+
+    match type(node.op):
+        case ast.Add:
+            op += '+'
+        case ast.Sub:
+            op += '-'
+        case ast.Mult:
+            op += '*'
+        case ast.Div:
+            op += '/'
+        case ast.FloorDiv:
+            op += '//'
+        case ast.Mod:
+            op += '%'
+        case ast.Pow:
+            op += '**'
+        case ast.LShift:
+            op += '<<'
+        case ast.RShift:
+            op += '>>'
+        case ast.BitOr:
+            op += '|'
+        case ast.BitXor:
+            op += '^'
+        case ast.BitAnd:
+            op += '&'
+
+    data: BinOpHandlerDict = {
+        'statement': Statement.BinOp,
+        'left': left,
+        'op': op,
+        'right': right,
+    }
+
+    return data
+
+
+def handle_annassign(node: ast.AnnAssign) -> AnnAssignHandlerDict:
+    token: str = node.target.id
+    annot: str = node.annotation.id
+    value = ''
+
+    if isinstance(node.value, ast.Constant):
+        value = handle_constant(node.value)
+    elif isinstance(node.value, ast.Call):
+        value = handle_call(node.value)
+
+    data: AnnAssignHandlerDict = {
+        'statement': Statement.AnnAssign,
+        'token': token,
+        'annot': annot,
+        'value': value,
+    }
 
     return data
