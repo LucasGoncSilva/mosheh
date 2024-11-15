@@ -36,10 +36,15 @@ AssignHandlerDict: TypeAlias = dict[str, Statement | list[str] | CallHandlerDict
 
 AnnAssignHandlerDict: TypeAlias = dict[str, Statement | str | CallHandlerDict]
 
+FunctionDefHandlerDict: TypeAlias = dict[
+    str, Statement | str | list[str] | CallHandlerDict | BinOpHandlerDict | None
+]
+
 NodeHandlerDict: TypeAlias = (
     ImportHandlerDict
     | ImportFromHandlerDict
     | AssignHandlerDict
     | BinOpHandlerDict
     | AnnAssignHandlerDict
+    | FunctionDefHandlerDict
 )

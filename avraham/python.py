@@ -8,6 +8,7 @@ from custom_types import (
     AssignHandlerDict,
     BinOpHandlerDict,
     CallHandlerDict,
+    FunctionDefHandlerDict,
     ImportFromHandlerDict,
     ImportHandlerDict,
     ImportType,
@@ -53,7 +54,14 @@ def read_codebase(root) -> dict | None:
                     data = handle_annassign(node)
                     print(data)
 
-            # Get constants - Assign
+                # -------------------------
+                # Functions - FunctionDef/AsyncFunctionDef
+                # -------------------------
+
+                elif isinstance(node, ast.FunctionDef):
+                    data = handle_function_def(node)
+                    print(data)
+
             # Get functions - FunctionDef/AsyncFunctionDef
             # Get classes - ClassDef
             # Get assertions - Assert
@@ -246,6 +254,32 @@ def handle_annassign(node: ast.AnnAssign) -> AnnAssignHandlerDict:
         'token': token,
         'annot': annot,
         'value': value,
+    }
+
+    return data
+
+
+def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
+    name: str = node.name
+    decos: list[str] = [i.id for i in node.decorator_list]
+    rtype: str | None = None
+
+    if node.returns is not None:
+        if isinstance(node.returns, ast.Constant):
+            rtype = handle_constant(node.returns)
+        elif isinstance(node.returns, ast.Name):
+            rtype = node.returns.id
+
+    args: list[str] = []
+    kwargs: list[str] = []
+
+    data: FunctionDefHandlerDict = {
+        'statement': Statement.FunctionDef,
+        'name': name,
+        'decos': decos,
+        'rtype': rtype,
+        'args': args,
+        'kwargs': kwargs,
     }
 
     return data
