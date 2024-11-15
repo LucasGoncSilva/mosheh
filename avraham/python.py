@@ -5,9 +5,13 @@ from typing import Generator
 import constants
 from custom_types import (
     AnnAssignHandlerDict,
+    AssertHandlerDict,
     AssignHandlerDict,
+    AsyncFunctionDefHandlerDict,
     BinOpHandlerDict,
     CallHandlerDict,
+    ClassDefHandlerDict,
+    CompareHandlerDict,
     FunctionDefHandlerDict,
     ImportFromHandlerDict,
     ImportHandlerDict,
@@ -44,14 +48,14 @@ def read_codebase(root) -> dict | None:
                 elif isinstance(node, ast.Assign) and any(
                     map(str.isupper, [i.id for i in node.targets])
                 ):
-                    data = handle_assign(node)
+                    data: NodeHandlerDict = handle_assign(node)
                     print(data)
                 elif (
                     isinstance(node, ast.AnnAssign)
                     and isinstance(node.target, ast.Name)
                     and node.target.id.isupper()
                 ):
-                    data = handle_annassign(node)
+                    data: NodeHandlerDict = handle_annassign(node)
                     print(data)
 
                 # -------------------------
@@ -59,12 +63,26 @@ def read_codebase(root) -> dict | None:
                 # -------------------------
 
                 elif isinstance(node, ast.FunctionDef):
-                    data = handle_function_def(node)
+                    data: NodeHandlerDict = handle_function_def(node)
+                    print(data)
+                elif isinstance(node, ast.AsyncFunctionDef):
+                    data: NodeHandlerDict = handle_async_function_def(node)
                     print(data)
 
-            # Get functions - FunctionDef/AsyncFunctionDef
-            # Get classes - ClassDef
-            # Get assertions - Assert
+                # -------------------------
+                # Functions - FunctionDef/AsyncFunctionDef
+                # -------------------------
+
+                elif isinstance(node, ast.ClassDef):
+                    data: NodeHandlerDict = handle_class_def(node)
+                    print(data)
+
+                # -------------------------
+                # Functions - FunctionDef/AsyncFunctionDef
+                # -------------------------
+
+                elif isinstance(node, ast.Assert):
+                    data: NodeHandlerDict = handle_assert(node)
 
 
 def iterate(root: str) -> Generator:
@@ -121,7 +139,7 @@ def handle_import(node: ast.Import) -> ImportHandlerDict:
     mods = {'modules': {}}
 
     for mod in [i.name for i in node.names]:
-        mod_data = {}
+        mod_data: NodeHandlerDict = {}
 
         if mod in constants.BUILTIN_MODULES:
             mod_data['categorie'] = ImportType.Native
@@ -281,5 +299,116 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
         'args': args,
         'kwargs': kwargs,
     }
+
+    return data
+
+
+def handle_async_function_def(
+    node: ast.AsyncFunctionDef,
+) -> AsyncFunctionDefHandlerDict:
+    name: str = node.name
+    decos: list[str] = [i.id for i in node.decorator_list]
+    rtype: str | None = None
+
+    if node.returns is not None:
+        if isinstance(node.returns, ast.Constant):
+            rtype = handle_constant(node.returns)
+        elif isinstance(node.returns, ast.Name):
+            rtype = node.returns.id
+
+    args: list[str] = []
+    kwargs: list[str] = []
+
+    data: AsyncFunctionDefHandlerDict = {
+        'statement': Statement.FunctionDef,
+        'name': name,
+        'decos': decos,
+        'rtype': rtype,
+        'args': args,
+        'kwargs': kwargs,
+    }
+
+    return data
+
+
+def handle_class_def(node: ast.ClassDef) -> ClassDefHandlerDict:
+    name: str = node.name
+    parents: list[str] = [i.id for i in node.bases]
+    decos: list[str] = [i.id for i in node.decorator_list]
+
+    kwargs: list[tuple] = [(i.arg, i.value.id) for i in node.keywords]
+
+    data: ClassDefHandlerDict = {
+        'statement': Statement.FunctionDef,
+        'name': name,
+        'parents': parents,
+        'decos': decos,
+        'kwargs': kwargs,
+    }
+
+    return data
+
+
+def handle_compare(node: ast.Compare) -> CompareHandlerDict:
+    left: str | CallHandlerDict = ''
+    if isinstance(node.left, ast.Constant):
+        left = handle_constant(node.left)
+    elif isinstance(node.left, ast.Call):
+        left = handle_call(node.left)
+
+    ops: list[str] = []
+
+    for op in node.ops:
+        match op:
+            case ast.Eq:
+                ops.append('=')
+            case ast.NotEq:
+                ops.append('!=')
+            case ast.Lt:
+                ops.append('<')
+            case ast.LtE:
+                ops.append('<=')
+            case ast.Gt:
+                ops.append('>')
+            case ast.GtE:
+                ops.append('>=')
+            case ast.Is:
+                ops.append('is')
+            case ast.IsNot:
+                ops.append('is not')
+            case ast.In:
+                ops.append('in')
+            case ast.NotIn:
+                ops.append('not in')
+
+    operators: list[CallHandlerDict | str] = []
+
+    for i in node.comparators:
+        if isinstance(i, ast.Call):
+            operators.append(handle_call(i))
+        elif isinstance(i, ast.Constant):
+            operators.append(handle_constant(i))
+
+    data: CompareHandlerDict = {
+        'statement': Statement.Compare,
+        'left': left,
+        'ops': ops,
+        'operators': operators,
+    }
+
+    return data
+
+
+def handle_assert(node: ast.Assert) -> AssertHandlerDict:
+    if isinstance(node.test, ast.Name):
+        test = node.test.id
+    elif isinstance(node.test, ast.Compare):
+        test = handle_compare(node.test)
+    elif isinstance(node.test, ast.Call):
+        test = handle_call(node.test)
+
+    msg: str | None = node.msg.id if node.msg else None
+
+    data: AssertHandlerDict = {'statement': Statement.Assert, 'test': test, 'msg': msg,}
 
     return data

@@ -13,6 +13,7 @@ class Statement(Enum):
     Assert = auto()
     BinOp = auto()
     Call = auto()
+    Compare = auto()
 
 
 class ImportType(Enum):
@@ -40,6 +41,29 @@ FunctionDefHandlerDict: TypeAlias = dict[
     str, Statement | str | list[str] | CallHandlerDict | BinOpHandlerDict | None
 ]
 
+AsyncFunctionDefHandlerDict: TypeAlias = dict[
+    str, Statement | str | list[str] | CallHandlerDict | BinOpHandlerDict | None
+]
+
+ClassDefHandlerDict: TypeAlias = dict[
+    str,
+    Statement
+    | str
+    | list[str]
+    | list[tuple]
+    | CallHandlerDict
+    | BinOpHandlerDict
+    | None,
+]
+
+CompareHandlerDict: TypeAlias = dict[
+    str, Statement | str | CallHandlerDict | list[str] | list[str | CallHandlerDict]
+]
+
+AssertHandlerDict: TypeAlias = dict[
+    str, Statement | str | CompareHandlerDict | CallHandlerDict
+]
+
 NodeHandlerDict: TypeAlias = (
     ImportHandlerDict
     | ImportFromHandlerDict
@@ -47,4 +71,8 @@ NodeHandlerDict: TypeAlias = (
     | BinOpHandlerDict
     | AnnAssignHandlerDict
     | FunctionDefHandlerDict
+    | AsyncFunctionDefHandlerDict
+    | ClassDefHandlerDict
+    | CompareHandlerDict
+    | AssertHandlerDict
 )

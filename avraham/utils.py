@@ -1,7 +1,7 @@
 from typing import Any
 
 
-def binary_search(item: Any, universe: list | tuple) -> int:
+def bin(item: Any, universe: list | tuple) -> int:
     low: int = 0
     high: int = len(universe) - 1
     mid: int = 0
