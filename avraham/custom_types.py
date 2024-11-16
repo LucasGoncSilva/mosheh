@@ -38,11 +38,25 @@ AssignHandlerDict: TypeAlias = dict[str, Statement | list[str] | CallHandlerDict
 AnnAssignHandlerDict: TypeAlias = dict[str, Statement | str | CallHandlerDict]
 
 FunctionDefHandlerDict: TypeAlias = dict[
-    str, Statement | str | list[str] | CallHandlerDict | BinOpHandlerDict | None
+    str,
+    Statement
+    | str
+    | list[str]
+    | list[tuple[str, str | None, str | CallHandlerDict | None]]
+    | CallHandlerDict
+    | BinOpHandlerDict
+    | None,
 ]
 
 AsyncFunctionDefHandlerDict: TypeAlias = dict[
-    str, Statement | str | list[str] | CallHandlerDict | BinOpHandlerDict | None
+    str,
+    Statement
+    | str
+    | list[str]
+    | list[tuple[str, str | None, str | CallHandlerDict | None]]
+    | CallHandlerDict
+    | BinOpHandlerDict
+    | None,
 ]
 
 ClassDefHandlerDict: TypeAlias = dict[

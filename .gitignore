@@ -166,3 +166,7 @@ cython_debug/
 
 # VSCode stuff
 .vscode
+
+# Local trash testing stuff
+xpto.py
+x.txt

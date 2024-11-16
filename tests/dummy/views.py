@@ -1,5 +1,5 @@
 from django.http import HttpRequest, HttpResponse
 
 
-def index(r: HttpRequest) -> HttpResponse:
-    return HttpResponse(r.path)
+def index(r: HttpRequest, name: str = 'Dummy') -> HttpResponse:
+    return HttpResponse(f'{r.path} + {name}')
