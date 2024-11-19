@@ -1,13 +1,13 @@
 import ast
 from os import path, walk
-from typing import Generator
+from typing import Any, Generator
 
-from custom_types import NodeHandler
+from custom_types import NodeHandler, CodebaseDict
 from handlers import handle_def_nodes
 
 
-def read_codebase(root) -> dict | None:
-    codebase: dict[str, list[NodeHandler]] = {}
+def read_codebase(root: str) -> CodebaseDict:
+    codebase: CodebaseDict = {}
 
     for file in iterate(root):
         if file.endswith('.py'):
@@ -26,10 +26,10 @@ def read_codebase(root) -> dict | None:
 
             codebase[file] = statements
 
-    print(codebase)
+    return codebase
 
 
-def iterate(root: str) -> Generator:
+def iterate(root: str) -> Generator[str, Any, Any]:
     for dirpath, _, files in walk(root):
         for file in files:
             yield path.join(dirpath, file)
@@ -53,7 +53,7 @@ def count_calls(dir_name: str, callable: str) -> int:
 
 
 def list_calls(dir_name: str) -> dict[str, list[str]]:
-    calls = {'funcs': [], 'classes': []}
+    calls: dict[str, list[str]] = {'funcs': [], 'classes': []}
 
     for file in iterate(dir_name):
         with open(file, encoding='utf-8') as f:

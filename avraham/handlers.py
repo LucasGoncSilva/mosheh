@@ -1,28 +1,34 @@
-from typing import cast
 import ast
+from typing import cast
 
 import constants
+from utils import bin, is_lib_installed
 from custom_types import (
     AnnAssignHandlerDict,
     AssertHandlerDict,
     AssignHandlerDict,
     AsyncFunctionDefHandlerDict,
     BinOpHandlerDict,
+    ArgList,
     CallHandlerDict,
     ClassDefHandlerDict,
     CompareHandlerDict,
+    DictHandlerDict,
+    AssertTest,
     FunctionDefHandlerDict,
     ImportFromHandlerDict,
     ImportHandlerDict,
+    BinOperand,
     ImportType,
     ListHandlerDict,
     NodeHandler,
     SetHandlerDict,
-    SubscriptHandlerDict,
     SliceHandlerDict,
     Statement,
+    SubscriptHandlerDict,
+    AnnAssignValue,
     TupleHandlerDict,
-    DictHandlerDict,
+    ListItem,
 )
 
 
@@ -42,16 +48,15 @@ def handle_def_nodes(node: ast.AST) -> NodeHandler:
     # Constants - ast.Assign | ast.AnnAssign
     # -------------------------
 
-    elif isinstance(node, ast.Assign) and any(
-        map(str.isupper, [i.id for i in node.targets if isinstance(i, ast.Constant)])
-    ):
-        data = handle_assign(node)
-    elif (
-        isinstance(node, ast.AnnAssign)
-        and isinstance(node.target, ast.Name)
-        and node.target.id.isupper()
-    ):
-        data = handle_annassign(node)
+    elif isinstance(node, ast.Assign):
+        lst: list[str] = [
+            handle_constant(i) for i in node.targets if isinstance(i, ast.Constant)
+        ]
+        if any(map(str.isupper, lst)):
+            data = handle_assign(node)
+    elif isinstance(node, ast.AnnAssign):
+        if isinstance(node.target, ast.Name) and node.target.id.isupper():
+            data = handle_annassign(node)
 
     # -------------------------
     # Functions - ast.FunctionDef | ast.AsyncFunctionDef
@@ -79,7 +84,10 @@ def handle_def_nodes(node: ast.AST) -> NodeHandler:
     return data
 
 
-def handle_node(node: ast.AST) -> NodeHandler:
+def handle_node(node: ast.AST | ast.expr | None) -> NodeHandler | None:
+    if node is None:
+        return node
+
     data: NodeHandler = {}
 
     # -------------------------
@@ -95,16 +103,15 @@ def handle_node(node: ast.AST) -> NodeHandler:
     # Constants - ast.Assign | ast.AnnAssign
     # -------------------------
 
-    elif isinstance(node, ast.Assign) and any(
-        map(str.isupper, [i.id for i in node.targets])
-    ):
-        data = handle_assign(node)
-    elif (
-        isinstance(node, ast.AnnAssign)
-        and isinstance(node.target, ast.Name)
-        and node.target.id.isupper()
-    ):
-        data = handle_annassign(node)
+    elif isinstance(node, ast.Assign):
+        lst: list[str] = [
+            handle_constant(i) for i in node.targets if isinstance(i, ast.Constant)
+        ]
+        if any(map(str.isupper, lst)):
+            data = handle_assign(node)
+    elif isinstance(node, ast.AnnAssign):
+        if isinstance(node.target, ast.Name) and node.target.id.isupper():
+            data = handle_annassign(node)
 
     # -------------------------
     # Functions - ast.FunctionDef | ast.AsyncFunctionDef
@@ -210,35 +217,46 @@ def handle_node(node: ast.AST) -> NodeHandler:
 
 
 def handle_import(node: ast.Import) -> ImportHandlerDict:
-    mods = {'modules': {}}
+    mods: ImportHandlerDict = {'modules': {}}
 
     for mod in [i.name for i in node.names]:
         mod_data = {}
+        mod_data['path'] = None
 
-        if mod in constants.BUILTIN_MODULES:
+        if bin(mod, constants.BUILTIN_MODULES):
             mod_data['categorie'] = ImportType.Native
-            mod_data['path'] = None
+        elif is_lib_installed(mod):
+            mod_data['categorie'] = ImportType.TrdParty
+        else:
+            mod_data['categorie'] = ImportType.Local
 
         mods['modules'][mod] = mod_data.copy()
 
-    data: ImportHandlerDict = {'statement': Statement.Import, **mods}
-
-    return data
+    return {'statement': Statement.Import, **mods}
 
 
 def handle_import_from(node: ast.ImportFrom) -> ImportFromHandlerDict:
-    mods = {
-        'path': node.module,
+    mods: ImportFromHandlerDict = {
         'modules': [i.name for i in node.names],
     }
+    mods['path'] = node.module
 
-    if f'{node.module}.'.split('.')[0] in constants.BUILTIN_MODULES:
+    mod: str = f'{node.module}'
+    print(mod)
+
+    if mod.startswith('.'):
+        mods['categorie'] = ImportType.Local
+    elif bin(
+        f'{mod}.'.split('.')[0],
+        constants.BUILTIN_MODULES,
+    ):
         mods['categorie'] = ImportType.Native
-        mods['path'] = None
+    elif is_lib_installed(mod):
+        mods['categorie'] = ImportType.TrdParty
+    else:
+        mods['categorie'] = ImportType.Local
 
-    data: ImportFromHandlerDict = {'statement': Statement.ImportFrom, **mods}
-
-    return data
+    return {'statement': Statement.ImportFrom, **mods}
 
 
 def handle_attribute(node: ast.Attribute) -> str:
@@ -246,9 +264,9 @@ def handle_attribute(node: ast.Attribute) -> str:
 
 
 def handle_call(node: ast.Call) -> CallHandlerDict:
-    call_obj = handle_node(node.func)
+    call_obj: str = cast(str, handle_node(node.func))
 
-    args: list[str] = [handle_node(i) for i in node.args]
+    args: list[str] = [cast(str, handle_node(i)) for i in node.args]
     args += [
         f'*{handle_node(i.value)}' for i in node.args if isinstance(i, ast.Starred)
     ]
@@ -260,14 +278,12 @@ def handle_call(node: ast.Call) -> CallHandlerDict:
         else:
             kwargs.append(f'**{param.arg}')
 
-    data: CallHandlerDict = {
+    return {
         'statement': Statement.Call,
         'call_obj': call_obj,
         'args': args,
         'kwargs': kwargs,
     }
-
-    return data
 
 
 def handle_constant(node: ast.Constant) -> str:
@@ -275,24 +291,22 @@ def handle_constant(node: ast.Constant) -> str:
 
 
 def handle_assign(node: ast.Assign) -> AssignHandlerDict:
-    tokens: list[NodeHandler] = [handle_node(i) for i in node.targets]
+    tokens: list[str] = [cast(str, handle_node(i)) for i in node.targets]
 
-    value: NodeHandler = handle_node(node.value)
+    value: str = cast(str, handle_node(node.value))
 
-    data: AssignHandlerDict = {
+    return {
         'statement': Statement.Assign,
         'tokens': tokens,
         'value': value,
     }
 
-    return data
-
 
 def handle_binop(node: ast.BinOp) -> BinOpHandlerDict:
-    left = handle_node(node.left)
-    right = handle_node(node.right)
+    left: BinOperand = cast(BinOperand, handle_node(node.left))
+    right: BinOperand = cast(BinOperand, handle_node(node.right))
 
-    dispatch: dict = {
+    dispatch: dict[type, str] = {
         ast.Add: '+',
         ast.Sub: '-',
         ast.Mult: '*',
@@ -307,27 +321,23 @@ def handle_binop(node: ast.BinOp) -> BinOpHandlerDict:
         ast.BitAnd: '&',
     }
 
-    op: str = cast(str, dispatch.get(type(node.op)))
+    op: str = dispatch[type(node.op)]
 
-    data: BinOpHandlerDict = {
+    return {
         'statement': Statement.BinOp,
         'left': left,
         'op': op,
         'right': right,
     }
 
-    return data
-
 
 def handle_annassign(node: ast.AnnAssign) -> AnnAssignHandlerDict:
-    token: NodeHandler = handle_node(node.target)
-    annot: NodeHandler = handle_node(node.annotation)
-    value = ''
+    token: str = cast(str, handle_node(node.target))
+    annot: str = cast(str, handle_node(node.annotation))
+    value: AnnAssignValue = ''
 
-    if isinstance(node.value, ast.Constant):
-        value = handle_constant(node.value)
-    elif isinstance(node.value, ast.Call):
-        value = handle_call(node.value)
+    if node.value is not None:
+        value = cast(AnnAssignValue, handle_node(node.value))
 
     return {
         'statement': Statement.AnnAssign,
@@ -339,22 +349,24 @@ def handle_annassign(node: ast.AnnAssign) -> AnnAssignHandlerDict:
 
 def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
     name: str = node.name
-    decos: list[str] = [handle_node(i) for i in node.decorator_list]
-    rtype: str | None = None
-    arg_lst: list[tuple[str, str | None, str | CallHandlerDict | None]] = []
+    decos: list[str] = [cast(str, handle_node(i)) for i in node.decorator_list]
+    rtype: str | None = (
+        cast(str, handle_node(node.returns)) if node.returns is not None else None
+    )
+    arg_lst: ArgList = []
     s_args: tuple[str | None, str | None, None] | None = None
-    kwarg_lst = []
-    ss_kwargs = None
+    kwarg_lst: ArgList = []
+    ss_kwargs: tuple[str | None, str | None, None] | None = None
 
     has_star_args: bool = True if node.args.vararg is not None else False
     has_star_star_kwargs: bool = True if node.args.kwarg is not None else False
 
-    if has_star_args:
+    if has_star_args and node.args.vararg is not None:
         name: str = f'*{node.args.vararg.arg}'
         annot: str | None = None
 
         if node.args.vararg.annotation is not None:
-            annot = handle_node(node.args.vararg.annotation)
+            annot = cast(str, handle_node(node.args.vararg.annotation))
 
         s_args = (name, annot, None)
 
@@ -385,15 +397,15 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
 
         arg_lst.append((name, annot, default))
 
-    if has_star_args:
+    if has_star_args and s_args is not None:
         arg_lst.insert(len(arg_lst), s_args)
 
-    if has_star_star_kwargs:
+    if has_star_star_kwargs and node.args.kwarg is not None:
         name: str = f'*{node.args.kwarg.arg}'
         annot: str | None = None
 
         if node.args.kwarg.annotation is not None:
-            annot = handle_node(node.args.kwarg.annotation)
+            annot = cast(str, handle_node(node.args.kwarg.annotation))
 
         ss_kwargs = (name, annot, None)
 
@@ -401,19 +413,21 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
 
     for i, arg in enumerate(node.args.kwonlyargs, start=1):
         name: str = arg.arg
-        annot: NodeHandler | None = (
-            handle_node(arg.annotation) if arg.annotation is not None else None
+        annot: str | None = (
+            cast(str, handle_node(arg.annotation))
+            if arg.annotation is not None
+            else None
         )
         default: str | CallHandlerDict | None = None
 
-        if kwdefault_diff and i > kwdefault_diff:
+        if len(node.args.kw_defaults) and (kwdefault_diff and i > kwdefault_diff):
             expected = node.args.kw_defaults[i - 1 - kwdefault_diff]
 
             if isinstance(expected, ast.Constant):
                 default = handle_constant(expected)
             elif isinstance(expected, ast.Call):
                 default = handle_call(expected)
-        else:
+        elif len(node.args.kw_defaults) and not (kwdefault_diff or i > kwdefault_diff):
             expected = node.args.kw_defaults[i - 1]
 
             if isinstance(expected, ast.Constant):
@@ -423,13 +437,10 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
 
         kwarg_lst.append((name, annot, default))
 
-    if has_star_args:
+    if has_star_star_kwargs and ss_kwargs is not None:
         kwarg_lst.insert(len(kwarg_lst), ss_kwargs)
 
-    if node.returns is not None:
-        rtype = handle_node(node.returns)
-
-    data: FunctionDefHandlerDict = {
+    return {
         'statement': Statement.FunctionDef,
         'name': name,
         'decos': decos,
@@ -437,30 +448,30 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
         'arg_lst': arg_lst,
         'kwarg_lst': kwarg_lst,
     }
-
-    return data
 
 
 def handle_async_function_def(
     node: ast.AsyncFunctionDef,
 ) -> AsyncFunctionDefHandlerDict:
     name: str = node.name
-    decos: list[str] = [handle_node(i) for i in node.decorator_list]
-    rtype: str | None = None
-    arg_lst: list[tuple[str, str | None, str | CallHandlerDict | None]] = []
+    decos: list[str] = [cast(str, handle_node(i)) for i in node.decorator_list]
+    rtype: str | None = (
+        cast(str, handle_node(node.returns)) if node.returns is not None else None
+    )
+    arg_lst: ArgList = []
     s_args: tuple[str | None, str | None, None] | None = None
-    kwarg_lst = []
-    ss_kwargs = None
+    kwarg_lst: ArgList = []
+    ss_kwargs: tuple[str | None, str | None, None] | None = None
 
     has_star_args: bool = True if node.args.vararg is not None else False
     has_star_star_kwargs: bool = True if node.args.kwarg is not None else False
 
-    if has_star_args:
+    if has_star_args and node.args.vararg is not None:
         name: str = f'*{node.args.vararg.arg}'
         annot: str | None = None
 
         if node.args.vararg.annotation is not None:
-            annot = handle_node(node.args.vararg.annotation)
+            annot = cast(str, handle_node(node.args.vararg.annotation))
 
         s_args = (name, annot, None)
 
@@ -491,15 +502,15 @@ def handle_async_function_def(
 
         arg_lst.append((name, annot, default))
 
-    if has_star_args:
+    if has_star_args and s_args is not None:
         arg_lst.insert(len(arg_lst), s_args)
 
-    if has_star_star_kwargs:
+    if has_star_star_kwargs and node.args.kwarg is not None:
         name: str = f'*{node.args.kwarg.arg}'
         annot: str | None = None
 
         if node.args.kwarg.annotation is not None:
-            annot = handle_node(node.args.kwarg.annotation)
+            annot = cast(str, handle_node(node.args.kwarg.annotation))
 
         ss_kwargs = (name, annot, None)
 
@@ -507,19 +518,21 @@ def handle_async_function_def(
 
     for i, arg in enumerate(node.args.kwonlyargs, start=1):
         name: str = arg.arg
-        annot: NodeHandler | None = (
-            handle_node(arg.annotation) if arg.annotation is not None else None
+        annot: str | None = (
+            cast(str, handle_node(arg.annotation))
+            if arg.annotation is not None
+            else None
         )
         default: str | CallHandlerDict | None = None
 
-        if kwdefault_diff and i > kwdefault_diff:
+        if len(node.args.kw_defaults) and (kwdefault_diff and i > kwdefault_diff):
             expected = node.args.kw_defaults[i - 1 - kwdefault_diff]
 
             if isinstance(expected, ast.Constant):
                 default = handle_constant(expected)
             elif isinstance(expected, ast.Call):
                 default = handle_call(expected)
-        else:
+        elif len(node.args.kw_defaults) and not (kwdefault_diff or i > kwdefault_diff):
             expected = node.args.kw_defaults[i - 1]
 
             if isinstance(expected, ast.Constant):
@@ -529,14 +542,11 @@ def handle_async_function_def(
 
         kwarg_lst.append((name, annot, default))
 
-    if has_star_args:
+    if has_star_star_kwargs and ss_kwargs is not None:
         kwarg_lst.insert(len(kwarg_lst), ss_kwargs)
 
-    if node.returns is not None:
-        rtype = handle_node(node.returns)
-
-    data: FunctionDefHandlerDict = {
-        'statement': Statement.FunctionDef,
+    return {
+        'statement': Statement.AsyncFunctionDef,
         'name': name,
         'decos': decos,
         'rtype': rtype,
@@ -544,17 +554,18 @@ def handle_async_function_def(
         'kwarg_lst': kwarg_lst,
     }
 
-    return data
-
 
 def handle_class_def(node: ast.ClassDef) -> ClassDefHandlerDict:
     name: str = node.name
-    parents: list[str] = [handle_node(i) for i in node.bases if isinstance(i, ast.Name)]
-    decos: list[str] = [handle_node(i) for i in node.decorator_list]
+    parents: list[str] = [
+        cast(str, handle_node(i)) for i in node.bases if isinstance(i, ast.Name)
+    ]
+    decos: list[str] = [cast(str, handle_node(i)) for i in node.decorator_list]
+    kwargs: list[tuple[str, str]] = [
+        cast(tuple[str, str], (i.arg, i.value)) for i in node.keywords
+    ]
 
-    kwargs: list[tuple] = [(i.arg, i.value) for i in node.keywords]
-
-    data: ClassDefHandlerDict = {
+    return {
         'statement': Statement.ClassDef,
         'name': name,
         'parents': parents,
@@ -562,99 +573,78 @@ def handle_class_def(node: ast.ClassDef) -> ClassDefHandlerDict:
         'kwargs': kwargs,
     }
 
-    return data
-
 
 def handle_compare(node: ast.Compare) -> CompareHandlerDict:
-    left: str | CallHandlerDict = ''
-    if isinstance(node.left, ast.Constant):
-        left = handle_constant(node.left)
-    elif isinstance(node.left, ast.Call):
-        left = handle_call(node.left)
+    left: str | CallHandlerDict = cast(str | CallHandlerDict, handle_node(node.left))
 
+    dispatch: dict[type, str] = {
+        ast.Eq: '=',
+        ast.NotEq: '!=',
+        ast.Lt: '<',
+        ast.LtE: '<=',
+        ast.Gt: '>',
+        ast.GtE: '>=',
+        ast.Is: 'is',
+        ast.IsNot: 'is not',
+        ast.In: 'in',
+        ast.NotIn: 'not in',
+    }
     ops: list[str] = []
 
     for op in node.ops:
-        match op:
-            case ast.Eq:
-                ops.append('=')
-            case ast.NotEq:
-                ops.append('!=')
-            case ast.Lt:
-                ops.append('<')
-            case ast.LtE:
-                ops.append('<=')
-            case ast.Gt:
-                ops.append('>')
-            case ast.GtE:
-                ops.append('>=')
-            case ast.Is:
-                ops.append('is')
-            case ast.IsNot:
-                ops.append('is not')
-            case ast.In:
-                ops.append('in')
-            case ast.NotIn:
-                ops.append('not in')
+        ops.append(dispatch[type(op)])
 
     operators: list[CallHandlerDict | str] = []
 
     for i in node.comparators:
-        if isinstance(i, ast.Call):
-            operators.append(handle_call(i))
-        elif isinstance(i, ast.Constant):
-            operators.append(handle_constant(i))
+        operators.append(cast(CallHandlerDict | str, handle_node(i)))
 
-    data: CompareHandlerDict = {
+    return {
         'statement': Statement.Compare,
         'left': left,
         'ops': ops,
         'operators': operators,
     }
 
-    return data
-
 
 def handle_assert(node: ast.Assert) -> AssertHandlerDict:
-    test = handle_node(node.test)
+    test: AssertTest = cast(AssertTest, handle_node(node.test))
 
-    msg: str | None = handle_node(node.msg) if node.msg else None
+    msg: str | None = cast(str, handle_node(node.msg)) if node.msg else None
 
-    data: AssertHandlerDict = {
+    return {
         'statement': Statement.Assert,
         'test': test,
         'msg': msg,
     }
 
-    return data
-
 
 def handle_list(node: ast.List) -> ListHandlerDict:
     return {
         'statement': Statement.List,
-        'elements': [handle_node(i) for i in node.elts],
+        'elements': [cast(ListItem, handle_node(i)) for i in node.elts],
     }
 
 
 def handle_tuple(node: ast.Tuple) -> TupleHandlerDict:
     return {
         'statement': Statement.Tuple,
-        'elements': [handle_node(i) for i in node.elts],
+        'elements': [cast(ListItem, handle_node(i)) for i in node.elts],
     }
 
 
 def handle_set(node: ast.Set) -> SetHandlerDict:
     return {
         'statement': Statement.Set,
-        'elements': [handle_node(i) for i in node.elts],
+        'elements': [cast(ListItem, handle_node(i)) for i in node.elts],
     }
 
 
 def handle_dict(node: ast.Dict) -> DictHandlerDict:
-    keys = [handle_node(i) for i in node.keys]
-    values = [handle_node(i) for i in node.values]
+    keys: list[str] = [cast(str, handle_node(i)) for i in node.keys]
+    values: list[str] = [cast(str, handle_node(i)) for i in node.values]
 
-    if None in keys:
+    if None in node.keys:
         values[-1] = f'**{values[-1]}'
 
     return {
@@ -667,16 +657,16 @@ def handle_dict(node: ast.Dict) -> DictHandlerDict:
 def handle_subscript(node: ast.Subscript) -> SubscriptHandlerDict:
     return {
         'statement': Statement.Subscript,
-        'value': node.value,
-        'slice': handle_node(node.slice),
+        'value': cast(str, handle_node(node.value)),
+        'slice': cast(SliceHandlerDict, handle_node(node.slice)),
     }
 
 
 def handle_slice(node: ast.Slice) -> SliceHandlerDict:
     return {
         'statement': Statement.Slice,
-        'lower': handle_node(node.lower),
-        'upper': handle_node(node.upper),
+        'lower': cast(str, handle_node(node.lower)),
+        'upper': cast(str, handle_node(node.upper)),
     }
 
 

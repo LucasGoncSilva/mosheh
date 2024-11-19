@@ -1,7 +1,8 @@
+from importlib.util import find_spec
 from typing import Any
 
 
-def bin(item: Any, universe: list | tuple) -> int:
+def bin(item: Any, universe: list[Any] | tuple[Any]) -> bool:
     low: int = 0
     high: int = len(universe) - 1
     mid: int = 0
@@ -14,6 +15,14 @@ def bin(item: Any, universe: list | tuple) -> int:
         elif universe[mid] > item:
             high = mid - 1
         else:
-            return mid
+            return True
 
-    return -1
+    return False
+
+
+def is_lib_installed(name: str) -> bool:
+    try:
+        spec = find_spec(name)
+        return True if spec is not None else False
+    except ModuleNotFoundError:
+        return False

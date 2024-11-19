@@ -3,6 +3,7 @@ from os import path
 
 from doc import Lang, generate_doc
 from python import read_codebase
+from custom_types import CodebaseDict
 
 
 def main():
@@ -34,7 +35,9 @@ def main():
 
     LANG: Lang = {'pt-BR': Lang.PT_BR, 'en': Lang.EN}.get(args.lang, Lang.EN)
 
-    data: dict | None = read_codebase(ROOT)
+    data: CodebaseDict = read_codebase(ROOT)
+
+    print(data)
 
     generate_doc(EXIT, PROJ_NAME, LANG, '', REPO_NAME, REPO_URL)
 
