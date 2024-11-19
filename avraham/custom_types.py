@@ -14,6 +14,12 @@ class Statement(Enum):
     BinOp = auto()
     Call = auto()
     Compare = auto()
+    List = auto()
+    Set = auto()
+    Tuple = auto()
+    Dict = auto()
+    Slice = auto()
+    Subscript = auto()
 
 
 class ImportType(Enum):
@@ -29,64 +35,56 @@ ImportHandlerDict: TypeAlias = dict[str, Statement | ModuleDict]
 
 ImportFromHandlerDict: TypeAlias = dict[str, Statement | list[str]]
 
-CallHandlerDict: TypeAlias = dict[str, Statement | list[str]]
+CallHandlerDict: TypeAlias = dict
 
-BinOpHandlerDict: TypeAlias = dict[str, Statement | str | CallHandlerDict]
+BinOpHandlerDict: TypeAlias = dict
 
-AssignHandlerDict: TypeAlias = dict[str, Statement | list[str] | CallHandlerDict | str]
+AssignHandlerDict: TypeAlias = dict
 
-AnnAssignHandlerDict: TypeAlias = dict[str, Statement | str | CallHandlerDict]
+AnnAssignHandlerDict: TypeAlias = dict
 
-FunctionDefHandlerDict: TypeAlias = dict[
-    str,
-    Statement
-    | str
-    | list[str]
-    | list[tuple[str, str | None, str | CallHandlerDict | None]]
-    | CallHandlerDict
-    | BinOpHandlerDict
-    | None,
-]
+FunctionDefHandlerDict: TypeAlias = dict
 
-AsyncFunctionDefHandlerDict: TypeAlias = dict[
-    str,
-    Statement
-    | str
-    | list[str]
-    | list[tuple[str, str | None, str | CallHandlerDict | None]]
-    | CallHandlerDict
-    | BinOpHandlerDict
-    | None,
-]
+AsyncFunctionDefHandlerDict: TypeAlias = dict
 
-ClassDefHandlerDict: TypeAlias = dict[
-    str,
-    Statement
-    | str
-    | list[str]
-    | list[tuple]
-    | CallHandlerDict
-    | BinOpHandlerDict
-    | None,
-]
+ClassDefHandlerDict: TypeAlias = dict
 
-CompareHandlerDict: TypeAlias = dict[
-    str, Statement | str | CallHandlerDict | list[str] | list[str | CallHandlerDict]
-]
+CompareHandlerDict: TypeAlias = dict
 
-AssertHandlerDict: TypeAlias = dict[
-    str, Statement | str | CompareHandlerDict | CallHandlerDict
-]
+AssertHandlerDict: TypeAlias = dict
 
-NodeHandlerDict: TypeAlias = (
-    ImportHandlerDict
-    | ImportFromHandlerDict
-    | AssignHandlerDict
-    | BinOpHandlerDict
-    | AnnAssignHandlerDict
-    | FunctionDefHandlerDict
-    | AsyncFunctionDefHandlerDict
-    | ClassDefHandlerDict
-    | CompareHandlerDict
-    | AssertHandlerDict
+ListHandlerDict: TypeAlias = dict
+
+SetHandlerDict: TypeAlias = dict
+
+TupleHandlerDict: TypeAlias = dict
+
+DictHandlerDict: TypeAlias = dict
+
+SliceHandlerDict: TypeAlias = dict
+
+SubscriptHandlerDict: TypeAlias = dict
+
+NodeHandler: TypeAlias = (
+    str
+    | dict[
+        str,
+        ImportHandlerDict
+        | ImportFromHandlerDict
+        | CallHandlerDict
+        | BinOpHandlerDict
+        | AssignHandlerDict
+        | AnnAssignHandlerDict
+        | FunctionDefHandlerDict
+        | AsyncFunctionDefHandlerDict
+        | ClassDefHandlerDict
+        | CompareHandlerDict
+        | AssertHandlerDict
+        | ListHandlerDict
+        | SetHandlerDict
+        | TupleHandlerDict
+        | DictHandlerDict
+        | SliceHandlerDict
+        | SubscriptHandlerDict,
+    ]
 )
