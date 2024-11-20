@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 """
-Avraham is a script for generating documentations for projects, from Python to Python.
+Misheh is a script for generating documentations for projects, from Python to Python.
 
-Basically, Avraham lists all files you points to, saves every single notorious statement
+Basically, Misheh lists all files you points to, saves every single notorious statement
 of definition on each file iterated, all using Python "ast" native module for handling
 the AST and then generating (using MkDocs) a documentation repecting the dirs and files
 hierarchy. The stuff documented for each file are listed below:
@@ -44,7 +44,7 @@ __credits__ = ['Lucas Silva']
 __license__ = 'MIT'
 __maintainer__ = 'Lucas Silva'
 __email__ = 'lucasgoncsilva04@gmail.com'
-__repository__ = 'https://github.com/LucasGoncSilva/avraham'
+__repository__ = 'https://github.com/LucasGoncSilva/misheh'
 __description__ = __doc__
 __keywords__ = ['CLI', 'documentation', 'doc']
 __version__ = '0.0.0'
