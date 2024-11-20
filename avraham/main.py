@@ -67,6 +67,8 @@ def main() -> None:
     It takes no parameters inside code itself, but uses ArgumentParser to deal with them.
     Parsing the args, extracts the infos provided to deal and construct the output doc
     based on them.
+
+    :rtype: None
     """
 
     parser: ArgumentParser = ArgumentParser(
