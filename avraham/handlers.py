@@ -242,7 +242,6 @@ def handle_import_from(node: ast.ImportFrom) -> ImportFromHandlerDict:
     mods['path'] = node.module
 
     mod: str = f'{node.module}'
-    print(mod)
 
     if mod.startswith('.'):
         mods['categorie'] = ImportType.Local
