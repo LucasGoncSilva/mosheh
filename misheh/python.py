@@ -2,7 +2,7 @@ import ast
 from os import path, walk
 from typing import Any, Generator
 
-from custom_types import NodeHandler, CodebaseDict
+from custom_types import CodebaseDict, NodeHandler
 from handlers import handle_def_nodes
 
 
@@ -22,7 +22,7 @@ def read_codebase(root: str) -> CodebaseDict:
     :return: all the codebase data collected
     :rtype: CodebaseDict
     """
-    
+
     codebase: CodebaseDict = {}
 
     for file in iterate(root):

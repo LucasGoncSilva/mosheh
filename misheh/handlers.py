@@ -2,34 +2,34 @@ import ast
 from typing import cast
 
 import constants
-from utils import bin, is_lib_installed
 from custom_types import (
     AnnAssignHandlerDict,
+    AnnAssignValue,
+    ArgList,
     AssertHandlerDict,
+    AssertTest,
     AssignHandlerDict,
     AsyncFunctionDefHandlerDict,
     BinOpHandlerDict,
-    ArgList,
+    BinOperand,
     CallHandlerDict,
     ClassDefHandlerDict,
     CompareHandlerDict,
     DictHandlerDict,
-    AssertTest,
     FunctionDefHandlerDict,
     ImportFromHandlerDict,
     ImportHandlerDict,
-    BinOperand,
     ImportType,
     ListHandlerDict,
+    ListItem,
     NodeHandler,
     SetHandlerDict,
     SliceHandlerDict,
     Statement,
     SubscriptHandlerDict,
-    AnnAssignValue,
     TupleHandlerDict,
-    ListItem,
 )
+from utils import bin, is_lib_installed
 
 
 def handle_def_nodes(node: ast.AST) -> NodeHandler:
@@ -407,7 +407,7 @@ def handle_constant(node: ast.Constant) -> str:
     :return: the node value
     :rtype: str
     """
-    
+
     return node.value
 
 
@@ -544,7 +544,7 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
     :return: a dict containing the statement type and the data listed before
     :rtype: FunctionDefHandlerDict
     """
-    
+
     name: str = node.name
     decos: list[str] = [cast(str, handle_node(i)) for i in node.decorator_list]
     rtype: str | None = (
@@ -656,14 +656,14 @@ def handle_async_function_def(
     This function analyzes the components of a func def, mapping the name, decorators,
     arguments (name, type, default value), return type and even the type of function it
     is, which in this case can be only one:
-    - Corroutine: an async func, defined with `async def` syntax.
+    - Coroutine: an async func, defined with `async def` syntax.
 
     :param node: the AST node representing a func def statement
     :type node: ast.AsyncFunctionDef
     :return: a dict containing the statement type and the data listed before
     :rtype: AsyncFunctionDefHandlerDict
     """
-    
+
     name: str = node.name
     decos: list[str] = [cast(str, handle_node(i)) for i in node.decorator_list]
     rtype: str | None = (
@@ -872,7 +872,7 @@ def handle_assert(node: ast.Assert) -> AssertHandlerDict:
     :return: a dict containing the statement type, test expression, and optional message
     :rtype: AssertHandlerDict
     """
-    
+
     test: AssertTest = cast(AssertTest, handle_node(node.test))
 
     msg: str | None = cast(str, handle_node(node.msg)) if node.msg else None

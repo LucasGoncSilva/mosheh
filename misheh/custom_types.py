@@ -28,6 +28,11 @@ class ImportType(Enum):
     Local = 'local'
 
 
+class Lang(Enum):
+    PT_BR = 'pt-BR'
+    EN = 'en'
+
+
 Categorie: TypeAlias = dict[str, str]
 ImportDict: TypeAlias = dict[str, ImportType | str | None]
 ModuleDict: TypeAlias = dict[str, ImportDict]

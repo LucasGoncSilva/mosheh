@@ -9,7 +9,7 @@ def bin(item: Any, universe: list[Any] | tuple[Any]) -> bool:
     It inicializes two "pointers", one for the low or start of the iterator
     and another for the high or the end of it. Gets the middle point and
     compares it with the asked item.
-    
+
     If the item is greater/after the middle the middle becomes the new low
     and repeats, otherwise, it becomes the new high and so on and so on and
     so on... until the item is found and returns True or not, returning False.

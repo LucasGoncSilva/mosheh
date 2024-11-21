@@ -1,9 +1,4 @@
-from enum import Enum
-
-
-class Lang(Enum):
-    PT_BR = 'pt-BR'
-    EN = 'en'
+from custom_types import Lang
 
 
 def generate_doc(
