@@ -1,7 +1,11 @@
-from custom_types import Lang
+from os import path
+import subprocess
+
+from custom_types import Lang, CodebaseDict
 
 
 def generate_doc(
+    codebase_data: CodebaseDict,
     exit: str,
     proj_name: str,
     lang: Lang,
@@ -16,6 +20,19 @@ def generate_doc(
         repo_name,
         repo_url,
     )
+    
+    exit_path:str = path.abspath(exit)
+
+    try:
+        result = subprocess.run(
+            ['mkdocs', 'new', proj_name, exit_path],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print('Error:', e.stderr)
 
 
 def default_doc_config(

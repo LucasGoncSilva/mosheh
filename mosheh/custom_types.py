@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from typing import TypeAlias, Final
+from typing import TypeAlias
 
 
 class Statement(Enum):
@@ -33,56 +33,55 @@ class Lang(Enum):
     EN = 'en'
 
 
-Categorie: TypeAlias = Final[dict[str, str]]
-ImportDict: TypeAlias = Final[dict[str, ImportType | str | None]]
-ModuleDict: TypeAlias = Final[dict[str, ImportDict]]
+Categorie: TypeAlias = dict[str, str]
+ImportDict: TypeAlias = dict[str, ImportType | str | None]
+ModuleDict: TypeAlias = dict[str, ImportDict]
 
-ImportHandlerDict: TypeAlias = Final[dict[str, Statement | ModuleDict]]
+ImportHandlerDict: TypeAlias = dict[str, Statement | ModuleDict]
 
-ImportFromHandlerDict: TypeAlias = Final[
-    dict[str, Statement | ImportType | list[str] | str | None]
+ImportFromHandlerDict: TypeAlias = dict[
+    str, Statement | ImportType | list[str] | str | None
 ]
 
-AssignHandlerDict: TypeAlias = Final[dict[str, Statement | str | list[str]]]
+AssignHandlerDict: TypeAlias = dict[str, Statement | str | list[str]]
 
-CallHandlerDict: TypeAlias = Final[dict[str, Statement | str | list[str]]]
+CallHandlerDict: TypeAlias = dict[str, Statement | str | list[str]]
 
-ClassDefHandlerDict: TypeAlias = Final[
-    dict[str, Statement | str | list[str] | list[tuple[str, str]]]
+ClassDefHandlerDict: TypeAlias = dict[
+    str, Statement | str | list[str] | list[tuple[str, str]]
 ]
 
-CompareHandlerDict: TypeAlias = Final[
-    dict[
-        str, Statement | str | CallHandlerDict | list[str] | list[CallHandlerDict | str]
-    ]
+CompareHandlerDict: TypeAlias = dict[
+    str, Statement | str | CallHandlerDict | list[str] | list[CallHandlerDict | str]
 ]
 
-AssertTest: TypeAlias = Final[CompareHandlerDict | str]
-AssertHandlerDict: TypeAlias = Final[dict[str, Statement | str | AssertTest | None]]
+AssertTest: TypeAlias = CompareHandlerDict | str
+AssertHandlerDict: TypeAlias = dict[str, Statement | str | AssertTest | None]
 
-DictHandlerDict: TypeAlias = Final[dict[str, Statement | list[str]]]
+DictHandlerDict: TypeAlias = dict[str, Statement | list[str]]
 
-ArgList: TypeAlias = Final[list[tuple[str, str | None, str | CallHandlerDict | None]]]
-FunctionDefHandlerDict: TypeAlias = Final[
-    dict[str, Statement | str | list[str] | ArgList | None]
-]
-AsyncFunctionDefHandlerDict: TypeAlias = Final[
-    dict[str, Statement | str | list[str] | ArgList | None]
+ArgList: TypeAlias = list[tuple[str, str | None, str | CallHandlerDict | None]]
+FunctionDefHandlerDict: TypeAlias = dict[
+    str, Statement | str | list[str] | ArgList | None
 ]
 
-_SetHandlerDict: TypeAlias = Final[dict[str, Statement]]
+AsyncFunctionDefHandlerDict: TypeAlias = dict[
+    str, Statement | str | list[str] | ArgList | None
+]
 
-SliceHandlerDict: TypeAlias = Final[dict[str, Statement | str]]
+_SetHandlerDict: TypeAlias = dict[str, Statement]
 
-SubscriptHandlerDict: TypeAlias = Final[dict[str, Statement | str | SliceHandlerDict]]
+SliceHandlerDict: TypeAlias = dict[str, Statement | str]
 
-_ListItem: TypeAlias = Final[CallHandlerDict | str | dict[str, Statement | str]]
-_ListHandlerDict: TypeAlias = Final[dict[str, Statement | list[_ListItem]]]
+SubscriptHandlerDict: TypeAlias = dict[str, Statement | str | SliceHandlerDict]
 
-_TupleHandlerDict: TypeAlias = Final[dict[str, Statement | list[_ListItem]]]
+_ListItem: TypeAlias = CallHandlerDict | str | dict[str, Statement | str]
+_ListHandlerDict: TypeAlias = dict[str, Statement | list[_ListItem]]
 
-AnnAssignValue: TypeAlias = Final[str | CallHandlerDict]
-AnnAssignHandlerDict: TypeAlias = Final[dict[str, Statement | str | AnnAssignValue]]
+_TupleHandlerDict: TypeAlias = dict[str, Statement | list[_ListItem]]
+
+AnnAssignValue: TypeAlias = str | CallHandlerDict
+AnnAssignHandlerDict: TypeAlias = dict[str, Statement | str | AnnAssignValue]
 
 BinOperand: TypeAlias = (
     str
@@ -92,12 +91,12 @@ BinOperand: TypeAlias = (
     | DictHandlerDict
     | _TupleHandlerDict
 )
-BinOpHandlerDict: TypeAlias = Final[dict[str, Statement | str | BinOperand]]
+BinOpHandlerDict: TypeAlias = dict[str, Statement | str | BinOperand]
 
-ListItem: TypeAlias = Final[CallHandlerDict | str | BinOpHandlerDict]
-ListHandlerDict: TypeAlias = Final[dict[str, Statement | list[ListItem]]]
-TupleHandlerDict: TypeAlias = Final[dict[str, Statement | list[ListItem]]]
-SetHandlerDict: TypeAlias = Final[dict[str, Statement | list[ListItem]]]
+ListItem: TypeAlias = CallHandlerDict | str | BinOpHandlerDict
+ListHandlerDict: TypeAlias = dict[str, Statement | list[ListItem]]
+TupleHandlerDict: TypeAlias = dict[str, Statement | list[ListItem]]
+SetHandlerDict: TypeAlias = dict[str, Statement | list[ListItem]]
 
 NodeHandler: TypeAlias = (
     str
@@ -121,4 +120,4 @@ NodeHandler: TypeAlias = (
     | SubscriptHandlerDict
 )
 
-CodebaseDict: TypeAlias = Final[dict[str, list[NodeHandler]]]
+CodebaseDict: TypeAlias = dict[str, list[NodeHandler]]

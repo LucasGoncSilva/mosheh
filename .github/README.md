@@ -10,7 +10,7 @@
 
 Mosheh é um script para geração de documentações de projetos, de Python para Python.
 
-Basicamente, Mosheh lista todos os arquivos para onde vocẽ apontar, armazena cada declaração de definição notória em cada arquivo varrido através da manipulação da AST com o módulo `ast` e, posteriormente, gera a documentação - com uso de MkDocs - respeitando os dados obtidos e a hierarquia dos diretórios e arquivos.
+Basicamente, Mosheh lista todos os arquivos para onde você apontar, armazena cada declaração de definição notória em cada arquivo varrido através da manipulação da AST com o módulo `ast` e, posteriormente, gera a documentação - com uso de MkDocs - respeitando os dados obtidos e a hierarquia dos diretórios e arquivos.
 
 Os elementos documentados para cada arquivo estão listados abaixo:
 
