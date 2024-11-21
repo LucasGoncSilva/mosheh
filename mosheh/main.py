@@ -65,13 +65,14 @@ def main() -> None:
     """
     This is the script's entrypoint, kinda where everything starts.
 
-    It takes no parameters inside code itself, but uses ArgumentParser to deal with them.
-    Parsing the args, extracts the infos provided to deal and construct the output doc
-    based on them.
+    It takes no parameters inside code itself, but uses ArgumentParser to deal with
+    them. Parsing the args, extracts the infos provided to deal and construct the
+    output doc based on them.
 
     :rtype: None
     """
 
+    # Parser Creation
     parser: ArgumentParser = ArgumentParser(
         description=(__doc__),
         formatter_class=RawDescriptionHelpFormatter,
@@ -108,6 +109,7 @@ def main() -> None:
         help='Path for documentation output, where to be created.',
     )
 
+    # Arguments Parsing
     args: Namespace = parser.parse_args()
 
     ROOT: str = args.root
@@ -115,13 +117,14 @@ def main() -> None:
     REPO_NAME: str = args.repo_name
     REPO_URL: str = args.repo_url
     EXIT: str = args.exit
-
     LANG: Lang = {'pt-BR': Lang.PT_BR, 'en': Lang.EN}.get(args.lang, Lang.EN)
 
+    # Codebase Reading
     data: CodebaseDict = read_codebase(ROOT)
 
     pprint(data)
 
+    # Doc Generation
     generate_doc(EXIT, PROJ_NAME, LANG, '', REPO_NAME, REPO_URL)
 
 

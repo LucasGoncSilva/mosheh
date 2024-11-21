@@ -50,6 +50,7 @@ def bin(item: Any, universe: list[Any] | tuple[Any]) -> bool:
 
     return False
 
+
 def is_lib_installed(name: str) -> bool:
     """
     Checks if a lib exists in the environment path.

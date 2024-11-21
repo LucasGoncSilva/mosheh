@@ -24,6 +24,7 @@ from custom_types import (
     ListItem,
     NodeHandler,
     SetHandlerDict,
+    ModuleDict,
     SliceHandlerDict,
     Statement,
     SubscriptHandlerDict,
@@ -278,7 +279,7 @@ def handle_import(node: ast.Import) -> ImportHandlerDict:
     :rtype: ImportHandlerDict
     """
 
-    mods: ImportHandlerDict = {'modules': {}}
+    mods: ModuleDict = {}
 
     for mod in [i.name for i in node.names]:
         mod_data = {}
@@ -291,9 +292,9 @@ def handle_import(node: ast.Import) -> ImportHandlerDict:
         else:
             mod_data['categorie'] = ImportType.Local
 
-        mods['modules'][mod] = mod_data.copy()
+        mods[mod] = mod_data.copy()
 
-    return {'statement': Statement.Import, **mods}
+    return {'statement': Statement.Import, 'modules': mods}
 
 
 def handle_import_from(node: ast.ImportFrom) -> ImportFromHandlerDict:
@@ -558,6 +559,7 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
     has_star_args: bool = True if node.args.vararg is not None else False
     has_star_star_kwargs: bool = True if node.args.kwarg is not None else False
 
+    # Args Logic - Validates `*arg`-like
     if has_star_args and node.args.vararg is not None:
         name: str = f'*{node.args.vararg.arg}'
         annot: str | None = None
@@ -597,6 +599,7 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
     if has_star_args and s_args is not None:
         arg_lst.insert(len(arg_lst), s_args)
 
+    # Kwargs Logic - Validates `**kwarg`-like
     if has_star_star_kwargs and node.args.kwarg is not None:
         name: str = f'*{node.args.kwarg.arg}'
         annot: str | None = None
@@ -677,6 +680,7 @@ def handle_async_function_def(
     has_star_args: bool = True if node.args.vararg is not None else False
     has_star_star_kwargs: bool = True if node.args.kwarg is not None else False
 
+    # Args Logic - Validates `*arg`-like
     if has_star_args and node.args.vararg is not None:
         name: str = f'*{node.args.vararg.arg}'
         annot: str | None = None
@@ -716,6 +720,7 @@ def handle_async_function_def(
     if has_star_args and s_args is not None:
         arg_lst.insert(len(arg_lst), s_args)
 
+    # Kwargs Logic - Validates `**kwarg`-like
     if has_star_star_kwargs and node.args.kwarg is not None:
         name: str = f'*{node.args.kwarg.arg}'
         annot: str | None = None
