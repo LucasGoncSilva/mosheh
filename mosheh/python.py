@@ -24,7 +24,6 @@ def read_codebase(root: str) -> CodebaseDict:
     :rtype: CodebaseDict
     """
 
-    # codebase: CodebaseDict = {}
     codebase: CodebaseDict = nested_dict()
 
     for file in iterate(root):
@@ -42,7 +41,6 @@ def read_codebase(root: str) -> CodebaseDict:
                 if data != {}:
                     statements.append(data)
 
-            # codebase[file] = statements
             add_to_dict(codebase, file.split(sep), statements)
 
     return convert_to_regular_dict(codebase)

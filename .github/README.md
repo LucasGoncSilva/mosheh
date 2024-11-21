@@ -1,16 +1,16 @@
 <h1 align="center">
-  <img src="./logo.svg" height="300" width="300" alt="Logo Misheh" />
+  <img src="./logo.svg" height="300" width="300" alt="Logo Mosheh" />
   <br>
-  Misheh
+  Mosheh
 </h1>
 
-![GitHub License](https://img.shields.io/github/license/LucasGoncSilva/misheh?labelColor=101010)
+![GitHub License](https://img.shields.io/github/license/LucasGoncSilva/mosheh?labelColor=101010)
 
-<!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LucasGoncSilva/misheh/XXXXXX.yml?style=flat&labelColor=%23101010) -->
+<!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LucasGoncSilva/mosheh/XXXXXX.yml?style=flat&labelColor=%23101010) -->
 
-Misheh é um script para geração de documentações de projetos, de Python para Python.
+Mosheh é um script para geração de documentações de projetos, de Python para Python.
 
-Basicamente, Misheh lista todos os arquivos para onde vocẽ apontar, armazena cada declaração de definição notória em cada arquivo varrido através da manipulação da AST com o módulo `ast` e, posteriormente, gera a documentação - com uso de MkDocs - respeitando os dados obtidos e a hierarquia dos diretórios e arquivos.
+Basicamente, Mosheh lista todos os arquivos para onde vocẽ apontar, armazena cada declaração de definição notória em cada arquivo varrido através da manipulação da AST com o módulo `ast` e, posteriormente, gera a documentação - com uso de MkDocs - respeitando os dados obtidos e a hierarquia dos diretórios e arquivos.
 
 Os elementos documentados para cada arquivo estão listados abaixo:
 
