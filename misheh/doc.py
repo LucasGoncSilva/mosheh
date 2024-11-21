@@ -146,7 +146,7 @@ plugins:
       enabled: true
       enable_creation_date: true
       fallback_to_build_date: true
-      locale: pt
+      locale: pt  # TODO automate this
 
 
 extra:

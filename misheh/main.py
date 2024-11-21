@@ -54,6 +54,7 @@ __status__ = 'Development'
 
 from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
 from os import path
+from pprint import pprint
 
 from custom_types import CodebaseDict
 from doc import Lang, generate_doc
@@ -79,32 +80,32 @@ def main() -> None:
     parser.add_argument(
         '-root',
         type=str,
-        help='root, base dir',
+        help='Root dir, where the analysis starts.',
         required=True,
     )
     parser.add_argument(
         '--lang',
         type=str,
         default='en',
-        help='lang for doc output',
+        help='Language of documentation output.',
     )
     parser.add_argument(
         '--repo-name',
         type=str,
         default='GitHub',
-        help='repo name',
+        help='Name of the code repository to be mapped.',
     )
     parser.add_argument(
         '--repo-url',
         type=str,
         default='https://github.com/',
-        help='repo URL',
+        help='URL of the code repository to be mapped.',
     )
     parser.add_argument(
         '--exit',
         type=str,
         default='.',
-        help='path for doc output',
+        help='Path for documentation output, where to be created.',
     )
 
     args: Namespace = parser.parse_args()
@@ -119,7 +120,7 @@ def main() -> None:
 
     data: CodebaseDict = read_codebase(ROOT)
 
-    print(data)
+    pprint(data)
 
     generate_doc(EXIT, PROJ_NAME, LANG, '', REPO_NAME, REPO_URL)
 

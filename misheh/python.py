@@ -1,16 +1,17 @@
 import ast
-from os import path, walk
+from os import path, sep, walk
 from typing import Any, Generator
 
 from custom_types import CodebaseDict, NodeHandler
 from handlers import handle_def_nodes
+from utils import add_to_dict, convert_to_regular_dict, nested_dict
 
 
 def read_codebase(root: str) -> CodebaseDict:
     """
     Iterates through the codebase and collects all info needed.
 
-    Using iterate() to navigate and handle_def_nodes() to get data,
+    Using `iterate()` to navigate and `handle_def_nodes()` to get data,
     stores the collected data in a dict of type CodebaseDict, defined
     in constants.py file.
 
@@ -23,7 +24,8 @@ def read_codebase(root: str) -> CodebaseDict:
     :rtype: CodebaseDict
     """
 
-    codebase: CodebaseDict = {}
+    # codebase: CodebaseDict = {}
+    codebase: CodebaseDict = nested_dict()
 
     for file in iterate(root):
         if file.endswith('.py'):
@@ -40,9 +42,10 @@ def read_codebase(root: str) -> CodebaseDict:
                 if data != {}:
                     statements.append(data)
 
-            codebase[file] = statements
+            # codebase[file] = statements
+            add_to_dict(codebase, file.split(sep), statements)
 
-    return codebase
+    return convert_to_regular_dict(codebase)
 
 
 def iterate(root: str) -> Generator[str, Any, Any]:
