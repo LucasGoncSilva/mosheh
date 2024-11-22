@@ -54,7 +54,6 @@ __status__ = 'Development'
 
 from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
 from os import path
-from pprint import pprint
 
 from custom_types import CodebaseDict
 from doc import Lang, generate_doc

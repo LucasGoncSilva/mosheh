@@ -1,11 +1,11 @@
 from os import path
-import subprocess
 
-from custom_types import Lang, CodebaseDict
+from constants import DEFAULT_MKDOCS_YML, FILE_MARKDOWN
+from custom_types import CodebaseDict, Lang, NodeHandler, Statement
 
 
 def generate_doc(
-    codebase_data: CodebaseDict,
+    codebase: CodebaseDict,
     exit: str,
     proj_name: str,
     lang: Lang,
@@ -13,207 +13,152 @@ def generate_doc(
     repo_name: str = 'GitHub',
     repo_url: str = '',
 ) -> None:
-    base_yml: str = default_doc_config(
-        proj_name,
-        edit_uri,
-        lang,
-        repo_name,
-        repo_url,
-    )
-    
-    exit_path:str = path.abspath(exit)
+    # exit_path: str = path.abspath(exit)
 
-    try:
-        result = subprocess.run(
-            ['mkdocs', 'new', proj_name, exit_path],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        print(result.stdout)
-    except subprocess.CalledProcessError as e:
-        print('Error:', e.stderr)
+    # try:
+    #     result = subprocess.run(
+    #         ['mkdocs', 'new', exit_path],
+    #         check=True,
+    #         capture_output=True,
+    #         text=True,
+    #     )
+    #     print(result.stdout)
+    # except subprocess.CalledProcessError as e:
+    #     print('Error:', e.stderr)
+
+    # with open(path.join(exit_path, 'mkdocs.yml'), 'w', encoding='utf-8') as f:
+    #     f.write(
+    #         default_doc_config(
+    #             proj_name,
+    #             edit_uri,
+    #             lang.value,
+    #             repo_name,
+    #             repo_url,
+    #         )
+    #     )
+
+    process_codebase(codebase)
 
 
 def default_doc_config(
     proj_name: str,
     edit_uri: str,
-    lang: Lang,
+    lang: str,
     repo_name: str = 'GitHub',
     repo_url: str = '',
 ) -> str:
-    return f"""site_name: {proj_name} | Documentation
-repo_url: {repo_url}
-repo_name: {repo_name}
-edit_uri: "{edit_uri}"
+    return DEFAULT_MKDOCS_YML.format(
+        proj_name=proj_name,
+        edit_uri=edit_uri,
+        lang=lang,
+        repo_name=repo_name,
+        repo_url=repo_url,
+    )
 
 
-theme:
-  name: material
-  language: {lang}
-  # TODO: favicon: fontawesome/solid/book-open
-  font:
-    text: Ubuntu
-  custom_dir: overrides
+def codebase_file_to_markdown(filedata: list[NodeHandler], basedir: str) -> str:
+    filename: str = basedir.split(path.sep)[-1]
+    filepath: str = basedir.removesuffix(filename).replace(path.sep, '.')
+    filedoc: str = ''
+    imports: str = ''
+    constants: str = ''
+    classes: str = ''
+    functions: str = ''
+    assertions: str = ''
 
-  icon:
-    tag:
-      homepage: fontawesome/solid/house
-      index: fontawesome/solid/file
-      overview: fontawesome/solid/binoculars
-      test: fontawesome/solid/flask-vial
-      infra: fontawesome/solid/server
-      doc: fontawesome/solid/book
-      legal: fontawesome/solid/scale-unbalanced
-      user: fontawesome/solid/user
-      API: fontawesome/solid/gears
-      browser: fontawesome/solid/desktop
-      RID: fontawesome/solid/building
-      OE: fontawesome/solid/gavel
-  
-    logo: fontawesome/solid/book-open
-    next: fontawesome/solid/arrow-right
-    previous: fontawesome/solid/arrow-left
-    top: fontawesome/solid/arrow-up
-    repo: fontawesome/brands/git-alt
-    edit: material/pencil
-    view: material/eye
-    admonition:
-      note: fontawesome/solid/note-sticky
-      abstract: fontawesome/solid/book
-      info: fontawesome/solid/circle-info
-      tip: fontawesome/solid/fire-flame-simple
-      success: fontawesome/solid/check
-      question: fontawesome/solid/circle-question
-      warning: fontawesome/solid/triangle-exclamation
-      failure: fontawesome/solid/xmark
-      danger: fontawesome/solid/skull
-      bug: fontawesome/solid/bug
-      example: fontawesome/solid/flask
-      quote: fontawesome/solid/quote-left
+    for stmt in filedata:
+        match stmt['statement']:
+            case Statement.Import:
+                mods = stmt['modules']
 
-  palette:
-    # Palette toggle for dark mode
-    - scheme: slate
-      toggle:
-        icon: material/brightness-3
-        name: Light/Dark Mode
-      primary: custom
-      accent: deep purple
+                for i in mods.keys():
+                    imports += f'### `{i}`\n\nPath: `{mods[i]["path"]}`\n\nCategorie: {mods[i]["categorie"].value}\n\n'
 
-    # Palette toggle for light mode
-    - scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: Light/Dark Mode
-      primary: custom
-      accent: deep purple
+            case Statement.ImportFrom:
+                mods = stmt['modules']
+                _path = stmt['path']
+                categorie = stmt['categorie'].value
 
-  features:
-    - navigation.indexes
-    - navigation.tabs
-    - navigation.top
-    - toc.integrate
-    - header.autohide
-    - navigation.footer
-    - content.action.view
-    - content.action.edit
-    - announce.dismiss
-    - content.tabs.link
+                for i in mods:
+                    imports += (
+                        f'### `{i}`\n\nPath: `{_path}`\n\nCategorie: {categorie}\n\n'
+                    )
 
+            case Statement.Assign:
+                tokens: list[str] = stmt['tokens']
+                for i in tokens:
+                    constants += f'### `{i}`\n\nType: `Unknown`\n\nValue: `#!py {stmt["value"]}`\n\n'
 
-markdown_extensions:
-  - attr_list
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  - pymdownx.highlight:
-      anchor_linenums: true
-      use_pygments: true
-      pygments_lang_class: true
-      auto_title: true
-      linenums: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
-  - admonition
-  - pymdownx.details
-  - attr_list
-  - md_in_html
-  - pymdownx.tabbed:
-      alternate_style: true
-  - pymdownx.arithmatex:
-      generic: true
-  - def_list
-  - pymdownx.tasklist:
-      custom_checkbox: true
-      clickable_checkbox: true
+            case Statement.AnnAssign:
+                constants += f'### `{stmt["token"]}`\n\nType: `#!py {stmt["annot"]}`\n\nValue: `#!py {stmt["value"]}`\n\n'
+
+            case Statement.ClassDef:
+                parents: str = ', '.join(stmt['parents'])
+                decorators: str = ', '.join(f'`#!py @{i}`' for i in stmt['decos'])
+                if not decorators:
+                    decorators = '`#!py None`'
+                classes += f'### `{stmt["name"]}`\n\nParents: `{parents}`\n\nDecorators: {decorators}\n\nKwargs: {stmt["kwargs"]}\n\n'
+
+            case Statement.FunctionDef:
+                arg_lst_txt: str = ''
+                decorators: str = ', '.join(f'`#!py @{i}`' for i in stmt['decos'])
+                if not decorators:
+                    decorators = '`#!py None`'
+                if len(stmt['arg_lst']):
+                    for i in stmt['arg_lst']:
+                        name: str = i[0]
+                        _type: str = i[1] if i[1] is not None else 'Unknown'
+                        default: str = i[2]
+                        if _type == 'str':
+                            default = f"'{default}'"
+                        arg_lst_txt += f'\n\n- `{name}`:\n\n\t- Type: `#!py {_type}`\n\n\t- Default: `#!py {default}`'
+                else:
+                    arg_lst_txt = 'No arguments at all.'
+                functions += f'### `{stmt["name"]}`\n\nType: ...\n\nReturn Type: {stmt["rtype"]}\n\nDecorators: {decorators}\n\nArgs: {arg_lst_txt}\n\n'
+
+            case Statement.Assert:
+                assertion: str = ''
+                msg: str = stmt['msg']
+                if msg is not None:
+                    msg = f"'{msg}'"
+                if (
+                    isinstance(stmt['test'], dict)
+                    and stmt['test']['statement'] == Statement.Compare
+                ):
+                    asserts: list[tuple[str, int | str | NodeHandler]] = list(
+                        zip(stmt['test']['ops'], stmt['test']['operators'])
+                    )  # TODO confirm name -> stmt['operators'] after signal
+                    _comps: list[str] = [f'{i[0]} {i[1]}' for i in asserts]
+                    assertion = f'{stmt["test"]["left"]} ' + ' '.join(_comps)
+                assertions += f'### `#!py assert {assertion}, {msg}`\n\n'
+
+    return FILE_MARKDOWN.format(
+        filename=filename,
+        filepath=filepath,
+        filedoc=filedoc,
+        imports=imports,
+        constants=constants,
+        classes=classes,
+        functions=functions,
+        assertions=assertions,
+    )
 
 
-plugins:
-  - search
-  - tags
-  - git-revision-date-localized:
-      enable_creation_date: true
-      type: datetime
-      enabled: true
-      enable_creation_date: true
-      fallback_to_build_date: true
-      locale: pt  # TODO automate this
+def process_codebase(
+    codebase: dict[str, CodebaseDict] | dict[str, list[NodeHandler]],
+    basedir: str = '',
+):
+    parents: list[str] = list(codebase.keys())
 
+    for key in parents:
+        value = codebase[key]
+        new_path: str = path.join(basedir, key)
 
-extra:
-  tags:
-    Homepage: homepage
-    Index: index
-    Overview: overview
-    Teste: test
-    Infra: infra
-    Documentation: doc
-    Legal: legal
-    Usuário: user
-    API: API
-    Browser: browser
-    RID: RID
-    OE: OE
-
-  status:
-    new: Adicionado recentemente
-
-  social:
-    - icon: material/microsoft-azure
-      link: https://dev.azure.com/ONR-RID/PROJETO_ONR.TESTESAUTOMACAO
-      name: Projeto Azure
-
-    - icon: material/instagram
-      link: https://www.instagram.com/registrodeimoveis.onr/
-      name: Instagram ONR
-
-    - icon: material/facebook
-      link: https://facebook.com/registrodeimoveis.onr/
-      name: Facebook ONR
-
-    - icon: material/linkedin
-      link: https://br.linkedin.com/company/operador-nacional-do-registro-eletr%C3%B4nico-de-im%C3%B3veis-onr
-      name: LinkedIn ONR
-
-    - icon: material/youtube
-      link: https://www.youtube.com/@registrodeimoveiseletronico/videos
-      name: YouTube ONR
-
-
-extra_javascript:
-  - javascripts/mathjax.js
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
-  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-
-
-extra_css:
-  - stylesheets/extra.css
-
-
-copyright: No copyright 'cause no one supports me :("""
+        if isinstance(value, list):
+            if len(value):
+                content: str = codebase_file_to_markdown(value, new_path)
+                print(content)
+            # Add to mkdos.yml > nav
+            # Add to doc .md file
+        else:
+            process_codebase(value, new_path)

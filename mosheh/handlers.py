@@ -22,9 +22,9 @@ from custom_types import (
     ImportType,
     ListHandlerDict,
     ListItem,
+    ModuleDict,
     NodeHandler,
     SetHandlerDict,
-    ModuleDict,
     SliceHandlerDict,
     Statement,
     SubscriptHandlerDict,
@@ -71,10 +71,13 @@ def handle_def_nodes(node: ast.AST) -> NodeHandler:
     # -------------------------
 
     elif isinstance(node, ast.Assign):
-        lst: list[str] = [
-            handle_constant(i) for i in node.targets if isinstance(i, ast.Constant)
-        ]
-        if any(map(str.isupper, lst)):
+        lst: list[str] = []
+        for i in node.targets:
+            lst.append(cast(str, handle_node(i)))
+
+        if any(map(str.isupper, lst)) or any(
+            map(lambda x: x in constants.ACCEPTABLE_LOWER_CONSTANTS, lst)
+        ):
             data = handle_assign(node)
     elif isinstance(node, ast.AnnAssign):
         if isinstance(node.target, ast.Name) and node.target.id.isupper():
@@ -256,6 +259,13 @@ def handle_node(node: ast.AST | ast.expr | None) -> NodeHandler | None:
 
     elif isinstance(node, ast.Name):
         data = handle_name(node)
+
+    # -------------------------
+    # Names - ast.Compare
+    # -------------------------
+
+    elif isinstance(node, ast.Compare):
+        data = handle_compare(node)
 
     return data
 
@@ -577,7 +587,7 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
         default: str | CallHandlerDict | None = None
 
         if arg.annotation is not None:
-            handle_node(arg.annotation)
+            annot = cast(str, handle_node(arg.annotation))
 
         if len(node.args.defaults) and default_diff and i > default_diff:
             expected = node.args.defaults[i - 1 - default_diff]
@@ -698,7 +708,7 @@ def handle_async_function_def(
         default: str | CallHandlerDict | None = None
 
         if arg.annotation is not None:
-            handle_node(arg.annotation)
+            annot = cast(str, handle_node(arg.annotation))
 
         if len(node.args.defaults) and default_diff and i > default_diff:
             expected = node.args.defaults[i - 1 - default_diff]
@@ -831,7 +841,7 @@ def handle_compare(node: ast.Compare) -> CompareHandlerDict:
     left: str | CallHandlerDict = cast(str | CallHandlerDict, handle_node(node.left))
 
     dispatch: dict[type, str] = {
-        ast.Eq: '=',
+        ast.Eq: '==',
         ast.NotEq: '!=',
         ast.Lt: '<',
         ast.LtE: '<=',
@@ -865,7 +875,8 @@ def handle_assert(node: ast.Assert) -> AssertHandlerDict:
     Processes an `ast.Assert` node and returns its data.
 
     This function analyzes the components of an assertion, including the expression of
-    the test and the optional message, returning a structured dict with the extracted details.
+    the test and the optional message, returning a structured dict with the extracted
+    details.
 
     Key elements of the returned data:
     - statement: The type of statement, identified as `Statement.Assert`;

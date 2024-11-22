@@ -7,9 +7,9 @@ class Statement(Enum):
     ImportFrom = auto()
     Assign = auto()
     AnnAssign = auto()
+    ClassDef = auto()
     FunctionDef = auto()
     AsyncFunctionDef = auto()
-    ClassDef = auto()
     Assert = auto()
     BinOp = auto()
     Call = auto()
@@ -23,9 +23,9 @@ class Statement(Enum):
 
 
 class ImportType(Enum):
-    Native = 'native'
-    TrdParty = '3rd paty'
-    Local = 'local'
+    Native = 'Native'
+    TrdParty = '3rd Party'
+    Local = 'Local'
 
 
 class Lang(Enum):
