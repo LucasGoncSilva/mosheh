@@ -1,7 +1,9 @@
+import subprocess
 from os import path
+from typing import cast
 
 from constants import DEFAULT_MKDOCS_YML, FILE_MARKDOWN
-from custom_types import CodebaseDict, Lang, NodeHandler, Statement
+from custom_types import CodebaseDict, ImportType, Lang, StandardReturn, Statement
 
 
 def generate_doc(
@@ -13,29 +15,29 @@ def generate_doc(
     repo_name: str = 'GitHub',
     repo_url: str = '',
 ) -> None:
-    # exit_path: str = path.abspath(exit)
+    exit_path: str = path.abspath(exit)
 
-    # try:
-    #     result = subprocess.run(
-    #         ['mkdocs', 'new', exit_path],
-    #         check=True,
-    #         capture_output=True,
-    #         text=True,
-    #     )
-    #     print(result.stdout)
-    # except subprocess.CalledProcessError as e:
-    #     print('Error:', e.stderr)
+    try:
+        result = subprocess.run(
+            ['mkdocs', 'new', exit_path],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print('Error:', e.stderr)
 
-    # with open(path.join(exit_path, 'mkdocs.yml'), 'w', encoding='utf-8') as f:
-    #     f.write(
-    #         default_doc_config(
-    #             proj_name,
-    #             edit_uri,
-    #             lang.value,
-    #             repo_name,
-    #             repo_url,
-    #         )
-    #     )
+    with open(path.join(exit_path, 'mkdocs.yml'), 'w', encoding='utf-8') as f:
+        f.write(
+            default_doc_config(
+                proj_name,
+                edit_uri,
+                lang.value,
+                repo_name,
+                repo_url,
+            )
+        )
 
     process_codebase(codebase)
 
@@ -56,7 +58,7 @@ def default_doc_config(
     )
 
 
-def codebase_file_to_markdown(filedata: list[NodeHandler], basedir: str) -> str:
+def codebase_file_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     filename: str = basedir.split(path.sep)[-1]
     filepath: str = basedir.removesuffix(filename).replace(path.sep, '.')
     filedoc: str = ''
@@ -69,68 +71,28 @@ def codebase_file_to_markdown(filedata: list[NodeHandler], basedir: str) -> str:
     for stmt in filedata:
         match stmt['statement']:
             case Statement.Import:
-                mods = stmt['modules']
-
-                for i in mods.keys():
-                    imports += f'### `{i}`\n\nPath: `{mods[i]["path"]}`\n\nCategorie: {mods[i]["categorie"].value}\n\n'
+                imports += handle_import(stmt)
 
             case Statement.ImportFrom:
-                mods = stmt['modules']
-                _path = stmt['path']
-                categorie = stmt['categorie'].value
-
-                for i in mods:
-                    imports += (
-                        f'### `{i}`\n\nPath: `{_path}`\n\nCategorie: {categorie}\n\n'
-                    )
+                imports += handle_import_from(stmt)
 
             case Statement.Assign:
-                tokens: list[str] = stmt['tokens']
-                for i in tokens:
-                    constants += f'### `{i}`\n\nType: `Unknown`\n\nValue: `#!py {stmt["value"]}`\n\n'
+                constants += handle_assign(stmt)
 
             case Statement.AnnAssign:
-                constants += f'### `{stmt["token"]}`\n\nType: `#!py {stmt["annot"]}`\n\nValue: `#!py {stmt["value"]}`\n\n'
+                constants += handle_annassign(stmt)
 
             case Statement.ClassDef:
-                parents: str = ', '.join(stmt['parents'])
-                decorators: str = ', '.join(f'`#!py @{i}`' for i in stmt['decos'])
-                if not decorators:
-                    decorators = '`#!py None`'
-                classes += f'### `{stmt["name"]}`\n\nParents: `{parents}`\n\nDecorators: {decorators}\n\nKwargs: {stmt["kwargs"]}\n\n'
+                classes += handle_class_def(stmt)
 
-            case Statement.FunctionDef:
-                arg_lst_txt: str = ''
-                decorators: str = ', '.join(f'`#!py @{i}`' for i in stmt['decos'])
-                if not decorators:
-                    decorators = '`#!py None`'
-                if len(stmt['arg_lst']):
-                    for i in stmt['arg_lst']:
-                        name: str = i[0]
-                        _type: str = i[1] if i[1] is not None else 'Unknown'
-                        default: str = i[2]
-                        if _type == 'str':
-                            default = f"'{default}'"
-                        arg_lst_txt += f'\n\n- `{name}`:\n\n\t- Type: `#!py {_type}`\n\n\t- Default: `#!py {default}`'
-                else:
-                    arg_lst_txt = 'No arguments at all.'
-                functions += f'### `{stmt["name"]}`\n\nType: ...\n\nReturn Type: {stmt["rtype"]}\n\nDecorators: {decorators}\n\nArgs: {arg_lst_txt}\n\n'
+            case Statement.FunctionDef | Statement.AsyncFunctionDef:
+                functions += handle_function_def(stmt)
 
             case Statement.Assert:
-                assertion: str = ''
-                msg: str = stmt['msg']
-                if msg is not None:
-                    msg = f"'{msg}'"
-                if (
-                    isinstance(stmt['test'], dict)
-                    and stmt['test']['statement'] == Statement.Compare
-                ):
-                    asserts: list[tuple[str, int | str | NodeHandler]] = list(
-                        zip(stmt['test']['ops'], stmt['test']['operators'])
-                    )  # TODO confirm name -> stmt['operators'] after signal
-                    _comps: list[str] = [f'{i[0]} {i[1]}' for i in asserts]
-                    assertion = f'{stmt["test"]["left"]} ' + ' '.join(_comps)
-                assertions += f'### `#!py assert {assertion}, {msg}`\n\n'
+                assertions += handle_assert(stmt)
+
+            case _:
+                print('passed')
 
     return FILE_MARKDOWN.format(
         filename=filename,
@@ -144,8 +106,72 @@ def codebase_file_to_markdown(filedata: list[NodeHandler], basedir: str) -> str:
     )
 
 
+def handle_import(stmt: StandardReturn) -> str:
+    name: str = cast(str, stmt['name'])
+    _path: None = None
+    category: str = cast(ImportType, stmt['category']).value
+    code: str = cast(str, stmt['code'])
+
+    return f'### `{name}`\n\nPath: `#!py {_path}`\n\nCategory: {category}\n\n??? example "SNIPPET":\n\n```py\n{code}\n```\n\n'
+
+
+def handle_import_from(stmt: StandardReturn) -> str:
+    name: str = cast(str, stmt['name'])
+    _path: str = cast(str, stmt['path'])
+    category: str = cast(ImportType, stmt['category']).value
+    code: str = cast(str, stmt['code'])
+
+    return f'### `{name}`\n\nPath: `#!py {_path}`\n\nCategory: {category}\n\n??? example "SNIPPET":\n\n```py\n{code}\n```\n\n'
+
+
+def handle_assign(stmt: StandardReturn) -> str:
+    tokens: str = ', '.join(cast(list[str], stmt['tokens']))
+    value: str = cast(str, stmt['value'])
+    code: str = cast(str, stmt['code'])
+
+    return f'### `{tokens}`\n\nType: `Unknown`\n\nValue: `#!py {value}`\n\n??? example "SNIPPET":\n\n```py\n{code}\n```\n\n'
+
+
+def handle_annassign(stmt: StandardReturn) -> str:
+    name: str = cast(str, stmt['name'])
+    annot: str = cast(str, stmt['annot'])
+    value: str = cast(str, stmt['value'])
+    code: str = cast(str, stmt['code'])
+
+    return f'### `{name}`\n\nType: `#!py {annot}`\n\nValue: `#!py {value}`\n\n??? example "SNIPPET":\n\n```py\n{code}\n```\n\n'
+
+
+def handle_class_def(stmt: StandardReturn) -> str:
+    name: str = cast(str, stmt['name'])
+    inherit: str = ', '.join(cast(list[str], stmt['inheritance']))
+    decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
+    kwargs: str = cast(str, stmt['kwargs'])
+    code: str = cast(str, stmt['code'])
+
+    return f'### `{name}`\n\nParents: `{inherit}`\n\nDecorators: `#!py {decorators}`\n\nKwargs: {kwargs}\n\n??? example "SNIPPET":\n\n```py\n{code}\n```\n\n'
+
+
+def handle_function_def(stmt: StandardReturn) -> str:
+    name: str = cast(str, stmt['name'])
+    decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
+    args: str = cast(str, stmt['args'])
+    kwargs: str = cast(str, stmt['kwargs'])
+    rtype: str = cast(str, stmt['rtype'])
+    code: str = cast(str, stmt['code'])
+
+    return f'### `{name}`\n\nType: `#!py ...`\n\nReturn Type: {rtype}\n\nDecorators: `#!py {decorators}`\n\nArgs: {args}\n\nKwargs: {kwargs}\n\n??? example "SNIPPET":\n\n```py\n{code}\n```\n\n'
+
+
+def handle_assert(stmt: StandardReturn) -> str:
+    test: str = cast(str, stmt['test'])
+    msg: str = cast(str, stmt['msg'])
+    code: str = cast(str, stmt['code'])
+
+    return f'### `#!py assert {test}, {msg}`\n\n??? example "SNIPPET":\n\n```py\n{code}\n```\n\n'
+
+
 def process_codebase(
-    codebase: dict[str, CodebaseDict] | dict[str, list[NodeHandler]],
+    codebase: dict[str, CodebaseDict] | dict[str, list[StandardReturn]],
     basedir: str = '',
 ):
     parents: list[str] = list(codebase.keys())

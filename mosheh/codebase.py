@@ -2,7 +2,7 @@ import ast
 from os import path, sep, walk
 from typing import Any, Generator
 
-from custom_types import CodebaseDict, NodeHandler
+from custom_types import CodebaseDict, StandardReturn
 from handlers import handle_def_nodes
 from utils import add_to_dict, convert_to_regular_dict, nested_dict
 
@@ -33,10 +33,10 @@ def read_codebase(root: str) -> CodebaseDict:
 
             tree: ast.AST = ast.parse(code, filename=file)
 
-            statements: list[NodeHandler] = []
+            statements: list[StandardReturn] = []
 
             for node in ast.walk(tree):
-                data: NodeHandler = handle_def_nodes(node)
+                data: StandardReturn = handle_def_nodes(node)
 
                 if data != {}:
                     statements.append(data)

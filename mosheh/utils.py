@@ -3,7 +3,7 @@ from copy import deepcopy
 from importlib.util import find_spec
 from typing import Any
 
-from custom_types import NodeHandler
+from custom_types import StandardReturn
 
 
 def bin(item: Any, universe: list[Any] | tuple[Any]) -> bool:
@@ -107,7 +107,7 @@ def nested_dict() -> dict[Any, Any]:
 def add_to_dict(
     structure: dict[Any, Any],
     path: list[str],
-    data: list[NodeHandler],
+    data: list[StandardReturn],
 ) -> dict[Any, Any]:
     """
     Adds data to a nested dictionary structure based on a specified path.
@@ -138,7 +138,7 @@ def add_to_dict(
     :param path: a list of keys representing the path to the target location
     :type path: list[str]
     :param data: the data to add at the specified path
-    :type data: NodeHandler
+    :type data: StandardReturn
     :return: the modified dictionary with the new data added
     :rtype: dict[Any, Any]
     """
@@ -191,3 +191,23 @@ def convert_to_regular_dict(d: dict[Any, Any]) -> dict[Any, Any]:
         d = {k: convert_to_regular_dict(v) for k, v in d.items()}
 
     return d
+
+
+def standard_struct() -> StandardReturn:
+    return {
+        'statement': '',
+        'name': '',
+        'tokens': [],
+        'annot': '',
+        'value': '',
+        'decorators': [],
+        'inheritance': [],
+        'path': '',
+        'category': '',
+        'rtype': '',
+        'args': [],
+        'kwargs': [],
+        'test': '',
+        'msg': '',
+        'code': '',
+    }

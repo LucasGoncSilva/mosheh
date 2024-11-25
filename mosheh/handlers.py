@@ -1,39 +1,18 @@
 import ast
-from typing import cast
+from typing import Final, cast
 
 import constants
 from custom_types import (
-    AnnAssignHandlerDict,
-    AnnAssignValue,
-    ArgList,
-    AssertHandlerDict,
-    AssertTest,
-    AssignHandlerDict,
-    AsyncFunctionDefHandlerDict,
-    BinOpHandlerDict,
-    BinOperand,
-    CallHandlerDict,
-    ClassDefHandlerDict,
-    CompareHandlerDict,
-    DictHandlerDict,
-    FunctionDefHandlerDict,
-    ImportFromHandlerDict,
-    ImportHandlerDict,
+    ArgsKwargs,
     ImportType,
-    ListHandlerDict,
-    ListItem,
-    ModuleDict,
-    NodeHandler,
-    SetHandlerDict,
-    SliceHandlerDict,
+    StandardReturn,
+    StandardReturnProccessor,
     Statement,
-    SubscriptHandlerDict,
-    TupleHandlerDict,
 )
-from utils import bin, is_lib_installed
+from utils import bin, is_lib_installed, standard_struct
 
 
-def handle_def_nodes(node: ast.AST) -> NodeHandler:
+def handle_def_nodes(node: ast.AST) -> StandardReturn:
     """
     Processes an abstract syntax tree (AST) node and returns a handler for the node.
 
@@ -52,19 +31,19 @@ def handle_def_nodes(node: ast.AST) -> NodeHandler:
     :param node: the AST node to process
     :type node: ast.AST
     :return: an object containing information associated with the node
-    :rtype: NodeHandler
+    :rtype: StandardReturn
     """
 
-    data: NodeHandler = {}
+    data: StandardReturn = {}
 
     # -------------------------
     # Imports - ast.Import | ast.ImportFrom
     # -------------------------
 
     if isinstance(node, ast.Import):
-        data = handle_import(node)
+        data = handle_import(data, node)
     elif isinstance(node, ast.ImportFrom):
-        data = handle_import_from(node)
+        data = handle_import_from(data, node)
 
     # -------------------------
     # Constants - ast.Assign | ast.AnnAssign
@@ -78,38 +57,38 @@ def handle_def_nodes(node: ast.AST) -> NodeHandler:
         if any(map(str.isupper, lst)) or any(
             map(lambda x: x in constants.ACCEPTABLE_LOWER_CONSTANTS, lst)
         ):
-            data = handle_assign(node)
+            data = handle_assign(data, node)
     elif isinstance(node, ast.AnnAssign):
         if isinstance(node.target, ast.Name) and node.target.id.isupper():
-            data = handle_annassign(node)
+            data = handle_annassign(data, node)
 
     # -------------------------
     # Functions - ast.FunctionDef | ast.AsyncFunctionDef
     # -------------------------
 
     elif isinstance(node, ast.FunctionDef):
-        data = handle_function_def(node)
+        data = handle_function_def(data, node)
     elif isinstance(node, ast.AsyncFunctionDef):
-        data = handle_async_function_def(node)
+        data = handle_async_function_def(data, node)
 
     # -------------------------
     # Classes - ast.ClassDef
     # -------------------------
 
     elif isinstance(node, ast.ClassDef):
-        data = handle_class_def(node)
+        data = handle_class_def(data, node)
 
     # -------------------------
     # Assertions - ast.Assert
     # -------------------------
 
     elif isinstance(node, ast.Assert):
-        data = handle_assert(node)
+        data = handle_assert(data, node)
 
     return data
 
 
-def handle_node(node: ast.AST | ast.expr | None) -> NodeHandler | None:
+def handle_node(node: ast.AST | ast.expr | None) -> StandardReturnProccessor | None:
     """
     The same of `handle_def_nodes()`, but extended to attend contemplate more nodes.
 
@@ -129,22 +108,22 @@ def handle_node(node: ast.AST | ast.expr | None) -> NodeHandler | None:
     :param node: the AST node to process
     :type node: ast.AST | ast.expr | None
     :return: an object containing information associated with the node or None
-    :rtype: NodeHandler | None
+    :rtype: StandardReturnProccessor | None
     """
 
     if node is None:
         return node
 
-    data: NodeHandler = {}
+    data: StandardReturnProccessor = {}
 
     # -------------------------
     # Imports - ast.Import | ast.ImportFrom
     # -------------------------
 
     if isinstance(node, ast.Import):
-        data = handle_import(node)
+        data = handle_import(data, node)
     elif isinstance(node, ast.ImportFrom):
-        data = handle_import_from(node)
+        data = handle_import_from(data, node)
 
     # -------------------------
     # Constants - ast.Assign | ast.AnnAssign
@@ -155,33 +134,33 @@ def handle_node(node: ast.AST | ast.expr | None) -> NodeHandler | None:
             handle_constant(i) for i in node.targets if isinstance(i, ast.Constant)
         ]
         if any(map(str.isupper, lst)):
-            data = handle_assign(node)
+            data = handle_assign(data, node)
     elif isinstance(node, ast.AnnAssign):
         if isinstance(node.target, ast.Name) and node.target.id.isupper():
-            data = handle_annassign(node)
+            data = handle_annassign(data, node)
 
     # -------------------------
     # Functions - ast.FunctionDef | ast.AsyncFunctionDef
     # -------------------------
 
     elif isinstance(node, ast.FunctionDef):
-        data = handle_function_def(node)
+        data = handle_function_def(data, node)
     elif isinstance(node, ast.AsyncFunctionDef):
-        data = handle_async_function_def(node)
+        data = handle_async_function_def(data, node)
 
     # -------------------------
     # Classes - ast.ClassDef
     # -------------------------
 
     elif isinstance(node, ast.ClassDef):
-        data = handle_class_def(node)
+        data = handle_class_def(data, node)
 
     # -------------------------
     # Assertions - ast.Assert
     # -------------------------
 
     elif isinstance(node, ast.Assert):
-        data = handle_assert(node)
+        data = handle_assert(data, node)
 
     # -------------------------
     # Calls - ast.Call
@@ -270,12 +249,37 @@ def handle_node(node: ast.AST | ast.expr | None) -> NodeHandler | None:
     return data
 
 
-def handle_import(node: ast.Import) -> ImportHandlerDict:
+def __handle_import(lib_name: str) -> StandardReturn:
+    statement: Statement = Statement.Import
+    path: Final[None] = None
+    category: ImportType = ImportType.Local
+
+    if bin(lib_name, constants.BUILTIN_MODULES):
+        category = ImportType.Native
+    elif is_lib_installed(lib_name):
+        category = ImportType.TrdParty
+
+    data: StandardReturn = standard_struct()
+
+    data.update(
+        {
+            'statement': statement,
+            'name': lib_name,
+            'path': path,
+            'category': category,
+            'code': f'import {lib_name}',
+        }
+    )
+
+    return data
+
+
+def handle_import(struct: StandardReturn, node: ast.Import) -> StandardReturn:
     """
     Processes an `ast.Import` node and returnes its data.
 
     This function iterates over the imported module names within an `ast.Import` node,
-    classifying each module into one of the following categories:
+    classifying each module into one of the following categorys:
     - Native: The module is a built-in Python module.
     - Third-Party: The module is installed via external libraries.
     - Local: The module is neither built-in nor a third-party library, problably local.
@@ -289,30 +293,18 @@ def handle_import(node: ast.Import) -> ImportHandlerDict:
     :rtype: ImportHandlerDict
     """
 
-    mods: ModuleDict = {}
+    for lib in [i.name for i in node.names]:
+        struct.update(__handle_import(lib))
 
-    for mod in [i.name for i in node.names]:
-        mod_data = {}
-        mod_data['path'] = None
-
-        if bin(mod, constants.BUILTIN_MODULES):
-            mod_data['categorie'] = ImportType.Native
-        elif is_lib_installed(mod):
-            mod_data['categorie'] = ImportType.TrdParty
-        else:
-            mod_data['categorie'] = ImportType.Local
-
-        mods[mod] = mod_data.copy()
-
-    return {'statement': Statement.Import, 'modules': mods}
+    return struct  # BUG: returns only last element -> change to list and return list struct
 
 
-def handle_import_from(node: ast.ImportFrom) -> ImportFromHandlerDict:
+def handle_import_from(struct: StandardReturn, node: ast.ImportFrom) -> StandardReturn:
     """
     Processes an `ast.ImportFrom` node and returnes its data.
 
     This function iterates over the imported module names within an `ast.ImportFrom`
-    node, classifying each module into one of the following categories, as
+    node, classifying each module into one of the following categorys, as
     `handle_import`:
     - Native: The module is a built-in Python module.
     - Third-Party: The module is installed via external libraries.
@@ -327,26 +319,38 @@ def handle_import_from(node: ast.ImportFrom) -> ImportFromHandlerDict:
     :rtype: ImportFromHandlerDict
     """
 
-    mods: ImportFromHandlerDict = {
-        'modules': [i.name for i in node.names],
-    }
-    mods['path'] = node.module
+    statement: Final[Statement] = Statement.ImportFrom
+    names: Final[list[str]] = [i.name for i in node.names]
+    path: Final[str | None] = node.module
+    category: ImportType = ImportType.Local
+    code: Final[str] = ast.unparse(node)
 
     mod: str = f'{node.module}'
 
-    if mod.startswith('.'):
-        mods['categorie'] = ImportType.Local
-    elif bin(
+    if bin(
         f'{mod}.'.split('.')[0],
         constants.BUILTIN_MODULES,
     ):
-        mods['categorie'] = ImportType.Native
+        category = ImportType.Native
     elif is_lib_installed(mod):
-        mods['categorie'] = ImportType.TrdParty
-    else:
-        mods['categorie'] = ImportType.Local
+        category = ImportType.TrdParty
 
-    return {'statement': Statement.ImportFrom, **mods}
+    data: StandardReturn = standard_struct()
+
+    for i in names:
+        data.update(
+            {
+                'statement': statement,
+                'name': i,
+                'path': path,
+                'category': category,
+                'code': code,
+            }
+        )
+
+    struct.update(data)
+
+    return struct
 
 
 def handle_attribute(node: ast.Attribute) -> str:
@@ -365,7 +369,7 @@ def handle_attribute(node: ast.Attribute) -> str:
     return f'{node.value}.{node.attr}'
 
 
-def handle_call(node: ast.Call) -> CallHandlerDict:
+def handle_call(node: ast.Call) -> StandardReturn:
     """
     Processes an `ast.Call` node and returns its data.
 
@@ -422,7 +426,7 @@ def handle_constant(node: ast.Constant) -> str:
     return node.value
 
 
-def handle_assign(node: ast.Assign) -> AssignHandlerDict:
+def handle_assign(struct: StandardReturn, node: ast.Assign) -> StandardReturn:
     """
     Processes an `ast.Assign` node and returns its data.
 
@@ -439,18 +443,28 @@ def handle_assign(node: ast.Assign) -> AssignHandlerDict:
     :rtype: AssignHandlerDict
     """
 
-    tokens: list[str] = [cast(str, handle_node(i)) for i in node.targets]
+    statement: Final[Statement] = Statement.Assign
+    tokens: Final[list[str]] = [cast(str, handle_node(i)) for i in node.targets]
+    value: Final[str] = cast(str, handle_node(node.value))
+    code: Final[str] = ast.unparse(node)
 
-    value: str = cast(str, handle_node(node.value))
+    data: StandardReturn = standard_struct()
 
-    return {
-        'statement': Statement.Assign,
-        'tokens': tokens,
-        'value': value,
-    }
+    data.update(
+        {
+            'statement': statement,
+            'tokens': tokens,
+            'value': value,
+            'code': code,
+        }
+    )
+
+    struct.update(data)
+
+    return struct
 
 
-def handle_binop(node: ast.BinOp) -> BinOpHandlerDict:
+def handle_binop(node: ast.BinOp) -> str:
     """
     Processes an `ast.BinOp` node and returnes its data.
 
@@ -477,8 +491,12 @@ def handle_binop(node: ast.BinOp) -> BinOpHandlerDict:
     :rtype: BinOpHandlerDict
     """
 
-    left: BinOperand = cast(BinOperand, handle_node(node.left))
-    right: BinOperand = cast(BinOperand, handle_node(node.right))
+    left: StandardReturnProccessor = cast(
+        StandardReturnProccessor, handle_node(node.left)
+    )
+    right: StandardReturnProccessor = cast(
+        StandardReturnProccessor, handle_node(node.right)
+    )
 
     dispatch: dict[type, str] = {
         ast.Add: '+',
@@ -497,15 +515,10 @@ def handle_binop(node: ast.BinOp) -> BinOpHandlerDict:
 
     op: str = dispatch[type(node.op)]
 
-    return {
-        'statement': Statement.BinOp,
-        'left': left,
-        'op': op,
-        'right': right,
-    }
+    return f'{left} {op} {right}'
 
 
-def handle_annassign(node: ast.AnnAssign) -> AnnAssignHandlerDict:
+def handle_annassign(struct: StandardReturn, node: ast.AnnAssign) -> StandardReturn:
     """
     Processes an `ast.AnnAssign` node and returns its data.
 
@@ -524,22 +537,35 @@ def handle_annassign(node: ast.AnnAssign) -> AnnAssignHandlerDict:
     :rtype: AnnAssignHandlerDict
     """
 
+    statement: Statement = Statement.AnnAssign
     token: str = cast(str, handle_node(node.target))
     annot: str = cast(str, handle_node(node.annotation))
-    value: AnnAssignValue = ''
+    value: str = ''
+    code: str = ast.unparse(node)
 
     if node.value is not None:
-        value = cast(AnnAssignValue, handle_node(node.value))
+        value = cast(str, handle_node(node.value))
 
-    return {
-        'statement': Statement.AnnAssign,
-        'token': token,
-        'annot': annot,
-        'value': value,
-    }
+    data: StandardReturn = standard_struct()
+
+    data.update(
+        {
+            'statement': statement,
+            'token': token,
+            'annot': annot,
+            'value': value,
+            'code': code,
+        }
+    )
+
+    struct.update()
+
+    return struct
 
 
-def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
+def handle_function_def(
+    struct: StandardReturn, node: ast.FunctionDef
+) -> StandardReturn:
     """
     Processes an `ast.FunctionDef` node and returns its data.
 
@@ -556,14 +582,17 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
     :rtype: FunctionDefHandlerDict
     """
 
-    name: str = node.name
-    decos: list[str] = [cast(str, handle_node(i)) for i in node.decorator_list]
-    rtype: str | None = (
+    statement: Final[Statement] = Statement.FunctionDef
+    name: Final[str] = node.name
+    decos: Final[list[str]] = [cast(str, handle_node(i)) for i in node.decorator_list]
+    rtype: Final[str] | None = (
         cast(str, handle_node(node.returns)) if node.returns is not None else None
     )
-    arg_lst: ArgList = []
+    code: Final[str] = ast.unparse(node)
+
+    arg_lst: ArgsKwargs = []
     s_args: tuple[str | None, str | None, None] | None = None
-    kwarg_lst: ArgList = []
+    kwarg_lst: ArgsKwargs = []
     ss_kwargs: tuple[str | None, str | None, None] | None = None
 
     has_star_args: bool = True if node.args.vararg is not None else False
@@ -571,20 +600,20 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
 
     # Args Logic - Validates `*arg`-like
     if has_star_args and node.args.vararg is not None:
-        name: str = f'*{node.args.vararg.arg}'
+        arg_name: str = f'*{node.args.vararg.arg}'
         annot: str | None = None
 
         if node.args.vararg.annotation is not None:
             annot = cast(str, handle_node(node.args.vararg.annotation))
 
-        s_args = (name, annot, None)
+        s_args = (arg_name, annot, None)
 
     default_diff = len(node.args.args) - len(node.args.defaults)
 
     for i, arg in enumerate(node.args.args, start=1):
-        name: str = arg.arg
+        arg_name: str = arg.arg
         annot: str | None = None
-        default: str | CallHandlerDict | None = None
+        default: str | StandardReturn | None = None
 
         if arg.annotation is not None:
             annot = cast(str, handle_node(arg.annotation))
@@ -604,31 +633,31 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
             elif isinstance(expected, ast.Call):
                 default = handle_call(expected)
 
-        arg_lst.append((name, annot, default))
+        arg_lst.append((arg_name, annot, default))
 
     if has_star_args and s_args is not None:
         arg_lst.insert(len(arg_lst), s_args)
 
     # Kwargs Logic - Validates `**kwarg`-like
     if has_star_star_kwargs and node.args.kwarg is not None:
-        name: str = f'*{node.args.kwarg.arg}'
+        arg_name: str = f'*{node.args.kwarg.arg}'
         annot: str | None = None
 
         if node.args.kwarg.annotation is not None:
             annot = cast(str, handle_node(node.args.kwarg.annotation))
 
-        ss_kwargs = (name, annot, None)
+        ss_kwargs = (arg_name, annot, None)
 
     kwdefault_diff = len(node.args.kwonlyargs) - len(node.args.kw_defaults)
 
     for i, arg in enumerate(node.args.kwonlyargs, start=1):
-        name: str = arg.arg
+        arg_name: str = arg.arg
         annot: str | None = (
             cast(str, handle_node(arg.annotation))
             if arg.annotation is not None
             else None
         )
-        default: str | CallHandlerDict | None = None
+        default: str | StandardReturn | None = None
 
         if len(node.args.kw_defaults) and (kwdefault_diff and i > kwdefault_diff):
             expected = node.args.kw_defaults[i - 1 - kwdefault_diff]
@@ -645,24 +674,34 @@ def handle_function_def(node: ast.FunctionDef) -> FunctionDefHandlerDict:
             elif isinstance(expected, ast.Call):
                 default = handle_call(expected)
 
-        kwarg_lst.append((name, annot, default))
+        kwarg_lst.append((arg_name, annot, default))
 
     if has_star_star_kwargs and ss_kwargs is not None:
         kwarg_lst.insert(len(kwarg_lst), ss_kwargs)
 
-    return {
-        'statement': Statement.FunctionDef,
-        'name': name,
-        'decos': decos,
-        'rtype': rtype,
-        'arg_lst': arg_lst,
-        'kwarg_lst': kwarg_lst,
-    }
+    data: StandardReturn = standard_struct()
+
+    data.update(
+        {
+            'statement': statement,
+            'name': name,
+            'decos': decos,
+            'rtype': rtype,
+            'arg': arg_lst,
+            'kwarg': kwarg_lst,
+            'code': code,
+        }
+    )
+
+    struct.update(data)
+
+    return struct
 
 
 def handle_async_function_def(
+    struct: StandardReturn,
     node: ast.AsyncFunctionDef,
-) -> AsyncFunctionDefHandlerDict:
+) -> StandardReturn:
     """
     Processes an `ast.AsyncFunctionDef` node and returns its data.
 
@@ -677,14 +716,17 @@ def handle_async_function_def(
     :rtype: AsyncFunctionDefHandlerDict
     """
 
-    name: str = node.name
-    decos: list[str] = [cast(str, handle_node(i)) for i in node.decorator_list]
-    rtype: str | None = (
+    statement: Final[Statement] = Statement.AsyncFunctionDef
+    name: Final[str] = node.name
+    decos: Final[list[str]] = [cast(str, handle_node(i)) for i in node.decorator_list]
+    rtype: Final[str] | None = (
         cast(str, handle_node(node.returns)) if node.returns is not None else None
     )
-    arg_lst: ArgList = []
+    code: Final[str] = ast.unparse(node)
+
+    arg_lst: ArgsKwargs = []
     s_args: tuple[str | None, str | None, None] | None = None
-    kwarg_lst: ArgList = []
+    kwarg_lst: ArgsKwargs = []
     ss_kwargs: tuple[str | None, str | None, None] | None = None
 
     has_star_args: bool = True if node.args.vararg is not None else False
@@ -692,20 +734,20 @@ def handle_async_function_def(
 
     # Args Logic - Validates `*arg`-like
     if has_star_args and node.args.vararg is not None:
-        name: str = f'*{node.args.vararg.arg}'
+        arg_name: str = f'*{node.args.vararg.arg}'
         annot: str | None = None
 
         if node.args.vararg.annotation is not None:
             annot = cast(str, handle_node(node.args.vararg.annotation))
 
-        s_args = (name, annot, None)
+        s_args = (arg_name, annot, None)
 
     default_diff = len(node.args.args) - len(node.args.defaults)
 
     for i, arg in enumerate(node.args.args, start=1):
-        name: str = arg.arg
+        arg_name: str = arg.arg
         annot: str | None = None
-        default: str | CallHandlerDict | None = None
+        default: str | StandardReturn | None = None
 
         if arg.annotation is not None:
             annot = cast(str, handle_node(arg.annotation))
@@ -725,31 +767,31 @@ def handle_async_function_def(
             elif isinstance(expected, ast.Call):
                 default = handle_call(expected)
 
-        arg_lst.append((name, annot, default))
+        arg_lst.append((arg_name, annot, default))
 
     if has_star_args and s_args is not None:
         arg_lst.insert(len(arg_lst), s_args)
 
     # Kwargs Logic - Validates `**kwarg`-like
     if has_star_star_kwargs and node.args.kwarg is not None:
-        name: str = f'*{node.args.kwarg.arg}'
+        arg_name: str = f'*{node.args.kwarg.arg}'
         annot: str | None = None
 
         if node.args.kwarg.annotation is not None:
             annot = cast(str, handle_node(node.args.kwarg.annotation))
 
-        ss_kwargs = (name, annot, None)
+        ss_kwargs = (arg_name, annot, None)
 
     kwdefault_diff = len(node.args.kwonlyargs) - len(node.args.kw_defaults)
 
     for i, arg in enumerate(node.args.kwonlyargs, start=1):
-        name: str = arg.arg
+        arg_name: str = arg.arg
         annot: str | None = (
             cast(str, handle_node(arg.annotation))
             if arg.annotation is not None
             else None
         )
-        default: str | CallHandlerDict | None = None
+        default: str | StandardReturn | None = None
 
         if len(node.args.kw_defaults) and (kwdefault_diff and i > kwdefault_diff):
             expected = node.args.kw_defaults[i - 1 - kwdefault_diff]
@@ -766,22 +808,31 @@ def handle_async_function_def(
             elif isinstance(expected, ast.Call):
                 default = handle_call(expected)
 
-        kwarg_lst.append((name, annot, default))
+        kwarg_lst.append((arg_name, annot, default))
 
     if has_star_star_kwargs and ss_kwargs is not None:
         kwarg_lst.insert(len(kwarg_lst), ss_kwargs)
 
-    return {
-        'statement': Statement.AsyncFunctionDef,
-        'name': name,
-        'decos': decos,
-        'rtype': rtype,
-        'arg_lst': arg_lst,
-        'kwarg_lst': kwarg_lst,
-    }
+    data: StandardReturn = standard_struct()
+
+    data.update(
+        {
+            'statement': statement,
+            'name': name,
+            'decos': decos,
+            'rtype': rtype,
+            'args': arg_lst,
+            'kwargs': kwarg_lst,
+            'code': code,
+        }
+    )
+
+    struct.update(data)
+
+    return struct
 
 
-def handle_class_def(node: ast.ClassDef) -> ClassDefHandlerDict:
+def handle_class_def(struct: StandardReturn, node: ast.ClassDef) -> StandardReturn:
     """
     Processes an `ast.ClassDef` node and returns its data.
 
@@ -801,25 +852,36 @@ def handle_class_def(node: ast.ClassDef) -> ClassDefHandlerDict:
     :rtype: ClassDefHandlerDict
     """
 
-    name: str = node.name
-    parents: list[str] = [
+    statement: Final[Statement] = Statement.ClassDef
+    name: Final[str] = node.name
+    inheritance: Final[list[str]] = [
         cast(str, handle_node(i)) for i in node.bases if isinstance(i, ast.Name)
     ]
-    decos: list[str] = [cast(str, handle_node(i)) for i in node.decorator_list]
-    kwargs: list[tuple[str, str]] = [
-        cast(tuple[str, str], (i.arg, i.value)) for i in node.keywords
-    ]
+    decos: Final[list[str]] = [cast(str, handle_node(i)) for i in node.decorator_list]
+    kwargs: ArgsKwargs = cast(
+        ArgsKwargs, [(i.arg, None, i.value) for i in node.keywords]
+    )
+    code: Final[str] = ast.unparse(node)
 
-    return {
-        'statement': Statement.ClassDef,
-        'name': name,
-        'parents': parents,
-        'decos': decos,
-        'kwargs': kwargs,
-    }
+    data: StandardReturn = standard_struct()
+
+    data.update(
+        {
+            'statement': statement,
+            'name': name,
+            'inheritance': inheritance,
+            'decos': decos,
+            'kwargs': kwargs,
+            'code': code,
+        }
+    )
+
+    struct.update(data)
+
+    return struct
 
 
-def handle_compare(node: ast.Compare) -> CompareHandlerDict:
+def handle_compare(node: ast.Compare) -> str:
     """
     Processes an `ast.Compare` node and returns its data.
 
@@ -838,39 +900,10 @@ def handle_compare(node: ast.Compare) -> CompareHandlerDict:
     :rtype: CompareHandlerDict
     """
 
-    left: str | CallHandlerDict = cast(str | CallHandlerDict, handle_node(node.left))
-
-    dispatch: dict[type, str] = {
-        ast.Eq: '==',
-        ast.NotEq: '!=',
-        ast.Lt: '<',
-        ast.LtE: '<=',
-        ast.Gt: '>',
-        ast.GtE: '>=',
-        ast.Is: 'is',
-        ast.IsNot: 'is not',
-        ast.In: 'in',
-        ast.NotIn: 'not in',
-    }
-    ops: list[str] = []
-
-    for op in node.ops:
-        ops.append(dispatch[type(op)])
-
-    operators: list[CallHandlerDict | str] = []
-
-    for i in node.comparators:
-        operators.append(cast(CallHandlerDict | str, handle_node(i)))
-
-    return {
-        'statement': Statement.Compare,
-        'left': left,
-        'ops': ops,
-        'operators': operators,
-    }
+    return ast.unparse(node)
 
 
-def handle_assert(node: ast.Assert) -> AssertHandlerDict:
+def handle_assert(struct: StandardReturn, node: ast.Assert) -> StandardReturn:
     """
     Processes an `ast.Assert` node and returns its data.
 
@@ -889,18 +922,28 @@ def handle_assert(node: ast.Assert) -> AssertHandlerDict:
     :rtype: AssertHandlerDict
     """
 
-    test: AssertTest = cast(AssertTest, handle_node(node.test))
+    statement: Final[Statement] = Statement.Assert
+    test: str = cast(str, handle_node(node.test))
+    msg: Final[str | None] = cast(str, handle_node(node.msg)) if node.msg else None
+    code: Final[str] = ast.unparse(node)
 
-    msg: str | None = cast(str, handle_node(node.msg)) if node.msg else None
+    data: StandardReturn = standard_struct()
 
-    return {
-        'statement': Statement.Assert,
-        'test': test,
-        'msg': msg,
-    }
+    data.update(
+        {
+            'statement': statement,
+            'test': test,
+            'msg': msg,
+            'code': code,
+        }
+    )
+
+    struct.update(data)
+
+    return struct
 
 
-def handle_list(node: ast.List) -> ListHandlerDict:
+def handle_list(node: ast.List) -> StandardReturn:
     """
     Processes an `ast.List` node and returns its data.
 
@@ -919,11 +962,11 @@ def handle_list(node: ast.List) -> ListHandlerDict:
 
     return {
         'statement': Statement.List,
-        'elements': [cast(ListItem, handle_node(i)) for i in node.elts],
+        'elements': [cast(str, handle_node(i)) for i in node.elts],
     }
 
 
-def handle_tuple(node: ast.Tuple) -> TupleHandlerDict:
+def handle_tuple(node: ast.Tuple) -> StandardReturn:
     """
     Processes an `ast.Tuple` node and returns its data.
 
@@ -942,11 +985,11 @@ def handle_tuple(node: ast.Tuple) -> TupleHandlerDict:
 
     return {
         'statement': Statement.Tuple,
-        'elements': [cast(ListItem, handle_node(i)) for i in node.elts],
+        'elements': [cast(str, handle_node(i)) for i in node.elts],
     }
 
 
-def handle_set(node: ast.Set) -> SetHandlerDict:
+def handle_set(node: ast.Set) -> StandardReturn:
     """
     Processes an `ast.Set` node and returns its data.
 
@@ -964,11 +1007,11 @@ def handle_set(node: ast.Set) -> SetHandlerDict:
     """
     return {
         'statement': Statement.Set,
-        'elements': [cast(ListItem, handle_node(i)) for i in node.elts],
+        'elements': [cast(str, handle_node(i)) for i in node.elts],
     }
 
 
-def handle_dict(node: ast.Dict) -> DictHandlerDict:
+def handle_dict(node: ast.Dict) -> StandardReturn:
     """
     Processes an `ast.Dict` node and returns its data.
 
@@ -999,7 +1042,7 @@ def handle_dict(node: ast.Dict) -> DictHandlerDict:
     }
 
 
-def handle_subscript(node: ast.Subscript) -> SubscriptHandlerDict:
+def handle_subscript(node: ast.Subscript) -> str:
     """
     Processes an `ast.Subscript` node and returns its data.
 
@@ -1017,14 +1060,13 @@ def handle_subscript(node: ast.Subscript) -> SubscriptHandlerDict:
     :rtype: SubscriptHandlerDict
     """
 
-    return {
-        'statement': Statement.Subscript,
-        'value': cast(str, handle_node(node.value)),
-        'slice': cast(SliceHandlerDict, handle_node(node.slice)),
-    }
+    name: str = cast(str, handle_node(node.value))
+    _slice: StandardReturnProccessor | None = handle_node(node.slice)
+
+    return f'{name}[{_slice}]'
 
 
-def handle_slice(node: ast.Slice) -> SliceHandlerDict:
+def handle_slice(node: ast.Slice) -> str:
     """
     Processes an `ast.Slice` node and returns its data.
 
@@ -1042,11 +1084,15 @@ def handle_slice(node: ast.Slice) -> SliceHandlerDict:
     :rtype: SliceHandlerDict
     """
 
-    return {
-        'statement': Statement.Slice,
-        'lower': cast(str, handle_node(node.lower)),
-        'upper': cast(str, handle_node(node.upper)),
-    }
+    lower: str = cast(str, handle_node(node.lower))
+    upper: str = cast(str, handle_node(node.upper))
+    step: str = ''
+
+    if node.step is not None:
+        value: str = cast(str, handle_node(node.step))
+        step = f', {value}'
+
+    return f'{lower}:{upper}{step}'
 
 
 def handle_name(node: ast.Name) -> str:

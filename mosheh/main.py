@@ -55,9 +55,9 @@ __status__ = 'Development'
 from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
 from os import path
 
+from codebase import read_codebase
 from custom_types import CodebaseDict
 from doc import Lang, generate_doc
-from python import read_codebase
 
 
 def main() -> None:
@@ -116,7 +116,7 @@ def main() -> None:
     REPO_NAME: str = args.repo_name
     REPO_URL: str = args.repo_url
     EXIT: str = args.exit
-    LANG: Lang = {'pt-BR': Lang.PT_BR, 'en': Lang.EN}.get(args.lang, Lang.EN)
+    LANG: Lang = {'pt-BR': Lang.pt_br, 'en': Lang.en}.get(args.lang, Lang.en)
 
     # Codebase Reading
     data: CodebaseDict = read_codebase(ROOT)

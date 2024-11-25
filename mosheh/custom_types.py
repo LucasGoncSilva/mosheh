@@ -28,96 +28,36 @@ class ImportType(Enum):
     Local = 'Local'
 
 
+class FunctionType(Enum):
+    Function = 'Function'
+    Method = 'Method'
+    Generator = 'Generator'
+    Coroutine = 'Coroutine'
+
+
 class Lang(Enum):
-    PT_BR = 'pt-BR'
-    EN = 'en'
+    pt_br = 'pt-BR'
+    en = 'en'
 
 
-Categorie: TypeAlias = dict[str, str]
-ImportDict: TypeAlias = dict[str, ImportType | str | None]
-ModuleDict: TypeAlias = dict[str, ImportDict]
+Tokens: TypeAlias = list[str]
+Decorators: TypeAlias = list[str]
+Inheritance: TypeAlias = list[str]
+ArgsKwargs: TypeAlias = list[tuple[str, str | None, str | None]]
 
-ImportHandlerDict: TypeAlias = dict[str, Statement | ModuleDict]
-
-ImportFromHandlerDict: TypeAlias = dict[
-    str, Statement | ImportType | list[str] | str | None
+StandardReturn: TypeAlias = dict[
+    str,
+    Statement
+    | ImportType
+    | FunctionType
+    | str
+    | None
+    | Tokens
+    | Decorators
+    | Inheritance
+    | ArgsKwargs,
 ]
 
-AssignHandlerDict: TypeAlias = dict[str, Statement | str | list[str]]
+StandardReturnProccessor: TypeAlias = str | StandardReturn
 
-CallHandlerDict: TypeAlias = dict[str, Statement | str | list[str]]
-
-ClassDefHandlerDict: TypeAlias = dict[
-    str, Statement | str | list[str] | list[tuple[str, str]]
-]
-
-CompareHandlerDict: TypeAlias = dict[
-    str, Statement | str | CallHandlerDict | list[str] | list[CallHandlerDict | str]
-]
-
-AssertTest: TypeAlias = CompareHandlerDict | str
-AssertHandlerDict: TypeAlias = dict[str, Statement | str | AssertTest | None]
-
-DictHandlerDict: TypeAlias = dict[str, Statement | list[str]]
-
-ArgList: TypeAlias = list[tuple[str, str | None, str | CallHandlerDict | None]]
-FunctionDefHandlerDict: TypeAlias = dict[
-    str, Statement | str | list[str] | ArgList | None
-]
-
-AsyncFunctionDefHandlerDict: TypeAlias = dict[
-    str, Statement | str | list[str] | ArgList | None
-]
-
-_SetHandlerDict: TypeAlias = dict[str, Statement]
-
-SliceHandlerDict: TypeAlias = dict[str, Statement | str]
-
-SubscriptHandlerDict: TypeAlias = dict[str, Statement | str | SliceHandlerDict]
-
-_ListItem: TypeAlias = CallHandlerDict | str | dict[str, Statement | str]
-_ListHandlerDict: TypeAlias = dict[str, Statement | list[_ListItem]]
-
-_TupleHandlerDict: TypeAlias = dict[str, Statement | list[_ListItem]]
-
-AnnAssignValue: TypeAlias = str | CallHandlerDict
-AnnAssignHandlerDict: TypeAlias = dict[str, Statement | str | AnnAssignValue]
-
-BinOperand: TypeAlias = (
-    str
-    | CallHandlerDict
-    | _ListHandlerDict
-    | _SetHandlerDict
-    | DictHandlerDict
-    | _TupleHandlerDict
-)
-BinOpHandlerDict: TypeAlias = dict[str, Statement | str | BinOperand]
-
-ListItem: TypeAlias = CallHandlerDict | str | BinOpHandlerDict
-ListHandlerDict: TypeAlias = dict[str, Statement | list[ListItem]]
-TupleHandlerDict: TypeAlias = dict[str, Statement | list[ListItem]]
-SetHandlerDict: TypeAlias = dict[str, Statement | list[ListItem]]
-
-NodeHandler: TypeAlias = (
-    str
-    | ImportHandlerDict
-    | BinOperand
-    | ImportFromHandlerDict
-    | CallHandlerDict
-    | BinOpHandlerDict
-    | AssignHandlerDict
-    | AnnAssignHandlerDict
-    | FunctionDefHandlerDict
-    | AsyncFunctionDefHandlerDict
-    | ClassDefHandlerDict
-    | CompareHandlerDict
-    | AssertHandlerDict
-    | ListHandlerDict
-    | SetHandlerDict
-    | TupleHandlerDict
-    | DictHandlerDict
-    | SliceHandlerDict
-    | SubscriptHandlerDict
-)
-
-CodebaseDict: TypeAlias = dict[str, list[NodeHandler]]
+CodebaseDict: TypeAlias = dict[str, list[StandardReturn]]
