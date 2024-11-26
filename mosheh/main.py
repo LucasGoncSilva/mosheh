@@ -122,7 +122,7 @@ def main() -> None:
     data: CodebaseDict = read_codebase(ROOT)
 
     # Doc Generation
-    generate_doc(data, EXIT, PROJ_NAME, LANG, '', REPO_NAME, REPO_URL)
+    generate_doc(data, ROOT, EXIT, PROJ_NAME, LANG, '', REPO_NAME, REPO_URL)
 
 
 if __name__ == '__main__':
