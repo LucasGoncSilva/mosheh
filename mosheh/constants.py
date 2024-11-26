@@ -658,10 +658,10 @@ Path: `#!py {_path}`
 
 Category: {category}
 
-??? example "SNIPPET":
+??? example "SNIPPET"
 
     ```py
-    {code}
+{code}
     ```
 
 """
@@ -672,10 +672,10 @@ Type: `#!py {_type}`
 
 Value: `#!py {value}`
 
-??? example "SNIPPET":
+??? example "SNIPPET"
 
     ```py
-    {code}
+{code}
     ```
 
 """
@@ -688,10 +688,10 @@ Decorators: `#!py {decorators}`
 
 Kwargs: {kwargs}
 
-??? example "SNIPPET":
+??? example "SNIPPET"
 
     ```py
-    {code}
+{code}
     ```
 
 """
@@ -708,10 +708,10 @@ Args: {args}
 
 Kwargs: {kwargs}
 
-??? example "SNIPPET":
+??? example "SNIPPET"
 
     ```py
-    {code}
+{code}
     ```
 
 """
@@ -720,10 +720,10 @@ ASSERT_MD_STRUCT: Final[str] = """### `{test}`
 
 Message: `#!py {msg}`
 
-??? example "SNIPPET":
+??? example "SNIPPET"
 
     ```py
-    {code}
+{code}
     ```
 
 """

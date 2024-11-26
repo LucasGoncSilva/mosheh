@@ -47,8 +47,8 @@ __email__ = 'lucasgoncsilva04@gmail.com'
 __repository__ = 'https://github.com/LucasGoncSilva/mosheh'
 __description__ = __doc__
 __keywords__ = ['CLI', 'documentation', 'doc']
-__version__ = '0.0.0'
-__date__ = '2024-11-19'
+__version__ = '0.1.0'
+__date__ = '2024-11-26'
 __status__ = 'Development'
 
 

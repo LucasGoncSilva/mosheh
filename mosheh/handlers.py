@@ -296,7 +296,8 @@ def handle_import(struct: StandardReturn, node: ast.Import) -> StandardReturn:
     for lib in [i.name for i in node.names]:
         struct.update(__handle_import(lib))
 
-    return struct  # BUG: returns only last element -> change to list and return list struct
+    # BUG: returns only last element -> change to list and return list struct
+    return struct
 
 
 def handle_import_from(struct: StandardReturn, node: ast.ImportFrom) -> StandardReturn:

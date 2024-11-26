@@ -1,6 +1,7 @@
 import subprocess
-from os import path
+from os import mkdir, path
 from typing import cast
+from sys import stdout
 
 from constants import (
     ASSERT_MD_STRUCT,
@@ -12,6 +13,7 @@ from constants import (
     IMPORT_MD_STRUCT,
 )
 from custom_types import CodebaseDict, ImportType, Lang, StandardReturn, Statement
+from utils import indent_code
 
 
 def generate_doc(
@@ -33,9 +35,9 @@ def generate_doc(
             capture_output=True,
             text=True,
         )
-        print(result.stdout)
+        stdout.write(result.stdout)
     except subprocess.CalledProcessError as e:
-        print('Error:', e.stderr)
+        stdout.write(f'Error: {e.stderr}')
 
     with open(path.join(exit_path, 'mkdocs.yml'), 'w', encoding='utf-8') as f:
         f.write(
@@ -69,7 +71,9 @@ def default_doc_config(
 
 def codebase_file_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     filename: str = basedir.split(path.sep)[-1]
-    filepath: str = basedir.removesuffix(filename).replace(path.sep, '.')
+    filepath: str = (
+        basedir.removesuffix(filename).replace(path.sep, '.').removesuffix('.')
+    )
     filedoc: str = ''
     imports: str = ''
     constants: str = ''
@@ -101,7 +105,7 @@ def codebase_file_to_markdown(filedata: list[StandardReturn], basedir: str) -> s
                 assertions += handle_assert(stmt)
 
             case _:
-                print('passed')
+                raise NotImplementedError('Should not fallback to this.')
 
     return FILE_MARKDOWN.format(
         filename=filename,
@@ -119,7 +123,8 @@ def handle_import(stmt: StandardReturn) -> str:
     name: str = cast(str, stmt['name'])
     _path: None = None
     category: str = cast(ImportType, stmt['category']).value
-    code: str = cast(str, stmt['code'])
+    _code: str = cast(str, stmt['code'])
+    code: str = indent_code(_code)
 
     return IMPORT_MD_STRUCT.format(
         name=name,
@@ -133,7 +138,8 @@ def handle_import_from(stmt: StandardReturn) -> str:
     name: str = cast(str, stmt['name'])
     _path: str = cast(str, stmt['path'])
     category: str = cast(ImportType, stmt['category']).value
-    code: str = cast(str, stmt['code'])
+    _code: str = cast(str, stmt['code'])
+    code: str = indent_code(_code)
 
     return IMPORT_MD_STRUCT.format(
         name=name,
@@ -147,7 +153,8 @@ def handle_assign(stmt: StandardReturn) -> str:
     tokens: str = ', '.join(cast(list[str], stmt['tokens']))
     _type: str = 'Unknown'
     value: str = cast(str, stmt['value'])
-    code: str = cast(str, stmt['code'])
+    _code: str = cast(str, stmt['code'])
+    code: str = indent_code(_code)
 
     return ASSIGN_MD_STRUCT.format(
         token=tokens,
@@ -161,7 +168,8 @@ def handle_annassign(stmt: StandardReturn) -> str:
     name: str = cast(str, stmt['name'])
     annot: str = cast(str, stmt['annot'])
     value: str = cast(str, stmt['value'])
-    code: str = cast(str, stmt['code'])
+    _code: str = cast(str, stmt['code'])
+    code: str = indent_code(_code)
 
     return ASSIGN_MD_STRUCT.format(
         token=name,
@@ -176,7 +184,8 @@ def handle_class_def(stmt: StandardReturn) -> str:
     inherit: str = ', '.join(cast(list[str], stmt['inheritance']))
     decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
     kwargs: str = cast(str, stmt['kwargs'])
-    code: str = cast(str, stmt['code'])
+    _code: str = cast(str, stmt['code'])
+    code: str = indent_code(_code)
 
     return CLASS_DEF_MD_STRUCT.format(
         name=name,
@@ -193,7 +202,8 @@ def handle_function_def(stmt: StandardReturn) -> str:
     args: str = cast(str, stmt['args'])
     kwargs: str = cast(str, stmt['kwargs'])
     rtype: str = cast(str, stmt['rtype'])
-    code: str = cast(str, stmt['code'])
+    _code: str = cast(str, stmt['code'])
+    code: str = indent_code(_code)
 
     return FUNCTION_DEF_MD_STRUCT.format(
         name=name,
@@ -208,15 +218,16 @@ def handle_function_def(stmt: StandardReturn) -> str:
 def handle_assert(stmt: StandardReturn) -> str:
     test: str = cast(str, stmt['test'])
     msg: str = cast(str, stmt['msg'])
-    code: str = cast(str, stmt['code'])
+    _code: str = cast(str, stmt['code'])
+    code: str = indent_code(_code)
 
     return ASSERT_MD_STRUCT.format(test=test, msg=msg, code=code)
 
 
 def process_codebase(
     codebase: dict[str, CodebaseDict] | dict[str, list[StandardReturn]],
-    root:str,
-    exit:str,
+    root: str,
+    exit: str,
     basedir: str = '',
 ):
     parents: list[str] = list(codebase.keys())
@@ -228,11 +239,14 @@ def process_codebase(
         if isinstance(value, list):
             if len(value):
                 content: str = codebase_file_to_markdown(value, new_path)
-                print(exit, new_path)
 
-                with open(path.join(exit,'doc',new_path.removeprefix(root)), 'w', encoding='utf-8') as f:
+                output_file_path: str = path.join(
+                    exit, 'docs', new_path.removeprefix(root) + '.md'
+                )
+                folder_path = output_file_path.split(key)[0]
+                if not path.exists(folder_path):
+                    mkdir(folder_path)
+                with open(output_file_path, 'w', encoding='utf-8') as f:
                     f.write(content)
-            # Add to mkdos.yml > nav
-            # Add to doc .md file
         else:
-            process_codebase(value, exit,new_path)
+            process_codebase(value, root, exit, new_path)

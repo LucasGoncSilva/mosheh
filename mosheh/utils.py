@@ -211,3 +211,12 @@ def standard_struct() -> StandardReturn:
         'msg': '',
         'code': '',
     }
+
+
+def indent_code(code: str, level: int = 4) -> str:
+    indent = ' ' * level
+    new_code = '\n'.join(
+        f'{indent}{line}' if line.strip() else '' for line in code.splitlines()
+    )
+
+    return new_code
