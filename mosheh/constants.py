@@ -480,7 +480,7 @@ edit_uri: "{edit_uri}"
 
 theme:
   name: material
-  language: {lang}
+  language: en
   # TODO: favicon: fontawesome/solid/book-open
   font:
     text: Ubuntu

@@ -21,7 +21,6 @@ def generate_doc(
     root: str,
     exit: str,
     proj_name: str,
-    lang: Lang,
     edit_uri: str = '',
     repo_name: str = 'GitHub',
     repo_url: str = '',
@@ -44,7 +43,6 @@ def generate_doc(
             default_doc_config(
                 proj_name,
                 edit_uri,
-                lang.value,
                 repo_name,
                 repo_url,
             )
@@ -56,14 +54,12 @@ def generate_doc(
 def default_doc_config(
     proj_name: str,
     edit_uri: str,
-    lang: str,
     repo_name: str = 'GitHub',
     repo_url: str = '',
 ) -> str:
     return DEFAULT_MKDOCS_YML.format(
         proj_name=proj_name,
         edit_uri=edit_uri,
-        lang=lang,
         repo_name=repo_name,
         repo_url=repo_url,
     )

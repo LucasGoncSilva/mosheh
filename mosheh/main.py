@@ -84,12 +84,6 @@ def main() -> None:
         required=True,
     )
     parser.add_argument(
-        '--lang',
-        type=str,
-        default='en',
-        help='Language of documentation output.',
-    )
-    parser.add_argument(
         '--repo-name',
         type=str,
         default='GitHub',
@@ -116,13 +110,12 @@ def main() -> None:
     REPO_NAME: str = args.repo_name
     REPO_URL: str = args.repo_url
     EXIT: str = args.exit
-    LANG: Lang = {'pt-BR': Lang.pt_br, 'en': Lang.en}.get(args.lang, Lang.en)
 
     # Codebase Reading
     data: CodebaseDict = read_codebase(ROOT)
 
     # Doc Generation
-    generate_doc(data, ROOT, EXIT, PROJ_NAME, LANG, '', REPO_NAME, REPO_URL)
+    generate_doc(data, ROOT, EXIT, PROJ_NAME, '', REPO_NAME, REPO_URL)
 
 
 if __name__ == '__main__':
