@@ -133,13 +133,13 @@ A definir
 
 ### Parâmetros
 
-|    Chamada     | Tipo  | Obrigatoriedade | Padrão | Exemplo                         | Ação                                   |
-| :------------: | :---: | :-------------: | :----: | :------------------------------ | :------------------------------------- |
-| `-h`, `--help` | `str` |   `Optional`    | `None` | `-h`, `--help`                  | Apresenta estes parâmetros de chamada  |
-|    `-root`     | `str` |   `Required`    | `None` | `-root example/`                | Raíz, diretório base para o mapeamento |
-| `--repo-name`  | `str` |   `Optional`    | `None` | `--repo-name toicin`            | Nome do repositório/projeto            |
-|  `--repo-url`  | `str` |   `Optional`    | `None` | `--repo-url https://random.com` | Nome do repositório                    |
-|    `--exit`    | `str` |   `Optional`    |  `.`   | `--exit doc/`                   | Caminho de saída da documentação       |
+|    Chamada     | Tipo  | Obrigatoriedade |   Padrão   | Exemplo                         | Ação                                   |
+| :------------: | :---: | :-------------: | :--------: | :------------------------------ | :------------------------------------- |
+| `-h`, `--help` | `str` |   `Optional`    |   `None`   | `-h`, `--help`                  | Apresenta estes parâmetros de chamada  |
+|    `-root`     | `str` |   `Required`    |   `None`   | `-root example/`                | Raíz, diretório base para o mapeamento |
+| `--repo-name`  | `str` |   `Optional`    | `'GitHub'` | `--repo-name toicin`            | Nome do repositório/projeto            |
+|  `--repo-url`  | `str` |   `Optional`    |   `None`   | `--repo-url https://random.com` | Nome do repositório                    |
+|    `--exit`    | `str` |   `Optional`    |   `'.'`    | `--exit doc/`                   | Caminho de saída da documentação       |
 
 ## Licença
 

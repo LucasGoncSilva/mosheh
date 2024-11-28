@@ -35,11 +35,6 @@ class FunctionType(Enum):
     Coroutine = 'Coroutine'
 
 
-class Lang(Enum):
-    pt_br = 'pt-BR'
-    en = 'en'
-
-
 Tokens: TypeAlias = list[str]
 Decorators: TypeAlias = list[str]
 Inheritance: TypeAlias = list[str]

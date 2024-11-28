@@ -57,7 +57,7 @@ from os import path
 
 from codebase import read_codebase
 from custom_types import CodebaseDict
-from doc import Lang, generate_doc
+from doc import generate_doc
 
 
 def main() -> None:

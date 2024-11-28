@@ -20,10 +20,10 @@ def bin(item: Any, universe: list[Any] | tuple[Any]) -> bool:
 
     Example:
     ```python
-    >>> lst: list[int] = [1,2,3,4,5]
-    >>> num: int = 4
-    >>> result: bool = bin(num, lst)
-    True
+    lst: list[int] = [1, 2, 3, 4, 5]
+    num: int = 4
+    result: bool = bin(num, lst)
+    # True
     ```
 
     :param item: the item to check if exists in
@@ -60,8 +60,8 @@ def is_lib_installed(name: str) -> bool:
 
     Example:
     ```python
-    >>> result: bool = is_lib_installed('fastapi')
-    False
+    result: bool = is_lib_installed('fastapi')
+    # False
     ```
 
     :param name: the name of the lib, e.g. numpy or numba
@@ -92,9 +92,9 @@ def nested_dict() -> dict[Any, Any]:
 
     Example:
     ```python
-    >>> d = nested_dict()
-    >>> d['level1']['level2']['level3'] = 'text'
-    {'level': {'level2': {'level3': 'text'}}}
+    d = nested_dict()
+    d['level1']['level2']['level3'] = 'text'
+    # {'level': {'level2': {'level3': 'text'}}}
     ```
 
     :return: a `defaultdict` instance configured for recursive nesting
@@ -126,11 +126,11 @@ def add_to_dict(
 
     Example:
     ```python
-    >>> structure = {}
-    >>> path = ['level1', 'level2', 'level3']
-    >>> data = {'key': 'value'}
-    >>> result = add_to_dict(structure, path, data)
-    {'level1': {'level2': {'level3': {'key': 'value'}}}}
+    structure = {}
+    path = ['level1', 'level2', 'level3']
+    data = {'key': 'value'}
+    result = add_to_dict(structure, path, data)
+    # {'level1': {'level2': {'level3': {'key': 'value'}}}}
     ```
 
     :param structure: the nested dictionary to modify
@@ -168,17 +168,17 @@ def convert_to_regular_dict(d: dict[Any, Any]) -> dict[Any, Any]:
 
     Example:
     ```python
-    >>> from collections import defaultdict
+    from collections import defaultdict
 
 
-    >>> def nested_dict():
-    ...     return defaultdict(nested_dict)
+    def nested_dict():
+        return defaultdict(nested_dict)
 
 
-    >>> d = nested_dict()
-    >>> d['level1']['level2'] = 'value'
-    >>> regular_dict = convert_to_regular_dict(d)
-    {'level1': {'level2': 'value'}}
+    d = nested_dict()
+    d['level1']['level2'] = 'value'
+    regular_dict = convert_to_regular_dict(d)
+    # {'level1': {'level2': 'value'}}
     ```
 
     :param d: the dictionary to convert. Can include nested `defaultdict` instances
@@ -194,26 +194,72 @@ def convert_to_regular_dict(d: dict[Any, Any]) -> dict[Any, Any]:
 
 
 def standard_struct() -> StandardReturn:
-    return {
-        'statement': '',
-        'name': '',
-        'tokens': [],
-        'annot': '',
-        'value': '',
-        'decorators': [],
-        'inheritance': [],
-        'path': '',
-        'category': '',
-        'rtype': '',
-        'args': [],
-        'kwargs': [],
-        'test': '',
-        'msg': '',
-        'code': '',
+    """
+    Has the attribuition of returning an empty dict but maintaining the standard keys.
+
+    The keys are listed below, followed by they types, as below:
+    ```python
+    dct: StandardReturn = {
+        'statement': Statement,
+        'name': str,
+        'tokens': Tokens,
+        'annot': str,
+        'value': str,
+        'decorators': Decorators,
+        'inheritance': Inheritance,
+        'path': str,
+        'category': ImportType | FunctionType,
+        'rtype': str,
+        'args': ArgsKwargs,
+        'kwargs': ArgsKwargs,
+        'test': str,
+        'msg': str,
+        'code': str,
     }
+    ```
+    Any other datatype different from those above must be avoided as much as possible
+    to maintain the codebase at the same struct. Python is not the best when talking
+    about types like Java or Rust, so keep this in mind is really necessary.
+
+    Example:
+    ```python
+    struct: StandardReturn = standard_struct()
+    # {}
+    ```
+
+    :return: an empty dict annotated with special custom type
+    :rtype: StandardReturn
+    """
+
+    data: StandardReturn = {}
+    return data
 
 
 def indent_code(code: str, level: int = 4) -> str:
+    """
+    Used just for applying indentation to code before building the doc `.md` file.
+
+    By receiving the code itself and an indentation number, defaulting to 4, and for
+    each line applies the desired indentation level, A.K.A leftpad.
+
+    Example:
+    ```python
+    code: str = \"\"\"for i in range(10):\n\t\tprint(i)\"\"\"
+    level: int = 4
+    code
+    # for i in range(10):\n#     print(i)
+    indent_code(code, level)
+    #     for i in range(10):\n#         print(i)
+    ```
+
+    :param code: the code snippet to be formatted
+    :type code: str
+    :param level: the number of spaces to leftpad each line
+    :type level: int
+    :return: the code snippet leftpadded
+    :rtype: str
+    """
+
     indent = ' ' * level
     new_code = '\n'.join(
         f'{indent}{line}' if line.strip() else '' for line in code.splitlines()

@@ -686,10 +686,10 @@ def handle_function_def(
         {
             'statement': statement,
             'name': name,
-            'decos': decos,
+            'decorators': decos,
             'rtype': rtype,
-            'arg': arg_lst,
-            'kwarg': kwarg_lst,
+            'args': arg_lst,
+            'kwargs': kwarg_lst,
             'code': code,
         }
     )
@@ -820,7 +820,7 @@ def handle_async_function_def(
         {
             'statement': statement,
             'name': name,
-            'decos': decos,
+            'decorators': decos,
             'rtype': rtype,
             'args': arg_lst,
             'kwargs': kwarg_lst,
@@ -871,7 +871,7 @@ def handle_class_def(struct: StandardReturn, node: ast.ClassDef) -> StandardRetu
             'statement': statement,
             'name': name,
             'inheritance': inheritance,
-            'decos': decos,
+            'decorators': decos,
             'kwargs': kwargs,
             'code': code,
         }

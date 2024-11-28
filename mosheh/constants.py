@@ -616,8 +616,8 @@ copyright: Only God knows
 """
 
 FILE_MARKDOWN: Final[str] = """
-# `{filename}`
-`{filepath}`
+# File: `{filename}`
+Path: `{filepath}`
 
 {filedoc}
 
@@ -652,7 +652,7 @@ FILE_MARKDOWN: Final[str] = """
 {assertions}
 """
 
-IMPORT_MD_STRUCT: Final[str] = """### `{name}`
+IMPORT_MD_STRUCT: Final[str] = """### `#!py import {name}`
 
 Path: `#!py {_path}`
 
@@ -666,7 +666,7 @@ Category: {category}
 
 """
 
-ASSIGN_MD_STRUCT: Final[str] = """### `{token}`
+ASSIGN_MD_STRUCT: Final[str] = """### `#!py {token}`
 
 Type: `#!py {_type}`
 
@@ -680,7 +680,7 @@ Value: `#!py {value}`
 
 """
 
-CLASS_DEF_MD_STRUCT: Final[str] = """### `{name}`
+CLASS_DEF_MD_STRUCT: Final[str] = """### `#!py class {name}`
 
 Parents: `{inherit}`
 
@@ -696,11 +696,11 @@ Kwargs: {kwargs}
 
 """
 
-FUNCTION_DEF_MD_STRUCT: Final[str] = """### `{name}`
+FUNCTION_DEF_MD_STRUCT: Final[str] = """### `#!py def {name}`
 
 Type: `#!py ...`
 
-Return Type: {rtype}
+Return Type: `#!py {rtype}`
 
 Decorators: `#!py {decorators}`
 
@@ -716,7 +716,7 @@ Kwargs: {kwargs}
 
 """
 
-ASSERT_MD_STRUCT: Final[str] = """### `{test}`
+ASSERT_MD_STRUCT: Final[str] = """### `#!py assert {test}`
 
 Message: `#!py {msg}`
 

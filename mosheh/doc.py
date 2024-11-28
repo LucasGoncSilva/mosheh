@@ -1,7 +1,7 @@
 import subprocess
 from os import mkdir, path
-from typing import cast
 from sys import stdout
+from typing import cast
 
 from constants import (
     ASSERT_MD_STRUCT,
@@ -12,7 +12,7 @@ from constants import (
     FUNCTION_DEF_MD_STRUCT,
     IMPORT_MD_STRUCT,
 )
-from custom_types import CodebaseDict, ImportType, Lang, StandardReturn, Statement
+from custom_types import CodebaseDict, ImportType, StandardReturn, Statement
 from utils import indent_code
 
 
@@ -102,6 +102,17 @@ def codebase_file_to_markdown(filedata: list[StandardReturn], basedir: str) -> s
 
             case _:
                 raise NotImplementedError('Should not fallback to this.')
+
+    if not len(imports):
+        imports = '!!! info "NO IMPORT DEFINED HERE"'
+    if not len(constants):
+        constants = '!!! info "NO CONSTANT DEFINED HERE"'
+    if not len(classes):
+        classes = '!!! info "NO CLASS DEFINED HERE"'
+    if not len(functions):
+        functions = '!!! info "NO FUNCTION DEFINED HERE"'
+    if not len(assertions):
+        assertions = '!!! info "NO ASSERT DEFINED HERE"'
 
     return FILE_MARKDOWN.format(
         filename=filename,
@@ -197,7 +208,7 @@ def handle_function_def(stmt: StandardReturn) -> str:
     decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
     args: str = cast(str, stmt['args'])
     kwargs: str = cast(str, stmt['kwargs'])
-    rtype: str = cast(str, stmt['rtype'])
+    rtype: str = cast(str, stmt['rtype']) or 'Unknown'
     _code: str = cast(str, stmt['code'])
     code: str = indent_code(_code)
 
