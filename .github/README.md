@@ -8,7 +8,7 @@
 
 <!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LucasGoncSilva/mosheh/XXXXXX.yml?style=flat&labelColor=%23101010) -->
 
-Mosheh é um script para geração de documentações de projetos, de Python para Python.
+Mosheh é uma ferramenta para geração de documentações de projetos, de Python para Python.
 
 Basicamente, Mosheh lista todos os arquivos para onde você apontar, armazena cada declaração de definição notória em cada arquivo varrido através da manipulação da AST com o módulo `ast` e, posteriormente, gera a documentação - com uso de [MkDocs](https://www.mkdocs.org/) e [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) - respeitando os dados obtidos e a hierarquia dos diretórios e arquivos.
 
@@ -17,13 +17,15 @@ Os elementos documentados para cada arquivo estão listados abaixo:
 - Importações `[ast.Import | ast.ImportFrom]`
 
   - [x] Tipo `[Nativo | Terceiros | Local]`
-  - [x] Path (e.g. '`django.http`')
+  - [x] Path (e.g. `django.http`)
+  - [x] Código
 
 - Constantes `[ast.Assign | ast.AnnAssign]`
 
   - [x] Nome do Token
   - [x] Anotação de Tipo (datatype)
   - [x] Valor (um literal, uma operação ou uma chamada)
+  - [x] Código
 
 - Classes `[ast.ClassDef]`
 
@@ -32,6 +34,7 @@ Os elementos documentados para cada arquivo estão listados abaixo:
   - [x] Pais (heranças)
   - [ ] Métodos Definidos (quantidade e nomes)
   - [ ] Examplo de Uso
+  - [x] Código
 
 - Funções `[ast.FunctionDef | ast.AsyncFunctionDef]`
 
@@ -42,10 +45,12 @@ Os elementos documentados para cada arquivo estão listados abaixo:
   - [x] Tipo de Retorno (datatype)
   - [ ] Exceções (disparo de erros)
   - [ ] Examplo de Uso
+  - [x] Código
 
 - Asserções: `[ast.Assert]`
   - [x] Teste (asserção)
   - [x] Mensagem (opcional, caso falhe)
+  - [x] Código
 
 ## Stack
 

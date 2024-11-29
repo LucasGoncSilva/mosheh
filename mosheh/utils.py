@@ -244,12 +244,12 @@ def indent_code(code: str, level: int = 4) -> str:
 
     Example:
     ```python
-    code: str = \"\"\"for i in range(10):\n\t\tprint(i)\"\"\"
+    code: str = \"\"\"for i in range(10):\n\t\tstr(i)\"\"\"
     level: int = 4
     code
-    # for i in range(10):\n#     print(i)
+    # for i in range(10):\n#     str(i)
     indent_code(code, level)
-    #     for i in range(10):\n#         print(i)
+    #     for i in range(10):\n#         str(i)
     ```
 
     :param code: the code snippet to be formatted

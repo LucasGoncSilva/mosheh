@@ -37,10 +37,10 @@ def read_codebase(root: str) -> CodebaseDict:
             statements: list[StandardReturn] = []
 
             for node in ast.walk(tree):
-                data: StandardReturn = handle_def_nodes(node)
+                data: list[StandardReturn] = handle_def_nodes(node)
 
-                if data != {}:
-                    statements.append(data)
+                if data:
+                    statements.extend(data)
 
             add_to_dict(codebase, file.split(sep), statements)
 

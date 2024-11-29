@@ -481,7 +481,8 @@ edit_uri: "{edit_uri}"
 theme:
   name: material
   language: en
-  # TODO: favicon: fontawesome/solid/book-open
+  # TODO: favicon: path
+  # TODO: logo: path
   font:
     text: Ubuntu
 
@@ -590,7 +591,7 @@ plugins:
       enabled: true
       enable_creation_date: true
       fallback_to_build_date: true
-      locale: pt  # TODO automate this
+      locale: en
 
 
 extra:

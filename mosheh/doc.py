@@ -280,8 +280,7 @@ def handle_import_from(stmt: StandardReturn) -> str:
     name: str = cast(str, stmt['name'])
     _path: str = cast(str, stmt['path'])
     category: str = cast(ImportType, stmt['category']).value
-    _code: str = cast(str, stmt['code'])
-    code: str = indent_code(_code)
+    code: str = indent_code(f'from {_path} import {name}')
 
     return IMPORT_MD_STRUCT.format(
         name=name,
