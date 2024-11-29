@@ -403,14 +403,11 @@ def handle_import_from(struct: StandardReturn, node: ast.ImportFrom) -> Standard
 
 def handle_attribute(node: ast.Attribute) -> str:
     """
-    Processes an `ast.Constant` node and returns its data.
+    Recieves an `ast.Attribute` node and returns its code-like representation as str.
 
-    This function just returns the node value, followed by its attr, as str in the form
-    of f'{value}.{attr}'
-
-    :param node: the AST node representing an assignment statement
+    :param node: the AST node representing a slice expression
     :type node: ast.Attribute
-    :return: the node value folowed by its attr
+    :return: the readable code-like node build up
     :rtype: str
     """
 
@@ -432,17 +429,15 @@ def handle_call(node: ast.Call) -> str:
 
 def handle_constant(node: ast.Constant) -> str:
     """
-    Processes an `ast.Constant` node and returns its data.
+    Recieves an `ast.Constant` node and returns its code-like representation as str.
 
-    This function just returns the node value, as str...
-
-    :param node: the AST node representing an assignment statement
+    :param node: the AST node representing a slice expression
     :type node: ast.Constant
-    :return: the node value
+    :return: the readable code-like node build up
     :rtype: str
     """
 
-    return node.value
+    return ast.unparse(node)
 
 
 def handle_assign(struct: StandardReturn, node: ast.Assign) -> StandardReturn:
@@ -979,7 +974,7 @@ def handle_subscript(node: ast.Subscript) -> str:
 
 def handle_slice(node: ast.Slice) -> str:
     """
-    Recieves an `ast.Subscript` node and returns its code-like representation as str.
+    Recieves an `ast.Slice` node and returns its code-like representation as str.
 
     :param node: the AST node representing a slice expression
     :type node: ast.Slice
