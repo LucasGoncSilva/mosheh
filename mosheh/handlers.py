@@ -250,6 +250,41 @@ def handle_node(node: ast.AST | ast.expr | None) -> StandardReturnProccessor | N
 
 
 def __handle_import(lib_name: str) -> StandardReturn:
+    """
+    Constructs a standardized dictionary representation for an import statement.
+
+    This function processes the given library name, determines its import category
+    (local, native, or third-party), and builds a standardized dictionary structure
+    representing the import statement. The resulting data includes information about
+    the statement type, library name, import category, and the generated import code.
+
+    Key concepts:
+    - Import Categorization: Determines whether the library is native (built-in),
+      third-party, or local.
+    - Standardized Structure: Returns a dictionary conforming to the `StandardReturn`
+      format, ensuring consistency across codebase documentation.
+    - Dynamic Code Generation: Constructs the import statement dynamically based on
+      the library name.
+
+    Example:
+    ```python
+    data: StandardReturn = __handle_import('os')
+    data
+    # {
+    #     'statement': Statement.Import,
+    #     'name': 'os',
+    #     'path': None,
+    #     'category': ImportType.Native,
+    #     'code': 'import os',
+    # }
+    ```
+
+    :param lib_name: the name of the library to be imported
+    :type lib_name: str
+    :return: a standardized dictionary representing the import statement
+    :rtype: StandardReturn
+    """
+
     statement: Statement = Statement.Import
     path: Final[None] = None
     category: ImportType = ImportType.Local
@@ -276,21 +311,34 @@ def __handle_import(lib_name: str) -> StandardReturn:
 
 def handle_import(struct: StandardReturn, node: ast.Import) -> StandardReturn:
     """
-    Processes an `ast.Import` node and returnes its data.
+    Updates a standardized structure with information from an import statement node.
 
-    This function iterates over the imported module names within an `ast.Import` node,
-    classifying each module into one of the following categorys:
-    - Native: The module is a built-in Python module.
-    - Third-Party: The module is installed via external libraries.
-    - Local: The module is neither built-in nor a third-party library, problably local.
+    This function processes an AST import node, extracts the library names being
+    imported, and updates the given `StandardReturn` structure with details about
+    each library. It leverages the `__handle_import` function to standardize the data
+    for each imported library.
 
-    Each module's data includes its path (defaulting to `None`) and category, stored
-    in a structured dict.
+    Key concepts:
+    - AST Parsing: Processes Python's AST nodes for import statements.
+    - Data Standardization: Utilizes `__handle_import` to format each import into a
+      consistent structure.
+    - Structure Update: Modifies the provided `struct` in-place with import data.
 
+    Example:
+    ```python
+    struct = standard_struct()
+    node = ast.parse('import os, sys').body[0]
+    updated_struct = handle_import(struct, node)
+    updated_struct
+    # Outputs standardized data for 'os' and 'sys' imports.
+    ```
+
+    :param struct: the structure to be updated with import details
+    :type struct: StandardReturn
     :param node: the AST node representing an import statement
     :type node: ast.Import
-    :return: a dict containing the statement type and categorized module information
-    :rtype: ImportHandlerDict
+    :return: the updated structure with information about the imported libraries
+    :rtype: StandardReturn
     """
 
     for lib in [i.name for i in node.names]:
@@ -311,13 +359,12 @@ def handle_import_from(struct: StandardReturn, node: ast.ImportFrom) -> Standard
     - Third-Party: The module is installed via external libraries.
     - Local: The module is neither built-in nor a third-party library, problably local.
 
-    Each module's data includes its path (defaulting to `None`) and category, stored
-    in a structured dict.
+    Each module's data includes its path and category, stored in a structured dict.
 
     :param node: the AST node representing an import statement
     :type node: ast.ImportFrom
     :return: a dict containing the statement type and categorized module information
-    :rtype: ImportFromHandlerDict
+    :rtype: StandardReturn
     """
 
     statement: Final[Statement] = Statement.ImportFrom
@@ -367,49 +414,20 @@ def handle_attribute(node: ast.Attribute) -> str:
     :rtype: str
     """
 
-    return f'{node.value}.{node.attr}'
+    return ast.unparse(node)
 
 
-def handle_call(node: ast.Call) -> StandardReturn:
+def handle_call(node: ast.Call) -> str:
     """
-    Processes an `ast.Call` node and returns its data.
+    Recieves an `ast.Call` node and returns its code-like representation as str.
 
-    This function analyzes the components of a call expression, including the callable
-    object, positional arguments, and keyword arguments, returning a structured
-    dict with the extracted details.
-
-    Key elements of the returned data:
-    - call_obj: A string repr of the callable object.
-    - args: A list of string repr for all positional args, also starred arguments.
-    - kwargs: A list of string repr for all kwargs, formatted as `value=key` pairs.
-    If the argument uses `**`, it is included with just the parameter name.
-
-    :param node: the AST node representing a function or method call
+    :param node: the AST node representing a slice expression
     :type node: ast.Call
-    :return: A dict with the statement type and details of the call expression
-    :rtype: CallHandlerDict
+    :return: the readable code-like node build up
+    :rtype: str
     """
 
-    call_obj: str = cast(str, handle_node(node.func))
-
-    args: list[str] = [cast(str, handle_node(i)) for i in node.args]
-    args += [
-        f'*{handle_node(i.value)}' for i in node.args if isinstance(i, ast.Starred)
-    ]
-
-    kwargs: list[str] = []
-    for param in node.keywords:
-        if param.arg:
-            kwargs.append(f'{handle_node(param.value)}={param.arg}')
-        else:
-            kwargs.append(f'**{param.arg}')
-
-    return {
-        'statement': Statement.Call,
-        'call_obj': call_obj,
-        'args': args,
-        'kwargs': kwargs,
-    }
+    return ast.unparse(node)
 
 
 def handle_constant(node: ast.Constant) -> str:
@@ -441,7 +459,7 @@ def handle_assign(struct: StandardReturn, node: ast.Assign) -> StandardReturn:
     :param node: the AST node representing an assignment statement
     :type node: ast.Assign
     :return: a dict containing the statement type, target variables, and assigned value
-    :rtype: AssignHandlerDict
+    :rtype: StandardReturn
     """
 
     statement: Final[Statement] = Statement.Assign
@@ -467,56 +485,15 @@ def handle_assign(struct: StandardReturn, node: ast.Assign) -> StandardReturn:
 
 def handle_binop(node: ast.BinOp) -> str:
     """
-    Processes an `ast.BinOp` node and returnes its data.
+    Recieves an `ast.BinOp` node and returns its code-like representation as str.
 
-    This function maps the left and right operands and the operator itself, based on
-    possible values for them, following the type notation for each:
-    - `left` and `right` are operands annotated with `BinOperand`;
-    - `op`, on the other hand, is an operator, one of below:
-        - '+' - `ast.Add`
-        - '-' - `ast.Sub`
-        - '*' - `ast.Mult`
-        - '/' - `ast.Div`
-        - '//' - `ast.FloorDiv`
-        - '%' - `ast.Mod`
-        - '**' - `ast.Pow`
-        - '<<' - `ast.LShift`
-        - '>>' - `ast.RShift`
-        - '|' - `ast.BitOr`
-        - '^' - `ast.BitXor`
-        - '&' - `ast.BitAnd`
-
-    :param node: the AST node representing an import statement
+    :param node: the AST node representing a binary operation expression
     :type node: ast.BinOp
-    :return: a dict containing the statement type and categorized module information
-    :rtype: BinOpHandlerDict
+    :return: the readable code-like node build up
+    :rtype: str
     """
 
-    left: StandardReturnProccessor = cast(
-        StandardReturnProccessor, handle_node(node.left)
-    )
-    right: StandardReturnProccessor = cast(
-        StandardReturnProccessor, handle_node(node.right)
-    )
-
-    dispatch: dict[type, str] = {
-        ast.Add: '+',
-        ast.Sub: '-',
-        ast.Mult: '*',
-        ast.Div: '/',
-        ast.FloorDiv: '//',
-        ast.Mod: '%',
-        ast.Pow: '**',
-        ast.LShift: '<<',
-        ast.RShift: '>>',
-        ast.BitOr: '|',
-        ast.BitXor: '^',
-        ast.BitAnd: '&',
-    }
-
-    op: str = dispatch[type(node.op)]
-
-    return f'{left} {op} {right}'
+    return ast.unparse(node)
 
 
 def handle_annassign(struct: StandardReturn, node: ast.AnnAssign) -> StandardReturn:
@@ -535,7 +512,7 @@ def handle_annassign(struct: StandardReturn, node: ast.AnnAssign) -> StandardRet
     :param node: the AST node representing an assignment statement
     :type node: ast.AnnAssign
     :return: a dict with the statement type, target var, type hint and assigned value
-    :rtype: AnnAssignHandlerDict
+    :rtype: StandardReturn
     """
 
     statement: Statement = Statement.AnnAssign
@@ -580,7 +557,7 @@ def handle_function_def(
     :param node: the AST node representing a func def statement
     :type node: ast.FunctionDef
     :return: a dict containing the statement type and the data listed before
-    :rtype: FunctionDefHandlerDict
+    :rtype: StandardReturn
     """
 
     statement: Final[Statement] = Statement.FunctionDef
@@ -614,7 +591,7 @@ def handle_function_def(
     for i, arg in enumerate(node.args.args, start=1):
         arg_name: str = arg.arg
         annot: str | None = None
-        default: str | StandardReturn | None = None
+        default: str | None = None
 
         if arg.annotation is not None:
             annot = cast(str, handle_node(arg.annotation))
@@ -658,7 +635,7 @@ def handle_function_def(
             if arg.annotation is not None
             else None
         )
-        default: str | StandardReturn | None = None
+        default: str | None = None
 
         if len(node.args.kw_defaults) and (kwdefault_diff and i > kwdefault_diff):
             expected = node.args.kw_defaults[i - 1 - kwdefault_diff]
@@ -714,7 +691,7 @@ def handle_async_function_def(
     :param node: the AST node representing a func def statement
     :type node: ast.AsyncFunctionDef
     :return: a dict containing the statement type and the data listed before
-    :rtype: AsyncFunctionDefHandlerDict
+    :rtype: StandardReturn
     """
 
     statement: Final[Statement] = Statement.AsyncFunctionDef
@@ -748,7 +725,7 @@ def handle_async_function_def(
     for i, arg in enumerate(node.args.args, start=1):
         arg_name: str = arg.arg
         annot: str | None = None
-        default: str | StandardReturn | None = None
+        default: str | None = None
 
         if arg.annotation is not None:
             annot = cast(str, handle_node(arg.annotation))
@@ -792,7 +769,7 @@ def handle_async_function_def(
             if arg.annotation is not None
             else None
         )
-        default: str | StandardReturn | None = None
+        default: str | None = None
 
         if len(node.args.kw_defaults) and (kwdefault_diff and i > kwdefault_diff):
             expected = node.args.kw_defaults[i - 1 - kwdefault_diff]
@@ -850,7 +827,7 @@ def handle_class_def(struct: StandardReturn, node: ast.ClassDef) -> StandardRetu
     :param node: the AST node representing a class definition
     :type node: ast.ClassDef
     :return: a dict with the statement type, name, base classes, decorators, and kwargs
-    :rtype: ClassDefHandlerDict
+    :rtype: StandardReturn
     """
 
     statement: Final[Statement] = Statement.ClassDef
@@ -884,21 +861,12 @@ def handle_class_def(struct: StandardReturn, node: ast.ClassDef) -> StandardRetu
 
 def handle_compare(node: ast.Compare) -> str:
     """
-    Processes an `ast.Compare` node and returns its data.
+    Recieves an `ast.Compare` node and returns its code-like representation as str.
 
-    This function analyzes the components of a comparison operation, including the
-    left-hand operand, comparison operators, and right-hand operands, returning a
-    structured dict with the extracted details.
-
-    Key elements of the returned data:
-    - left: A string or `CallHandlerDict` repr of the left-hand operand;
-    - ops: List of string reprs of the comparison operators -> `==`, `!=`, `<`, `>`;
-    - operators: List of string or `CallHandlerDict` reprs of the right-hand operands.
-
-    :param node: the AST node representing a comparison expression
+    :param node: the AST node representing a compare expression
     :type node: ast.Compare
-    :return: A dict with the statement type, left-right-hand operands and operators
-    :rtype: CompareHandlerDict
+    :return: the readable code-like node build up
+    :rtype: str
     """
 
     return ast.unparse(node)
@@ -920,7 +888,7 @@ def handle_assert(struct: StandardReturn, node: ast.Assert) -> StandardReturn:
     :param node: the AST node representing an assertion statement
     :type node: ast.Assert
     :return: a dict containing the statement type, test expression, and optional message
-    :rtype: AssertHandlerDict
+    :rtype: StandardReturn
     """
 
     statement: Final[Statement] = Statement.Assert
@@ -944,156 +912,82 @@ def handle_assert(struct: StandardReturn, node: ast.Assert) -> StandardReturn:
     return struct
 
 
-def handle_list(node: ast.List) -> StandardReturn:
+def handle_list(node: ast.List) -> str:
     """
-    Processes an `ast.List` node and returns its data.
-
-    This function analyzes the elements of a list and returns a structured dict
-    containing the details of the list and its components.
-
-    Key elements of the returned data:
-    - statement: The type of statement, identified as `Statement.List`;
-    - elements: A list of reprs for each element in the list.
+    Recieves an `ast.List` node and returns its code-like representation as str.
 
     :param node: the AST node representing a list expression
     :type node: ast.List
-    :return: a dict containing the statement type and the list's elements
-    :rtype: ListHandlerDict
+    :return: the readable code-like node build up
+    :rtype: str
     """
 
-    return {
-        'statement': Statement.List,
-        'elements': [cast(str, handle_node(i)) for i in node.elts],
-    }
+    return ast.unparse(node)
 
 
-def handle_tuple(node: ast.Tuple) -> StandardReturn:
+def handle_tuple(node: ast.Tuple) -> str:
     """
-    Processes an `ast.Tuple` node and returns its data.
+    Recieves an `ast.Tuple` node and returns its code-like representation as str.
 
-    This function analyzes the elements of a tuple and returns a structured dict
-    containing the details of the tuple and its components.
-
-    Key elements of the returned data:
-    - statement: The type of statement, identified as `Statement.Tuple`;
-    - elements: A list of reprs for each element in the tuple.
-
-    :param node: the AST node representing a list expression
+    :param node: the AST node representing a tuple expression
     :type node: ast.Tuple
-    :return: a dict containing the statement type and the tuple's elements
-    :rtype: TupleHandlerDict
+    :return: the readable code-like node build up
+    :rtype: str
     """
 
-    return {
-        'statement': Statement.Tuple,
-        'elements': [cast(str, handle_node(i)) for i in node.elts],
-    }
+    return ast.unparse(node)
 
 
-def handle_set(node: ast.Set) -> StandardReturn:
+def handle_set(node: ast.Set) -> str:
     """
-    Processes an `ast.Set` node and returns its data.
+    Recieves an `ast.Set` node and returns its code-like representation as str.
 
-    This function analyzes the elements of a set and returns a structured dict
-    containing the details of the set and its components.
-
-    Key elements of the returned data:
-    - statement: The type of statement, identified as `Statement.Set`;
-    - elements: A list of reprs for each element in the set.
-
-    :param node: the AST node representing a list expression
+    :param node: the AST node representing a set expression
     :type node: ast.Set
-    :return: a dict containing the statement type and the set's elements
-    :rtype: SetHandlerDict
+    :return: the readable code-like node build up
+    :rtype: str
     """
-    return {
-        'statement': Statement.Set,
-        'elements': [cast(str, handle_node(i)) for i in node.elts],
-    }
+
+    return ast.unparse(node)
 
 
-def handle_dict(node: ast.Dict) -> StandardReturn:
+def handle_dict(node: ast.Dict) -> str:
     """
-    Processes an `ast.Dict` node and returns its data.
+    Recieves an `ast.Dict` node and returns its code-like representation as str.
 
-    This function analyzes the elements of a dict and returns a structured dict
-    containing the details of the dict and its components.
-
-    Key elements of the returned data:
-    - statement: The type of statement, identified as `Statement.Dict`;
-    - keys: A list of reprs for each key in the dict.
-    - values: A list of reprs for each value in the dict.
-
-    :param node: the AST node representing a list expression
+    :param node: the AST node representing a dict expression
     :type node: ast.Dict
-    :return: a dict containing the statement type and the dict's elements
-    :rtype: DictHandlerDict
+    :return: the readable code-like node build up
+    :rtype: str
     """
 
-    keys: list[str] = [cast(str, handle_node(i)) for i in node.keys]
-    values: list[str] = [cast(str, handle_node(i)) for i in node.values]
-
-    if None in node.keys:
-        values[-1] = f'**{values[-1]}'
-
-    return {
-        'statement': Statement.Dict,
-        'keys': keys,
-        'values': values,
-    }
+    return ast.unparse(node)
 
 
 def handle_subscript(node: ast.Subscript) -> str:
     """
-    Processes an `ast.Subscript` node and returns its data.
+    Recieves an `ast.Subscript` node and returns its code-like representation as str.
 
-    This function analyzes the elements a subscript statement, returning a dict
-    containing the details of the subscript and its components.
-
-    Key elements of the returned data:
-    - statement: The type of statement, identified as `Statement.Subscript`;
-    - value: A str for the value of the subscript.
-    - slice: A SliceHandlerDict object for the slice itself.
-
-    :param node: the AST node representing a list expression
+    :param node: the AST node representing a subscript expression
     :type node: ast.Subscript
-    :return: a dict containing the statement type and the slice's elements
-    :rtype: SubscriptHandlerDict
+    :return: the readable code-like node build up
+    :rtype: str
     """
 
-    name: str = cast(str, handle_node(node.value))
-    _slice: StandardReturnProccessor | None = handle_node(node.slice)
-
-    return f'{name}[{_slice}]'
+    return ast.unparse(node)
 
 
 def handle_slice(node: ast.Slice) -> str:
     """
-    Processes an `ast.Slice` node and returns its data.
+    Recieves an `ast.Subscript` node and returns its code-like representation as str.
 
-    This function analyzes the elements a slice statement, returning a dict containing
-    the details of the slice itself and its components.
-
-    Key elements of the returned data:
-    - statement: The type of statement, identified as `Statement.Slice`;
-    - lower: A str for the lower value.
-    - upper: A str for the upper value.
-
-    :param node: the AST node representing a list expression
+    :param node: the AST node representing a slice expression
     :type node: ast.Slice
-    :return: a dict containing the statement type and the slice's elements
-    :rtype: SliceHandlerDict
+    :return: the readable code-like node build up
+    :rtype: str
     """
 
-    lower: str = cast(str, handle_node(node.lower))
-    upper: str = cast(str, handle_node(node.upper))
-    step: str = ''
-
-    if node.step is not None:
-        value: str = cast(str, handle_node(node.step))
-        step = f', {value}'
-
-    return f'{lower}:{upper}{step}'
+    return ast.unparse(node)
 
 
 def handle_name(node: ast.Name) -> str:

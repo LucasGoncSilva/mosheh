@@ -45,7 +45,7 @@ def generate_doc(
     :type root: str
     :param exit: the output dir where the documentation will be generated
     :type exit: str
-    :param proj_name: the name of the project, used in the generated MkDocs configuration
+    :param proj_name: the name of the project, for generating MkDocs configuration
     :type proj_name: str
     :param edit_uri: optional URI for linking to source file edits (defaults to '')
     :type edit_uri: str, optional
