@@ -570,7 +570,7 @@ def handle_annassign(
     """
 
     statement: Statement = Statement.AnnAssign
-    token: str = cast(list[str], handle_node(node.target))[0]
+    name: str = cast(list[str], handle_node(node.target))[0]
     annot: str = cast(list[str], handle_node(node.annotation))[0]
     value: str = ''
     code: str = ast.unparse(node)
@@ -583,7 +583,7 @@ def handle_annassign(
     data.update(
         {
             'statement': statement,
-            'token': token,
+            'name': name,
             'annot': annot,
             'value': value,
             'code': code,

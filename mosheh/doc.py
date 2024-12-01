@@ -16,6 +16,10 @@ from custom_types import CodebaseDict, ImportType, StandardReturn, Statement
 from utils import indent_code
 
 
+NAV_DIRS: list[str] = []
+NAV_MD: list[str] = ['nav:\n']
+
+
 def generate_doc(
     codebase: CodebaseDict,
     root: str,
@@ -58,6 +62,7 @@ def generate_doc(
     """
 
     exit_path: str = path.abspath(exit)
+    mkdocs_yml: str = path.join(exit_path, 'mkdocs.yml')
 
     try:
         result = subprocess.run(
@@ -70,7 +75,7 @@ def generate_doc(
     except subprocess.CalledProcessError as e:
         stdout.write(f'Error: {e.stderr}')
 
-    with open(path.join(exit_path, 'mkdocs.yml'), 'w', encoding='utf-8') as f:
+    with open(mkdocs_yml, 'w', encoding='utf-8') as f:
         f.write(
             default_doc_config(
                 proj_name,
@@ -81,6 +86,9 @@ def generate_doc(
         )
 
     process_codebase(codebase, root, exit)
+
+    with open(mkdocs_yml, 'a', encoding='utf-8') as f:
+        f.writelines(NAV_MD)
 
 
 def default_doc_config(
@@ -585,6 +593,7 @@ def process_codebase(
     """
 
     parents: list[str] = list(codebase.keys())
+    docs_path: str = path.join(exit, 'docs')
 
     for key in parents:
         value = codebase[key]
@@ -595,12 +604,35 @@ def process_codebase(
                 content: str = codebase_to_markdown(value, new_path)
 
                 output_file_path: str = path.join(
-                    exit, 'docs', new_path.removeprefix(root) + '.md'
+                    docs_path, new_path.removeprefix(root) + '.md'
                 )
                 folder_path = output_file_path.split(key)[0]
+
                 if not path.exists(folder_path):
                     mkdir(folder_path)
                 with open(output_file_path, 'w', encoding='utf-8') as f:
                     f.write(content)
+
+                nav_path: list[str] = [
+                    i for i in folder_path.removeprefix(docs_path).split(path.sep) if i
+                ]
+
+                for i in range(len(nav_path)):
+                    sub_nav_path: str = f'{path.sep}'.join(nav_path[0 : i + 1])
+
+                    if sub_nav_path not in NAV_DIRS:
+                        NAV_DIRS.append(sub_nav_path)
+                        md_line: str = indent_code(
+                            f'- {sub_nav_path.split(path.sep)[-1]}:', 2 * (i + 1)
+                        )
+                        NAV_MD.append(f'{md_line}\n')
+
+                    if i + 1 == len(nav_path):
+                        md_line: str = indent_code(
+                            f'- {key}: {output_file_path.removeprefix(f"{docs_path}{path.sep}")}',
+                            2 * (i + 2),
+                        )
+                        NAV_MD.append(f'{md_line}\n')
+
         else:
             process_codebase(value, root, exit, new_path)
