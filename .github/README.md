@@ -146,6 +146,6 @@ To be defined.
 | `--readme-path` | `str` | `Optional` |          `''`           | `--repo-url .github/README.md`  | Path to project `README.md` file |
 |    `--exit`     | `str` | `Optional` |          `'.'`          | `--exit doc/`                   | Doc output path                  |
 
-## Licença
+## License
 
 This project is under [MIT License](https://choosealicense.com/licenses/mit/). A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.
