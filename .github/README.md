@@ -8,87 +8,85 @@
 
 <!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LucasGoncSilva/mosheh/XXXXXX.yml?style=flat&labelColor=%23101010) -->
 
-Mosheh é uma ferramenta para geração de documentações de projetos, de Python para Python.
+Mosheh is a tool for generating documentations for projects, from Python to Python.
 
-Basicamente, Mosheh lista todos os arquivos para onde você apontar, armazena cada declaração de definição notória em cada arquivo varrido através da manipulação da AST com o módulo `ast` e, posteriormente, gera a documentação - com uso de [MkDocs](https://www.mkdocs.org/) e [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) - respeitando os dados obtidos e a hierarquia dos diretórios e arquivos.
+Basically, Mosheh lists all files you points to, saves every single notorious statement of definition on each file iterated, all using Python "ast" native module for handling the AST and then generating with [MkDocs](https://www.mkdocs.org/) and [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) a documentation respecting the dirs and files hierarchy. The stuff documented for each file are listed below:
 
-Os elementos documentados para cada arquivo estão listados abaixo:
+- Imports `[ast.Import | ast.ImportFrom]`
 
-- Importações `[ast.Import | ast.ImportFrom]`
+  - [x] Type `[Native | TrdParty | Local]`
+  - [x] Path (e.g. 'django.http')
+  - [x] Code
 
-  - [x] Tipo `[Nativo | Terceiros | Local]`
-  - [x] Path (e.g. `django.http`)
-  - [x] Código
+- Constants `[ast.Assign | ast.AnnAssign]`
 
-- Constantes `[ast.Assign | ast.AnnAssign]`
-
-  - [x] Nome do Token
-  - [x] Anotação de Tipo (datatype)
-  - [x] Valor (um literal, uma operação ou uma chamada)
-  - [x] Código
+  - [x] Name (token name)
+  - [x] Typing Notation (datatype)
+  - [x] Value (literal or call)
+  - [x] Code
 
 - Classes `[ast.ClassDef]`
 
-  - [ ] Descrição (docstring)
-  - [x] Nome (nome da classe)
-  - [x] Pais (heranças)
-  - [ ] Métodos Definidos (quantidade e nomes)
-  - [ ] Examplo de Uso
-  - [x] Código
+  - [ ] Description (docstring)
+  - [x] Name (class name)
+  - [x] Parents (inheritance)
+  - [ ] Methods Defined (nums and names)
+  - [ ] Example (usage)
+  - [x] Code
 
-- Funções `[ast.FunctionDef | ast.AsyncFunctionDef]`
+- Funcs `[ast.FunctionDef | ast.AsyncFunctionDef]`
 
-  - [ ] Descrição (docstring)
-  - [x] Nome (nome da função)
-  - [ ] Tipo `[Func | Método | Gerador | Corrotina]`
-  - [x] Parâmetros (nome, tipo e valor padrão)
-  - [x] Tipo de Retorno (datatype)
-  - [ ] Exceções (disparo de erros)
-  - [ ] Examplo de Uso
-  - [x] Código
+  - [ ] Description (docstring)
+  - [x] Name (func name)
+  - [ ] Type `[Func | Method | Generator | Coroutine]`
+  - [x] Parameters (name, type, default)
+  - [x] Return Type (datatype)
+  - [ ] Raises (exception throw)
+  - [ ] Example (usage)
+  - [x] Code
 
-- Asserções: `[ast.Assert]`
-  - [x] Teste (asserção)
-  - [x] Mensagem (opcional, caso falhe)
-  - [x] Código
+- Assertions `[ast.Assert]`
+  - [x] Test (assertion by itself)
+  - [x] Message (opt. message in fail case)
+  - [x] Code
 
 ## Stack
 
 ![Python logo](https://img.shields.io/badge/Python-blue?style=for-the-badge&logo=python&logoColor=FFD43B)
 
-## Arquitetura
+## Arch
 
-A arquitetura do Mosheh pode ser interpretada a partir de duas formas: a estrutura de diretórios e a interação dos elementos que o compõem. Parte considerável de um projeto é - ou ao menos deveria ser - elementos dispensáveis para sua funcionalidade, de fato, como por exemplo a existência de testes automatizados; eles são importantes para que todo e qualquer processo de qualidade existente seja mantido a um nível mínimo aceitável, mas se todos os testes forem apagados, a ferramenta continua funcionando ainda assim.
+Mosheh's architecture can be interpreted in two ways: the directory structure and the interaction of the elements that make it up. A considerable part of a project is - or at least should be - that elements that are dispensable for its functionality are in fact dispensable, such as the existence of automated tests; they are important so that any existing quality process is kept to a minimum acceptable level, but if all the tests are deleted, the tool still works.
 
-Aqui não é diferente, uma parte considerável do Mosheh é, na verdade, completamente dispensável; acompanhe abaixo a estrutura de diretórios e arquivos relevantes que fazem parte deste projeto:
+Here it is no different, a considerable part of Mosheh is, in fact, completely dispensable; follow below the structure of directories and relevant files that are part of this project:
 
 ```sh
 .
-├── mosheh                      # O código-fonte o próprio Mosheh
-│   ├── codebase.py             # Lógica de leitura da base de código
-│   ├── constants.py            # Constantes a serem avaliadas
-│   ├── custom_types.py         # Tipos de dados próprios
-│   ├── doc.py                  # Lógica de construção da documentação final
-│   ├── handlers.py             # Funções de manipulação de nós da base de código
-│   ├── main.py                 # Arquivo de entrada
-│   └── utils.py                # Códigos utilitários, como Busca Binária
+├── mosheh                      # Mosheh's source-code
+│   ├── codebase.py             # Codebase reading logic
+│   ├── constants.py            # Constants to be evaluated
+│   ├── custom_types.py         # Custom data types
+│   ├── doc.py                  # Documentation build logic
+│   ├── handlers.py             # Codebase nodes handlers functions
+│   ├── main.py                 # Entrypoint
+│   └── utils.py                # Utilities
 │
-├── tests                       # Diretório de gabarito para testes
-│   ├── DOC                     # Saída da documentação gerada
-│   └── PROJECT                 # Projeto de exemplo para teste
+├── tests                       # Template dir for testing
+│   ├── DOC                     # Doc output dir
+│   └── PROJECT                 # Template project dir
 │
-├── requirements.txt            # Depencências do Mosheh
+├── requirements.txt            # Mosheh's dependencies
 │
-├── .github                     # Tralhas sociais e workflows
+├── .github                     # Workflows and social stuff
 │
-├── LICENSE                     # Tralha legal, A.K.A não me processe
+├── LICENSE                     # Legal stuf, A.K.A donut sue me
 │
-├── ruff.toml                   # Arquivo config do formatador Ruff
+├── ruff.toml                   # Ruff config file
 │
-└── .gitignore                  # Arquivo "exclude" do Git
+└── .gitignore                  # Git "exclude" file
 ```
 
-É de se esperar que caso aconteça do diretório `tests/` ser excluído, o Mosheh em si não sofrer alteração alguma, tanto que quando se baixa uma ferramenta via `pip` ou semelhantes, a ferramenta não vem acompanhada dos testes, licenças, arquivos de configuração de desenvolvimento ou workflows. Portanto, para contribuir com o entendimento do fluxo de funcionamento do diretório `mosheh/`, visualize a seguir como os elementos funcionais interagem entre si:
+It is to be expected that if the `tests/` directory is deleted, Mosheh itself will not be altered in any way, so much so that when a tool is downloaded via `pip` or similar, the tool is not accompanied by tests, licenses, development configuration files or workflows. So, to help you understand how the `mosheh/` directory works, here's how the functional elements interact with each other:
 
 ```mermaid
 flowchart LR
@@ -130,21 +128,21 @@ linkStyle default stroke:#808080
 linkStyle 10,11,12,13 stroke:#fff
 ```
 
-## Comandos e Parâmetros
+## Commands and Parameters
 
-### Comandos
+### Commands
 
-A definir
+To be defined.
 
-### Parâmetros
+### Parameters
 
-|    Chamada     | Tipo  | Obrigatoriedade |   Padrão   | Exemplo                         | Ação                                   |
-| :------------: | :---: | :-------------: | :--------: | :------------------------------ | :------------------------------------- |
-| `-h`, `--help` | `str` |   `Optional`    |   `None`   | `-h`, `--help`                  | Apresenta estes parâmetros de chamada  |
-|    `-root`     | `str` |   `Required`    |   `None`   | `-root example/`                | Raíz, diretório base para o mapeamento |
-| `--repo-name`  | `str` |   `Optional`    | `'GitHub'` | `--repo-name toicin`            | Nome do repositório/projeto            |
-|  `--repo-url`  | `str` |   `Optional`    |   `None`   | `--repo-url https://random.com` | Nome do repositório                    |
-|    `--exit`    | `str` |   `Optional`    |   `'.'`    | `--exit doc/`                   | Caminho de saída da documentação       |
+|      Call      | Type  | Mandatory  |  Default   | Example                         | Action                                 |
+| :------------: | :---: | :--------: | :--------: | :------------------------------ | :------------------------------------- |
+| `-h`, `--help` | `str` | `Optional` |   `None`   | `-h`, `--help`                  | Apresenta estes parâmetros de chamada  |
+|    `-root`     | `str` | `Required` |   `None`   | `-root example/`                | Raíz, diretório base para o mapeamento |
+| `--repo-name`  | `str` | `Optional` | `'GitHub'` | `--repo-name toicin`            | Nome do repositório/projeto            |
+|  `--repo-url`  | `str` | `Optional` |   `None`   | `--repo-url https://random.com` | Nome do repositório                    |
+|    `--exit`    | `str` | `Optional` |   `'.'`    | `--exit doc/`                   | Caminho de saída da documentação       |
 
 ## Licença
 
