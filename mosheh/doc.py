@@ -43,21 +43,21 @@ def generate_doc(
     - Configuration: Builds a `mkdocs.yml` configuration file with project details,
       including repository information and editing URI.
 
-    :param codebase: dict containing nodes representing `.py` files and their stmts
+    :param codebase: Dict containing nodes representing `.py` files and their stmts.
     :type codebase: CodebaseDict
-    :param root: the root path of the source code to be documented
+    :param root: The root path of the source code to be documented.
     :type root: str
-    :param exit: the output dir where the documentation will be generated
+    :param exit: The output dir where the documentation will be generated.
     :type exit: str
-    :param proj_name: the name of the project, for generating MkDocs configuration
+    :param proj_name: The name of the project, for generating MkDocs configuration.
     :type proj_name: str
-    :param edit_uri: optional URI for linking to source file edits (defaults to '')
+    :param edit_uri: optional URI for linking to source file edits (defaults to '').
     :type edit_uri: str, optional
-    :param repo_name: the repository provider name (defaults to 'GitHub')
+    :param repo_name: The repository provider name (defaults to 'GitHub').
     :type repo_name: str, optional
-    :param repo_url: the URL of the repository, used for linking in the documentation
+    :param repo_url: The URL of the repository, used for linking in the documentation.
     :type repo_url: str, optional
-    :return: nothing, just generates documentation files in the specified output path
+    :return: Nothing, just generates documentation files in the specified output path.
     :rtype: None
     """
 
@@ -135,11 +135,11 @@ def codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     # Outputs a Markdown string with sections for imports and classes
     ```
 
-    :param filedata: a list of statement dict for the parsed contents of a Python file
+    :param filedata: A list of statement dict for the parsed contents of a Python file.
     :type filedata: list[StandardReturn]
-    :param basedir: the file in-process' base dir, used to generate the module path
+    :param basedir: The file in-process' base dir, used to generate the module path.
     :type basedir: str
-    :return: a Markdown-formatted string documenting the contents of the file
+    :return: A Markdown-formatted string documenting the contents of the file.
     :rtype: str
     """
 
@@ -231,9 +231,9 @@ def handle_import(stmt: StandardReturn) -> str:
     # Outputs a formatted Markdown string representing the import
     ```
 
-    :param stmt: a dict containing the details of the import statement
+    :param stmt: A dict containing the details of the import statement.
     :type stmt: StandardReturn
-    :return: a formatted Markdown string documenting the import statement
+    :return: A formatted Markdown string documenting the import statement.
     :rtype: str
     """
 
@@ -279,9 +279,9 @@ def handle_import_from(stmt: StandardReturn) -> str:
     # Outputs a formatted Markdown string representing the import
     ```
 
-    :param stmt: a dict containing the details of the import statement
+    :param stmt: A dict containing the details of the import statement.
     :type stmt: StandardReturn
-    :return: a formatted Markdown string documenting the import statement
+    :return: A formatted Markdown string documenting the import statement.
     :rtype: str
     """
 
@@ -326,9 +326,9 @@ def handle_assign(stmt: StandardReturn) -> str:
     # Outputs a formatted Markdown string representing the assign
     ```
 
-    :param stmt: a dict containing the details of the assign statement
+    :param stmt: A dict containing the details of the assign statement.
     :type stmt: StandardReturn
-    :return: a formatted Markdown string documenting the assign statement
+    :return: A formatted Markdown string documenting the assign statement.
     :rtype: str
     """
 
@@ -375,9 +375,9 @@ def handle_annassign(stmt: StandardReturn) -> str:
     # Outputs a formatted Markdown string representing the annotated assign
     ```
 
-    :param stmt: a dict containing the details of the annassign statement
+    :param stmt: A dict containing the details of the annassign statement.
     :type stmt: StandardReturn
-    :return: a formatted Markdown string documenting the annassign statement
+    :return: A formatted Markdown string documenting the annassign statement.
     :rtype: str
     """
 
@@ -427,9 +427,9 @@ def handle_class_def(stmt: StandardReturn) -> str:
     # Outputs a formatted Markdown string representing the class definition
     ```
 
-    :param stmt: a dict containing the details of the class definition statement
+    :param stmt: A dict containing the details of the class definition statement.
     :type stmt: StandardReturn
-    :return: a formatted Markdown string documenting the class definition
+    :return: A formatted Markdown string documenting the class definition.
     :rtype: str
     """
 
@@ -485,9 +485,9 @@ def handle_function_def(stmt: StandardReturn) -> str:
     # Outputs a formatted Markdown string representing the function definition
     ```
 
-    :param stmt: a dict containing the details of the function definition statement
+    :param stmt: A dict containing the details of the function definition statement.
     :type stmt: StandardReturn
-    :return: a formatted Markdown string documenting the function definition
+    :return: A formatted Markdown string documenting the function definition.
     :rtype: str
     """
 
@@ -590,7 +590,8 @@ def process_codebase(
     :type exit: str
     :param basedir: The base directory used during the recursive traversal.
     :type basedir: str, optional, default is ''
-    :return: None
+    :return: None.
+    :rtype: None
     """
 
     parents: list[str] = list(codebase.keys())
@@ -641,7 +642,8 @@ def __process_file(
     :type root: str
     :param docs_path: The path to the documentation directory.
     :type docs_path: str
-    :return: None
+    :return: None.
+    :rtype: None
     """
 
     if not stmts:
@@ -680,7 +682,8 @@ def __write_to_file(file_path: str, content: str) -> None:
     :type file_path: str
     :param content: The content to be written to the file.
     :type content: str
-    :return: None
+    :return: None.
+    :rtype: None
     """
 
     with open(file_path, 'w', encoding='utf-8') as file:
@@ -722,7 +725,8 @@ def __update_navigation(
     :type key: str
     :param output_file_path: The path to the output documentation file.
     :type output_file_path: str
-    :return: None
+    :return: None.
+    :rtype: None
     """
 
     nav_path: list[str] = [

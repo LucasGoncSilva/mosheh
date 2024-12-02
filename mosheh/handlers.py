@@ -27,9 +27,9 @@ def handle_def_nodes(node: ast.AST) -> list[StandardReturn]:
     - Classes: `ast.ClassDef`
     - Assertions: `ast.Assert`
 
-    :param node: the AST node to process
+    :param node: The AST node to process.
     :type node: ast.AST
-    :return: an object containing information associated with the node
+    :return: An object containing information associated with the node.
     :rtype: list[StandardReturn]
     """
 
@@ -117,10 +117,10 @@ def handle_node(
     # Outputs a standardized representation of the function definition.
     ```
 
-    :param node: the AST node to be processed
+    :param node: The AST node to be processed.
     :type node: ast.AST | ast.expr | None
-    :return: a list of standardized data representing the processed node, or `None` if
-                no node is provided
+    :return: A list of standardized data representing the processed node, or `None` if
+                no node is provided.
     :rtype: list[StandardReturnProccessor] | None
     """
 
@@ -298,9 +298,9 @@ def __handle_import(lib_name: str) -> StandardReturn:
     # }
     ```
 
-    :param lib_name: the name of the library to be imported
+    :param lib_name: The name of the library to be imported.
     :type lib_name: str
-    :return: a standardized dictionary representing the import statement
+    :return: A standardized dictionary representing the import statement.
     :rtype: list[StandardReturn]
     """
 
@@ -354,11 +354,11 @@ def handle_import(
     # Outputs standardized data for 'os' and 'sys' imports.
     ```
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
-    :param node: the AST node representing an import statement
+    :param node: The AST node representing an import statement.
     :type node: ast.Import
-    :return: the updated structure with information about the imported libraries
+    :return: The updated structure with information about the imported libraries.
     :rtype: list[StandardReturn]
     """
 
@@ -383,11 +383,11 @@ def handle_import_from(
 
     Each module's data includes its path and category, stored in a structured dict.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
-    :param node: the AST node representing an import statement
+    :param node: The AST node representing an import statement.
     :type node: ast.ImportFrom
-    :return: a dict containing the statement type and categorized module information
+    :return: A dict containing the statement type and categorized module information.
     :rtype: list[StandardReturn]
     """
 
@@ -430,11 +430,11 @@ def handle_attribute(
     """
     Recieves an `ast.Attribute` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a slice expression
+    :param node: The AST node representing a slice expression.
     :type node: ast.Attribute
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: list[StandardReturnProccessor]
     """
 
@@ -449,11 +449,11 @@ def handle_call(
     """
     Recieves an `ast.Call` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a slice expression
+    :param node: The AST node representing a slice expression.
     :type node: ast.Call
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: list[StandardReturnProccessor]
     """
 
@@ -468,11 +468,11 @@ def handle_constant(
     """
     Recieves an `ast.Constant` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a slice expression
+    :param node: The AST node representing a slice expression.
     :type node: ast.Constant
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: str
     """
 
@@ -494,11 +494,11 @@ def handle_assign(
     - tokens: A list of string repr for all target variables in the assignment.
     - value: A string repr of the value being assigned.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
-    :param node: the AST node representing an assignment statement
+    :param node: The AST node representing an assignment statement.
     :type node: ast.Assign
-    :return: a dict containing the statement type, target variables, and assigned value
+    :return: A dict containing the statement type, target variables, and assigned value.
     :rtype: list[StandardReturn]
     """
 
@@ -531,11 +531,11 @@ def handle_binop(
     """
     Recieves an `ast.BinOp` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a binary operation expression
+    :param node: The AST node representing a binary operation expression.
     :type node: ast.BinOp
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: str
     """
 
@@ -559,11 +559,11 @@ def handle_annassign(
     - value: A string repr of the value being assigned.
     - annot: The type hint for the assignment.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
-    :param node: the AST node representing an assignment statement
+    :param node: The AST node representing an assignment statement.
     :type node: ast.AnnAssign
-    :return: a dict with the statement type, target var, type hint and assigned value
+    :return: A dict with the statement type, target var, type hint and assigned value.
     :rtype: list[StandardReturn]
     """
 
@@ -750,11 +750,11 @@ def handle_function_def(
     - Method: also base function, but defined inside a class (e.g. `def __init__():`);
     - Generator: process an iterable object at a time, on demand, with `yield` inside.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
-    :param node: the AST node representing a func def statement
+    :param node: The AST node representing a func def statement.
     :type node: ast.FunctionDef
-    :return: a dict containing the statement type and the data listed before
+    :return: A dict containing the statement type and the data listed before.
     :rtype: list[StandardReturn]
     """
 
@@ -800,13 +800,13 @@ def handle_async_function_def(
     This function analyzes the components of a func def, mapping the name, decorators,
     arguments (name, type, default value), return type and even the type of function it
     is, which in this case can be only one:
-    - Coroutine: an async func, defined with `async def` syntax.
+    - Coroutine: An async func, defined with `async def` syntax..
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
-    :param node: the AST node representing a func def statement
+    :param node: The AST node representing a func def statement.
     :type node: ast.AsyncFunctionDef
-    :return: a dict containing the statement type and the data listed before
+    :return: A dict containing the statement type and the data listed before.
     :rtype: list[StandardReturn]
     """
 
@@ -929,11 +929,11 @@ def handle_class_def(
     - decos: A list of string reprs for all decorators applied to the class;
     - kwargs: A list of tuples, in `(name, value)` style.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
-    :param node: the AST node representing a class definition
+    :param node: The AST node representing a class definition.
     :type node: ast.ClassDef
-    :return: a dict with the statement type, name, base classes, decorators, and kwargs
+    :return: A dict with the statement type, name, base classes, decorators, and kwargs.
     :rtype: list[StandardReturn]
     """
 
@@ -972,11 +972,11 @@ def handle_compare(
     """
     Recieves an `ast.Compare` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a compare expression
+    :param node: The AST node representing a compare expression.
     :type node: ast.Compare
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: str
     """
 
@@ -1000,11 +1000,11 @@ def handle_assert(
     - test: A repr of the test expression being asserted;
     - msg: A string repr of the optional message, `None` if no message is provided.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
-    :param node: the AST node representing an assertion statement
+    :param node: The AST node representing an assertion statement.
     :type node: ast.Assert
-    :return: a dict containing the statement type, test expression, and optional message
+    :return: A dict with the statement type, test expression, and optional message.
     :rtype: list[StandardReturn]
     """
 
@@ -1037,11 +1037,11 @@ def handle_list(
     """
     Recieves an `ast.List` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a list expression
+    :param node: The AST node representing a list expression.
     :type node: ast.List
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: str
     """
 
@@ -1056,11 +1056,11 @@ def handle_tuple(
     """
     Recieves an `ast.Tuple` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a tuple expression
+    :param node: The AST node representing a tuple expression.
     :type node: ast.Tuple
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: str
     """
 
@@ -1075,11 +1075,11 @@ def handle_set(
     """
     Recieves an `ast.Set` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a set expression
+    :param node: The AST node representing a set expression.
     :type node: ast.Set
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: str
     """
 
@@ -1094,11 +1094,11 @@ def handle_dict(
     """
     Recieves an `ast.Dict` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a dict expression
+    :param node: The AST node representing a dict expression.
     :type node: ast.Dict
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: str
     """
 
@@ -1113,11 +1113,11 @@ def handle_subscript(
     """
     Recieves an `ast.Subscript` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a subscript expression
+    :param node: The AST node representing a subscript expression.
     :type node: ast.Subscript
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: str
     """
 
@@ -1132,11 +1132,11 @@ def handle_slice(
     """
     Recieves an `ast.Slice` node and returns its code-like representation as str.
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing a slice expression
+    :param node: The AST node representing a slice expression.
     :type node: ast.Slice
-    :return: the readable code-like node build up
+    :return: The readable code-like node build up.
     :rtype: list[StandardReturnProccessor]
     """
 
@@ -1153,11 +1153,11 @@ def handle_name(
 
     This function just returns the node id, as str...
 
-    :param struct: the structure to be updated with statement details
+    :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProccessor]
-    :param node: the AST node representing an assignment statement
+    :param node: The AST node representing an assignment statement.
     :type node: ast.Name
-    :return: the node id
+    :return: The node id.
     :rtype: list[StandardReturnProccessor]
     """
 

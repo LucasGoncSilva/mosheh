@@ -19,9 +19,9 @@ def read_codebase(root: str) -> CodebaseDict:
     Also works as a dispatch-like, matching the files extensions,
     leading each file to its flow.
 
-    :param root: the root path/dir to be iterated
+    :param root: The root path/dir to be iterated.
     :type root: str
-    :return: all the codebase data collected
+    :return: All the codebase data collected.
     :rtype: CodebaseDict
     """
 
@@ -54,9 +54,9 @@ def iterate(root: str) -> Generator[str, Any, Any]:
     Iterates using for-loop in os.walk and for dirpath and file in
     files yields the path for each file from the provided root to it.
 
-    :param root: the root to be used as basedir
+    :param root: The root to be used as basedir.
     :type root: str
-    :return: the path for each file on for-loop
+    :return: The path for each file on for-loop.
     :rtype: Generator[str, Any, Any]
     """
 

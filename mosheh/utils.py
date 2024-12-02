@@ -26,11 +26,11 @@ def bin(item: Any, universe: list[Any] | tuple[Any]) -> bool:
     # True
     ```
 
-    :param item: the item to check if exists in
+    :param item: The item to check if exists in.
     :type item: Any
-    :param universe: the sorted iterable to be evaluated
+    :param universe: The sorted iterable to be evaluated.
     :type universe: list[Any] | tuple[Any]
-    :return: if the item is found in the universe
+    :return: If the item is found in the universe.
     :rtype: bool
     """
 
@@ -64,9 +64,9 @@ def is_lib_installed(name: str) -> bool:
     # False
     ```
 
-    :param name: the name of the lib, e.g. numpy or numba
+    :param name: The name of the lib, e.g. numpy or numba.
     :type name: str
-    :return: whether the lib exists in the env
+    :return: Whether the lib exists in the env.
     :rtype: bool
     """
 
@@ -97,7 +97,7 @@ def nested_dict() -> dict[Any, Any]:
     # {'level': {'level2': {'level3': 'text'}}}
     ```
 
-    :return: a `defaultdict` instance configured for recursive nesting
+    :return: A `defaultdict` instance configured for recursive nesting.
     :rtype: dict[Any, Any]
     """
 
@@ -133,13 +133,13 @@ def add_to_dict(
     # {'level1': {'level2': {'level3': {'key': 'value'}}}}
     ```
 
-    :param structure: the nested dictionary to modify
+    :param structure: The nested dictionary to modify.
     :type structure: dict[Any, Any]
-    :param path: a list of keys representing the path to the target location
+    :param path: A list of keys representing the path to the target location.
     :type path: list[str]
-    :param data: the data to add at the specified path
+    :param data: The data to add at the specified path.
     :type data: StandardReturn
-    :return: the modified dictionary with the new data added
+    :return: The modified dictionary with the new data added.
     :rtype: dict[Any, Any]
     """
 
@@ -181,9 +181,9 @@ def convert_to_regular_dict(d: dict[Any, Any]) -> dict[Any, Any]:
     # {'level1': {'level2': 'value'}}
     ```
 
-    :param d: the dictionary to convert. Can include nested `defaultdict` instances
+    :param d: The dictionary to convert. Can include nested `defaultdict` instances.
     :type d: dict[Any, Any]
-    :return: a dict where all `defaultdict` instances are converted to regular dicts
+    :return: A dict where all `defaultdict` instances are converted to regular dicts.
     :rtype: dict[Any, Any]
     """
 
@@ -227,7 +227,7 @@ def standard_struct() -> StandardReturn:
     # {}
     ```
 
-    :return: an empty dict annotated with special custom type
+    :return: An empty dict annotated with special custom type.
     :rtype: StandardReturn
     """
 
@@ -252,11 +252,11 @@ def indent_code(code: str, level: int = 4) -> str:
     #     for i in range(10):\n#         str(i)
     ```
 
-    :param code: the code snippet to be formatted
+    :param code: The code snippet to be formatted.
     :type code: str
-    :param level: the number of spaces to leftpad each line
+    :param level: The number of spaces to leftpad each line.
     :type level: int
-    :return: the code snippet leftpadded
+    :return: The code snippet leftpadded.
     :rtype: str
     """
 
