@@ -678,7 +678,7 @@ def __process_function_args(node_args: ast.arguments) -> str:
 
         if i >= default_diff:
             idx: int = i - default_diff
-            if isinstance(node_args.defaults[idx], ast.Constant):
+            if isinstance(node_args.defaults[idx], ast.Constant) and node_args.defaults:
                 default = str(cast(list[str], handle_node(node_args.defaults[idx]))[0])
 
         formatted_args.append(__format_arg(name, annotation, default))
@@ -729,7 +729,7 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
 
         if i >= kwdefault_diff:
             idx: int = i - kwdefault_diff
-            if isinstance(node_args.kw_defaults[idx], ast.Constant):
+            if isinstance(node_args.kw_defaults[idx], ast.Constant) and node_args.defaults:
                 default = str(cast(list[str], handle_node(node_args.defaults[idx]))[0])
 
         formatted_kwargs.append(__format_arg(name, annotation, default))

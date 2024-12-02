@@ -472,7 +472,7 @@ ACCEPTABLE_LOWER_CONSTANTS: Final[list[str]] = [
     'main',
 ]
 
-DEFAULT_MKDOCS_YML: Final[str] = """site_name: {proj_name} | Documentation
+DEFAULT_MKDOCS_YML: Final[str] = """site_name: {proj_name}
 repo_url: {repo_url}
 repo_name: {repo_name}
 edit_uri: "{edit_uri}"
@@ -481,8 +481,8 @@ edit_uri: "{edit_uri}"
 theme:
   name: material
   language: en
-  # TODO: favicon: path
-  # TODO: logo: path
+  favicon: {logo_path}
+  logo: {logo_path}
   font:
     text: Ubuntu
 
@@ -498,8 +498,7 @@ theme:
       user: fontawesome/solid/user
       API: fontawesome/solid/gears
       browser: fontawesome/solid/desktop
-  
-    logo: fontawesome/solid/book-open
+
     next: fontawesome/solid/arrow-right
     previous: fontawesome/solid/arrow-left
     top: fontawesome/solid/arrow-up
@@ -521,21 +520,22 @@ theme:
       quote: fontawesome/solid/quote-left
 
   palette:
-    # Palette toggle for dark mode
-    - scheme: slate
-      toggle:
-        icon: material/brightness-3
-        name: Light/Dark Mode
-      primary: deep purple
-      accent: deep purple
-
     # Palette toggle for light mode
     - scheme: default
       toggle:
         icon: material/brightness-7
         name: Light/Dark Mode
-      primary: deep purple
-      accent: deep purple
+      primary: green
+      accent: indigo
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-3
+        name: Light/Dark Mode
+      primary: teal
+      accent: orange
+
 
   features:
     - navigation.indexes

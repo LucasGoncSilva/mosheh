@@ -101,6 +101,18 @@ def main() -> None:
         help='URL of the code repository to be mapped.',
     )
     parser.add_argument(
+        '--logo-path',
+        type=str,
+        default='',
+        help='Path for documentation/project logo in .svg | .png format.',
+    )
+    parser.add_argument(
+        '--readme-path',
+        type=str,
+        default='',
+        help='Path for README.md file to replace as homepage.',
+    )
+    parser.add_argument(
         '--exit',
         type=str,
         default='.',
@@ -114,13 +126,25 @@ def main() -> None:
     PROJ_NAME: str = path.abspath(path.curdir).split(path.sep)[-1].upper()
     REPO_NAME: str = args.repo_name
     REPO_URL: str = args.repo_url
+    LOGO_PATH: str = args.logo_path
+    README_PATH: str = args.readme_path
     EXIT: str = args.exit
 
     # Codebase Reading
     data: CodebaseDict = read_codebase(ROOT)
 
     # Doc Generation
-    generate_doc(data, ROOT, EXIT, PROJ_NAME, '', REPO_NAME, REPO_URL)
+    generate_doc(
+        codebase=data,
+        root=ROOT,
+        exit=EXIT,
+        proj_name=PROJ_NAME,
+        edit_uri='',
+        repo_name=REPO_NAME,
+        repo_url=REPO_URL,
+        logo_path=LOGO_PATH,
+        readme_path=README_PATH,
+    )
 
 
 if __name__ == '__main__':

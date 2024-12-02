@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="./logo.svg" height="300" width="300" alt="Logo Mosheh" />
+  <img src="https://raw.githubusercontent.com/lucasGoncSilva/mosheh/refs/heads/main/.github/logo.svg" height="300" width="300" alt="Logo Mosheh" />
   <br>
   Mosheh
 </h1>
@@ -10,7 +10,7 @@
 
 Mosheh is a tool for generating documentations for projects, from Python to Python.
 
-Basically, Mosheh lists all files you points to, saves every single notorious statement of definition on each file iterated, all using Python "ast" native module for handling the AST and then generating with [MkDocs](https://www.mkdocs.org/) and [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) a documentation respecting the dirs and files hierarchy. The stuff documented for each file are listed below:
+Basically, Mosheh lists all files you points to, saves every single notorious statement of definition on each file iterated, all using Python `ast` native module for handling the AST and then generating with [MkDocs](https://www.mkdocs.org/) and [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) a documentation respecting the dirs and files hierarchy. The stuff documented for each file are listed below:
 
 - Imports `[ast.Import | ast.ImportFrom]`
 
@@ -136,13 +136,15 @@ To be defined.
 
 ### Parameters
 
-|      Call      | Type  | Mandatory  |  Default   | Example                         | Action                                 |
-| :------------: | :---: | :--------: | :--------: | :------------------------------ | :------------------------------------- |
-| `-h`, `--help` | `str` | `Optional` |   `None`   | `-h`, `--help`                  | Apresenta estes parâmetros de chamada  |
-|    `-root`     | `str` | `Required` |   `None`   | `-root example/`                | Raíz, diretório base para o mapeamento |
-| `--repo-name`  | `str` | `Optional` | `'GitHub'` | `--repo-name toicin`            | Nome do repositório/projeto            |
-|  `--repo-url`  | `str` | `Optional` |   `None`   | `--repo-url https://random.com` | Nome do repositório                    |
-|    `--exit`    | `str` | `Optional` |   `'.'`    | `--exit doc/`                   | Caminho de saída da documentação       |
+|      Call       | Type  | Mandatory  |         Default         | Example                         | Action                           |
+| :-------------: | :---: | :--------: | :---------------------: | :------------------------------ | :------------------------------- |
+| `-h`, `--help`  | `str` | `Optional` |         `None`          | `-h`, `--help`                  | Help message                     |
+|     `-root`     | `str` | `Required` |         `None`          | `-root example/`                | Root to start looking for        |
+|  `--repo-name`  | `str` | `Optional` |       `'GitHub'`        | `--repo-name toicin`            | Repo name                        |
+|  `--repo-url`   | `str` | `Optional` | `'https://github.com/'` | `--repo-url https://random.com` | Repo URL                         |
+|  `--logo-path`  | `str` | `Optional` |          `''`           | `--repo-url .github/logo.svg`   | Path to project logo             |
+| `--readme-path` | `str` | `Optional` |          `''`           | `--repo-url .github/README.md`  | Path to project `README.md` file |
+|    `--exit`     | `str` | `Optional` |          `'.'`          | `--exit doc/`                   | Doc output path                  |
 
 ## Licença
 
