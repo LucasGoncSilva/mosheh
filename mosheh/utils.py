@@ -73,7 +73,7 @@ def is_lib_installed(name: str) -> bool:
     try:
         spec = find_spec(name)
         return True if spec is not None else False
-    except ModuleNotFoundError:
+    except (ModuleNotFoundError, ValueError):
         return False
 
 

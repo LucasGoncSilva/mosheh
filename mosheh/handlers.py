@@ -238,6 +238,13 @@ def handle_node(
         data = handle_binop(data, node)
 
     # -------------------------
+    # Unary Operation
+    # -------------------------
+
+    elif isinstance(node, ast.UnaryOp):
+        data = handle_unary(data, node)
+
+    # -------------------------
     # SubScripts - ast.Subscript
     # -------------------------
 
@@ -264,6 +271,41 @@ def handle_node(
 
     elif isinstance(node, ast.Compare):
         data = handle_compare(data, node)
+
+    # -------------------------
+    # Joined Strings - ast.JoinedStr
+    # -------------------------
+
+    elif isinstance(node, ast.JoinedStr):
+        data = handle_joined_str(data, node)
+
+    # -------------------------
+    # Ternary Operator - ast.IfExp
+    # -------------------------
+
+    elif isinstance(node, ast.IfExp):
+        data = handle_if_expression(data, node)
+
+    # -------------------------
+    # Boolean Operation (or) - ast.BoolOp
+    # -------------------------
+
+    elif isinstance(node, ast.BoolOp):
+        data = handle_bool_op(data, node)
+
+    # -------------------------
+    # Comprehensions - ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp
+    # -------------------------
+
+    elif isinstance(node, ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp):
+        data = handle_comprehensions(data, node)
+
+    # -------------------------
+    # Lambda Functions - ast.Lambda
+    # -------------------------
+
+    elif isinstance(node, ast.Lambda):
+        data = handle_lambda(data, node)
 
     return data
 
@@ -667,19 +709,18 @@ def __process_function_args(node_args: ast.arguments) -> str:
     """
 
     formatted_args: list[str] = []
-    default_diff: int = len(node_args.args) - len(node_args.defaults)
 
     for i, arg in enumerate(node_args.args):
         name: str = arg.arg
         annotation: Optional[str] = (
             cast(list[str], handle_node(arg.annotation))[0] if arg.annotation else None
         )
-        default: Optional[str] = None
 
-        if i >= default_diff:
-            idx: int = i - default_diff
-            if isinstance(node_args.defaults[idx], ast.Constant) and node_args.defaults:
-                default = str(cast(list[str], handle_node(node_args.defaults[idx]))[0])
+        default = None
+        if i < len(node_args.kw_defaults):
+            default_node = node_args.kw_defaults[i]
+            if default_node:
+                default = str(cast(list[str], handle_node(default_node))[0])
 
         formatted_args.append(__format_arg(name, annotation, default))
 
@@ -718,19 +759,18 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
     """
 
     formatted_kwargs: list[str] = []
-    kwdefault_diff: int = len(node_args.kwonlyargs) - len(node_args.kw_defaults)
 
     for i, arg in enumerate(node_args.kwonlyargs):
         name: str = arg.arg
         annotation: Optional[str] = (
             cast(list[str], handle_node(arg.annotation))[0] if arg.annotation else None
         )
-        default: Optional[str] = None
 
-        if i >= kwdefault_diff:
-            idx: int = i - kwdefault_diff
-            if isinstance(node_args.kw_defaults[idx], ast.Constant) and node_args.defaults:
-                default = str(cast(list[str], handle_node(node_args.defaults[idx]))[0])
+        default = None
+        if i < len(node_args.kw_defaults):
+            default_node = node_args.kw_defaults[i]
+            if default_node:
+                default = str(cast(list[str], handle_node(default_node))[0])
 
         formatted_kwargs.append(__format_arg(name, annotation, default))
 
@@ -760,7 +800,9 @@ def handle_function_def(
 
     statement: Final[Statement] = Statement.FunctionDef
     name: Final[str] = node.name
-    decos: Final[list[str]] = [cast(str, handle_node(i)) for i in node.decorator_list]
+    decos: Final[list[str]] = [
+        cast(list[str], handle_node(i))[0] for i in node.decorator_list
+    ]
     rtype: Final[str] | None = (
         cast(list[str], handle_node(node.returns))[0]
         if node.returns is not None
@@ -812,7 +854,9 @@ def handle_async_function_def(
 
     statement: Final[Statement] = Statement.AsyncFunctionDef
     name: Final[str] = node.name
-    decos: Final[list[str]] = [cast(str, handle_node(i)) for i in node.decorator_list]
+    decos: Final[list[str]] = [
+        cast(list[str], handle_node(i))[0] for i in node.decorator_list
+    ]
     rtype: Final[str] | None = (
         cast(list[str], handle_node(node.returns))[0]
         if node.returns is not None
@@ -944,7 +988,9 @@ def handle_class_def(
         for i in node.bases
         if isinstance(i, ast.Name)
     ]
-    decos: Final[list[str]] = [cast(str, handle_node(i)) for i in node.decorator_list]
+    decos: Final[list[str]] = [
+        cast(list[str], handle_node(i))[0] for i in node.decorator_list
+    ]
     kwargs_str: str = __process_class_kwargs(node.keywords)
     code: Final[str] = ast.unparse(node)
 
@@ -976,6 +1022,25 @@ def handle_compare(
     :type struct: list[StandardReturnProccessor]
     :param node: The AST node representing a compare expression.
     :type node: ast.Compare
+    :return: The readable code-like node build up.
+    :rtype: str
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def handle_unary(
+    struct: list[StandardReturnProccessor], node: ast.UnaryOp
+) -> list[StandardReturnProccessor]:
+    """
+    Recieves an `ast.UnaryOp` node and returns its code-like representation as str.
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProccessor]
+    :param node: The AST node representing a compare expression.
+    :type node: ast.UnaryOp
     :return: The readable code-like node build up.
     :rtype: str
     """
@@ -1157,6 +1222,112 @@ def handle_name(
     :type struct: list[StandardReturnProccessor]
     :param node: The AST node representing an assignment statement.
     :type node: ast.Name
+    :return: The node id.
+    :rtype: list[StandardReturnProccessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def handle_joined_str(
+    struct: list[StandardReturnProccessor], node: ast.JoinedStr
+) -> list[StandardReturnProccessor]:
+    """
+    Processes an `ast.JoinedStr` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProccessor]
+    :param node: The AST node representing an assignment statement.
+    :type node: ast.JoinedStr
+    :return: The node id.
+    :rtype: list[StandardReturnProccessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def handle_if_expression(
+    struct: list[StandardReturnProccessor], node: ast.IfExp
+) -> list[StandardReturnProccessor]:
+    """
+    Processes an `ast.IfExp` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProccessor]
+    :param node: The AST node representing an assignment statement.
+    :type node: ast.IfExp
+    :return: The node id.
+    :rtype: list[StandardReturnProccessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def handle_bool_op(
+    struct: list[StandardReturnProccessor], node: ast.BoolOp
+) -> list[StandardReturnProccessor]:
+    """
+    Processes an `ast.BoolOp` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProccessor]
+    :param node: The AST node representing an assignment statement.
+    :type node: ast.BoolOp
+    :return: The node id.
+    :rtype: list[StandardReturnProccessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def handle_comprehensions(
+    struct: list[StandardReturnProccessor],
+    node: ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp,
+) -> list[StandardReturnProccessor]:
+    """
+    Processes a comprehension node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProccessor]
+    :param node: The AST node representing an assignment statement.
+    :type node: ast.BoolOp
+    :return: The node id.
+    :rtype: list[StandardReturnProccessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def handle_lambda(
+    struct: list[StandardReturnProccessor], node: ast.Lambda
+) -> list[StandardReturnProccessor]:
+    """
+    Processes an `ast.Lambda` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProccessor]
+    :param node: The AST node representing an assignment statement.
+    :type node: ast.Lambda
     :return: The node id.
     :rtype: list[StandardReturnProccessor]
     """

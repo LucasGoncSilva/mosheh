@@ -1,5 +1,5 @@
 import subprocess
-from os import makedirs, mkdir, path
+from os import makedirs, path
 from shutil import copy2
 from sys import stdout
 from typing import cast
@@ -18,7 +18,7 @@ from utils import indent_code
 
 
 NAV_DIRS: list[str] = []
-NAV_MD: list[str] = ['nav:\n']
+NAV_MD: list[str] = ['nav:\n  - Homepage: index.md']
 
 
 def generate_doc(
@@ -723,7 +723,7 @@ def __process_file(
     folder_path: str = path.dirname(output_file_path)
 
     if not path.exists(folder_path):
-        mkdir(folder_path)
+        makedirs(folder_path)
 
     __write_to_file(output_file_path, content)
     __update_navigation(folder_path, docs_path, key, output_file_path)
