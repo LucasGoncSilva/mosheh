@@ -1,10 +1,8 @@
 import ast
-from typing import Final, cast
+from typing import Final, Optional, cast
 
 import constants
 from custom_types import (
-    ArgsKwargs,
-    FunctionType,
     ImportType,
     StandardReturn,
     StandardReturnProccessor,
@@ -595,6 +593,150 @@ def handle_annassign(
     return struct
 
 
+def __format_arg(name: str, annotation: Optional[str], default: Optional[str]) -> str:
+    """
+    Formats a function argument into a string repr with optional type annotations and
+    default values.
+
+    This function constructs a f-string representing a function argument, including its
+    name, optional type annotation, and default value. It ensures consistent formatting
+    for use in function signatures or documentation.
+
+    Key concepts:
+    - Type Annotations: Adds type annotations if provided.
+    - Default Values: Appends default values where applicable.
+    - Fallback Handling: If neither an annotation nor a default value is present, it
+      defaults to 'Unknown'.
+
+    Example:
+    ```python
+    formatted = __format_arg('param', 'int', '42')
+    formatted
+    # "param: int = 42"
+    ```
+
+    :param name: The name of the argument.
+    :type name: str
+    :param annotation: The type annotation for the argument, if any.
+    :type annotation: Optional[str]
+    :param default: The default value of the argument, if any.
+    :type default: Optional[str]
+    :return: A formatted string representing the argument.
+    :rtype: str
+    """
+
+    if annotation and default:
+        return f'{name}: {annotation} = {default}'
+    elif annotation:
+        return f'{name}: {annotation}'
+    elif default:
+        return f'{name} = {default}'
+    else:
+        return f'{name}: Unknown'
+
+
+def __process_function_args(node_args: ast.arguments) -> str:
+    """
+    Processes and formats positional arguments from a function definition.
+
+    This function extracts positional arguments from an `ast.arguments` node,
+    including their names, optional type annotations, and default values.
+    It formats them into a single, comma-separated string repr suitable
+    for documentation or code generation.
+
+    Key concepts:
+    - Positional Arguments: Handles arguments that can be passed by position.
+    - Type Annotations: Extracts and formats type annotations, if present.
+    - Default Values: Aligns each argument with its default value, if provided.
+
+    Example:
+    ```python
+    import ast
+
+    source = "def example(a: int, b: str = 'default'): pass"
+    node = ast.parse(source).body[0]
+    formatted = __process_function_args(node.args)
+    formatted
+    # "a: int, b: str = 'default'"
+    ```
+
+    :param node_args: The `arguments` node from an AST function definition.
+    :type node_args: ast.arguments
+    :return: A comma-separated string of formatted positional arguments.
+    :rtype: str
+    """
+
+    formatted_args: list[str] = []
+    default_diff: int = len(node_args.args) - len(node_args.defaults)
+
+    for i, arg in enumerate(node_args.args):
+        name: str = arg.arg
+        annotation: Optional[str] = (
+            cast(list[str], handle_node(arg.annotation))[0] if arg.annotation else None
+        )
+        default: Optional[str] = None
+
+        if i >= default_diff:
+            idx: int = i - default_diff
+            if isinstance(node_args.defaults[idx], ast.Constant):
+                default = str(cast(list[str], handle_node(node_args.defaults[idx]))[0])
+
+        formatted_args.append(__format_arg(name, annotation, default))
+
+    return ', '.join(formatted_args)
+
+
+def __process_function_kwargs(node_args: ast.arguments) -> str:
+    """
+    Processes and formats keyword-only arguments from a function definition.
+
+    This function extracts keyword-only arguments from an `ast.arguments` node,
+    including their names, optional type annotations, and default values. It formats
+    them into a single, comma-separated string repr suitable for documentation
+    or code generation.
+
+    Key concepts:
+    - Keyword-only Arguments: Processes arguments that must be passed by keyword.
+    - Type Annotations: Extracts and formats type annotations if present.
+    - Default Values: Handles default values, aligning them with their own arguments.
+
+    Example:
+    ```python
+    import ast
+
+    source = 'def example(*, debug: bool = True): pass'
+    node = ast.parse(source).body[0]
+    formatted = __process_function_kwargs(node.args)
+    formatted
+    # "debug: bool = True"
+    ```
+
+    :param node_args: The `arguments` node from an AST function definition.
+    :type node_args: ast.arguments
+    :return: A comma-separated string of formatted keyword-only arguments.
+    :rtype: str
+    """
+
+    formatted_kwargs: list[str] = []
+    kwdefault_diff: int = len(node_args.kwonlyargs) - len(node_args.kw_defaults)
+
+    for i, arg in enumerate(node_args.kwonlyargs):
+        name: str = arg.arg
+        annotation: Optional[str] = (
+            cast(list[str], handle_node(arg.annotation))[0] if arg.annotation else None
+        )
+        default: Optional[str] = None
+
+        if i >= kwdefault_diff:
+            idx: int = i - kwdefault_diff
+            if isinstance(node_args.kw_defaults[idx], ast.Constant):
+                default = str(cast(list[str], handle_node(node_args.defaults[idx]))[0])
+
+        formatted_kwargs.append(__format_arg(name, annotation, default))
+
+    return ', '.join(formatted_kwargs)
+
+
 def handle_function_def(
     struct: list[StandardReturn], node: ast.FunctionDef
 ) -> list[StandardReturn]:
@@ -626,94 +768,8 @@ def handle_function_def(
     )
     code: Final[str] = ast.unparse(node)
 
-    arg_lst: ArgsKwargs = []
-    s_args: tuple[str | None, str | None, None] | None = None
-    kwarg_lst: ArgsKwargs = []
-    ss_kwargs: tuple[str | None, str | None, None] | None = None
-
-    has_star_args: bool = True if node.args.vararg is not None else False
-    has_star_star_kwargs: bool = True if node.args.kwarg is not None else False
-
-    # Args Logic - Validates `*arg`-like
-    if has_star_args and node.args.vararg is not None:
-        arg_name: str = f'*{node.args.vararg.arg}'
-        annot: str | None = None
-
-        if node.args.vararg.annotation is not None:
-            annot = cast(list[str], handle_node(node.args.vararg.annotation))[0]
-
-        s_args = (arg_name, annot, None)
-
-    default_diff = len(node.args.args) - len(node.args.defaults)
-
-    for i, arg in enumerate(node.args.args, start=1):
-        arg_name: str = arg.arg
-        annot: str | None = None
-        default: StandardReturnProccessor | None = None
-
-        if arg.annotation is not None:
-            annot = cast(str, handle_node(arg.annotation))
-
-        if len(node.args.defaults) and default_diff and i > default_diff:
-            expected = node.args.defaults[i - 1 - default_diff]
-
-            if isinstance(expected, ast.Constant):
-                default = handle_constant([], expected)[0]
-            elif isinstance(expected, ast.Call):
-                default = handle_call([], expected)[0]
-        elif len(node.args.defaults) and not (default_diff or i > default_diff):
-            expected = node.args.defaults[i - 1]
-
-            if isinstance(expected, ast.Constant):
-                default = handle_constant([], expected)[0]
-            elif isinstance(expected, ast.Call):
-                default = handle_call([], expected)[0]
-
-        arg_lst.append((arg_name, annot, cast(str | None, default)))
-
-    if has_star_args and s_args is not None:
-        arg_lst.insert(len(arg_lst), s_args)
-
-    # Kwargs Logic - Validates `**kwarg`-like
-    if has_star_star_kwargs and node.args.kwarg is not None:
-        arg_name: str = f'*{node.args.kwarg.arg}'
-        annot: str | None = None
-
-        if node.args.kwarg.annotation is not None:
-            annot = cast(list[str], handle_node(node.args.kwarg.annotation))[0]
-
-        ss_kwargs = (arg_name, annot, None)
-
-    kwdefault_diff = len(node.args.kwonlyargs) - len(node.args.kw_defaults)
-
-    for i, arg in enumerate(node.args.kwonlyargs, start=1):
-        arg_name: str = arg.arg
-        annot: str | None = (
-            cast(str, handle_node(arg.annotation))
-            if arg.annotation is not None
-            else None
-        )
-        default: StandardReturnProccessor | None = None
-
-        if len(node.args.kw_defaults) and (kwdefault_diff and i > kwdefault_diff):
-            expected = node.args.kw_defaults[i - 1 - kwdefault_diff]
-
-            if isinstance(expected, ast.Constant):
-                default = handle_constant([], expected)[0]
-            elif isinstance(expected, ast.Call):
-                default = handle_call([], expected)[0]
-        elif len(node.args.kw_defaults) and not (kwdefault_diff or i > kwdefault_diff):
-            expected = node.args.kw_defaults[i - 1]
-
-            if isinstance(expected, ast.Constant):
-                default = handle_constant([], expected)[0]
-            elif isinstance(expected, ast.Call):
-                default = handle_call([], expected)[0]
-
-        kwarg_lst.append((arg_name, annot, cast(str | None, default)))
-
-    if has_star_star_kwargs and ss_kwargs is not None:
-        kwarg_lst.insert(len(kwarg_lst), ss_kwargs)
+    args_str: str = __process_function_args(node.args)
+    kwargs_str: str = __process_function_kwargs(node.args)
 
     data: StandardReturn = standard_struct()
 
@@ -723,8 +779,8 @@ def handle_function_def(
             'name': name,
             'decorators': decos,
             'rtype': rtype,
-            'args': arg_lst,
-            'kwargs': kwarg_lst,
+            'args': args_str,
+            'kwargs': kwargs_str,
             'code': code,
         }
     )
@@ -764,106 +820,19 @@ def handle_async_function_def(
     )
     code: Final[str] = ast.unparse(node)
 
-    arg_lst: ArgsKwargs = []
-    s_args: tuple[str | None, str | None, None] | None = None
-    kwarg_lst: ArgsKwargs = []
-    ss_kwargs: tuple[str | None, str | None, None] | None = None
-
-    has_star_args: bool = True if node.args.vararg is not None else False
-    has_star_star_kwargs: bool = True if node.args.kwarg is not None else False
-
-    # Args Logic - Validates `*arg`-like
-    if has_star_args and node.args.vararg is not None:
-        arg_name: str = f'*{node.args.vararg.arg}'
-        annot: str | None = None
-
-        if node.args.vararg.annotation is not None:
-            annot = cast(list[str], handle_node(node.args.vararg.annotation))[0]
-
-        s_args = (arg_name, annot, None)
-
-    default_diff = len(node.args.args) - len(node.args.defaults)
-
-    for i, arg in enumerate(node.args.args, start=1):
-        arg_name: str = arg.arg
-        annot: str | None = None
-        default: StandardReturnProccessor | None = None
-
-        if arg.annotation is not None:
-            annot = cast(str, handle_node(arg.annotation))
-
-        if len(node.args.defaults) and default_diff and i > default_diff:
-            expected = node.args.defaults[i - 1 - default_diff]
-
-            if isinstance(expected, ast.Constant):
-                default = handle_constant([], expected)[0]
-            elif isinstance(expected, ast.Call):
-                default = handle_call([], expected)[0]
-        elif len(node.args.defaults) and not (default_diff or i > default_diff):
-            expected = node.args.defaults[i - 1]
-
-            if isinstance(expected, ast.Constant):
-                default = handle_constant([], expected)[0]
-            elif isinstance(expected, ast.Call):
-                default = handle_call([], expected)[0]
-
-        arg_lst.append((arg_name, annot, cast(str | None, default)))
-
-    if has_star_args and s_args is not None:
-        arg_lst.insert(len(arg_lst), s_args)
-
-    # Kwargs Logic - Validates `**kwarg`-like
-    if has_star_star_kwargs and node.args.kwarg is not None:
-        arg_name: str = f'*{node.args.kwarg.arg}'
-        annot: str | None = None
-
-        if node.args.kwarg.annotation is not None:
-            annot = cast(list[str], handle_node(node.args.kwarg.annotation))[0]
-
-        ss_kwargs = (arg_name, annot, None)
-
-    kwdefault_diff = len(node.args.kwonlyargs) - len(node.args.kw_defaults)
-
-    for i, arg in enumerate(node.args.kwonlyargs, start=1):
-        arg_name: str = arg.arg
-        annot: str | None = (
-            cast(str, handle_node(arg.annotation))
-            if arg.annotation is not None
-            else None
-        )
-        default: StandardReturnProccessor | None = None
-
-        if len(node.args.kw_defaults) and (kwdefault_diff and i > kwdefault_diff):
-            expected = node.args.kw_defaults[i - 1 - kwdefault_diff]
-
-            if isinstance(expected, ast.Constant):
-                default = handle_constant([], expected)[0]
-            elif isinstance(expected, ast.Call):
-                default = handle_call([], expected)[0]
-        elif len(node.args.kw_defaults) and not (kwdefault_diff or i > kwdefault_diff):
-            expected = node.args.kw_defaults[i - 1]
-
-            if isinstance(expected, ast.Constant):
-                default = handle_constant([], expected)[0]
-            elif isinstance(expected, ast.Call):
-                default = handle_call([], expected)[0]
-
-        kwarg_lst.append((arg_name, annot, cast(str | None, default)))
-
-    if has_star_star_kwargs and ss_kwargs is not None:
-        kwarg_lst.insert(len(kwarg_lst), ss_kwargs)
+    args_str: str = __process_function_args(node.args)
+    kwargs_str: str = __process_function_kwargs(node.args)
 
     data: StandardReturn = standard_struct()
 
     data.update(
         {
             'statement': statement,
-            'category': FunctionType.Coroutine,
             'name': name,
             'decorators': decos,
             'rtype': rtype,
-            'args': arg_lst,
-            'kwargs': kwarg_lst,
+            'args': args_str,
+            'kwargs': kwargs_str,
             'code': code,
         }
     )
@@ -871,6 +840,77 @@ def handle_async_function_def(
     struct.append(data)
 
     return struct
+
+
+def __format_class_kwarg(name: Optional[str], value: ast.expr) -> str:
+    """
+    Formats a kwarg from a class definition into a string repr.
+
+    This function converts an AST kwarg into a string, representing it in the format
+    `name=value`. If the keyword has no name (e.g., for positional arguments), only the
+    value is returned.
+
+    Key concepts:
+    - AST Unparsing: Uses `ast.unparse` to convert an AST expression into its
+      corresponding Python code as a string.
+    - Conditional Formatting: Handles named and unnamed (positional) keyword arguments.
+
+    Example:
+    ```python
+    import ast
+
+    kwarg = ast.keyword(arg='debug', value=ast.Constant(value=True))
+    formatted = __format_class_kwarg(kwarg.arg, kwarg.value)
+    formatted
+    # "debug = True"
+    ```
+
+    :param name: The name of the kwarg (can be `None` for positional arguments).
+    :type name: Optional[str]
+    :param value: The AST expression representing the value of the keyword argument.
+    :type value: ast.expr
+    :return: A formatted string representing the keyword argument.
+    :rtype: str
+    """
+
+    value_str: str = ast.unparse(value)
+    if name:
+        return f'{name} = {value_str}'
+    return value_str
+
+
+def __process_class_kwargs(keywords: list[ast.keyword]) -> str:
+    """
+    Processes and formats keyword arguments from a class definition.
+
+    This function takes a list of keyword arguments (from an AST node) and formats
+    them into a single, comma-separated string. Each keyword is processed using
+    the `__format_class_kwarg` function to ensure consistent repr.
+
+    Key concepts:
+    - Keyword Formatting: Converts each kwarg into a string repr
+      of the form `key=value`.
+    - List Processing: Aggregates and joins all formatted keyword arguments into a
+      single string for use in documentation or code generation.
+
+    Example:
+    ```python
+    keywords = [ast.keyword(arg='name', value=ast.Constant(value='MyClass'))]
+    formatted = __process_class_kwargs(keywords)
+    formatted
+    # "name='MyClass'"
+    ```
+
+    :param keywords: A list of AST keyword arguments.
+    :type keywords: list[ast.keyword]
+    :return: A comma-separated string of formatted keyword arguments.
+    :rtype: str
+    """
+
+    formatted_kwargs: list[str] = [
+        __format_class_kwarg(kw.arg, kw.value) for kw in keywords
+    ]
+    return ', '.join(formatted_kwargs)
 
 
 def handle_class_def(
@@ -905,9 +945,7 @@ def handle_class_def(
         if isinstance(i, ast.Name)
     ]
     decos: Final[list[str]] = [cast(str, handle_node(i)) for i in node.decorator_list]
-    kwargs: ArgsKwargs = cast(
-        ArgsKwargs, [(i.arg, None, i.value) for i in node.keywords]
-    )
+    kwargs_str: str = __process_class_kwargs(node.keywords)
     code: Final[str] = ast.unparse(node)
 
     data: StandardReturn = standard_struct()
@@ -918,7 +956,7 @@ def handle_class_def(
             'name': name,
             'inheritance': inheritance,
             'decorators': decos,
-            'kwargs': kwargs,
+            'kwargs': kwargs_str,
             'code': code,
         }
     )

@@ -687,7 +687,7 @@ Parents: `{inherit}`
 
 Decorators: `#!py {decorators}`
 
-Kwargs: {kwargs}
+Kwargs: `#!py {kwargs}`
 
 ??? example "SNIPPET"
 
@@ -705,9 +705,9 @@ Return Type: `#!py {rtype}`
 
 Decorators: `#!py {decorators}`
 
-Args: {args}
+Args: `#!py {args}`
 
-Kwargs: {kwargs}
+Kwargs: `#!py {kwargs}`
 
 ??? example "SNIPPET"
 

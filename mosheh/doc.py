@@ -440,6 +440,9 @@ def handle_class_def(stmt: StandardReturn) -> str:
     _code: str = cast(str, stmt['code'])
     code: str = indent_code(_code)
 
+    if not kwargs:
+        kwargs = 'None'
+
     return CLASS_DEF_MD_STRUCT.format(
         name=name,
         inherit=inherit,
@@ -495,6 +498,11 @@ def handle_function_def(stmt: StandardReturn) -> str:
     rtype: str = cast(str, stmt['rtype']) or 'Unknown'
     _code: str = cast(str, stmt['code'])
     code: str = indent_code(_code)
+
+    if not args:
+        args = 'None'
+    if not kwargs:
+        kwargs = 'None'
 
     return FUNCTION_DEF_MD_STRUCT.format(
         name=name,
@@ -616,6 +624,9 @@ def process_codebase(
                 nav_path: list[str] = [
                     i for i in folder_path.removeprefix(docs_path).split(path.sep) if i
                 ]
+
+                if not nav_path:
+                    nav_path.append('Root')
 
                 for i in range(len(nav_path)):
                     sub_nav_path: str = f'{path.sep}'.join(nav_path[0 : i + 1])
