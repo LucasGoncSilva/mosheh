@@ -1,0 +1,152 @@
+site_name: MOSHEH
+repo_url: https://github.com/lucasgoncsilva/mosheh
+repo_name: GitHub
+edit_uri: ""
+
+
+theme:
+  name: material
+  language: en
+  favicon: img/logo.svg
+  logo: img/logo.svg
+  font:
+    text: Ubuntu
+
+  icon:
+    tag:
+      homepage: fontawesome/solid/house
+      index: fontawesome/solid/file
+      overview: fontawesome/solid/binoculars
+      test: fontawesome/solid/flask-vial
+      infra: fontawesome/solid/server
+      doc: fontawesome/solid/book
+      legal: fontawesome/solid/scale-unbalanced
+      user: fontawesome/solid/user
+      API: fontawesome/solid/gears
+      browser: fontawesome/solid/desktop
+
+    next: fontawesome/solid/arrow-right
+    previous: fontawesome/solid/arrow-left
+    top: fontawesome/solid/arrow-up
+    repo: fontawesome/brands/git-alt
+    edit: material/pencil
+    view: material/eye
+    admonition:
+      note: fontawesome/solid/note-sticky
+      abstract: fontawesome/solid/book
+      info: fontawesome/solid/circle-info
+      tip: fontawesome/solid/fire-flame-simple
+      success: fontawesome/solid/check
+      question: fontawesome/solid/circle-question
+      warning: fontawesome/solid/triangle-exclamation
+      failure: fontawesome/solid/xmark
+      danger: fontawesome/solid/skull
+      bug: fontawesome/solid/bug
+      example: fontawesome/solid/flask
+      quote: fontawesome/solid/quote-left
+
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Light/Dark Mode
+      primary: green
+      accent: indigo
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-3
+        name: Light/Dark Mode
+      primary: brown
+      accent: orange
+
+
+  features:
+    - navigation.indexes
+    - navigation.tabs
+    - navigation.top
+    - toc.integrate
+    - header.autohide
+    - navigation.footer
+    - content.action.view
+    - content.action.edit
+    - announce.dismiss
+    - content.tabs.link
+
+
+markdown_extensions:
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      use_pygments: true
+      pygments_lang_class: true
+      auto_title: true
+      linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+
+
+plugins:
+  - search
+  - tags
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: datetime
+      enabled: true
+      enable_creation_date: true
+      fallback_to_build_date: true
+      locale: en
+
+
+extra:
+  tags:
+    Homepage: homepage
+    Index: index
+    Overview: overview
+    Teste: test
+    Infra: infra
+    Documentation: doc
+    Legal: legal
+    Usuário: user
+    API: API
+    Browser: browser
+
+  status:
+    new: Adicionado recentemente
+
+
+copyright: Only God knows
+
+
+nav:
+  - Homepage: index.md
+  - Root:
+    - constants.py: constants.py.md
+    - codebase.py: codebase.py.md
+    - main.py: main.py.md
+    - handlers.py: handlers.py.md
+    - doc.py: doc.py.md
+    - utils.py: utils.py.md
+    - custom_types.py: custom_types.py.md
