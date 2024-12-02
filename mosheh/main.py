@@ -52,8 +52,8 @@ __email__ = 'lucasgoncsilva04@gmail.com'
 __repository__ = 'https://github.com/LucasGoncSilva/mosheh'
 __description__ = __doc__
 __keywords__ = ['CLI', 'documentation', 'doc']
-__version__ = '0.2.0'
-__date__ = '2024-11-29'
+__version__ = '1.0.0'
+__date__ = '2024-12-02'
 __status__ = 'Development'
 
 
@@ -104,7 +104,7 @@ def main() -> None:
         '--logo-path',
         type=str,
         default='',
-        help='Path for documentation/project logo in .svg | .png format.',
+        help='Path for documentation/project logo, same Material MkDocs formats.',
     )
     parser.add_argument(
         '--readme-path',
