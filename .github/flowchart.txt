@@ -1,0 +1,37 @@
+flowchart LR
+
+subgraph YOUR_ENV
+    gen_doc[/"Generated Doc"/]:::Other
+    base[/"Project"/]:::Other
+end
+
+subgraph MOSHEH
+    main("main.py"):::Mosheh
+    codebase("codebase.py"):::Mosheh
+    handlers("handlers.py"):::Mosheh
+    types{{"custom_types.py"}}:::Mosheh
+    utils{{"utils.py"}}:::Mosheh
+    const("constants.py"):::Mosheh
+    doc("doc.py"):::Mosheh
+end
+
+
+const -..-> doc
+types -.-> main & codebase & utils & handlers & doc
+handlers -.-> codebase
+utils -.-> codebase & doc & handlers
+
+base --> main
+main --> codebase
+codebase --> doc
+doc --> gen_doc
+
+
+style YOUR_ENV fill:#057,color:#ffde57,stroke:#ffde57;
+style MOSHEH fill:#1a1a1a,color:#fff,stroke:#808080;
+
+classDef Other fill:#ffde57,color:#057,stroke:#057;
+classDef Mosheh fill:#404040,color:#fff,stroke:#ccc;
+
+linkStyle default stroke:#808080
+linkStyle 10,11,12,13 stroke:#fff

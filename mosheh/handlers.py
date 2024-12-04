@@ -1,14 +1,14 @@
 import ast
 from typing import Final, Optional, cast
 
-import constants
-from custom_types import (
+from . import constants
+from .custom_types import (
     ImportType,
     StandardReturn,
     StandardReturnProccessor,
     Statement,
 )
-from utils import bin, is_lib_installed, standard_struct
+from .utils import bin, is_lib_installed, standard_struct
 
 
 def handle_def_nodes(node: ast.AST) -> list[StandardReturn]:

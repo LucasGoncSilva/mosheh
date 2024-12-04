@@ -4,7 +4,7 @@ from shutil import copy2
 from sys import stdout
 from typing import cast
 
-from constants import (
+from .constants import (
     ASSERT_MD_STRUCT,
     ASSIGN_MD_STRUCT,
     CLASS_DEF_MD_STRUCT,
@@ -13,12 +13,12 @@ from constants import (
     FUNCTION_DEF_MD_STRUCT,
     IMPORT_MD_STRUCT,
 )
-from custom_types import CodebaseDict, ImportType, StandardReturn, Statement
-from utils import indent_code
+from .custom_types import CodebaseDict, ImportType, StandardReturn, Statement
+from .utils import indent_code
 
 
 NAV_DIRS: list[str] = []
-NAV_MD: list[str] = ['nav:\n  - Homepage: index.md']
+NAV_MD: list[str] = ['nav:\n  - Homepage: index.md\n']
 
 
 def generate_doc(
@@ -803,7 +803,12 @@ def __update_navigation(
         for segment in folder_path.removeprefix(docs_path).split(path.sep)
         if segment
     ]
-    nav_path = nav_path or ['Root']
+
+    if not nav_path:
+        md_file_path: str = output_file_path.removeprefix(docs_path + path.sep)
+        md_line: str = indent_code(f'- {key}: {md_file_path}', 2)
+        NAV_MD.append(f'{md_line}\n')
+        return
 
     for i in range(len(nav_path)):
         sub_nav_path: str = path.sep.join(nav_path[: i + 1])

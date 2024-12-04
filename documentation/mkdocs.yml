@@ -51,15 +51,15 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Light/Dark Mode
-      primary: green
-      accent: indigo
+      primary: brown
+      accent: green
 
     # Palette toggle for dark mode
     - scheme: slate
       toggle:
         icon: material/brightness-3
         name: Light/Dark Mode
-      primary: brown
+      primary: black
       accent: orange
 
 
@@ -142,7 +142,7 @@ copyright: Only God knows
 
 nav:
   - Homepage: index.md
-  - Root:
+  - Mosheh:
     - constants.py: constants.py.md
     - codebase.py: codebase.py.md
     - main.py: main.py.md
