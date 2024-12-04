@@ -3,7 +3,7 @@ from copy import deepcopy
 from importlib.util import find_spec
 from typing import Any
 
-from custom_types import StandardReturn
+from .custom_types import StandardReturn
 
 
 def bin(item: Any, universe: list[Any] | tuple[Any]) -> bool:

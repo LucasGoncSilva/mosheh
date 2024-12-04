@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 """
-Mosheh is a tool for generating documentations for projects, from Python to Python.
+Mosheh, a tool for creating docs for projects, from Python to Python.
 
 Basically, Mosheh lists all files you points to, saves every single notorious statement
-of definition on each file iterated, all using Python "ast" native module for handling
+of definition on each file iterated, all using Python `ast` native module for handling
 the AST and then generating (using MkDocs) a documentation respecting the dirs and files
 hierarchy. The stuff documented for each file are listed below:
 
@@ -53,16 +53,16 @@ __repository__ = 'https://github.com/LucasGoncSilva/mosheh'
 __description__ = __doc__
 __keywords__ = ['CLI', 'documentation', 'doc']
 __version__ = '1.0.0'
-__date__ = '2024-12-02'
+__date__ = '2024-12-04'
 __status__ = 'Development'
 
 
 from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
 from os import path
 
-from codebase import read_codebase
-from custom_types import CodebaseDict
-from doc import generate_doc
+from .codebase import read_codebase
+from .custom_types import CodebaseDict
+from .doc import generate_doc
 
 
 def main() -> None:

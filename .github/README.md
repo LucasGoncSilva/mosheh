@@ -6,9 +6,9 @@
 
 ![GitHub License](https://img.shields.io/github/license/LucasGoncSilva/mosheh?labelColor=101010)
 
-<!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LucasGoncSilva/mosheh/XXXXXX.yml?style=flat&labelColor=%23101010) -->
+<!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LucasGoncSilva/mosheh/XXXXXX.yml?labelColor=%23101010) -->
 
-Mosheh is a tool for generating documentations for projects, from Python to Python.
+Mosheh, a tool for creating docs for projects, from Python to Python.
 
 Basically, Mosheh lists all files you points to, saves every single notorious statement of definition on each file iterated, all using Python `ast` native module for handling the AST and then generating with [MkDocs](https://www.mkdocs.org/) and [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) a documentation respecting the dirs and files hierarchy. The stuff documented for each file are listed below:
 
@@ -88,51 +88,31 @@ Here it is no different, a considerable part of Mosheh is, in fact, completely d
 
 It is to be expected that if the `tests/` directory is deleted, Mosheh itself will not be altered in any way, so much so that when a tool is downloaded via `pip` or similar, the tool is not accompanied by tests, licenses, development configuration files or workflows. So, to help you understand how the `mosheh/` directory works, here's how the functional elements interact with each other:
 
-```mermaid
-flowchart LR
+![Flowchart diagram](https://raw.githubusercontent.com/lucasGoncSilva/mosheh/refs/heads/main/.github/flowchart.svg)
 
-subgraph YOUR_ENV
-  gen_doc[/"Generated Doc"/]:::Other
-  base[/"Project"/]:::Other
-end
+## Usage
 
-subgraph MOSHEH
-  main("main.py"):::Mosheh
-  codebase("codebase.py"):::Mosheh
-  handlers("handlers.py"):::Mosheh
-  types{{"custom_types.py"}}:::Mosheh
-  utils{{"utils.py"}}:::Mosheh
-  const("constants.py"):::Mosheh
-  doc("doc.py"):::Mosheh
-end
+### Local Build and Installation
 
+```sh
+pip install -r requirements.txt  # Install all dependencies in your local environment
 
-const -..-> doc
-types -.-> main & codebase & utils & handlers & doc
-handlers -.-> codebase
-utils -.-> codebase & doc & handlers
+# or
 
-base --> main
-main --> codebase
-codebase --> doc
-doc --> gen_doc
-
-
-style YOUR_ENV fill:#057,color:#ffde57,stroke:#ffde57;
-style MOSHEH fill:#1a1a1a,color:#fff,stroke:#808080;
-
-classDef Other fill:#ffde57,color:#057,stroke:#057;
-classDef Mosheh fill:#404040,color:#fff,stroke:#ccc;
-
-linkStyle default stroke:#808080
-linkStyle 10,11,12,13 stroke:#fff
+pip install wheel setuptools  # Install only build dependencies in your local environment
 ```
 
-## Commands and Parameters
+```sh
+python3 setup.py sdist bdist_wheel  # Build pip-like file
 
-### Commands
+pip install dist/mosheh-<VERSION>-py3-none-any.whl --force-reinstall  # Install Mosheh using generated pip-like file
+```
 
-To be defined.
+### Running
+
+```sh
+mosheh [-h] -root ROOT [--repo-name REPO_NAME] [--repo-url REPO_URL] [--logo-path LOGO_PATH] [--readme-path README_PATH] [--exit EXIT]
+```
 
 ### Parameters
 
