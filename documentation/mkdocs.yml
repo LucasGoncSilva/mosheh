@@ -1,7 +1,7 @@
 site_name: MOSHEH
 repo_url: https://github.com/lucasgoncsilva/mosheh
 repo_name: GitHub
-edit_uri: ""
+edit_uri: blob/main/documentation/docs
 
 
 theme:
@@ -105,7 +105,7 @@ markdown_extensions:
   - def_list
   - pymdownx.tasklist:
       custom_checkbox: true
-      clickable_checkbox: true
+      clickable_checkbox: false
 
 
 plugins:
@@ -137,11 +137,12 @@ extra:
     new: Adicionado recentemente
 
 
-copyright: Only God knows
+copyright: Copyright (c) 2024 Lucas Gonçalves da Silva
 
 
 nav:
   - Homepage: index.md
+  - Changelog: changelog.md
   - Mosheh:
     - constants.py: constants.py.md
     - codebase.py: codebase.py.md
