@@ -35,8 +35,6 @@ setup(
         'MkDocs',
         'automation',
         'generation',
-        'automate',
-        'generate',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
