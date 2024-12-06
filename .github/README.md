@@ -59,12 +59,14 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
 ## Stack
 
 ![Python logo](https://img.shields.io/badge/Python-blue?style=for-the-badge&logo=python&logoColor=FFD43B)
+![Ruff logo](https://img.shields.io/badge/Ruff-logo?style=for-the-badge&logo=ruff&color=2b0231)
+![UV logo](https://img.shields.io/badge/UV-logo?style=for-the-badge&logo=uv&color=2b0231)
 
 ## ToDo List
 
 - [ ] Evaluate use of Rust for better proccessing
 - [ ] Evaluate the processing of more files than just Python ones (e.g. `.txt`, `.toml`)
-- [ ] Migrate dependency system to use [UV](https://docs.astral.sh/uv/)
+- [x] Migrate dependency system to use [UV](https://docs.astral.sh/uv/)
 - [ ] Accept structured file (e.g. `mosheh.json`) as parameters replacement
 - [ ] Provide an "exclude" config for files/dirs to ignore
 - [ ] Insert `tags` for `.md` based on their names/contexts
@@ -100,13 +102,13 @@ Here it is no different, a considerable part of Mosheh is, in fact, completely d
 │   ├── docs                    # Dir containing .md files and assets
 │   └── mkdocs.yml              # MkDocs config file
 │
-├── requirements.txt            # Mosheh's dependencies
+├── pyproject.toml              # Mosheh's config file
+├── uv.lock                     # UV's lockfile for dealing with dependencies
+├── .python-version             # Default Python's version to use
 │
 ├── .github                     # Workflows and social stuff
 │
 ├── LICENSE                     # Legal stuf, A.K.A donut sue me
-│
-├── ruff.toml                   # Ruff config file
 │
 └── .gitignore                  # Git "exclude" file
 ```
@@ -119,18 +121,26 @@ It is to be expected that if the `tests/` directory is deleted, Mosheh itself wi
 
 ### Local Build and Installation
 
+#### Installing Dependencies
+
 ```sh
-pip install -r requirements.txt  # Install all dependencies in your local environment
+pip install uv  # For installing uv to handle the environment
 
-# or
-
-pip install wheel setuptools  # Install only build dependencies in your local environment
+uv sync  # Automatically creates a .venv, activates it and install libs based on uv.lock and pyproject.toml
 ```
 
-```sh
-python3 setup.py sdist bdist_wheel  # Build pip-like file
+#### Runing Locally
 
-pip install dist/mosheh-<VERSION>-py3-none-any.whl --force-reinstall  # Install Mosheh using generated pip-like file
+```sh
+uv run -m mosheh.main  # For running using uv and dealing with Mosheh as a module
+```
+
+#### Installing Locally
+
+```sh
+uv build  # Build pip-like file
+
+uv pip install dist/mosheh-<VERSION>-py3-none-any.whl --force-reinstall  # Install Mosheh using generated pip-like file
 ```
 
 ### Running

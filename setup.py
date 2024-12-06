@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-from mosheh.main import __version__ as mosheh_version
+from mosheh.metadata import __version__ as mosheh_version
 
 
 with open('.github/README.md', encoding='utf-8') as f:

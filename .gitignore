@@ -170,3 +170,4 @@ cython_debug/
 # Local trash testing stuff
 xpto.py
 x.txt
+lazy.py

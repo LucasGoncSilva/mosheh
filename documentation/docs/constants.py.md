@@ -1,8 +1,6 @@
-
 # File: `constants.py`
+
 Path: `mosheh`
-
-
 
 ---
 
@@ -19,8 +17,6 @@ Category: Native
     ```py
     from typing import Final
     ```
-
-
 
 ---
 
@@ -138,7 +134,7 @@ Value: `#!py '\n# File: `{filename}`\nPath: `{filepath}`\n\n{filedoc}\n\n---\n\n
 
 Type: `#!py Final[str]`
 
-Value: `#!py '### `#!py import {name}`\n\nPath: `#!py {_path}`\n\nCategory: {category}\n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n'`
+Value: `#!py '### `#!py import {name}`\n\nPath: `#!py {\_path}` \n\nCategory: {category}\n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n' `
 
 ??? example "SNIPPET"
 
@@ -150,7 +146,7 @@ Value: `#!py '### `#!py import {name}`\n\nPath: `#!py {_path}`\n\nCategory: {cat
 
 Type: `#!py Final[str]`
 
-Value: `#!py '### `#!py {token}`\n\nType: `#!py {_type}`\n\nValue: `#!py {value}`\n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n'`
+Value: `#!py '### `#!py {token}`\n\nType: `#!py {\_type}`\n\nValue: `#!py {value}` \n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n' `
 
 ??? example "SNIPPET"
 
@@ -162,7 +158,7 @@ Value: `#!py '### `#!py {token}`\n\nType: `#!py {_type}`\n\nValue: `#!py {value}
 
 Type: `#!py Final[str]`
 
-Value: `#!py '### `#!py class {name}`\n\nParents: `{inherit}`\n\nDecorators: `#!py {decorators}`\n\nKwargs: `#!py {kwargs}`\n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n'`
+Value: `#!py '### `#!py class {name}`\n\nParents: `{inherit}`\n\nDecorators: `#!py {decorators}`\n\nKwargs: `#!py {kwargs}` \n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n' `
 
 ??? example "SNIPPET"
 
@@ -174,7 +170,7 @@ Value: `#!py '### `#!py class {name}`\n\nParents: `{inherit}`\n\nDecorators: `#!
 
 Type: `#!py Final[str]`
 
-Value: `#!py '### `#!py def {name}`\n\nType: `#!py ...`\n\nReturn Type: `#!py {rtype}`\n\nDecorators: `#!py {decorators}`\n\nArgs: `#!py {args}`\n\nKwargs: `#!py {kwargs}`\n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n'`
+Value: `#!py '### `#!py def {name}`\n\nType: `#!py ...`\n\nReturn Type: `#!py {rtype}`\n\nDecorators: `#!py {decorators}`\n\nArgs: `#!py {args}`\n\nKwargs: `#!py {kwargs}` \n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n' `
 
 ??? example "SNIPPET"
 
@@ -186,15 +182,13 @@ Value: `#!py '### `#!py def {name}`\n\nType: `#!py ...`\n\nReturn Type: `#!py {r
 
 Type: `#!py Final[str]`
 
-Value: `#!py '### `#!py assert {test}`\n\nMessage: `#!py {msg}`\n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n'`
+Value: `#!py '### `#!py assert {test}`\n\nMessage: `#!py {msg}` \n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n' `
 
 ??? example "SNIPPET"
 
     ```py
     ASSERT_MD_STRUCT: Final[str] = '### `#!py assert {test}`\n\nMessage: `#!py {msg}`\n\n??? example "SNIPPET"\n\n    ```py\n{code}\n    ```\n\n'
     ```
-
-
 
 ---
 

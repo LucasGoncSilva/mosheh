@@ -1,5 +1,5 @@
 import ast
-from typing import Final, Optional, cast
+from typing import Final, cast
 
 from . import constants
 from .custom_types import (
@@ -635,7 +635,7 @@ def handle_annassign(
     return struct
 
 
-def __format_arg(name: str, annotation: Optional[str], default: Optional[str]) -> str:
+def __format_arg(name: str, annotation: str | None, default: str | None) -> str:
     """
     Formats a function argument into a string repr with optional type annotations and
     default values.
@@ -660,9 +660,9 @@ def __format_arg(name: str, annotation: Optional[str], default: Optional[str]) -
     :param name: The name of the argument.
     :type name: str
     :param annotation: The type annotation for the argument, if any.
-    :type annotation: Optional[str]
+    :type annotation: str | None
     :param default: The default value of the argument, if any.
-    :type default: Optional[str]
+    :type default: str | None
     :return: A formatted string representing the argument.
     :rtype: str
     """
@@ -712,7 +712,7 @@ def __process_function_args(node_args: ast.arguments) -> str:
 
     for i, arg in enumerate(node_args.args):
         name: str = arg.arg
-        annotation: Optional[str] = (
+        annotation: str | None = (
             cast(list[str], handle_node(arg.annotation))[0] if arg.annotation else None
         )
 
@@ -762,7 +762,7 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
 
     for i, arg in enumerate(node_args.kwonlyargs):
         name: str = arg.arg
-        annotation: Optional[str] = (
+        annotation: str | None = (
             cast(list[str], handle_node(arg.annotation))[0] if arg.annotation else None
         )
 
@@ -886,7 +886,7 @@ def handle_async_function_def(
     return struct
 
 
-def __format_class_kwarg(name: Optional[str], value: ast.expr) -> str:
+def __format_class_kwarg(name: str | None, value: ast.expr) -> str:
     """
     Formats a kwarg from a class definition into a string repr.
 
@@ -910,7 +910,7 @@ def __format_class_kwarg(name: Optional[str], value: ast.expr) -> str:
     ```
 
     :param name: The name of the kwarg (can be `None` for positional arguments).
-    :type name: Optional[str]
+    :type name: str | None
     :param value: The AST expression representing the value of the keyword argument.
     :type value: ast.expr
     :return: A formatted string representing the keyword argument.

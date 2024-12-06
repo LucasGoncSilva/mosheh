@@ -1,0 +1,11 @@
+__author__ = 'LucasGonc'
+__copyright__ = 'Copyright (c) 2024 Lucas Gonçalves da Silva'
+__credits__ = ['Lucas Silva']
+__license__ = 'MIT'
+__maintainer__ = 'LucasGonc'
+__email__ = 'lucasgoncsilva04@gmail.com'
+__repository__ = 'https://github.com/LucasGoncSilva/mosheh'
+__keywords__ = ['CLI', 'documentation', 'doc']
+__version__ = '1.1.1'
+__date__ = '2024-12-06'
+__status__ = 'Production'

@@ -1,8 +1,6 @@
-
 # File: `utils.py`
+
 Path: `mosheh`
-
-
 
 ---
 
@@ -67,8 +65,6 @@ Category: 3rd Party
     ```py
     from custom_types import StandardReturn
     ```
-
-
 
 ---
 
@@ -436,8 +432,6 @@ Kwargs: `#!py None`
         new_code = '\n'.join((f'{indent}{line}' if line.strip() else '' for line in code.splitlines()))
         return new_code
     ```
-
-
 
 ---
 

@@ -1,8 +1,6 @@
-
 # File: `doc.py`
+
 Path: `mosheh`
-
-
 
 ---
 
@@ -236,8 +234,6 @@ Category: 3rd Party
     from utils import indent_code
     ```
 
-
-
 ---
 
 ## Consts
@@ -265,8 +261,6 @@ Value: `#!py ['nav:\n']`
     ```py
     NAV_MD: list[str] = ['nav:\n']
     ```
-
-
 
 ---
 
@@ -1132,8 +1126,6 @@ Kwargs: `#!py None`
                 md_line: str = indent_code(f'- {key}: {md_file_path}', 2 * (i + 2))
                 NAV_MD.append(f'{md_line}\n')
     ```
-
-
 
 ---
 

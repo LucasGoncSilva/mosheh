@@ -43,18 +43,10 @@ hierarchy. The stuff documented for each file are listed below:
   - [x] Code
 """
 
-__author__ = 'LucasGonc'
-__copyright__ = 'Copyright (c) 2024 Lucas Gonçalves da Silva'
-__credits__ = ['Lucas Silva']
-__license__ = 'MIT'
-__maintainer__ = 'LucasGonc'
-__email__ = 'lucasgoncsilva04@gmail.com'
-__repository__ = 'https://github.com/LucasGoncSilva/mosheh'
+from .metadata import *  # noqa: F403
+
+
 __description__ = __doc__
-__keywords__ = ['CLI', 'documentation', 'doc']
-__version__ = '1.1.0'
-__date__ = '2024-12-06'
-__status__ = 'Production'
 
 
 from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
