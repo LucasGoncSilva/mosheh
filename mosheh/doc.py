@@ -25,13 +25,13 @@ def generate_doc(
     *,
     codebase: CodebaseDict,
     root: str,
-    exit: str,
+    output: str,
     proj_name: str,
-    edit_uri: str = '',
+    logo_path: str | None,
+    readme_path: str | None,
+    edit_uri: str = 'blob/main/documentation/docs',
     repo_name: str = 'GitHub',
-    repo_url: str = '',
-    logo_path: str = '',
-    readme_path: str = '',
+    repo_url: str = 'https://github.com',
 ) -> None:
     """
     Generates a documentation structure for a Python codebase using MkDocs.
@@ -52,32 +52,33 @@ def generate_doc(
 
     :param codebase: Dict containing nodes representing `.py` files and their stmts.
     :type codebase: CodebaseDict
-    :param root: The root path of the source code to be documented.
+    :param root: Root dir, where the analysis starts.
     :type root: str
-    :param exit: The output dir where the documentation will be generated.
-    :type exit: str
+    :param output: Path for documentation output, where to be created.
+    :type output: str
     :param proj_name: The name of the project, for generating MkDocs configuration.
     :type proj_name: str
-    :param edit_uri: optional URI for linking to source file edits (defaults to '').
+    :param logo_path: Path for doc/project logo, same Material MkDocs's formats.
+    :type logo_path: str | None, optional
+    :param readme_path: The path of the `README.md` file, to be used as homepage.
+    :type readme_path: str | None, optional
+    :param edit_uri: URI to view raw or edit blob file, default is
+                        `'blob/main/documentation/docs'`.
     :type edit_uri: str, optional
-    :param repo_name: The repository provider name (defaults to 'GitHub').
+    :param repo_name: Name of the code repository to be mapped, default is `'GitHub'`.
     :type repo_name: str, optional
     :param repo_url: The URL of the repository, used for linking in the documentation.
     :type repo_url: str, optional
-    :param logo_path: The path of the logo, to be used as icon and favicon.
-    :type logo_path: str, optional
-    :param readme_path: The path of the `README.md` file, to be used as homepage.
-    :type readme_path: str, optional
     :return: Nothing, just generates documentation files in the specified output path.
     :rtype: None
     """
 
-    exit_path: str = path.abspath(exit)
-    mkdocs_yml: str = path.join(exit_path, 'mkdocs.yml')
+    output_path: str = path.abspath(output)
+    mkdocs_yml: str = path.join(output_path, 'mkdocs.yml')
 
     try:
         result = subprocess.run(
-            ['mkdocs', 'new', exit_path],
+            ['mkdocs', 'new', output_path],
             check=True,
             capture_output=True,
             text=True,
@@ -90,21 +91,21 @@ def generate_doc(
         f.write(
             default_doc_config(
                 proj_name=proj_name,
+                output=output,
+                logo_path=logo_path,
                 edit_uri=edit_uri,
-                exit=exit,
                 repo_name=repo_name,
                 repo_url=repo_url,
-                logo_path=logo_path,
             )
         )
 
-    process_codebase(codebase, root, exit)
+    process_codebase(codebase, root, output)
 
     with open(mkdocs_yml, 'a', encoding='utf-8') as f:
         f.writelines(NAV_MD)
 
-    if readme_path:
-        homepage: str = path.join(exit_path, 'docs', 'index.md')
+    if readme_path is not None:
+        homepage: str = path.join(output_path, 'docs', 'index.md')
 
         with open(readme_path, encoding='utf-8') as f:
             content: list[str] = f.readlines()
@@ -116,11 +117,11 @@ def generate_doc(
 def default_doc_config(
     *,
     proj_name: str,
-    edit_uri: str,
-    exit: str,
+    output: str,
+    logo_path: str | None,
+    edit_uri: str = 'blob/main/documentation/docs',
     repo_name: str = 'GitHub',
     repo_url: str = 'https://github.com/',
-    logo_path: str = '',
 ) -> str:
     """
     Generates the default configuration for an MkDocs documentation project.
@@ -134,25 +135,26 @@ def default_doc_config(
     - Handles optional logos and ensures they are placed in the correct directory.
     - Returns a formatted YAML configuration as a string.
 
-    :param proj_name: Name of the project.
+    :param proj_name: The name of the project, for generating MkDocs configuration.
     :type proj_name: str
-    :param edit_uri: URI for editing doc file, typically a GitHub or GitLab edit link.
-    :type edit_uri: str
-    :param exit: Base output directory where documentation will be stored.
-    :type exit: str
-    :param repo_name: Name of the repository hosting the project, default is 'GitHub'.
+    :param output: Path for documentation output, where to be created.
+    :type output: str
+    :param logo_path: Path for doc/project logo, same Material MkDocs's formats.
+    :type logo_path: str
+    :param edit_uri: URI to view raw or edit blob file, default is
+                        `'blob/main/documentation/docs'`.
+    :type edit_uri: str, optional
+    :param repo_name: Name of the code repository to be mapped, default is `'GitHub'`.
     :type repo_name: str, optional
-    :param repo_url: URL to the project's repository, default is 'https://github.com/'.
+    :param repo_url: The URL of the repository, used for linking in the documentation.
     :type repo_url: str, optional
-    :param logo_path: Path to the project logo, optional.
-    :type logo_path: str, optional
     :return: Formatted MkDocs YAML configuration.
     :rtype: str
     """
 
-    if logo_path:
+    if logo_path is not None:
         ext: str = path.splitext(logo_path)[-1]
-        logo_file_path: str = path.join(exit, 'docs', 'img')
+        logo_file_path: str = path.join(output, 'docs', 'img')
         file_name: str = path.join(logo_file_path, f'logo{ext}')
 
         if not path.exists(logo_file_path):
@@ -160,7 +162,7 @@ def default_doc_config(
 
         copy2(logo_path, file_name)
 
-        logo_path = file_name.removeprefix(path.join(exit, 'docs', ''))
+        logo_path = file_name.removeprefix(path.join(output, 'docs', ''))
 
     else:
         logo_path = 'https://squidfunk.github.io/mkdocs-material/assets/favicon.png'
