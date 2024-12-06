@@ -4,9 +4,14 @@
   Mosheh
 </h1>
 
+![PyPI - Version](https://img.shields.io/pypi/v/mosheh?labelColor=101010)
 ![GitHub License](https://img.shields.io/github/license/LucasGoncSilva/mosheh?labelColor=101010)
 
 <!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LucasGoncSilva/mosheh/XXXXXX.yml?labelColor=%23101010) -->
+
+[![Static Badge](https://img.shields.io/badge/here-here?style=for-the-badge&label=changelog&labelColor=101010&color=fff)](https://github.com/LucasGoncSilva/mosheh/blob/main/.github/CHANGELOG.md)
+
+[![Static Badge](https://img.shields.io/badge/here-here?style=for-the-badge&label=PyPI&labelColor=%233e6ea8&color=%23f3e136)](https://pypi.org/project/mosheh/)
 
 Mosheh, a tool for creating docs for projects, from Python to Python.
 
@@ -46,6 +51,7 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
   - [x] Code
 
 - Assertions `[ast.Assert]`
+
   - [x] Test (assertion by itself)
   - [x] Message (opt. message in fail case)
   - [x] Code
@@ -53,6 +59,19 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
 ## Stack
 
 ![Python logo](https://img.shields.io/badge/Python-blue?style=for-the-badge&logo=python&logoColor=FFD43B)
+
+## ToDo List
+
+- [ ] Evaluate use of Rust for better proccessing
+- [ ] Evaluate the processing of more files than just Python ones (e.g. `.txt`, `.toml`)
+- [ ] Migrate dependency system to use [UV](https://docs.astral.sh/uv/)
+- [ ] Accept structured file (e.g. `mosheh.json`) as parameters replacement
+- [ ] Provide an "exclude" config for files/dirs to ignore
+- [ ] Insert `tags` for `.md` based on their names/contexts
+- [ ] Get and list all metrics of above's statements featured
+- [ ] Check for files docstrings and write below filepath
+- [ ] Create detail page for classes with docstring and listing class constants and methods
+- [ ] Create detail page for functions with docstring and body detail
 
 ## Arch
 
@@ -62,6 +81,8 @@ Here it is no different, a considerable part of Mosheh is, in fact, completely d
 
 ```sh
 .
+├── setup.py                    # PyPI build's config file
+│
 ├── mosheh                      # Mosheh's source-code
 │   ├── codebase.py             # Codebase reading logic
 │   ├── constants.py            # Constants to be evaluated
@@ -74,6 +95,10 @@ Here it is no different, a considerable part of Mosheh is, in fact, completely d
 ├── tests                       # Template dir for testing
 │   ├── DOC                     # Doc output dir
 │   └── PROJECT                 # Template project dir
+│
+├── documentation               # Mosheh's documentation dir
+│   ├── docs                    # Dir containing .md files and assets
+│   └── mkdocs.yml              # MkDocs config file
 │
 ├── requirements.txt            # Mosheh's dependencies
 │
@@ -111,20 +136,27 @@ pip install dist/mosheh-<VERSION>-py3-none-any.whl --force-reinstall  # Install 
 ### Running
 
 ```sh
-mosheh [-h] -root ROOT [--repo-name REPO_NAME] [--repo-url REPO_URL] [--logo-path LOGO_PATH] [--readme-path README_PATH] [--exit EXIT]
+mosheh [-h] -root ROOT \
+      [--repo-name REPO_NAME] \
+      [--repo-url REPO_URL] \
+      [--edit-uri EDIT_URI] \
+      [--logo-path LOGO_PATH] \
+      [--readme-path README_PATH] \
+      [--exit EXIT]
 ```
 
 ### Parameters
 
-|      Call       | Type  | Mandatory  |         Default         | Example                         | Action                           |
-| :-------------: | :---: | :--------: | :---------------------: | :------------------------------ | :------------------------------- |
-| `-h`, `--help`  | `str` | `Optional` |         `None`          | `-h`, `--help`                  | Help message                     |
-|     `-root`     | `str` | `Required` |         `None`          | `-root example/`                | Root to start looking for        |
-|  `--repo-name`  | `str` | `Optional` |       `'GitHub'`        | `--repo-name toicin`            | Repo name                        |
-|  `--repo-url`   | `str` | `Optional` | `'https://github.com/'` | `--repo-url https://random.com` | Repo URL                         |
-|  `--logo-path`  | `str` | `Optional` |          `''`           | `--repo-url .github/logo.svg`   | Path to project logo             |
-| `--readme-path` | `str` | `Optional` |          `''`           | `--repo-url .github/README.md`  | Path to project `README.md` file |
-|    `--exit`     | `str` | `Optional` |          `'.'`          | `--exit doc/`                   | Doc output path                  |
+|      Call       | Type  | Mandatory  | Default                          | Example                         | Description                                                |
+| :-------------: | :---: | :--------: | :------------------------------- | :------------------------------ | :--------------------------------------------------------- |
+| `-h`, `--help`  | `str` | `Optional` | `None`                           | `-h`, `--help`                  | Help message                                               |
+|     `-root`     | `str` | `Required` | `None`                           | `-root example/`                | Root dir, where the analysis starts.                       |
+|  `--repo-name`  | `str` | `Optional` | `'GitHub'`                       | `--repo-name toicin`            | Name of the code repository to be mapped.                  |
+|  `--repo-url`   | `str` | `Optional` | `'https://github.com/'`          | `--repo-url https://random.com` | URL of the code repository to be mapped.                   |
+|  `--edit-uri`   | `str` | `Optional` | `'blob/main/documentation/docs'` | `--edit-uri blob/main/docs`     | URI to view raw or edit blob file.                         |
+|  `--logo-path`  | `str` | `Optional` | `None`                           | `--repo-url .github/logo.svg`   | Path for doc/project logo, same Material MkDocs's formats. |
+| `--readme-path` | `str` | `Optional` | `None`                           | `--repo-url .github/README.md`  | Path for `README.md` file to used as homepage.             |
+|   `--output`    | `str` | `Optional` | `'.'`                            | `--output doc/`                 | Path for documentation output, where to be created.        |
 
 ## License
 

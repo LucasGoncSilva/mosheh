@@ -43,18 +43,18 @@ hierarchy. The stuff documented for each file are listed below:
   - [x] Code
 """
 
-__author__ = 'Lucas Silva'
-__copyright__ = "Do' know"
+__author__ = 'LucasGonc'
+__copyright__ = 'Copyright (c) 2024 Lucas Gonçalves da Silva'
 __credits__ = ['Lucas Silva']
 __license__ = 'MIT'
-__maintainer__ = 'Lucas Silva'
+__maintainer__ = 'LucasGonc'
 __email__ = 'lucasgoncsilva04@gmail.com'
 __repository__ = 'https://github.com/LucasGoncSilva/mosheh'
 __description__ = __doc__
 __keywords__ = ['CLI', 'documentation', 'doc']
-__version__ = '1.0.0'
-__date__ = '2024-12-04'
-__status__ = 'Development'
+__version__ = '1.1.0'
+__date__ = '2024-12-06'
+__status__ = 'Production'
 
 
 from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
@@ -101,19 +101,25 @@ def main() -> None:
         help='URL of the code repository to be mapped.',
     )
     parser.add_argument(
+        '--edit-uri',
+        type=str,
+        default='blob/main/documentation/docs',
+        help='URI to view/edit raw/blob file.',
+    )
+    parser.add_argument(
         '--logo-path',
         type=str,
-        default='',
-        help='Path for documentation/project logo, same Material MkDocs formats.',
+        default=None,
+        help='Path for doc/project logo, same Material MkDocs formats.',
     )
     parser.add_argument(
         '--readme-path',
         type=str,
-        default='',
+        default=None,
         help='Path for README.md file to replace as homepage.',
     )
     parser.add_argument(
-        '--exit',
+        '--output',
         type=str,
         default='.',
         help='Path for documentation output, where to be created.',
@@ -126,9 +132,10 @@ def main() -> None:
     PROJ_NAME: str = path.abspath(path.curdir).split(path.sep)[-1].upper()
     REPO_NAME: str = args.repo_name
     REPO_URL: str = args.repo_url
-    LOGO_PATH: str = args.logo_path
-    README_PATH: str = args.readme_path
-    EXIT: str = args.exit
+    EDIT_URI: str = args.edit_uri
+    LOGO_PATH: str | None = args.logo_path
+    README_PATH: str | None = args.readme_path
+    OUTPUT: str = args.output
 
     # Codebase Reading
     data: CodebaseDict = read_codebase(ROOT)
@@ -137,13 +144,13 @@ def main() -> None:
     generate_doc(
         codebase=data,
         root=ROOT,
-        exit=EXIT,
         proj_name=PROJ_NAME,
-        edit_uri='',
         repo_name=REPO_NAME,
         repo_url=REPO_URL,
+        edit_uri=EDIT_URI,
         logo_path=LOGO_PATH,
         readme_path=README_PATH,
+        output=OUTPUT,
     )
 
 
