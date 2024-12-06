@@ -1,8 +1,6 @@
-
 # File: `custom_types.py`
+
 Path: `mosheh`
-
-
 
 ---
 
@@ -43,8 +41,6 @@ Category: Native
     ```py
     from typing import TypeAlias
     ```
-
-
 
 ---
 
@@ -121,8 +117,6 @@ Kwargs: `#!py None`
         Generator = 'Generator'
         Coroutine = 'Coroutine'
     ```
-
-
 
 ---
 

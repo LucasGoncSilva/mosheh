@@ -1,3 +1,5 @@
+# ruff: noqa
+
 from enum import Enum, auto
 from typing import TypeAlias
 

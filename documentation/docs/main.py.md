@@ -1,8 +1,6 @@
-
 # File: `main.py`
+
 Path: `mosheh`
-
-
 
 ---
 
@@ -92,8 +90,6 @@ Category: 3rd Party
     from doc import generate_doc
     ```
 
-
-
 ---
 
 ## Consts
@@ -182,8 +178,6 @@ Value: `#!py args.exit`
     EXIT: str = args.exit
     ```
 
-
-
 ---
 
 ## Classes
@@ -237,8 +231,6 @@ Kwargs: `#!py None`
         data: CodebaseDict = read_codebase(ROOT)
         generate_doc(codebase=data, root=ROOT, exit=EXIT, proj_name=PROJ_NAME, edit_uri='', repo_name=REPO_NAME, repo_url=REPO_URL, logo_path=LOGO_PATH, readme_path=README_PATH)
     ```
-
-
 
 ---
 

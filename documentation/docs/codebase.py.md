@@ -1,8 +1,6 @@
-
 # File: `codebase.py`
+
 Path: `mosheh`
-
-
 
 ---
 
@@ -152,8 +150,6 @@ Category: 3rd Party
     from utils import nested_dict
     ```
 
-
-
 ---
 
 ## Consts
@@ -247,8 +243,6 @@ Kwargs: `#!py None`
             for file in files:
                 yield path.join(dirpath, file)
     ```
-
-
 
 ---
 

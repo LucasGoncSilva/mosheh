@@ -1,8 +1,6 @@
-
 # File: `handlers.py`
+
 Path: `mosheh`
-
-
 
 ---
 
@@ -151,8 +149,6 @@ Category: 3rd Party
     ```py
     from utils import standard_struct
     ```
-
-
 
 ---
 
@@ -1624,8 +1620,6 @@ Kwargs: `#!py None`
         nonlocal data
         data = cast(list[StandardReturnProccessor], new_data)
     ```
-
-
 
 ---
 

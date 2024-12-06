@@ -40,6 +40,24 @@ Key Components of a Changelog:
 
 -->
 
+## v1.1.1 - 2024-12-06
+
+### Adds
+
+- `metadata.py` created to separate metadata from the actual `main.py` file
+
+### Updates
+
+- Migration from `pip`/`requirements.txt` dependency management to `uv`/`pyproject.toml`/`uv.lock`/`.python-version`
+- `documentation/*.md` files formatted
+- `README.md` updated with new local installation and running instructions
+- `README.md` updated with new dependency management system into dir's demonstration
+- Substituting `handlers.py`'s `typing.Optional` to `... | None` (e.g. `Optional[str]` to `str | None`)
+
+### Removes
+
+- `ruff.toml` deleted due to `pyproject.toml` creation
+
 ## v1.1.0 - 2024-12-06
 
 ### Adds
