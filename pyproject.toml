@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["ruff>=0.8.2", "setuptools>=75.6.0", "twine>=6.0.1"]
+dev = ["pytest>=8.3.4", "ruff>=0.8.2", "setuptools>=75.6.0", "twine>=6.0.1"]
 
 [tool.ruff]
 line-length = 88
@@ -31,3 +31,7 @@ fixable = ["ALL"]
 [tool.ruff.lint.isort]
 case-sensitive = true
 lines-after-imports = 2
+
+[tool.pytest.ini_options]
+addopts = "-s"
+python_files = "tests/unittest/*.py"

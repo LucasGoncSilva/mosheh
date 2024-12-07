@@ -143,6 +143,12 @@ uv build  # Build pip-like file
 uv pip install dist/mosheh-<VERSION>-py3-none-any.whl --force-reinstall  # Install Mosheh using generated pip-like file
 ```
 
+### Testing
+
+```sh
+uv run pytest  # Run pytest
+```
+
 ### Running
 
 ```sh
@@ -155,7 +161,7 @@ mosheh [-h] -root ROOT \
       [--exit EXIT]
 ```
 
-### Parameters
+#### Parameters
 
 |      Call       | Type  | Mandatory  | Default                          | Example                         | Description                                                |
 | :-------------: | :---: | :--------: | :------------------------------- | :------------------------------ | :--------------------------------------------------------- |

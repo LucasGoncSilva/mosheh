@@ -1,4 +1,5 @@
 from collections import defaultdict
+from collections.abc import Sequence
 from copy import deepcopy
 from importlib.util import find_spec
 from typing import Any
@@ -6,7 +7,7 @@ from typing import Any
 from .custom_types import StandardReturn
 
 
-def bin(item: Any, universe: list[Any] | tuple[Any]) -> bool:
+def bin(item: Any, universe: Sequence[Any]) -> bool:
     """
     Binary Search algorithm which returns not the index, but a boolean.
 
@@ -22,14 +23,14 @@ def bin(item: Any, universe: list[Any] | tuple[Any]) -> bool:
     ```python
     lst: list[int] = [1, 2, 3, 4, 5]
     num: int = 4
-    result: bool = bin(num, lst)
+    bin(num, lst)
     # True
     ```
 
     :param item: The item to check if exists in.
     :type item: Any
     :param universe: The sorted iterable to be evaluated.
-    :type universe: list[Any] | tuple[Any]
+    :type universe: Sequence[Any]
     :return: If the item is found in the universe.
     :rtype: bool
     """
@@ -60,7 +61,7 @@ def is_lib_installed(name: str) -> bool:
 
     Example:
     ```python
-    result: bool = is_lib_installed('fastapi')
+    is_lib_installed('fastapi')
     # False
     ```
 
@@ -77,7 +78,7 @@ def is_lib_installed(name: str) -> bool:
         return False
 
 
-def nested_dict() -> dict[Any, Any]:
+def nested_dict() -> defaultdict[Any, Any]:
     """
     Creates and returns a nested dictionary using `collections.defaultdict`.
 
@@ -98,17 +99,17 @@ def nested_dict() -> dict[Any, Any]:
     ```
 
     :return: A `defaultdict` instance configured for recursive nesting.
-    :rtype: dict[Any, Any]
+    :rtype: defaultdict[Any, Any]
     """
 
     return defaultdict(nested_dict)
 
 
 def add_to_dict(
-    structure: dict[Any, Any],
+    structure: defaultdict[Any, Any],
     path: list[str],
     data: list[StandardReturn],
-) -> dict[Any, Any]:
+) -> defaultdict[Any, Any]:
     """
     Adds data to a nested dictionary structure based on a specified path.
 
@@ -126,21 +127,21 @@ def add_to_dict(
 
     Example:
     ```python
-    structure = {}
-    path = ['level1', 'level2', 'level3']
-    data = {'key': 'value'}
-    result = add_to_dict(structure, path, data)
-    # {'level1': {'level2': {'level3': {'key': 'value'}}}}
+    structure: defaultdict = nested_dict()
+    path: list[str] = ['level1', 'level2', 'level3']
+    data: list[StandardReturn] = [{'key': 'value'}]
+    add_to_dict(structure, path, data)
+    # defaultdict(defaultdict, {'level1': {'level2': {'level3': [{'key': 'value'}]}}})
     ```
 
     :param structure: The nested dictionary to modify.
-    :type structure: dict[Any, Any]
+    :type structure: defaultdict[Any, Any]
     :param path: A list of keys representing the path to the target location.
     :type path: list[str]
     :param data: The data to add at the specified path.
-    :type data: StandardReturn
+    :type data: list[StandardReturn]
     :return: The modified dictionary with the new data added.
-    :rtype: dict[Any, Any]
+    :rtype: defaultdict[Any, Any]
     """
 
     if len(path) == 1:
@@ -168,16 +169,9 @@ def convert_to_regular_dict(d: dict[Any, Any]) -> dict[Any, Any]:
 
     Example:
     ```python
-    from collections import defaultdict
-
-
-    def nested_dict():
-        return defaultdict(nested_dict)
-
-
-    d = nested_dict()
+    d: defaultdict = nested_dict()
     d['level1']['level2'] = 'value'
-    regular_dict = convert_to_regular_dict(d)
+    convert_to_regular_dict(d)
     # {'level1': {'level2': 'value'}}
     ```
 
@@ -223,7 +217,7 @@ def standard_struct() -> StandardReturn:
 
     Example:
     ```python
-    struct: StandardReturn = standard_struct()
+    standard_struct()
     # {}
     ```
 
@@ -255,7 +249,7 @@ def indent_code(code: str, level: int = 4) -> str:
     :param code: The code snippet to be formatted.
     :type code: str
     :param level: The number of spaces to leftpad each line.
-    :type level: int
+    :type level: int, optional
     :return: The code snippet leftpadded.
     :rtype: str
     """
