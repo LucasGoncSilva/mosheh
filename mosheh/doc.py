@@ -59,9 +59,9 @@ def generate_doc(
     :param proj_name: The name of the project, for generating MkDocs configuration.
     :type proj_name: str
     :param logo_path: Path for doc/project logo, same Material MkDocs's formats.
-    :type logo_path: str | None, optional
+    :type logo_path: str | None
     :param readme_path: The path of the `README.md` file, to be used as homepage.
-    :type readme_path: str | None, optional
+    :type readme_path: str | None
     :param edit_uri: URI to view raw or edit blob file, default is
                         `'blob/main/documentation/docs'`.
     :type edit_uri: str, optional
@@ -89,7 +89,7 @@ def generate_doc(
 
     with open(mkdocs_yml, 'w', encoding='utf-8') as f:
         f.write(
-            default_doc_config(
+            _default_doc_config(
                 proj_name=proj_name,
                 output=output,
                 logo_path=logo_path,
@@ -99,7 +99,7 @@ def generate_doc(
             )
         )
 
-    process_codebase(codebase, root, output)
+    _process_codebase(codebase, root, output)
 
     with open(mkdocs_yml, 'a', encoding='utf-8') as f:
         f.writelines(NAV_MD)
@@ -114,7 +114,7 @@ def generate_doc(
             f.writelines(content)
 
 
-def default_doc_config(
+def _default_doc_config(
     *,
     proj_name: str,
     output: str,
@@ -176,7 +176,7 @@ def default_doc_config(
     )
 
 
-def codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
+def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     """
     Converts a file's processed data into a structured Markdown representation.
 
@@ -201,8 +201,7 @@ def codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
         {'statement': Statement.Import, 'name': 'os', ...},
         {'statement': Statement.ClassDef, 'name': 'MyClass', ...},
     ]
-    markdown_doc: str = codebase_to_markdown(filedata, '/path/to/module/file.py')
-    markdown_doc
+    _codebase_to_markdown(filedata, '/path/to/module/file.py')
     # Outputs a Markdown string with sections for imports and classes
     ```
 
@@ -228,25 +227,25 @@ def codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     for stmt in filedata:
         match stmt['statement']:
             case Statement.Import:
-                imports += handle_import(stmt)
+                imports += _handle_import(stmt)
 
             case Statement.ImportFrom:
-                imports += handle_import_from(stmt)
+                imports += _handle_import_from(stmt)
 
             case Statement.Assign:
-                constants += handle_assign(stmt)
+                constants += _handle_assign(stmt)
 
             case Statement.AnnAssign:
-                constants += handle_annassign(stmt)
+                constants += _handle_annassign(stmt)
 
             case Statement.ClassDef:
-                classes += handle_class_def(stmt)
+                classes += _handle_class_def(stmt)
 
             case Statement.FunctionDef | Statement.AsyncFunctionDef:
-                functions += handle_function_def(stmt)
+                functions += _handle_function_def(stmt)
 
             case Statement.Assert:
-                assertions += handle_assert(stmt)
+                assertions += _handle_assert(stmt)
 
             case _:
                 raise NotImplementedError('Should not fallback to this.')
@@ -274,7 +273,7 @@ def codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     )
 
 
-def handle_import(stmt: StandardReturn) -> str:
+def _handle_import(stmt: StandardReturn) -> str:
     """
     Generates a Markdown representation for an import statement.
 
@@ -297,8 +296,7 @@ def handle_import(stmt: StandardReturn) -> str:
         'category': ImportType.Native,
         'code': 'import os',
     }
-    markdown_import: str = handle_import(stmt)
-    markdown_import
+    handle_import(stmt)
     # Outputs a formatted Markdown string representing the import
     ```
 
@@ -322,7 +320,7 @@ def handle_import(stmt: StandardReturn) -> str:
     )
 
 
-def handle_import_from(stmt: StandardReturn) -> str:
+def _handle_import_from(stmt: StandardReturn) -> str:
     """
     Generates a Markdown representation for an import statement.
 
@@ -345,8 +343,7 @@ def handle_import_from(stmt: StandardReturn) -> str:
         'category': ImportType.Native,
         'code': 'from os import environ',
     }
-    markdown_import: str = handle_import(stmt)
-    markdown_import
+    handle_import(stmt)
     # Outputs a formatted Markdown string representing the import
     ```
 
@@ -369,7 +366,7 @@ def handle_import_from(stmt: StandardReturn) -> str:
     )
 
 
-def handle_assign(stmt: StandardReturn) -> str:
+def _handle_assign(stmt: StandardReturn) -> str:
     """
     Generates a Markdown representation for an `assign` statement.
 
@@ -392,8 +389,7 @@ def handle_assign(stmt: StandardReturn) -> str:
         'value': '(True, False)',
         'code': 'foo, bar = True, False',
     }
-    markdown_assign: str = handle_assign(stmt)
-    markdown_assign
+    handle_assign(stmt)
     # Outputs a formatted Markdown string representing the assign
     ```
 
@@ -417,7 +413,7 @@ def handle_assign(stmt: StandardReturn) -> str:
     )
 
 
-def handle_annassign(stmt: StandardReturn) -> str:
+def _handle_annassign(stmt: StandardReturn) -> str:
     """
     Generates a Markdown representation for a `var: type = value` statement.
 
@@ -441,8 +437,7 @@ def handle_annassign(stmt: StandardReturn) -> str:
         'value': '"example"',
         'code': 'var: str = "example"',
     }
-    markdown_annassign: str = handle_annassign(stmt)
-    markdown_annassign
+    handle_annassign(stmt)
     # Outputs a formatted Markdown string representing the annotated assign
     ```
 
@@ -466,7 +461,7 @@ def handle_annassign(stmt: StandardReturn) -> str:
     )
 
 
-def handle_class_def(stmt: StandardReturn) -> str:
+def _handle_class_def(stmt: StandardReturn) -> str:
     """
     Generates a Markdown representation for a `class` definition statement.
 
@@ -493,8 +488,7 @@ def handle_class_def(stmt: StandardReturn) -> str:
         'kwargs': '',
         'code': 'class MyClass(BaseClass):',
     }
-    markdown_class: str = handle_class_def(stmt)
-    markdown_class
+    handle_class_def(stmt)
     # Outputs a formatted Markdown string representing the class definition
     ```
 
@@ -523,7 +517,7 @@ def handle_class_def(stmt: StandardReturn) -> str:
     )
 
 
-def handle_function_def(stmt: StandardReturn) -> str:
+def _handle_function_def(stmt: StandardReturn) -> str:
     """
     Generates a Markdown representation for a function definition statement.
 
@@ -551,8 +545,7 @@ def handle_function_def(stmt: StandardReturn) -> str:
         'rtype': 'int',
         'code': 'def sum_thing(x: int, y: int) -> int: return x + y',
     }
-    markdown_function: str = handle_function_def(stmt)
-    markdown_function
+    handle_function_def(stmt)
     # Outputs a formatted Markdown string representing the function definition
     ```
 
@@ -585,7 +578,7 @@ def handle_function_def(stmt: StandardReturn) -> str:
     )
 
 
-def handle_assert(stmt: StandardReturn) -> str:
+def _handle_assert(stmt: StandardReturn) -> str:
     """
     Generates a Markdown representation for an `assert x` statement.
 
@@ -609,8 +602,7 @@ def handle_assert(stmt: StandardReturn) -> str:
         'msg': '"x must be positive"',
         'code': 'assert x > 0, "x must be positive"',
     }
-    markdown_assert: str = handle_assert(stmt)
-    markdown_assert
+    handle_assert(stmt)
     # Outputs a formatted Markdown string representing the assert statement
     ```
 
@@ -628,7 +620,7 @@ def handle_assert(stmt: StandardReturn) -> str:
     return ASSERT_MD_STRUCT.format(test=test, msg=msg, code=code)
 
 
-def process_codebase(
+def _process_codebase(
     codebase: dict[str, CodebaseDict] | dict[str, list[StandardReturn]],
     root: str,
     exit: str,
@@ -673,12 +665,12 @@ def process_codebase(
         new_path: str = path.join(basedir, key)
 
         if isinstance(value, list):
-            __process_file(key, value, new_path, root, docs_path)
+            _process_file(key, value, new_path, root, docs_path)
         else:
-            process_codebase(value, root, exit, new_path)
+            _process_codebase(value, root, exit, new_path)
 
 
-def __process_file(
+def _process_file(
     key: str,
     stmts: list[StandardReturn],
     file_path: str,
@@ -720,18 +712,18 @@ def __process_file(
     if not stmts:
         return
 
-    content: str = codebase_to_markdown(stmts, file_path)
+    content: str = _codebase_to_markdown(stmts, file_path)
     output_file_path: str = path.join(docs_path, file_path.removeprefix(root) + '.md')
     folder_path: str = path.dirname(output_file_path)
 
     if not path.exists(folder_path):
         makedirs(folder_path)
 
-    __write_to_file(output_file_path, content)
-    __update_navigation(folder_path, docs_path, key, output_file_path)
+    _write_to_file(output_file_path, content)
+    _update_navigation(folder_path, docs_path, key, output_file_path)
 
 
-def __write_to_file(file_path: str, content: str) -> None:
+def _write_to_file(file_path: str, content: str) -> None:
     """
     Writes content to a specified file.
 
@@ -761,7 +753,7 @@ def __write_to_file(file_path: str, content: str) -> None:
         file.write(content)
 
 
-def __update_navigation(
+def _update_navigation(
     folder_path: str, docs_path: str, key: str, output_file_path: str
 ) -> None:
     """
