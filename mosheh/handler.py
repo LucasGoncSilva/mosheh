@@ -5,7 +5,7 @@ from . import constants
 from .custom_types import (
     ImportType,
     StandardReturn,
-    StandardReturnProccessor,
+    StandardReturnProcessor,
     Statement,
 )
 from .utils import bin, is_lib_installed, standard_struct
@@ -40,9 +40,9 @@ def handle_def_nodes(node: ast.AST) -> list[StandardReturn]:
     # -------------------------
 
     if isinstance(node, ast.Import):
-        data = handle_import(data, node)
+        data = _handle_import(data, node)
     elif isinstance(node, ast.ImportFrom):
-        data = handle_import_from(data, node)
+        data = _handle_import_from(data, node)
 
     # -------------------------
     # Constants - ast.Assign | ast.AnnAssign
@@ -51,45 +51,45 @@ def handle_def_nodes(node: ast.AST) -> list[StandardReturn]:
     elif isinstance(node, ast.Assign):
         lst: list[str] = []
         for i in node.targets:
-            lst.extend(cast(list[str], handle_node(i)))
+            lst.extend(cast(list[str], _handle_node(i)))
 
         if any(map(str.isupper, lst)) or any(
             map(lambda x: x in constants.ACCEPTABLE_LOWER_CONSTANTS, lst)
         ):
-            data = handle_assign(data, node)
+            data = _handle_assign(data, node)
     elif isinstance(node, ast.AnnAssign):
         if isinstance(node.target, ast.Name) and node.target.id.isupper():
-            data = handle_annassign(data, node)
+            data = _handle_annassign(data, node)
 
     # -------------------------
     # Functions - ast.FunctionDef | ast.AsyncFunctionDef
     # -------------------------
 
     elif isinstance(node, ast.FunctionDef):
-        data = handle_function_def(data, node)
+        data = _handle_function_def(data, node)
     elif isinstance(node, ast.AsyncFunctionDef):
-        data = handle_async_function_def(data, node)
+        data = _handle_async_function_def(data, node)
 
     # -------------------------
     # Classes - ast.ClassDef
     # -------------------------
 
     elif isinstance(node, ast.ClassDef):
-        data = handle_class_def(data, node)
+        data = _handle_class_def(data, node)
 
     # -------------------------
     # Assertions - ast.Assert
     # -------------------------
 
     elif isinstance(node, ast.Assert):
-        data = handle_assert(data, node)
+        data = _handle_assert(data, node)
 
     return data
 
 
-def handle_node(
+def _handle_node(
     node: ast.AST | ast.expr | None,
-) -> list[StandardReturnProccessor] | None:
+) -> list[StandardReturnProcessor] | None:
     """
     Processes various types of AST nodes and returns a standardized representation.
 
@@ -104,7 +104,7 @@ def handle_node(
     - Dynamic Dispatch: Uses type-checking to delegate node handling to specific
       functions (e.g., `handle_import`, `handle_function_def`).
     - Data Standardization: Accumulates processed data into a consistent structure
-      (`StandardReturnProccessor`).
+      (`StandardReturnProcessor`).
 
     Example:
     ```python
@@ -112,8 +112,7 @@ def handle_node(
 
     source_code = 'def my_function():\\n    pass'
     node = ast.parse(source_code).body[0]
-    result = handle_node(node)
-    result
+    handle_node(node)
     # Outputs a standardized representation of the function definition.
     ```
 
@@ -121,26 +120,26 @@ def handle_node(
     :type node: ast.AST | ast.expr | None
     :return: A list of standardized data representing the processed node, or `None` if
                 no node is provided.
-    :rtype: list[StandardReturnProccessor] | None
+    :rtype: list[StandardReturnProcessor] | None
     """
 
     if node is None:
         return node
 
-    data: list[StandardReturnProccessor] = []
+    data: list[StandardReturnProcessor] = []
 
     def update_data(new_data: list[StandardReturn]):
         nonlocal data
-        data = cast(list[StandardReturnProccessor], new_data)
+        data = cast(list[StandardReturnProcessor], new_data)
 
     # -------------------------
     # Imports - ast.Import | ast.ImportFrom
     # -------------------------
 
     if isinstance(node, ast.Import):
-        update_data(handle_import(cast(list[StandardReturn], data), node))
+        update_data(_handle_import(cast(list[StandardReturn], data), node))
     elif isinstance(node, ast.ImportFrom):
-        update_data(handle_import_from(cast(list[StandardReturn], data), node))
+        update_data(_handle_import_from(cast(list[StandardReturn], data), node))
 
     # -------------------------
     # Constants - ast.Assign | ast.AnnAssign
@@ -148,164 +147,164 @@ def handle_node(
 
     elif isinstance(node, ast.Assign):
         lst: list[str] = [
-            cast(list[str], handle_constant([], i))[0]
+            cast(list[str], _handle_constant([], i))[0]
             for i in node.targets
             if isinstance(i, ast.Constant)
         ]
         if any(map(str.isupper, lst)):
-            update_data(handle_assign(cast(list[StandardReturn], data), node))
+            update_data(_handle_assign(cast(list[StandardReturn], data), node))
     elif isinstance(node, ast.AnnAssign):
         if isinstance(node.target, ast.Name) and node.target.id.isupper():
-            update_data(handle_annassign(cast(list[StandardReturn], data), node))
+            update_data(_handle_annassign(cast(list[StandardReturn], data), node))
 
     # -------------------------
     # Functions - ast.FunctionDef | ast.AsyncFunctionDef
     # -------------------------
 
     elif isinstance(node, ast.FunctionDef):
-        update_data(handle_function_def(cast(list[StandardReturn], data), node))
+        update_data(_handle_function_def(cast(list[StandardReturn], data), node))
     elif isinstance(node, ast.AsyncFunctionDef):
-        update_data(handle_async_function_def(cast(list[StandardReturn], data), node))
+        update_data(_handle_async_function_def(cast(list[StandardReturn], data), node))
 
     # -------------------------
     # Classes - ast.ClassDef
     # -------------------------
 
     elif isinstance(node, ast.ClassDef):
-        update_data(handle_class_def(cast(list[StandardReturn], data), node))
+        update_data(_handle_class_def(cast(list[StandardReturn], data), node))
 
     # -------------------------
     # Assertions - ast.Assert
     # -------------------------
 
     elif isinstance(node, ast.Assert):
-        update_data(handle_assert(cast(list[StandardReturn], data), node))
+        update_data(_handle_assert(cast(list[StandardReturn], data), node))
 
     # -------------------------
     # Calls - ast.Call
     # -------------------------
 
     elif isinstance(node, ast.Call):
-        data = handle_call(data, node)
+        data = _handle_call(data, node)
 
     # -------------------------
     # Literals - ast.Constants
     # -------------------------
 
     elif isinstance(node, ast.Constant):
-        data = handle_constant(data, node)
+        data = _handle_constant(data, node)
 
     # -------------------------
     # Attributes - ast.Attribute
     # -------------------------
 
     elif isinstance(node, ast.Attribute):
-        data = handle_attribute(data, node)
+        data = _handle_attribute(data, node)
 
     # -------------------------
     # Lists - ast.List
     # -------------------------
 
     elif isinstance(node, ast.List):
-        data = handle_list(data, node)
+        data = _handle_list(data, node)
 
     # -------------------------
     # Tuples - ast.Tuple
     # -------------------------
 
     elif isinstance(node, ast.Tuple):
-        data = handle_tuple(data, node)
+        data = _handle_tuple(data, node)
 
     # -------------------------
     # Sets - ast.Set
     # -------------------------
 
     elif isinstance(node, ast.Set):
-        data = handle_set(data, node)
+        data = _handle_set(data, node)
 
     # -------------------------
     # Dicts - ast.Dict
     # -------------------------
 
     elif isinstance(node, ast.Dict):
-        data = handle_dict(data, node)
+        data = _handle_dict(data, node)
 
     # -------------------------
     # Basic Operations - "+", "-", "*", "/", ...
     # -------------------------
 
     elif isinstance(node, ast.BinOp):
-        data = handle_binop(data, node)
+        data = _handle_binop(data, node)
 
     # -------------------------
     # Unary Operation
     # -------------------------
 
     elif isinstance(node, ast.UnaryOp):
-        data = handle_unary(data, node)
+        data = _handle_unary(data, node)
 
     # -------------------------
     # SubScripts - ast.Subscript
     # -------------------------
 
     elif isinstance(node, ast.Subscript):
-        data = handle_subscript(data, node)
+        data = _handle_subscript(data, node)
 
     # -------------------------
     # Slices - ast.Slice
     # -------------------------
 
     elif isinstance(node, ast.Slice):
-        data = handle_slice(data, node)
+        data = _handle_slice(data, node)
 
     # -------------------------
     # Names - ast.Name
     # -------------------------
 
     elif isinstance(node, ast.Name):
-        data = handle_name(data, node)
+        data = _handle_name(data, node)
 
     # -------------------------
     # Names - ast.Compare
     # -------------------------
 
     elif isinstance(node, ast.Compare):
-        data = handle_compare(data, node)
+        data = _handle_compare(data, node)
 
     # -------------------------
     # Joined Strings - ast.JoinedStr
     # -------------------------
 
     elif isinstance(node, ast.JoinedStr):
-        data = handle_joined_str(data, node)
+        data = _handle_joined_str(data, node)
 
     # -------------------------
     # Ternary Operator - ast.IfExp
     # -------------------------
 
     elif isinstance(node, ast.IfExp):
-        data = handle_if_expression(data, node)
+        data = _handle_if_expression(data, node)
 
     # -------------------------
     # Boolean Operation (or) - ast.BoolOp
     # -------------------------
 
     elif isinstance(node, ast.BoolOp):
-        data = handle_bool_op(data, node)
+        data = _handle_bool_op(data, node)
 
     # -------------------------
     # Comprehensions - ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp
     # -------------------------
 
     elif isinstance(node, ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp):
-        data = handle_comprehensions(data, node)
+        data = _handle_comprehensions(data, node)
 
     # -------------------------
     # Lambda Functions - ast.Lambda
     # -------------------------
 
     elif isinstance(node, ast.Lambda):
-        data = handle_lambda(data, node)
+        data = _handle_lambda(data, node)
 
     return data
 
@@ -370,7 +369,7 @@ def __handle_import(lib_name: str) -> StandardReturn:
     return data
 
 
-def handle_import(
+def _handle_import(
     struct: list[StandardReturn], node: ast.Import
 ) -> list[StandardReturn]:
     """
@@ -410,7 +409,7 @@ def handle_import(
     return struct
 
 
-def handle_import_from(
+def _handle_import_from(
     struct: list[StandardReturn], node: ast.ImportFrom
 ) -> list[StandardReturn]:
     """
@@ -466,18 +465,18 @@ def handle_import_from(
     return struct
 
 
-def handle_attribute(
-    struct: list[StandardReturnProccessor], node: ast.Attribute
-) -> list[StandardReturnProccessor]:
+def _handle_attribute(
+    struct: list[StandardReturnProcessor], node: ast.Attribute
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.Attribute` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a slice expression.
     :type node: ast.Attribute
     :return: The readable code-like node build up.
-    :rtype: list[StandardReturnProccessor]
+    :rtype: list[StandardReturnProcessor]
     """
 
     struct.append(ast.unparse(node))
@@ -485,18 +484,18 @@ def handle_attribute(
     return struct
 
 
-def handle_call(
-    struct: list[StandardReturnProccessor], node: ast.Call
-) -> list[StandardReturnProccessor]:
+def _handle_call(
+    struct: list[StandardReturnProcessor], node: ast.Call
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.Call` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a slice expression.
     :type node: ast.Call
     :return: The readable code-like node build up.
-    :rtype: list[StandardReturnProccessor]
+    :rtype: list[StandardReturnProcessor]
     """
 
     struct.append(ast.unparse(node))
@@ -504,14 +503,14 @@ def handle_call(
     return struct
 
 
-def handle_constant(
-    struct: list[StandardReturnProccessor], node: ast.Constant
-) -> list[StandardReturnProccessor]:
+def _handle_constant(
+    struct: list[StandardReturnProcessor], node: ast.Constant
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.Constant` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a slice expression.
     :type node: ast.Constant
     :return: The readable code-like node build up.
@@ -523,7 +522,7 @@ def handle_constant(
     return struct
 
 
-def handle_assign(
+def _handle_assign(
     struct: list[StandardReturn], node: ast.Assign
 ) -> list[StandardReturn]:
     """
@@ -546,9 +545,9 @@ def handle_assign(
 
     statement: Final[Statement] = Statement.Assign
     tokens: Final[list[str]] = [
-        cast(list[str], handle_node(i))[0] for i in node.targets
+        cast(list[str], _handle_node(i))[0] for i in node.targets
     ]
-    value: Final[str] = cast(list[str], handle_node(node.value))[0]
+    value: Final[str] = cast(list[str], _handle_node(node.value))[0]
     code: Final[str] = ast.unparse(node)
 
     data: StandardReturn = standard_struct()
@@ -567,14 +566,14 @@ def handle_assign(
     return struct
 
 
-def handle_binop(
-    struct: list[StandardReturnProccessor], node: ast.BinOp
-) -> list[StandardReturnProccessor]:
+def _handle_binop(
+    struct: list[StandardReturnProcessor], node: ast.BinOp
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.BinOp` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a binary operation expression.
     :type node: ast.BinOp
     :return: The readable code-like node build up.
@@ -586,7 +585,7 @@ def handle_binop(
     return struct
 
 
-def handle_annassign(
+def _handle_annassign(
     struct: list[StandardReturn], node: ast.AnnAssign
 ) -> list[StandardReturn]:
     """
@@ -610,13 +609,13 @@ def handle_annassign(
     """
 
     statement: Statement = Statement.AnnAssign
-    name: str = cast(list[str], handle_node(node.target))[0]
-    annot: str = cast(list[str], handle_node(node.annotation))[0]
+    name: str = cast(list[str], _handle_node(node.target))[0]
+    annot: str = cast(list[str], _handle_node(node.annotation))[0]
     value: str = ''
     code: str = ast.unparse(node)
 
     if node.value is not None:
-        value = cast(list[str], handle_node(node.value))[0]
+        value = cast(list[str], _handle_node(node.value))[0]
 
     data: StandardReturn = standard_struct()
 
@@ -713,14 +712,14 @@ def __process_function_args(node_args: ast.arguments) -> str:
     for i, arg in enumerate(node_args.args):
         name: str = arg.arg
         annotation: str | None = (
-            cast(list[str], handle_node(arg.annotation))[0] if arg.annotation else None
+            cast(list[str], _handle_node(arg.annotation))[0] if arg.annotation else None
         )
 
         default = None
         if i < len(node_args.kw_defaults):
             default_node = node_args.kw_defaults[i]
             if default_node:
-                default = str(cast(list[str], handle_node(default_node))[0])
+                default = str(cast(list[str], _handle_node(default_node))[0])
 
         formatted_args.append(__format_arg(name, annotation, default))
 
@@ -763,21 +762,21 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
     for i, arg in enumerate(node_args.kwonlyargs):
         name: str = arg.arg
         annotation: str | None = (
-            cast(list[str], handle_node(arg.annotation))[0] if arg.annotation else None
+            cast(list[str], _handle_node(arg.annotation))[0] if arg.annotation else None
         )
 
         default = None
         if i < len(node_args.kw_defaults):
             default_node = node_args.kw_defaults[i]
             if default_node:
-                default = str(cast(list[str], handle_node(default_node))[0])
+                default = str(cast(list[str], _handle_node(default_node))[0])
 
         formatted_kwargs.append(__format_arg(name, annotation, default))
 
     return ', '.join(formatted_kwargs)
 
 
-def handle_function_def(
+def _handle_function_def(
     struct: list[StandardReturn], node: ast.FunctionDef
 ) -> list[StandardReturn]:
     """
@@ -801,10 +800,10 @@ def handle_function_def(
     statement: Final[Statement] = Statement.FunctionDef
     name: Final[str] = node.name
     decos: Final[list[str]] = [
-        cast(list[str], handle_node(i))[0] for i in node.decorator_list
+        cast(list[str], _handle_node(i))[0] for i in node.decorator_list
     ]
     rtype: Final[str] | None = (
-        cast(list[str], handle_node(node.returns))[0]
+        cast(list[str], _handle_node(node.returns))[0]
         if node.returns is not None
         else None
     )
@@ -832,7 +831,7 @@ def handle_function_def(
     return struct
 
 
-def handle_async_function_def(
+def _handle_async_function_def(
     struct: list[StandardReturn],
     node: ast.AsyncFunctionDef,
 ) -> list[StandardReturn]:
@@ -855,10 +854,10 @@ def handle_async_function_def(
     statement: Final[Statement] = Statement.AsyncFunctionDef
     name: Final[str] = node.name
     decos: Final[list[str]] = [
-        cast(list[str], handle_node(i))[0] for i in node.decorator_list
+        cast(list[str], _handle_node(i))[0] for i in node.decorator_list
     ]
     rtype: Final[str] | None = (
-        cast(list[str], handle_node(node.returns))[0]
+        cast(list[str], _handle_node(node.returns))[0]
         if node.returns is not None
         else None
     )
@@ -957,7 +956,7 @@ def __process_class_kwargs(keywords: list[ast.keyword]) -> str:
     return ', '.join(formatted_kwargs)
 
 
-def handle_class_def(
+def _handle_class_def(
     struct: list[StandardReturn], node: ast.ClassDef
 ) -> list[StandardReturn]:
     """
@@ -984,12 +983,12 @@ def handle_class_def(
     statement: Final[Statement] = Statement.ClassDef
     name: Final[str] = node.name
     inheritance: Final[list[str]] = [
-        cast(list[str], handle_node(i))[0]
+        cast(list[str], _handle_node(i))[0]
         for i in node.bases
         if isinstance(i, ast.Name)
     ]
     decos: Final[list[str]] = [
-        cast(list[str], handle_node(i))[0] for i in node.decorator_list
+        cast(list[str], _handle_node(i))[0] for i in node.decorator_list
     ]
     kwargs_str: str = __process_class_kwargs(node.keywords)
     code: Final[str] = ast.unparse(node)
@@ -1012,14 +1011,14 @@ def handle_class_def(
     return struct
 
 
-def handle_compare(
-    struct: list[StandardReturnProccessor], node: ast.Compare
-) -> list[StandardReturnProccessor]:
+def _handle_compare(
+    struct: list[StandardReturnProcessor], node: ast.Compare
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.Compare` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a compare expression.
     :type node: ast.Compare
     :return: The readable code-like node build up.
@@ -1031,14 +1030,14 @@ def handle_compare(
     return struct
 
 
-def handle_unary(
-    struct: list[StandardReturnProccessor], node: ast.UnaryOp
-) -> list[StandardReturnProccessor]:
+def _handle_unary(
+    struct: list[StandardReturnProcessor], node: ast.UnaryOp
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.UnaryOp` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a compare expression.
     :type node: ast.UnaryOp
     :return: The readable code-like node build up.
@@ -1050,7 +1049,7 @@ def handle_unary(
     return struct
 
 
-def handle_assert(
+def _handle_assert(
     struct: list[StandardReturn], node: ast.Assert
 ) -> list[StandardReturn]:
     """
@@ -1074,9 +1073,9 @@ def handle_assert(
     """
 
     statement: Final[Statement] = Statement.Assert
-    test: str = cast(list[str], handle_node(node.test))[0]
+    test: str = cast(list[str], _handle_node(node.test))[0]
     msg: Final[str | None] = (
-        cast(list[str], handle_node(node.msg))[0] if node.msg else None
+        cast(list[str], _handle_node(node.msg))[0] if node.msg else None
     )
     code: Final[str] = ast.unparse(node)
 
@@ -1096,14 +1095,14 @@ def handle_assert(
     return struct
 
 
-def handle_list(
-    struct: list[StandardReturnProccessor], node: ast.List
-) -> list[StandardReturnProccessor]:
+def _handle_list(
+    struct: list[StandardReturnProcessor], node: ast.List
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.List` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a list expression.
     :type node: ast.List
     :return: The readable code-like node build up.
@@ -1115,14 +1114,14 @@ def handle_list(
     return struct
 
 
-def handle_tuple(
-    struct: list[StandardReturnProccessor], node: ast.Tuple
-) -> list[StandardReturnProccessor]:
+def _handle_tuple(
+    struct: list[StandardReturnProcessor], node: ast.Tuple
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.Tuple` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a tuple expression.
     :type node: ast.Tuple
     :return: The readable code-like node build up.
@@ -1134,14 +1133,14 @@ def handle_tuple(
     return struct
 
 
-def handle_set(
-    struct: list[StandardReturnProccessor], node: ast.Set
-) -> list[StandardReturnProccessor]:
+def _handle_set(
+    struct: list[StandardReturnProcessor], node: ast.Set
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.Set` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a set expression.
     :type node: ast.Set
     :return: The readable code-like node build up.
@@ -1153,14 +1152,14 @@ def handle_set(
     return struct
 
 
-def handle_dict(
-    struct: list[StandardReturnProccessor], node: ast.Dict
-) -> list[StandardReturnProccessor]:
+def _handle_dict(
+    struct: list[StandardReturnProcessor], node: ast.Dict
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.Dict` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a dict expression.
     :type node: ast.Dict
     :return: The readable code-like node build up.
@@ -1172,14 +1171,14 @@ def handle_dict(
     return struct
 
 
-def handle_subscript(
-    struct: list[StandardReturnProccessor], node: ast.Subscript
-) -> list[StandardReturnProccessor]:
+def _handle_subscript(
+    struct: list[StandardReturnProcessor], node: ast.Subscript
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.Subscript` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a subscript expression.
     :type node: ast.Subscript
     :return: The readable code-like node build up.
@@ -1191,18 +1190,18 @@ def handle_subscript(
     return struct
 
 
-def handle_slice(
-    struct: list[StandardReturnProccessor], node: ast.Slice
-) -> list[StandardReturnProccessor]:
+def _handle_slice(
+    struct: list[StandardReturnProcessor], node: ast.Slice
+) -> list[StandardReturnProcessor]:
     """
     Recieves an `ast.Slice` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing a slice expression.
     :type node: ast.Slice
     :return: The readable code-like node build up.
-    :rtype: list[StandardReturnProccessor]
+    :rtype: list[StandardReturnProcessor]
     """
 
     struct.append(ast.unparse(node))
@@ -1210,20 +1209,20 @@ def handle_slice(
     return struct
 
 
-def handle_name(
-    struct: list[StandardReturnProccessor], node: ast.Name
-) -> list[StandardReturnProccessor]:
+def _handle_name(
+    struct: list[StandardReturnProcessor], node: ast.Name
+) -> list[StandardReturnProcessor]:
     """
     Processes an `ast.Name` node and returns its data.
 
     This function just returns the node id, as str...
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing an assignment statement.
     :type node: ast.Name
     :return: The node id.
-    :rtype: list[StandardReturnProccessor]
+    :rtype: list[StandardReturnProcessor]
     """
 
     struct.append(ast.unparse(node))
@@ -1231,20 +1230,20 @@ def handle_name(
     return struct
 
 
-def handle_joined_str(
-    struct: list[StandardReturnProccessor], node: ast.JoinedStr
-) -> list[StandardReturnProccessor]:
+def _handle_joined_str(
+    struct: list[StandardReturnProcessor], node: ast.JoinedStr
+) -> list[StandardReturnProcessor]:
     """
     Processes an `ast.JoinedStr` node and returns its data.
 
     This function just returns the node id, as str...
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing an assignment statement.
     :type node: ast.JoinedStr
     :return: The node id.
-    :rtype: list[StandardReturnProccessor]
+    :rtype: list[StandardReturnProcessor]
     """
 
     struct.append(ast.unparse(node))
@@ -1252,20 +1251,20 @@ def handle_joined_str(
     return struct
 
 
-def handle_if_expression(
-    struct: list[StandardReturnProccessor], node: ast.IfExp
-) -> list[StandardReturnProccessor]:
+def _handle_if_expression(
+    struct: list[StandardReturnProcessor], node: ast.IfExp
+) -> list[StandardReturnProcessor]:
     """
     Processes an `ast.IfExp` node and returns its data.
 
     This function just returns the node id, as str...
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing an assignment statement.
     :type node: ast.IfExp
     :return: The node id.
-    :rtype: list[StandardReturnProccessor]
+    :rtype: list[StandardReturnProcessor]
     """
 
     struct.append(ast.unparse(node))
@@ -1273,20 +1272,20 @@ def handle_if_expression(
     return struct
 
 
-def handle_bool_op(
-    struct: list[StandardReturnProccessor], node: ast.BoolOp
-) -> list[StandardReturnProccessor]:
+def _handle_bool_op(
+    struct: list[StandardReturnProcessor], node: ast.BoolOp
+) -> list[StandardReturnProcessor]:
     """
     Processes an `ast.BoolOp` node and returns its data.
 
     This function just returns the node id, as str...
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing an assignment statement.
     :type node: ast.BoolOp
     :return: The node id.
-    :rtype: list[StandardReturnProccessor]
+    :rtype: list[StandardReturnProcessor]
     """
 
     struct.append(ast.unparse(node))
@@ -1294,21 +1293,21 @@ def handle_bool_op(
     return struct
 
 
-def handle_comprehensions(
-    struct: list[StandardReturnProccessor],
+def _handle_comprehensions(
+    struct: list[StandardReturnProcessor],
     node: ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp,
-) -> list[StandardReturnProccessor]:
+) -> list[StandardReturnProcessor]:
     """
     Processes a comprehension node and returns its data.
 
     This function just returns the node id, as str...
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing an assignment statement.
     :type node: ast.BoolOp
     :return: The node id.
-    :rtype: list[StandardReturnProccessor]
+    :rtype: list[StandardReturnProcessor]
     """
 
     struct.append(ast.unparse(node))
@@ -1316,20 +1315,20 @@ def handle_comprehensions(
     return struct
 
 
-def handle_lambda(
-    struct: list[StandardReturnProccessor], node: ast.Lambda
-) -> list[StandardReturnProccessor]:
+def _handle_lambda(
+    struct: list[StandardReturnProcessor], node: ast.Lambda
+) -> list[StandardReturnProcessor]:
     """
     Processes an `ast.Lambda` node and returns its data.
 
     This function just returns the node id, as str...
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProccessor]
+    :type struct: list[StandardReturnProcessor]
     :param node: The AST node representing an assignment statement.
     :type node: ast.Lambda
     :return: The node id.
-    :rtype: list[StandardReturnProccessor]
+    :rtype: list[StandardReturnProcessor]
     """
 
     struct.append(ast.unparse(node))

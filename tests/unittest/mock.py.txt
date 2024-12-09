@@ -1,0 +1,164 @@
+# Imports
+import math
+import os.path as osp
+from collections import defaultdict, namedtuple
+from typing import List, Optional, Generator
+
+# Constants
+GLOBAL_CONSTANT = 42
+PI = math.pi
+
+# Classes
+class ExampleClass:
+    """A simple example class."""
+
+    class NestedClass:
+        """A nested class."""
+        def __init__(self, value: int):
+            self.value = value
+
+    def __init__(self, data: str, optional_data: Optional[int] = None):
+        self.data = data
+        self.optional_data = optional_data
+        self._private_attr = "Private"
+
+    def instance_method(self) -> str:
+        """An instance method."""
+        return f"Data: {self.data}"
+
+    @classmethod
+    def class_method(cls):
+        """A class method."""
+        return "This is a class method."
+
+    @staticmethod
+    def static_method():
+        """A static method."""
+        return "This is a static method."
+
+# Functions
+def simple_function(a: int, b: int) -> int:
+    """A simple function."""
+    return a + b
+
+def generator_function() -> Generator[int, None, None]:
+    """A generator function."""
+    for i in range(10):
+        yield i
+
+async def async_function(url: str) -> str:
+    """An asynchronous function."""
+    import aiohttp  # Local import
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            return await response.text()
+
+def decorator_function(func):
+    """A simple decorator."""
+    def wrapper(*args, **kwargs):
+        print("Function is being called")
+        return func(*args, **kwargs)
+    return wrapper
+
+@decorator_function
+def decorated_function():
+    """A decorated function."""
+    print("Hello, decorated world!")
+
+# Try/Except/Finally
+try:
+    x = 1 / 0
+except ZeroDivisionError as e:
+    x = None
+    print(f"Error: {e}")
+finally:
+    x = 0
+
+# Context Manager
+with open("example.txt", "w") as file:
+    file.write("Hello, file!")
+
+# Data Structures
+simple_list = [1, 2, 3]
+simple_dict = {"key": "value"}
+simple_set = {1, 2, 3}
+simple_tuple = (1, 2, 3)
+named_tuple = namedtuple("Point", ["x", "y"])
+point = named_tuple(1, 2)
+
+# List Comprehensions
+squares = [x**2 for x in range(10)]
+even_squares = [x**2 for x in range(10) if x % 2 == 0]
+
+# Dictionary Comprehension
+square_dict = {x: x**2 for x in range(10)}
+
+# Set Comprehension
+unique_squares = {x**2 for x in range(10)}
+
+# Lambda Functions
+add = lambda a, b: a + b
+
+# Loops
+for i in range(5):
+    print(i)
+
+while x < 5:
+    x += 1
+
+# Conditional Statements
+if x > 10:
+    print("Greater")
+elif x == 10:
+    print("Equal")
+else:
+    print("Smaller")
+
+# Assertions
+assert x == 5, "x should be 5"
+
+# Unary Operations
+neg = -42
+not_true = not True
+bitwise_not = ~5
+
+# Binary Operations
+add = 1 + 2
+sub = 3 - 1
+mul = 2 * 3
+div = 10 / 2
+floordiv = 10 // 3
+mod = 10 % 3
+power = 2**3
+bitwise_and = 5 & 3
+bitwise_or = 5 | 3
+bitwise_xor = 5 ^ 3
+shift_left = 1 << 2
+shift_right = 4 >> 1
+
+# Ternary Expression
+y = 10 if x > 5 else 20
+
+# Function Annotations
+def annotated_function(a: int, b: str) -> List[int]:
+    return [1, 2, 3]
+
+# Docstring with Usage Example
+def example_usage_function(a: int, b: int) -> int:
+    """
+    A function with a docstring example.
+
+    Example:
+        result = example_usage_function(1, 2)
+        print(result)  # Outputs 3
+    """
+    return a + b
+
+# F-strings
+name = "Python"
+print(f"Hello, {name}!")
+
+# Ellipsis
+def ellipsis_function(a, b, c=...):
+    """A function with an ellipsis."""
+    pass

@@ -4,7 +4,7 @@ from os import path, sep, walk
 from typing import Any
 
 from .custom_types import CodebaseDict, StandardReturn
-from .handlers import handle_def_nodes
+from .handler import handle_def_nodes
 from .utils import add_to_dict, convert_to_regular_dict, nested_dict
 
 

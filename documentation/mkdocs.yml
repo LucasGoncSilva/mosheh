@@ -147,7 +147,7 @@ nav:
     - constants.py: constants.py.md
     - codebase.py: codebase.py.md
     - main.py: main.py.md
-    - handlers.py: handlers.py.md
+    - handler.py: handler.py.md
     - doc.py: doc.py.md
     - utils.py: utils.py.md
     - custom_types.py: custom_types.py.md

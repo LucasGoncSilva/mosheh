@@ -33,5 +33,5 @@ case-sensitive = true
 lines-after-imports = 2
 
 [tool.pytest.ini_options]
-addopts = "-s"
+addopts = "-s -vv"
 python_files = "tests/unittest/*.py"
