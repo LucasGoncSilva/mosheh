@@ -599,7 +599,7 @@ extra:
     Homepage: homepage
     Index: index
     Overview: overview
-    Teste: test
+    Test: test
     Infra: infra
     Documentation: doc
     Legal: legal

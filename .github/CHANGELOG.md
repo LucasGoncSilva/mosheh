@@ -40,6 +40,31 @@ Key Components of a Changelog:
 
 -->
 
+## v1.2.0 - 2024-12-10
+
+### Adds
+
+- Test file for `mosheh.utils` functions: `tests.unittest.utils`
+- Test file for `mosheh.constants` constants: `tests.unittest.constants`
+- Test file for `mosheh.doc` functions: `tests.unittest.doc`
+- Test file for `mosheh.handler` functions: `tests.unittest.handler`
+- Mock test file `mock.py.txt` for serving `tests.unittest.handler` as template
+
+### Updates
+
+- `pyproject.toml` setting `pytest` to use `-vv` parameter
+- `list[Any] | tuple[Any]` to `collections.abc.Sequence[Any]` on `mosheh.utils.bin:universe` arg
+- `dict[Any, Any]` to `defaultdict[Any, Any]` on `mosheh.utils.nested_dict` rtype
+- `dict[Any, Any]` to `defaultdict[Any, Any]` on `mosheh.utils.add_to_dict:structure` arg and rtype
+- Changing all `moshe.doc` functions except `generate_doc` to be private (e.g. `_process_file`)
+- Changing all `moshe.handlers` functions except `handle_def_nodes` to be private (e.g. `_process_file`)
+- Renaming `moshe.handlers` to `moshe.handler`
+- Changing `moshe.codebase.iterate` to be private: `moshe.codebase._iterate`
+
+### Fixes
+
+- `Proccess` word refined to `Process`
+
 ## v1.1.1 - 2024-12-06
 
 ### Adds

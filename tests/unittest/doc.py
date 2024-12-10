@@ -38,8 +38,8 @@ def test_generate_doc(
                 'statement': Statement.FunctionDef,
                 'name': 'sum_thing',
                 'decorators': ['@staticmethod'],
-                'args': [('x', 'int', None), ('y', 'int', None)],
-                'kwargs': [],
+                'args': 'x: int, y: int',
+                'kwargs': None,
                 'rtype': 'int',
                 'code': 'def sum_thing(x: int, y: int) -> int: return x + y',
             }
