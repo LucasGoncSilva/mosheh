@@ -9,7 +9,7 @@ with open('.github/README.md', encoding='utf-8') as f:
 setup(
     name='mosheh',
     version=mosheh_version,
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests']),
     install_requires=[
         'mkdocs==1.6.1',
         'mkdocs-material==9.5.47',

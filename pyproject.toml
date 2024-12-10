@@ -1,9 +1,9 @@
 [project]
 name = "mosheh"
-description = "Add your description here"
+description = "Mosheh, a tool for creating docs for projects, from Python to Python."
 license = { text = "MIT" }
 readme = ".github/README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dynamic = ["version"]
 dependencies = [
     "mkdocs-material==9.5.47",
@@ -17,7 +17,7 @@ dev = ["pytest>=8.3.4", "ruff>=0.8.2", "setuptools>=75.6.0", "twine>=6.0.1"]
 
 [tool.ruff]
 line-length = 88
-exclude = [".env"]
+exclude = [".env", ".venv"]
 fix = true
 
 [tool.ruff.format]
