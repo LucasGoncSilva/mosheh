@@ -90,7 +90,7 @@ Category: 3rd Party
     from custom_types import StandardReturn
     ```
 
-### `#!py import StandardReturnProccessor`
+### `#!py import StandardReturnProcessor`
 
 Path: `#!py custom_types`
 
@@ -99,7 +99,7 @@ Category: 3rd Party
 ??? example "SNIPPET"
 
     ```py
-    from custom_types import StandardReturnProccessor
+    from custom_types import StandardReturnProcessor
     ```
 
 ### `#!py import Statement`
@@ -231,7 +231,7 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor] | None`
+Return Type: `#!py list[StandardReturnProcessor] | None`
 
 Decorators: `#!py None`
 
@@ -242,7 +242,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def handle_node(node: ast.AST | ast.expr | None) -> list[StandardReturnProccessor] | None:
+    def handle_node(node: ast.AST | ast.expr | None) -> list[StandardReturnProcessor] | None:
         """
         Processes various types of AST nodes and returns a standardized representation.
 
@@ -257,7 +257,7 @@ Kwargs: `#!py None`
         - Dynamic Dispatch: Uses type-checking to delegate node handling to specific
           functions (e.g., `handle_import`, `handle_function_def`).
         - Data Standardization: Accumulates processed data into a consistent structure
-          (`StandardReturnProccessor`).
+          (`StandardReturnProcessor`).
 
         Example:
         ```python
@@ -274,15 +274,15 @@ Kwargs: `#!py None`
         :type node: ast.AST | ast.expr | None
         :return: A list of standardized data representing the processed node, or `None` if
                     no node is provided.
-        :rtype: list[StandardReturnProccessor] | None
+        :rtype: list[StandardReturnProcessor] | None
         """
         if node is None:
             return node
-        data: list[StandardReturnProccessor] = []
+        data: list[StandardReturnProcessor] = []
 
         def update_data(new_data: list[StandardReturn]):
             nonlocal data
-            data = cast(list[StandardReturnProccessor], new_data)
+            data = cast(list[StandardReturnProcessor], new_data)
         if isinstance(node, ast.Import):
             update_data(handle_import(cast(list[StandardReturn], data), node))
         elif isinstance(node, ast.ImportFrom):
@@ -510,27 +510,27 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Attribute`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Attribute`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_attribute(struct: list[StandardReturnProccessor], node: ast.Attribute) -> list[StandardReturnProccessor]:
+    def handle_attribute(struct: list[StandardReturnProcessor], node: ast.Attribute) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.Attribute` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a slice expression.
         :type node: ast.Attribute
         :return: The readable code-like node build up.
-        :rtype: list[StandardReturnProccessor]
+        :rtype: list[StandardReturnProcessor]
         """
         struct.append(ast.unparse(node))
         return struct
@@ -540,27 +540,27 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Call`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Call`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_call(struct: list[StandardReturnProccessor], node: ast.Call) -> list[StandardReturnProccessor]:
+    def handle_call(struct: list[StandardReturnProcessor], node: ast.Call) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.Call` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a slice expression.
         :type node: ast.Call
         :return: The readable code-like node build up.
-        :rtype: list[StandardReturnProccessor]
+        :rtype: list[StandardReturnProcessor]
         """
         struct.append(ast.unparse(node))
         return struct
@@ -570,23 +570,23 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Constant`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Constant`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_constant(struct: list[StandardReturnProccessor], node: ast.Constant) -> list[StandardReturnProccessor]:
+    def handle_constant(struct: list[StandardReturnProcessor], node: ast.Constant) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.Constant` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a slice expression.
         :type node: ast.Constant
         :return: The readable code-like node build up.
@@ -643,23 +643,23 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.BinOp`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.BinOp`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_binop(struct: list[StandardReturnProccessor], node: ast.BinOp) -> list[StandardReturnProccessor]:
+    def handle_binop(struct: list[StandardReturnProcessor], node: ast.BinOp) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.BinOp` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a binary operation expression.
         :type node: ast.BinOp
         :return: The readable code-like node build up.
@@ -1128,23 +1128,23 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Compare`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Compare`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_compare(struct: list[StandardReturnProccessor], node: ast.Compare) -> list[StandardReturnProccessor]:
+    def handle_compare(struct: list[StandardReturnProcessor], node: ast.Compare) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.Compare` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a compare expression.
         :type node: ast.Compare
         :return: The readable code-like node build up.
@@ -1158,23 +1158,23 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.UnaryOp`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.UnaryOp`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_unary(struct: list[StandardReturnProccessor], node: ast.UnaryOp) -> list[StandardReturnProccessor]:
+    def handle_unary(struct: list[StandardReturnProcessor], node: ast.UnaryOp) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.UnaryOp` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a compare expression.
         :type node: ast.UnaryOp
         :return: The readable code-like node build up.
@@ -1233,23 +1233,23 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.List`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.List`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_list(struct: list[StandardReturnProccessor], node: ast.List) -> list[StandardReturnProccessor]:
+    def handle_list(struct: list[StandardReturnProcessor], node: ast.List) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.List` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a list expression.
         :type node: ast.List
         :return: The readable code-like node build up.
@@ -1263,23 +1263,23 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Tuple`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Tuple`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_tuple(struct: list[StandardReturnProccessor], node: ast.Tuple) -> list[StandardReturnProccessor]:
+    def handle_tuple(struct: list[StandardReturnProcessor], node: ast.Tuple) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.Tuple` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a tuple expression.
         :type node: ast.Tuple
         :return: The readable code-like node build up.
@@ -1293,23 +1293,23 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Set`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Set`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_set(struct: list[StandardReturnProccessor], node: ast.Set) -> list[StandardReturnProccessor]:
+    def handle_set(struct: list[StandardReturnProcessor], node: ast.Set) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.Set` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a set expression.
         :type node: ast.Set
         :return: The readable code-like node build up.
@@ -1323,23 +1323,23 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Dict`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Dict`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_dict(struct: list[StandardReturnProccessor], node: ast.Dict) -> list[StandardReturnProccessor]:
+    def handle_dict(struct: list[StandardReturnProcessor], node: ast.Dict) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.Dict` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a dict expression.
         :type node: ast.Dict
         :return: The readable code-like node build up.
@@ -1353,23 +1353,23 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Subscript`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Subscript`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_subscript(struct: list[StandardReturnProccessor], node: ast.Subscript) -> list[StandardReturnProccessor]:
+    def handle_subscript(struct: list[StandardReturnProcessor], node: ast.Subscript) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.Subscript` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a subscript expression.
         :type node: ast.Subscript
         :return: The readable code-like node build up.
@@ -1383,27 +1383,27 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Slice`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Slice`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_slice(struct: list[StandardReturnProccessor], node: ast.Slice) -> list[StandardReturnProccessor]:
+    def handle_slice(struct: list[StandardReturnProcessor], node: ast.Slice) -> list[StandardReturnProcessor]:
         """
         Recieves an `ast.Slice` node and returns its code-like representation as str.
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing a slice expression.
         :type node: ast.Slice
         :return: The readable code-like node build up.
-        :rtype: list[StandardReturnProccessor]
+        :rtype: list[StandardReturnProcessor]
         """
         struct.append(ast.unparse(node))
         return struct
@@ -1413,29 +1413,29 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Name`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Name`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_name(struct: list[StandardReturnProccessor], node: ast.Name) -> list[StandardReturnProccessor]:
+    def handle_name(struct: list[StandardReturnProcessor], node: ast.Name) -> list[StandardReturnProcessor]:
         """
         Processes an `ast.Name` node and returns its data.
 
         This function just returns the node id, as str...
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing an assignment statement.
         :type node: ast.Name
         :return: The node id.
-        :rtype: list[StandardReturnProccessor]
+        :rtype: list[StandardReturnProcessor]
         """
         struct.append(ast.unparse(node))
         return struct
@@ -1445,29 +1445,29 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.JoinedStr`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.JoinedStr`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_joined_str(struct: list[StandardReturnProccessor], node: ast.JoinedStr) -> list[StandardReturnProccessor]:
+    def handle_joined_str(struct: list[StandardReturnProcessor], node: ast.JoinedStr) -> list[StandardReturnProcessor]:
         """
         Processes an `ast.JoinedStr` node and returns its data.
 
         This function just returns the node id, as str...
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing an assignment statement.
         :type node: ast.JoinedStr
         :return: The node id.
-        :rtype: list[StandardReturnProccessor]
+        :rtype: list[StandardReturnProcessor]
         """
         struct.append(ast.unparse(node))
         return struct
@@ -1477,29 +1477,29 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.IfExp`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.IfExp`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_if_expression(struct: list[StandardReturnProccessor], node: ast.IfExp) -> list[StandardReturnProccessor]:
+    def handle_if_expression(struct: list[StandardReturnProcessor], node: ast.IfExp) -> list[StandardReturnProcessor]:
         """
         Processes an `ast.IfExp` node and returns its data.
 
         This function just returns the node id, as str...
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing an assignment statement.
         :type node: ast.IfExp
         :return: The node id.
-        :rtype: list[StandardReturnProccessor]
+        :rtype: list[StandardReturnProcessor]
         """
         struct.append(ast.unparse(node))
         return struct
@@ -1509,29 +1509,29 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.BoolOp`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.BoolOp`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_bool_op(struct: list[StandardReturnProccessor], node: ast.BoolOp) -> list[StandardReturnProccessor]:
+    def handle_bool_op(struct: list[StandardReturnProcessor], node: ast.BoolOp) -> list[StandardReturnProcessor]:
         """
         Processes an `ast.BoolOp` node and returns its data.
 
         This function just returns the node id, as str...
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing an assignment statement.
         :type node: ast.BoolOp
         :return: The node id.
-        :rtype: list[StandardReturnProccessor]
+        :rtype: list[StandardReturnProcessor]
         """
         struct.append(ast.unparse(node))
         return struct
@@ -1541,29 +1541,29 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_comprehensions(struct: list[StandardReturnProccessor], node: ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp) -> list[StandardReturnProccessor]:
+    def handle_comprehensions(struct: list[StandardReturnProcessor], node: ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp) -> list[StandardReturnProcessor]:
         """
         Processes a comprehension node and returns its data.
 
         This function just returns the node id, as str...
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing an assignment statement.
         :type node: ast.BoolOp
         :return: The node id.
-        :rtype: list[StandardReturnProccessor]
+        :rtype: list[StandardReturnProcessor]
         """
         struct.append(ast.unparse(node))
         return struct
@@ -1573,29 +1573,29 @@ Kwargs: `#!py None`
 
 Type: `#!py ...`
 
-Return Type: `#!py list[StandardReturnProccessor]`
+Return Type: `#!py list[StandardReturnProcessor]`
 
 Decorators: `#!py None`
 
-Args: `#!py struct: list[StandardReturnProccessor], node: ast.Lambda`
+Args: `#!py struct: list[StandardReturnProcessor], node: ast.Lambda`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def handle_lambda(struct: list[StandardReturnProccessor], node: ast.Lambda) -> list[StandardReturnProccessor]:
+    def handle_lambda(struct: list[StandardReturnProcessor], node: ast.Lambda) -> list[StandardReturnProcessor]:
         """
         Processes an `ast.Lambda` node and returns its data.
 
         This function just returns the node id, as str...
 
         :param struct: The structure to be updated with statement details.
-        :type struct: list[StandardReturnProccessor]
+        :type struct: list[StandardReturnProcessor]
         :param node: The AST node representing an assignment statement.
         :type node: ast.Lambda
         :return: The node id.
-        :rtype: list[StandardReturnProccessor]
+        :rtype: list[StandardReturnProcessor]
         """
         struct.append(ast.unparse(node))
         return struct
@@ -1618,7 +1618,7 @@ Kwargs: `#!py None`
     ```py
     def update_data(new_data: list[StandardReturn]):
         nonlocal data
-        data = cast(list[StandardReturnProccessor], new_data)
+        data = cast(list[StandardReturnProcessor], new_data)
     ```
 
 ---

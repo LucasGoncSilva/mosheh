@@ -4,7 +4,7 @@ from os import path, sep, walk
 from typing import Any
 
 from .custom_types import CodebaseDict, StandardReturn
-from .handlers import handle_def_nodes
+from .handler import handle_def_nodes
 from .utils import add_to_dict, convert_to_regular_dict, nested_dict
 
 
@@ -27,7 +27,7 @@ def read_codebase(root: str) -> CodebaseDict:
 
     codebase: CodebaseDict = nested_dict()
 
-    for file in iterate(root):
+    for file in _iterate(root):
         if file.endswith('.py'):
             with open(file, encoding='utf-8') as f:
                 code: str = f.read()
@@ -47,7 +47,7 @@ def read_codebase(root: str) -> CodebaseDict:
     return convert_to_regular_dict(codebase)
 
 
-def iterate(root: str) -> Generator[str, Any, Any]:
+def _iterate(root: str) -> Generator[str, Any, Any]:
     """
     Iterates through every dir and file starting at provided root.
 

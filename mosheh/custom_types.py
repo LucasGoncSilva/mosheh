@@ -55,6 +55,6 @@ StandardReturn: TypeAlias = dict[
     | ArgsKwargs,
 ]
 
-StandardReturnProccessor: TypeAlias = str | StandardReturn
+StandardReturnProcessor: TypeAlias = str | StandardReturn
 
 CodebaseDict: TypeAlias = dict[str, list[StandardReturn]]

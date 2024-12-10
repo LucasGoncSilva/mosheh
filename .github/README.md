@@ -67,6 +67,10 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
 - [ ] Evaluate use of Rust for better proccessing
 - [ ] Evaluate the processing of more files than just Python ones (e.g. `.txt`, `.toml`)
 - [x] Migrate dependency system to use [UV](https://docs.astral.sh/uv/)
+- [ ] Process 25% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes
+- [ ] Process 50% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes
+- [ ] Process 75% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes
+- [ ] Process 100% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes
 - [ ] Accept structured file (e.g. `mosheh.json`) as parameters replacement
 - [ ] Provide an "exclude" config for files/dirs to ignore
 - [ ] Insert `tags` for `.md` based on their names/contexts
@@ -143,6 +147,12 @@ uv build  # Build pip-like file
 uv pip install dist/mosheh-<VERSION>-py3-none-any.whl --force-reinstall  # Install Mosheh using generated pip-like file
 ```
 
+### Testing
+
+```sh
+uv run pytest  # Run pytest
+```
+
 ### Running
 
 ```sh
@@ -155,7 +165,7 @@ mosheh [-h] -root ROOT \
       [--exit EXIT]
 ```
 
-### Parameters
+#### Parameters
 
 |      Call       | Type  | Mandatory  | Default                          | Example                         | Description                                                |
 | :-------------: | :---: | :--------: | :------------------------------- | :------------------------------ | :--------------------------------------------------------- |
