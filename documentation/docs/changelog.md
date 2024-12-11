@@ -40,6 +40,28 @@ Key Components of a Changelog:
 
 -->
 
+## v1.2.1 - 2024-12-10
+
+### Adds
+
+- Unittest workflow for automated tests using `pytest`: `.github/workflows/unittest.yml`
+- PyPI publishing workflow for new public versions using `uv` and `twine`: `.github/workflows/publish_pypi.yml`
+- MkDocs publishing workflow for updating documentation using `uv` and `mkdocs`: `.github/workflows/publish_mkdocs.yml`
+- New badges for `README.md` "Stack" section: Material for MkDocs, GitHub, GitHub Pages and GitHub Actions
+- `[build-system]`, `[project.urls]`, `[project.scripts]` and some other small infos inserted on `pyproject.toml`
+
+### Updates
+
+- Reordering Stack badges for `README.md`
+
+### Fixes
+
+- `mosheh` back as script entrypoint for Mosheh in `pyproject.toml` config file
+
+### Removes
+
+- `setup.py` deleted due total substitution by `pyproject.toml`
+
 ## v1.2.0 - 2024-12-10
 
 ### Adds
