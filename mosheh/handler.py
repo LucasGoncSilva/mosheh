@@ -258,11 +258,22 @@ def _handle_node(
         data = _handle_slice(data, node)
 
     # -------------------------
-    # Names - ast.Name
+    # Names and Vars Handling
+    # ast.Name | ast.Load | ast.Store | ast.Del | ast.Starred | ast.Delete
     # -------------------------
 
     elif isinstance(node, ast.Name):
         data = _handle_name(data, node)
+    elif isinstance(node, ast.Load):
+        data = _handle_load(data, node)
+    elif isinstance(node, ast.Store):
+        data = _handle_store(data, node)
+    elif isinstance(node, ast.Del):
+        data = _handle_del(data, node)
+    elif isinstance(node, ast.Delete):
+        data = _handle_delete(data, node)
+    elif isinstance(node, ast.Starred):
+        data = _handle_starred(data, node)
 
     # -------------------------
     # Names - ast.Compare
@@ -272,11 +283,13 @@ def _handle_node(
         data = _handle_compare(data, node)
 
     # -------------------------
-    # Joined Strings - ast.JoinedStr
+    # Formated Values - ast.JoinedStr | ast.FormattedValue
     # -------------------------
 
     elif isinstance(node, ast.JoinedStr):
         data = _handle_joined_str(data, node)
+    elif isinstance(node, ast.FormattedValue):
+        data = _handle_formatted_value(data, node)
 
     # -------------------------
     # Ternary Operator - ast.IfExp
@@ -305,6 +318,125 @@ def _handle_node(
 
     elif isinstance(node, ast.Lambda):
         data = _handle_lambda(data, node)
+
+    # -------------------------
+    # Async Stuff - ast.Await | ast.AsyncFor | ast.AsyncWith
+    # -------------------------
+
+    elif isinstance(node, ast.Await):
+        data = _handle_await(data, node)
+    elif isinstance(node, ast.AsyncFor):
+        data = _handle_async_for(data, node)
+    elif isinstance(node, ast.AsyncWith):
+        data = _handle_async_with(data, node)
+
+    # -------------------------
+    # Vars Scope - ast.Global | ast.Nonlocal
+    # -------------------------
+
+    elif isinstance(node, ast.Global):
+        data = _handle_global(data, node)
+    elif isinstance(node, ast.Nonlocal):
+        data = _handle_nonlocal(data, node)
+
+    # -------------------------
+    # Returns - ast.Return | ast.Yield | ast.YieldFrom
+    # -------------------------
+
+    elif isinstance(node, ast.Return):
+        data = _handle_return(data, node)
+    elif isinstance(node, ast.Yield):
+        data = _handle_yield(data, node)
+    elif isinstance(node, ast.YieldFrom):
+        data = _handle_yield_from(data, node)
+
+    # -------------------------
+    # Error Handling - ast.Try | ast.TryStar | ast.ExceptHandler | ast.Raise
+    # -------------------------
+
+    elif isinstance(node, ast.Try):
+        data = _handle_try(data, node)
+    elif isinstance(node, ast.TryStar):
+        data = _handle_try_star(data, node)
+    elif isinstance(node, ast.ExceptHandler):
+        data = _handle_except_handler(data, node)
+    elif isinstance(node, ast.Raise):
+        data = _handle_raise(data, node)
+
+    # -------------------------
+    # Type Definitions - ast.TypeVar | ast.ParamSpec | ast.TypeVarTuple | ast.TypeAlias
+    # -------------------------
+
+    elif isinstance(node, ast.TypeVar):
+        data = _handle_type_var(data, node)
+    elif isinstance(node, ast.ParamSpec):
+        data = _handle_param_spec(data, node)
+    elif isinstance(node, ast.TypeVarTuple):
+        data = _handle_type_var_tuple(data, node)
+    elif isinstance(node, ast.TypeAlias):
+        data = _handle_type_alias(data, node)
+
+    # -------------------------
+    # Match Case - ast.Match
+    # -------------------------
+
+    elif isinstance(node, ast.Match):
+        data = _handle_match(data, node)
+
+    # -------------------------
+    # With - ast.With
+    # -------------------------
+
+    elif isinstance(node, ast.With):
+        data = _handle_with(data, node)
+
+    # -------------------------
+    # Loops - ast.For | ast.While | ast.Break | ast.Continue
+    # -------------------------
+
+    elif isinstance(node, ast.For):
+        data = _handle_for(data, node)
+    elif isinstance(node, ast.While):
+        data = _handle_while(data, node)
+    elif isinstance(node, ast.Break):
+        data = _handle_break(data, node)
+    elif isinstance(node, ast.Continue):
+        data = _handle_continue(data, node)
+
+    # -------------------------
+    # If - ast.If
+    # -------------------------
+
+    elif isinstance(node, ast.If):
+        data = _handle_if(data, node)
+
+    # -------------------------
+    # Pass - ast.Pass
+    # -------------------------
+
+    elif isinstance(node, ast.Pass):
+        data = _handle_pass(data, node)
+
+    # -------------------------
+    # Walrus Operator - ast.NamedExpr
+    # -------------------------
+
+    elif isinstance(node, ast.NamedExpr):
+        data = _handle_named_expr(data, node)
+
+    # -------------------------
+    # Single Expression - ast.Expr
+    # -------------------------
+
+    elif isinstance(node, ast.Expr):
+        data = _handle_expr(data, node)
+
+    # -------------------------
+    # Augmentative Assign - ast.AugAssign
+    # -------------------------
+
+    elif isinstance(node, ast.AugAssign):
+        data = _handle_augassign(data, node)
 
     return data
 
@@ -469,7 +601,7 @@ def _handle_attribute(
     struct: list[StandardReturnProcessor], node: ast.Attribute
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.Attribute` node and returns its code-like representation as str.
+    Processes an `ast.Attribute` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -488,7 +620,7 @@ def _handle_call(
     struct: list[StandardReturnProcessor], node: ast.Call
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.Call` node and returns its code-like representation as str.
+    Processes an `ast.Call` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -507,7 +639,7 @@ def _handle_constant(
     struct: list[StandardReturnProcessor], node: ast.Constant
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.Constant` node and returns its code-like representation as str.
+    Processes an `ast.Constant` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -537,7 +669,7 @@ def _handle_assign(
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
-    :param node: The AST node representing an assignment statement.
+    :param node: The AST node representing the node statement.
     :type node: ast.Assign
     :return: A dict containing the statement type, target variables, and assigned value.
     :rtype: list[StandardReturn]
@@ -570,7 +702,7 @@ def _handle_binop(
     struct: list[StandardReturnProcessor], node: ast.BinOp
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.BinOp` node and returns its code-like representation as str.
+    Processes an `ast.BinOp` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -602,7 +734,7 @@ def _handle_annassign(
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
-    :param node: The AST node representing an assignment statement.
+    :param node: The AST node representing the node statement.
     :type node: ast.AnnAssign
     :return: A dict with the statement type, target var, type hint and assigned value.
     :rtype: list[StandardReturn]
@@ -1015,7 +1147,7 @@ def _handle_compare(
     struct: list[StandardReturnProcessor], node: ast.Compare
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.Compare` node and returns its code-like representation as str.
+    Processes an `ast.Compare` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -1034,7 +1166,7 @@ def _handle_unary(
     struct: list[StandardReturnProcessor], node: ast.UnaryOp
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.UnaryOp` node and returns its code-like representation as str.
+    Processes an `ast.UnaryOp` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -1099,7 +1231,7 @@ def _handle_list(
     struct: list[StandardReturnProcessor], node: ast.List
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.List` node and returns its code-like representation as str.
+    Processes an `ast.List` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -1118,7 +1250,7 @@ def _handle_tuple(
     struct: list[StandardReturnProcessor], node: ast.Tuple
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.Tuple` node and returns its code-like representation as str.
+    Processes an `ast.Tuple` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -1137,7 +1269,7 @@ def _handle_set(
     struct: list[StandardReturnProcessor], node: ast.Set
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.Set` node and returns its code-like representation as str.
+    Processes an `ast.Set` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -1156,7 +1288,7 @@ def _handle_dict(
     struct: list[StandardReturnProcessor], node: ast.Dict
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.Dict` node and returns its code-like representation as str.
+    Processes an `ast.Dict` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -1175,7 +1307,7 @@ def _handle_subscript(
     struct: list[StandardReturnProcessor], node: ast.Subscript
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.Subscript` node and returns its code-like representation as str.
+    Processes an `ast.Subscript` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -1194,7 +1326,7 @@ def _handle_slice(
     struct: list[StandardReturnProcessor], node: ast.Slice
 ) -> list[StandardReturnProcessor]:
     """
-    Recieves an `ast.Slice` node and returns its code-like representation as str.
+    Processes an `ast.Slice` node and returns its code-like representation as str.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
@@ -1219,7 +1351,7 @@ def _handle_name(
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
-    :param node: The AST node representing an assignment statement.
+    :param node: The AST node representing the node statement.
     :type node: ast.Name
     :return: The node id.
     :rtype: list[StandardReturnProcessor]
@@ -1240,7 +1372,7 @@ def _handle_joined_str(
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
-    :param node: The AST node representing an assignment statement.
+    :param node: The AST node representing the node statement.
     :type node: ast.JoinedStr
     :return: The node id.
     :rtype: list[StandardReturnProcessor]
@@ -1261,7 +1393,7 @@ def _handle_if_expression(
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
-    :param node: The AST node representing an assignment statement.
+    :param node: The AST node representing the node statement.
     :type node: ast.IfExp
     :return: The node id.
     :rtype: list[StandardReturnProcessor]
@@ -1282,7 +1414,7 @@ def _handle_bool_op(
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
-    :param node: The AST node representing an assignment statement.
+    :param node: The AST node representing the node statement.
     :type node: ast.BoolOp
     :return: The node id.
     :rtype: list[StandardReturnProcessor]
@@ -1304,8 +1436,8 @@ def _handle_comprehensions(
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
-    :param node: The AST node representing an assignment statement.
-    :type node: ast.BoolOp
+    :param node: The AST node representing the node statement.
+    :type node: ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp
     :return: The node id.
     :rtype: list[StandardReturnProcessor]
     """
@@ -1325,8 +1457,701 @@ def _handle_lambda(
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturnProcessor]
-    :param node: The AST node representing an assignment statement.
+    :param node: The AST node representing the node statement.
     :type node: ast.Lambda
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_formatted_value(
+    struct: list[StandardReturnProcessor], node: ast.FormattedValue
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.FormattedValue` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.FormattedValue
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_load(
+    struct: list[StandardReturnProcessor], node: ast.Load
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Load` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Load
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_store(
+    struct: list[StandardReturnProcessor], node: ast.Store
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Store` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Store
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_del(
+    struct: list[StandardReturnProcessor], node: ast.Del
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Del` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Del
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_starred(
+    struct: list[StandardReturnProcessor], node: ast.Starred
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Starred` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Starred
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_expr(
+    struct: list[StandardReturnProcessor], node: ast.Expr
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Expr` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Expr
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_named_expr(
+    struct: list[StandardReturnProcessor], node: ast.NamedExpr
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.NamedExpr` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.NamedExpr
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_augassign(
+    struct: list[StandardReturnProcessor], node: ast.AugAssign
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.AugAssign` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.AugAssign
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_raise(
+    struct: list[StandardReturnProcessor], node: ast.Raise
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Raise` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Raise
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_delete(
+    struct: list[StandardReturnProcessor], node: ast.Delete
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Delete` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Delete
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_pass(
+    struct: list[StandardReturnProcessor], node: ast.Pass
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Pass` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Pass
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_type_alias(
+    struct: list[StandardReturnProcessor], node: ast.TypeAlias
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.TypeAlias` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.TypeAlias
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_if(
+    struct: list[StandardReturnProcessor], node: ast.If
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.If` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.If
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_for(
+    struct: list[StandardReturnProcessor], node: ast.For
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.For` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.For
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_while(
+    struct: list[StandardReturnProcessor], node: ast.While
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.While` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.While
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_break(
+    struct: list[StandardReturnProcessor], node: ast.Break
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Break` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Break
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_continue(
+    struct: list[StandardReturnProcessor], node: ast.Continue
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Continue` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Continue
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_try(
+    struct: list[StandardReturnProcessor], node: ast.Try
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Try` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Try
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_try_star(
+    struct: list[StandardReturnProcessor], node: ast.TryStar
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.TryStar` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.TryStar
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_except_handler(
+    struct: list[StandardReturnProcessor], node: ast.ExceptHandler
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.ExceptHandler` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.ExceptHandler
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_with(
+    struct: list[StandardReturnProcessor], node: ast.With
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.With` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.With
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_match(
+    struct: list[StandardReturnProcessor], node: ast.Match
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Match` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Match
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_type_var(
+    struct: list[StandardReturnProcessor], node: ast.TypeVar
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.TypeVar` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.TypeVar
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_param_spec(
+    struct: list[StandardReturnProcessor], node: ast.ParamSpec
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.ParamSpec` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.ParamSpec
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_type_var_tuple(
+    struct: list[StandardReturnProcessor], node: ast.TypeVarTuple
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.TypeVarTuple` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.TypeVarTuple
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_return(
+    struct: list[StandardReturnProcessor], node: ast.Return
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Return` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Return
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_yield(
+    struct: list[StandardReturnProcessor], node: ast.Yield
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Yield` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Yield
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_yield_from(
+    struct: list[StandardReturnProcessor], node: ast.YieldFrom
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.YieldFrom` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.YieldFrom
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_global(
+    struct: list[StandardReturnProcessor], node: ast.Global
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Global` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Global
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_nonlocal(
+    struct: list[StandardReturnProcessor], node: ast.Nonlocal
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Nonlocal` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Nonlocal
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_await(
+    struct: list[StandardReturnProcessor], node: ast.Await
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.Await` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.Await
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_async_for(
+    struct: list[StandardReturnProcessor], node: ast.AsyncFor
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.AsyncFor` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.AsyncFor
+    :return: The node id.
+    :rtype: list[StandardReturnProcessor]
+    """
+
+    struct.append(ast.unparse(node))
+
+    return struct
+
+
+def _handle_async_with(
+    struct: list[StandardReturnProcessor], node: ast.AsyncWith
+) -> list[StandardReturnProcessor]:
+    """
+    Processes an `ast.AsyncWith` node and returns its data.
+
+    This function just returns the node id, as str...
+
+    :param struct: The structure to be updated with statement details.
+    :type struct: list[StandardReturnProcessor]
+    :param node: The AST node representing the node statement.
+    :type node: ast.AsyncWith
     :return: The node id.
     :rtype: list[StandardReturnProcessor]
     """

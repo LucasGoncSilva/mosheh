@@ -608,7 +608,7 @@ extra:
     Browser: browser
 
   status:
-    new: Adicionado recentemente
+    new: Recently Added!
 
 
 copyright: Only God knows
