@@ -6,8 +6,7 @@
 
 ![PyPI - Version](https://img.shields.io/pypi/v/mosheh?labelColor=101010)
 ![GitHub License](https://img.shields.io/github/license/LucasGoncSilva/mosheh?labelColor=101010)
-
-<!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LucasGoncSilva/mosheh/XXXXXX.yml?labelColor=%23101010) -->
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LucasGoncSilva/mosheh/unittest.yml?labelColor=101010)
 
 [![Static Badge](https://img.shields.io/badge/here-here?style=for-the-badge&label=changelog&labelColor=101010&color=fff)](https://github.com/LucasGoncSilva/mosheh/blob/main/.github/CHANGELOG.md)
 
@@ -58,19 +57,25 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
 
 ## Stack
 
-![Python logo](https://img.shields.io/badge/Python-blue?style=for-the-badge&logo=python&logoColor=FFD43B)
-![Ruff logo](https://img.shields.io/badge/Ruff-logo?style=for-the-badge&logo=ruff&color=2b0231)
-![UV logo](https://img.shields.io/badge/UV-logo?style=for-the-badge&logo=uv&color=2b0231)
+![Python logo](https://img.shields.io/badge/Python-blue?style=for-the-badge&logo=python&logoColor=ffd43b)
+
+![UV logo](https://img.shields.io/badge/UV-2b0231?style=for-the-badge&logo=uv)
+![Ruff logo](https://img.shields.io/badge/Ruff-2b0231?style=for-the-badge&logo=ruff)
+![Material for MkDocs logo](https://img.shields.io/badge/Material%20for%20MkDocs-fff?style=for-the-badge&logo=material-for-mkdocs&logoColor=526cfe)
+
+![GitHub logo](https://img.shields.io/badge/GitHub-fff?style=for-the-badge&logo=github&logoColor=181717)
+![GitHub Pages logo](https://img.shields.io/badge/GitHub%20Pages-fff?style=for-the-badge&logo=github-pages&logoColor=222222)
+![GitHub Actions logo](https://img.shields.io/badge/GitHub%20Actions-2088ff?style=for-the-badge&logo=github-actions&logoColor=fff)
 
 ## ToDo List
 
 - [ ] Evaluate use of Rust for better proccessing
 - [ ] Evaluate the processing of more files than just Python ones (e.g. `.txt`, `.toml`)
 - [x] Migrate dependency system to use [UV](https://docs.astral.sh/uv/)
-- [ ] Process 25% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes
-- [ ] Process 50% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes
-- [ ] Process 75% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes
-- [ ] Process 100% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes
+- [ ] Process 25% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
+- [ ] Process 50% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
+- [ ] Process 75% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
+- [ ] Process 100% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
 - [ ] Accept structured file (e.g. `mosheh.json`) as parameters replacement
 - [ ] Provide an "exclude" config for files/dirs to ignore
 - [ ] Insert `tags` for `.md` based on their names/contexts
@@ -87,8 +92,6 @@ Here it is no different, a considerable part of Mosheh is, in fact, completely d
 
 ```sh
 .
-├── setup.py                    # PyPI build's config file
-│
 ├── mosheh                      # Mosheh's source-code
 │   ├── codebase.py             # Codebase reading logic
 │   ├── constants.py            # Constants to be evaluated
@@ -100,13 +103,14 @@ Here it is no different, a considerable part of Mosheh is, in fact, completely d
 │
 ├── tests                       # Template dir for testing
 │   ├── DOC                     # Doc output dir
-│   └── PROJECT                 # Template project dir
+│   ├── PROJECT                 # Template project dir
+│   └── unittest                # Automated tests
 │
 ├── documentation               # Mosheh's documentation dir
 │   ├── docs                    # Dir containing .md files and assets
 │   └── mkdocs.yml              # MkDocs config file
 │
-├── pyproject.toml              # Mosheh's config file
+├── pyproject.toml              # Mosheh's config file for almost everything
 ├── uv.lock                     # UV's lockfile for dealing with dependencies
 ├── .python-version             # Default Python's version to use
 │

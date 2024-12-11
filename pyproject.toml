@@ -1,16 +1,40 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "mosheh"
 description = "Mosheh, a tool for creating docs for projects, from Python to Python."
-license = { text = "MIT" }
-readme = ".github/README.md"
+readme = { file = ".github/README.md", content-type = "text/markdown" }
+license = { file = "LICENSE" }
+authors = [{ name = "LucasGonc", email = "lucasgoncsilva04@gmail.com" }]
+maintainers = [{ name = "LucasGonc", email = "lucasgoncsilva04@gmail.com" }]
+keywords = [
+    "CLI",
+    "Python",
+    "documentation",
+    "MkDocs",
+    "automation",
+    "generation",
+]
+version = "1.2.1"
 requires-python = ">=3.10"
-dynamic = ["version"]
 dependencies = [
     "mkdocs-material==9.5.47",
     "mkdocs==1.6.1",
     "mkdocs-material-extensions==1.3.1",
     "mkdocs-git-revision-date-localized-plugin==1.3.0",
 ]
+
+[project.urls]
+# Homepage = "https://example.com"
+# Documentation = "https://readthedocs.org"
+Repository = "https://github.com/lucasGoncSilva/mosheh/"
+Issues = "https://github.com/LucasGoncSilva/mosheh/issues"
+Changelog = "https://github.com/LucasGoncSilva/mosheh/blob/main/.github/CHANGELOG.md"
+
+[project.scripts]
+mosheh = "mosheh.main:main"
 
 [dependency-groups]
 dev = ["pytest>=8.3.4", "ruff>=0.8.2", "setuptools>=75.6.0", "twine>=6.0.1"]
