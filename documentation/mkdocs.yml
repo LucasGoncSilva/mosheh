@@ -1,6 +1,6 @@
 site_name: MOSHEH
 repo_url: https://github.com/lucasgoncsilva/mosheh
-repo_name: GitHub
+repo_name: LucasGoncSilva/mosheh
 edit_uri: blob/main/documentation/docs
 
 
@@ -135,6 +135,10 @@ extra:
 
   status:
     new: Adicionado recentemente
+
+
+extra_css:
+  - css/dracula_at_night.css
 
 
 copyright: Copyright (c) 2024 Lucas Gonçalves da Silva
