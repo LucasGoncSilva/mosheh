@@ -3,6 +3,7 @@ from typing import Final, cast
 
 from . import constants
 from .custom_types import (
+    FunctionType,
     ImportType,
     StandardReturn,
     StandardReturnProcessor,
@@ -908,8 +909,36 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
     return ', '.join(formatted_kwargs)
 
 
+def __process_function_type(node: ast.FunctionDef, is_from_class: bool) -> FunctionType:
+    """
+    Determines the type of a function based on its context and structure.
+
+    This function identifies whether a given function node from the AST is a method,
+    a generator, or a regular function.
+
+    - If is within a class or matches a dunder method name, it returns a `Method`.
+    - Elif contains a `yield` type statements, it returns a `Generator`.
+    - Otherwise, it returns a `Function`.
+
+    :param node: The AST node representing the function.
+    :type node: ast.FunctionDef
+    :param is_from_class: Indicates if the function is defined within a class.
+    :type is_from_class: bool
+    :return: The type of the function (`Method`, `Generator`, or `Function`).
+    :rtype: FunctionType
+    """
+
+    if is_from_class or bin(node.name, constants.BUILTIN_DUNDER_METHODS):
+        return FunctionType.Method
+
+    elif any(isinstance(n, ast.Yield | ast.YieldFrom) for n in ast.walk(node)):
+        return FunctionType.Generator
+
+    return FunctionType.Function
+
+
 def _handle_function_def(
-    struct: list[StandardReturn], node: ast.FunctionDef
+    struct: list[StandardReturn], node: ast.FunctionDef, is_from_class: bool = False
 ) -> list[StandardReturn]:
     """
     Processes an `ast.FunctionDef` node and returns its data.
@@ -917,14 +946,16 @@ def _handle_function_def(
     This function analyzes the components of a func def, mapping the name, decorators,
     arguments (name, type, default value), return type and even the type of function it
     is:
-    - Function: a base function, simply defined using `def` keyword;
-    - Method: also base function, but defined inside a class (e.g. `def __init__():`);
+    - Function: a base function, simply defined using `def` keyword.
+    - Method: also base function, but defined inside a class (e.g. `def __init__():`).
     - Generator: process an iterable object at a time, on demand, with `yield` inside.
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
     :param node: The AST node representing a func def statement.
     :type node: ast.FunctionDef
+    :param is_from_class: The arg who tells if shoud be directly defined as a Method.
+    :type is_from_class: bool, optional
     :return: A dict containing the statement type and the data listed before.
     :rtype: list[StandardReturn]
     """
@@ -944,12 +975,15 @@ def _handle_function_def(
     args_str: str = __process_function_args(node.args)
     kwargs_str: str = __process_function_kwargs(node.args)
 
+    category: FunctionType = __process_function_type(node, is_from_class)
+
     data: StandardReturn = standard_struct()
 
     data.update(
         {
             'statement': statement,
             'name': name,
+            'category': category,
             'decorators': decos,
             'rtype': rtype,
             'args': args_str,
@@ -1004,6 +1038,7 @@ def _handle_async_function_def(
         {
             'statement': statement,
             'name': name,
+            'category': FunctionType.Coroutine,
             'decorators': decos,
             'rtype': rtype,
             'args': args_str,
@@ -1099,9 +1134,9 @@ def _handle_class_def(
     the extracted details.
 
     Key elements of the returned data:
-    - name: The name of the class as a string;
-    - parents: A list of string reprs for the base classes of the class;
-    - decos: A list of string reprs for all decorators applied to the class;
+    - name: The name of the class as a string.
+    - parents: A list of string reprs for the base classes of the class.
+    - decos: A list of string reprs for all decorators applied to the class.
     - kwargs: A list of tuples, in `(name, value)` style.
 
     :param struct: The structure to be updated with statement details.
@@ -1139,6 +1174,12 @@ def _handle_class_def(
     )
 
     struct.append(data)
+
+    for child in node.body:
+        if isinstance(child, ast.FunctionDef):
+            data: StandardReturn = standard_struct()
+            data.update(_handle_function_def([], child, is_from_class=True)[0])
+            struct.append(data)
 
     return struct
 
@@ -1192,8 +1233,8 @@ def _handle_assert(
     details.
 
     Key elements of the returned data:
-    - statement: The type of statement, identified as `Statement.Assert`;
-    - test: A repr of the test expression being asserted;
+    - statement: The type of statement, identified as `Statement.Assert`.
+    - test: A repr of the test expression being asserted.
     - msg: A string repr of the optional message, `None` if no message is provided.
 
     :param struct: The structure to be updated with statement details.

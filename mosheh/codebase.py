@@ -37,6 +37,13 @@ def read_codebase(root: str) -> CodebaseDict:
             statements: list[StandardReturn] = []
 
             for node in ast.walk(tree):
+                if isinstance(node, ast.ClassDef):
+                    for child_node in ast.iter_child_nodes(node):
+                        if isinstance(child_node, ast.FunctionDef):
+                            setattr(child_node, 'parent', ast.ClassDef)
+                if isinstance(node, ast.FunctionDef) and getattr(node, 'parent', None):
+                    continue
+
                 data: list[StandardReturn] = handle_def_nodes(node)
 
                 if data:

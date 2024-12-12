@@ -101,7 +101,7 @@ def test_FUNCTION_DEF_MD_STRUCT():
     assert isinstance(FUNCTION_DEF_MD_STRUCT, str)
     assert is_formatable_and_get_fields(FUNCTION_DEF_MD_STRUCT) == (
         True,
-        ['name', 'rtype', 'decorators', 'args', 'kwargs', 'code'],
+        ['name', 'category', 'rtype', 'decorators', 'args', 'kwargs', 'code'],
     )
 
 

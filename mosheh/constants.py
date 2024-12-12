@@ -699,7 +699,7 @@ Kwargs: `#!py {kwargs}`
 
 FUNCTION_DEF_MD_STRUCT: Final[str] = """### `#!py def {name}`
 
-Type: `#!py ...`
+Type: `#!py {category}`
 
 Return Type: `#!py {rtype}`
 

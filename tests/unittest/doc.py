@@ -30,7 +30,7 @@ def test_generate_doc(
     mock_default_doc_config.return_value = 'mocked_mkdocs_config'
     mock_path_abspath.side_effect = side_effect_abspath
     mock_path_join.side_effect = side_effect_join
-    mock_subprocess_run.return_value = MagicMock(stdout='MkDocs created')
+    mock_subprocess_run.return_value = MagicMock(stdout='')
 
     codebase: CodebaseDict = {
         'some_file.py': [

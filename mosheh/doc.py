@@ -13,7 +13,13 @@ from .constants import (
     FUNCTION_DEF_MD_STRUCT,
     IMPORT_MD_STRUCT,
 )
-from .custom_types import CodebaseDict, ImportType, StandardReturn, Statement
+from .custom_types import (
+    CodebaseDict,
+    FunctionType,
+    ImportType,
+    StandardReturn,
+    Statement,
+)
 from .utils import indent_code
 
 
@@ -557,6 +563,7 @@ def _handle_function_def(stmt: StandardReturn) -> str:
 
     name: str = cast(str, stmt['name'])
     decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
+    category: str = cast(FunctionType, stmt['category']).value
     args: str = cast(str, stmt['args'])
     kwargs: str = cast(str, stmt['kwargs'])
     rtype: str = cast(str, stmt['rtype']) or 'Unknown'
@@ -571,6 +578,7 @@ def _handle_function_def(stmt: StandardReturn) -> str:
     return FUNCTION_DEF_MD_STRUCT.format(
         name=name,
         decorators=decorators,
+        category=category,
         args=args,
         kwargs=kwargs,
         rtype=rtype,
