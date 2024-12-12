@@ -13,7 +13,7 @@ from mosheh.custom_types import (
 from mosheh.handler import handle_def_nodes
 
 
-def test_handle_def_nodes():
+def test_handle_def_nodes() -> None:
     with open(f'{Path(__file__).parent}/mock.py.txt', encoding='utf-8') as f:
         code: str = f.read()
 

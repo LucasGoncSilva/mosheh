@@ -5,11 +5,11 @@ from mosheh.custom_types import CodebaseDict, Statement
 from mosheh.doc import generate_doc
 
 
-def side_effect_join(*args: Any):
+def side_effect_join(*args: Any) -> str:
     return '/'.join(args)
 
 
-def side_effect_abspath(dirpath: str):
+def side_effect_abspath(dirpath: str) -> str:
     return f'/mocked/abs/{dirpath}'
 
 
