@@ -1,11 +1,15 @@
 import ast
 from collections.abc import Generator
+from logging import Logger, getLogger
 from os import path, sep, walk
 from typing import Any
 
 from .custom_types import CodebaseDict, StandardReturn
 from .handler import handle_def_nodes
 from .utils import add_to_dict, convert_to_regular_dict, nested_dict
+
+
+logger: Logger = getLogger('mosheh')
 
 
 def read_codebase(root: str) -> CodebaseDict:
@@ -27,22 +31,39 @@ def read_codebase(root: str) -> CodebaseDict:
 
     codebase: CodebaseDict = nested_dict()
 
+    logger.info(f'Starting iteration through {root}')
     for file in _iterate(root):
+        logger.debug(f'Iterating: {file}')
+
         if file.endswith('.py'):
+            logger.debug(f'.py: {file}')
             with open(file, encoding='utf-8') as f:
                 code: str = f.read()
+                logger.debug(f'{file} read')
 
             tree: ast.AST = ast.parse(code, filename=file)
+            logger.debug('Code tree parsed')
 
             statements: list[StandardReturn] = []
 
             for node in ast.walk(tree):
+                logger.debug(f'Node: {type(node)}')
+                if isinstance(node, ast.ClassDef):
+                    for child_node in ast.iter_child_nodes(node):
+                        if isinstance(child_node, ast.FunctionDef):
+                            setattr(child_node, 'parent', ast.ClassDef)
+                if isinstance(node, ast.FunctionDef) and getattr(node, 'parent', None):
+                    continue
+
                 data: list[StandardReturn] = handle_def_nodes(node)
+                logger.debug('Node processed')
 
                 if data:
                     statements.extend(data)
+                    logger.debug('Node inserted into statement list')
 
             add_to_dict(codebase, file.split(sep), statements)
+            logger.debug(f'{file} stmts added to CodebaseDict')
 
     return convert_to_regular_dict(codebase)
 

@@ -12,22 +12,22 @@ from mosheh.utils import (
 )
 
 
-def test_bin():
+def test_bin() -> None:
     assert bin(4, [1, 2, 3, 4, 5, 6, 7, 8])
     assert not bin(9, [1, 2, 3, 4, 5, 6, 7, 8])
 
 
-def test_is_lib_installed():
+def test_is_lib_installed() -> None:
     assert is_lib_installed('mosheh')
     assert not is_lib_installed('numpy')
 
 
-def test_nested_dict():
+def test_nested_dict() -> None:
     assert isinstance(nested_dict(), dict)
     assert isinstance(nested_dict(), defaultdict)
 
 
-def test_add_to_dict():
+def test_add_to_dict() -> None:
     structure: defaultdict[str, str] = nested_dict()
     path: list[str] = ['level1', 'level2', 'level3']
     data: list[StandardReturn] = [{'key': 'value'}]
@@ -43,7 +43,7 @@ def test_add_to_dict():
     )
 
 
-def test_convert_to_regular_dict():
+def test_convert_to_regular_dict() -> None:
     structure: defaultdict[str, str] = nested_dict()
     added: defaultdict[str, str] = add_to_dict(
         structure, ['level1'], [{'key': 'value'}]
@@ -55,12 +55,12 @@ def test_convert_to_regular_dict():
     assert result == {'level1': [{'key': 'value'}]}
 
 
-def test_standard_struct():
+def test_standard_struct() -> None:
     assert isinstance(standard_struct(), dict)
     assert not len(standard_struct())
 
 
-def test_indent_code():
+def test_indent_code() -> None:
     code: str = 'def test_foo() -> None:\n    pass'
     result: str = indent_code(code)
 

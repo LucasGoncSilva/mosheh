@@ -1,0 +1,10 @@
+:root > * {
+  --md-code-hl-string-color: #ff8b0f;
+  --md-code-hl-number-color: #BD93F9;
+  --md-code-hl-function-color: #00b52e;
+  --md-code-hl-constant-color: #BD93F9;
+  --md-code-hl-keyword-color: #FF79C6;
+  --md-code-hl-comment-color: #6272A4;
+  --md-code-hl-operator-color: #FF79C6;
+  --md-code-hl-punctuation-color: #00b52e;
+}

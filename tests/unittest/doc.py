@@ -5,11 +5,11 @@ from mosheh.custom_types import CodebaseDict, Statement
 from mosheh.doc import generate_doc
 
 
-def side_effect_join(*args: Any):
+def side_effect_join(*args: Any) -> str:
     return '/'.join(args)
 
 
-def side_effect_abspath(dirpath: str):
+def side_effect_abspath(dirpath: str) -> str:
     return f'/mocked/abs/{dirpath}'
 
 
@@ -30,7 +30,7 @@ def test_generate_doc(
     mock_default_doc_config.return_value = 'mocked_mkdocs_config'
     mock_path_abspath.side_effect = side_effect_abspath
     mock_path_join.side_effect = side_effect_join
-    mock_subprocess_run.return_value = MagicMock(stdout='MkDocs created')
+    mock_subprocess_run.return_value = MagicMock(stdout='')
 
     codebase: CodebaseDict = {
         'some_file.py': [

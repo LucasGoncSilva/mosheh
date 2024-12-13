@@ -50,11 +50,54 @@ __description__ = __doc__
 
 
 from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
+from logging import CRITICAL, DEBUG, ERROR, INFO, WARNING, basicConfig, getLogger
 from os import path
+from subprocess import CalledProcessError
+
+from rich.logging import RichHandler
 
 from .codebase import read_codebase
 from .custom_types import CodebaseDict
 from .doc import generate_doc
+
+
+def set_logging_config(v: int = 3) -> None:
+    """
+    Configures the logging level for the application based on the provided verbosity.
+
+    Logging is handled using `RichHandler` for enhanced terminal output. The verbosity
+    level `v` controls the logging granularity for the `mosheh` logger, and optionally
+    for the `mkdocs` logger in debug mode.
+
+    :param v: Verbosity level, from 0 (critical) to 4 (debug). Defaults to 3 (info).
+        - 0: Critical
+        - 1: Error
+        - 2: Warning
+        - 3: Info
+        - 4: Debug
+    :type v: int
+    :returns: None.
+    :rtype: None
+    """
+
+    basicConfig(
+        format='%(message)s',
+        handlers=[RichHandler()],
+    )
+
+    match v:
+        case 0:
+            getLogger('mosheh').setLevel(CRITICAL)
+        case 1:
+            getLogger('mosheh').setLevel(ERROR)
+        case 2:
+            getLogger('mosheh').setLevel(WARNING)
+        case 3:
+            getLogger('mosheh').setLevel(INFO)
+        case 4:
+            getLogger('mosheh').setLevel(DEBUG)
+        case _:
+            getLogger('mosheh').setLevel(INFO)
 
 
 def main() -> None:
@@ -111,6 +154,12 @@ def main() -> None:
         help='Path for README.md file to replace as homepage.',
     )
     parser.add_argument(
+        '--verbose',
+        type=int,
+        default=3,
+        help='Verbosity level, from 0 (quiet/critical) to 4 (overshare/debug).',
+    )
+    parser.add_argument(
         '--output',
         type=str,
         default='.',
@@ -120,30 +169,59 @@ def main() -> None:
     # Arguments Parsing
     args: Namespace = parser.parse_args()
 
+    set_logging_config(args.verbose)
+
+    logger = getLogger('mosheh')
+    logger.info('Logger config done')
+
     ROOT: str = args.root
+    logger.debug(f'{ROOT = }')
+
     PROJ_NAME: str = path.abspath(path.curdir).split(path.sep)[-1].upper()
+    logger.debug(f'{PROJ_NAME = }')
+
     REPO_NAME: str = args.repo_name
+    logger.debug(f'{REPO_NAME = }')
+
     REPO_URL: str = args.repo_url
+    logger.debug(f'{REPO_URL = }')
+
     EDIT_URI: str = args.edit_uri
+    logger.debug(f'{EDIT_URI = }')
+
     LOGO_PATH: str | None = args.logo_path
+    logger.debug(f'{LOGO_PATH = }')
+
     README_PATH: str | None = args.readme_path
+    logger.debug(f'{README_PATH = }')
+
     OUTPUT: str = args.output
+    logger.debug(f'{OUTPUT = }')
+
+    logger.info('Arguments parsed successfully')
 
     # Codebase Reading
+    logger.info(f'Starting to read codebase: {ROOT}')
     data: CodebaseDict = read_codebase(ROOT)
+    logger.info('Codebase read successfully')
 
     # Doc Generation
-    generate_doc(
-        codebase=data,
-        root=ROOT,
-        proj_name=PROJ_NAME,
-        repo_name=REPO_NAME,
-        repo_url=REPO_URL,
-        edit_uri=EDIT_URI,
-        logo_path=LOGO_PATH,
-        readme_path=README_PATH,
-        output=OUTPUT,
-    )
+    logger.info('Starting to generate documentation')
+    try:
+        generate_doc(
+            codebase=data,
+            root=ROOT,
+            proj_name=PROJ_NAME,
+            repo_name=REPO_NAME,
+            repo_url=REPO_URL,
+            edit_uri=EDIT_URI,
+            logo_path=LOGO_PATH,
+            readme_path=README_PATH,
+            output=OUTPUT,
+        )
+        logger.info('Documentation created successfully')
+    except CalledProcessError as e:
+        logger.critical(e)
 
 
 if __name__ == '__main__':

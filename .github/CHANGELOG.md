@@ -40,6 +40,45 @@ Key Components of a Changelog:
 
 -->
 
+## v1.3.0 - 2024-12-13
+
+### Adds
+
+- Handler functions to deal with statements not defined before, such as `ast.For` - all below:
+
+|   Added Nodes   |                 |                     |                    |                 |                      |
+| :-------------: | :-------------: | :-----------------: | :----------------: | :-------------: | :------------------: |
+| `ast.AsyncFor`  | `ast.AsyncWith` |   `ast.AugAssign`   |    `ast.Await`     |   `ast.Break`   |    `ast.Continue`    |
+|    `ast.Del`    |  `ast.Delete`   | `ast.ExceptHandler` |     `ast.Expr`     |    `ast.For`    | `ast.FormattedValue` |
+|  `ast.Global`   |    `ast.If`     |     `ast.Load`      |    `ast.Match`     | `ast.NamedExpr` |    `ast.Nonlocal`    |
+| `ast.ParamSpec` |   `ast.Pass`    |     `ast.Raise`     |    `ast.Return`    |  `ast.Starred`  |     `ast.Store`      |
+|  `ast.TryStar`  |    `ast.Try`    |   `ast.TypeAlias`   | `ast.TypeVarTuple` |  `ast.TypeVar`  |     `ast.While`      |
+|   `ast.With`    | `ast.YieldFrom` |     `ast.Yield`     |
+
+- `rtype` or return type notation on `tests.unittest` test functions
+- New theme to Mosheh's self documentation code blocks inspired by [Dracula Theme](https://draculatheme.com/)
+- Insert logs on all the Mosheh's codebase using `mosheh.set_logging_config` and native `logging`:
+  - CRITICAL: when something crashes the script
+  - ERROR: non-crashing errors on the script
+  - WARNING: notorious advising that are not errors
+  - INFO: normal log level
+  - DEBUG: detailed step-by-step execution
+
+### Updates
+
+- `mosheh.handler._handle_node` now can handle nodes off all types listed above
+- `ast.FunctionDef` inside of `ast.ClassDef` now with `FunctionType.Method` attribute on output doc
+
+### Removes
+
+- `Statement` class from `mosheh.custom_types` unused types, such as `Statement.Call` - all below:
+
+|  Removed Types   |                  |                      |
+| :--------------: | :--------------: | :------------------- |
+| `BinOp = auto()` | `Call = auto()`  | `Compare = auto()`   |
+| `List = auto()`  |  `Set = auto()`  | `Tuple = auto()`     |
+| `Dict = auto()`  | `Slice = auto()` | `Subscript = auto()` |
+
 ## v1.2.1 - 2024-12-10
 
 ### Adds

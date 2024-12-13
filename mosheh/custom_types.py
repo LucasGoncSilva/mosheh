@@ -13,15 +13,6 @@ class Statement(Enum):
     FunctionDef = auto()
     AsyncFunctionDef = auto()
     Assert = auto()
-    BinOp = auto()
-    Call = auto()
-    Compare = auto()
-    List = auto()
-    Set = auto()
-    Tuple = auto()
-    Dict = auto()
-    Slice = auto()
-    Subscript = auto()
 
 
 class ImportType(Enum):

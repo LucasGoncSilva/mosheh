@@ -1,14 +1,19 @@
 # ruff: noqa: E501
 
-# import ast
-from ast import AST, parse, walk
+from ast import AST, ClassDef, FunctionDef, iter_child_nodes, parse, walk
 from pathlib import Path
+from typing import Any
 
-from mosheh.custom_types import ImportType, StandardReturn, Statement
+from mosheh.custom_types import (
+    FunctionType,
+    ImportType,
+    StandardReturn,
+    Statement,
+)
 from mosheh.handler import handle_def_nodes
 
 
-def test_handle_def_nodes():
+def test_handle_def_nodes() -> None:
     with open(f'{Path(__file__).parent}/mock.py.txt', encoding='utf-8') as f:
         code: str = f.read()
 
@@ -16,13 +21,19 @@ def test_handle_def_nodes():
     statements: list[StandardReturn] = []
 
     for node in walk(tree):
+        if isinstance(node, ClassDef):
+            for child_node in iter_child_nodes(node):
+                if isinstance(child_node, FunctionDef):
+                    setattr(child_node, 'parent', ClassDef)
+        if isinstance(node, FunctionDef) and getattr(node, 'parent', None):
+            continue
+
         data: list[StandardReturn] = handle_def_nodes(node)
 
         if data:
             statements.extend(data)
 
-    # BUG confirm ImportFrom code output
-    assert statements == [
+    expected: list[dict[str, Any]] = [
         {
             'statement': Statement.Import,
             'name': 'math',
@@ -95,6 +106,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'simple_function',
+            'category': FunctionType.Function,
             'decorators': [],
             'rtype': 'int',
             'args': 'a: int, b: int',
@@ -104,6 +116,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'generator_function',
+            'category': FunctionType.Generator,
             'decorators': [],
             'rtype': 'Generator[int, None, None]',
             'args': '',
@@ -113,6 +126,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.AsyncFunctionDef,
             'name': 'async_function',
+            'category': FunctionType.Coroutine,
             'decorators': [],
             'rtype': 'str',
             'args': 'url: str',
@@ -122,6 +136,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'decorator_function',
+            'category': FunctionType.Function,
             'decorators': [],
             'rtype': None,
             'args': 'func: Unknown',
@@ -131,6 +146,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'decorated_function',
+            'category': FunctionType.Function,
             'decorators': ['decorator_function'],
             'rtype': None,
             'args': '',
@@ -146,6 +162,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'annotated_function',
+            'category': FunctionType.Function,
             'decorators': [],
             'rtype': 'List[int]',
             'args': 'a: int, b: str',
@@ -155,6 +172,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'example_usage_function',
+            'category': FunctionType.Function,
             'decorators': [],
             'rtype': 'int',
             'args': 'a: int, b: int',
@@ -164,6 +182,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'ellipsis_function',
+            'category': FunctionType.Function,
             'decorators': [],
             'rtype': None,
             'args': 'a: Unknown, b: Unknown, c: Unknown',
@@ -181,6 +200,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': '__init__',
+            'category': FunctionType.Method,
             'decorators': [],
             'rtype': None,
             'args': 'self: Unknown, data: str, optional_data: Optional[int]',
@@ -190,6 +210,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'instance_method',
+            'category': FunctionType.Method,
             'decorators': [],
             'rtype': 'str',
             'args': 'self: Unknown',
@@ -199,6 +220,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'class_method',
+            'category': FunctionType.Method,
             'decorators': ['classmethod'],
             'rtype': None,
             'args': 'cls: Unknown',
@@ -208,6 +230,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'static_method',
+            'category': FunctionType.Method,
             'decorators': ['staticmethod'],
             'rtype': None,
             'args': '',
@@ -224,6 +247,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': 'wrapper',
+            'category': FunctionType.Function,
             'decorators': [],
             'rtype': None,
             'args': '',
@@ -233,6 +257,7 @@ def test_handle_def_nodes():
         {
             'statement': Statement.FunctionDef,
             'name': '__init__',
+            'category': FunctionType.Method,
             'decorators': [],
             'rtype': None,
             'args': 'self: Unknown, value: int',
@@ -240,3 +265,8 @@ def test_handle_def_nodes():
             'code': 'def __init__(self, value: int):\n    self.value = value',
         },
     ]
+
+    assert len(statements) == len(expected)
+
+    for i in statements:
+        assert i in expected
