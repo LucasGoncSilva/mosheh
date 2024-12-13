@@ -72,8 +72,7 @@ def is_lib_installed(name: str) -> bool:
     """
 
     try:
-        spec = find_spec(name)
-        return True if spec is not None else False
+        return True if find_spec(name) is not None else False
     except (ModuleNotFoundError, ValueError):
         return False
 
@@ -256,7 +255,7 @@ def indent_code(code: str, level: int = 4) -> str:
 
     indent = ' ' * level
     new_code = '\n'.join(
-        f'{indent}{line}' if line.strip() else '' for line in code.splitlines()
+        map(lambda line: f'{indent}{line}' if line.strip() else '', code.splitlines())
     )
 
     return new_code

@@ -1,4 +1,5 @@
 import ast
+from logging import Logger, getLogger
 from typing import Final, cast
 
 from . import constants
@@ -10,6 +11,9 @@ from .custom_types import (
     Statement,
 )
 from .utils import bin, is_lib_installed, standard_struct
+
+
+logger: Logger = getLogger('mosheh')
 
 
 def handle_def_nodes(node: ast.AST) -> list[StandardReturn]:
@@ -35,6 +39,7 @@ def handle_def_nodes(node: ast.AST) -> list[StandardReturn]:
     """
 
     data: list[StandardReturn] = []
+    logger.debug('"data: list[StandardReturn]" created')
 
     # -------------------------
     # Imports - ast.Import | ast.ImportFrom
@@ -85,6 +90,7 @@ def handle_def_nodes(node: ast.AST) -> list[StandardReturn]:
     elif isinstance(node, ast.Assert):
         data = _handle_assert(data, node)
 
+    logger.debug('Returning "data"')
     return data
 
 

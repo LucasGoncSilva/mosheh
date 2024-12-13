@@ -1,7 +1,7 @@
 import subprocess
+from logging import Logger, getLogger
 from os import makedirs, path
 from shutil import copy2
-from sys import stdout
 from typing import cast
 
 from .constants import (
@@ -21,6 +21,9 @@ from .custom_types import (
     Statement,
 )
 from .utils import indent_code
+
+
+logger: Logger = getLogger('mosheh')
 
 
 NAV_DIRS: list[str] = []
@@ -83,16 +86,20 @@ def generate_doc(
     mkdocs_yml: str = path.join(output_path, 'mkdocs.yml')
 
     try:
+        logger.debug('Running MkDocs')
         result = subprocess.run(
             ['mkdocs', 'new', output_path],
             check=True,
             capture_output=True,
             text=True,
         )
-        stdout.write(result.stdout)
+        logger.debug(result.stdout)
+        logger.info('MkDocs created')
     except subprocess.CalledProcessError as e:
-        stdout.write(f'Error: {e.stderr}')
+        logger.critical(f'Error: {e.stderr}')
+        raise e
 
+    logger.info('Creating default mkdocs.yml')
     with open(mkdocs_yml, 'w', encoding='utf-8') as f:
         f.write(
             _default_doc_config(
@@ -105,19 +112,25 @@ def generate_doc(
             )
         )
 
+    logger.info('Processing codebase')
     _process_codebase(codebase, root, output)
 
     with open(mkdocs_yml, 'a', encoding='utf-8') as f:
         f.writelines(NAV_MD)
+        logger.debug('Nav added to mkdocs.yml')
 
     if readme_path is not None:
         homepage: str = path.join(output_path, 'docs', 'index.md')
 
         with open(readme_path, encoding='utf-8') as f:
+            logger.debug(f'{readme_path} read')
             content: list[str] = f.readlines()
 
         with open(homepage, 'w', encoding='utf-8') as f:
+            logger.debug(f'{homepage} written')
             f.writelines(content)
+
+        logger.info('README.md copied to documentation')
 
 
 def _default_doc_config(
@@ -162,11 +175,14 @@ def _default_doc_config(
         ext: str = path.splitext(logo_path)[-1]
         logo_file_path: str = path.join(output, 'docs', 'img')
         file_name: str = path.join(logo_file_path, f'logo{ext}')
+        logger.debug('Logo path handling done')
 
         if not path.exists(logo_file_path):
             makedirs(logo_file_path)
+            logger.debug(f'{logo_file_path} logo file path created')
 
         copy2(logo_path, file_name)
+        logger.info(f'{logo_path} copied to {file_name}')
 
         logo_path = file_name.removeprefix(path.join(output, 'docs', ''))
 
@@ -230,41 +246,55 @@ def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     functions: str = ''
     assertions: str = ''
 
+    logger.debug(f'File: {basedir}')
     for stmt in filedata:
         match stmt['statement']:
             case Statement.Import:
                 imports += _handle_import(stmt)
+                logger.debug(f'\tStatement: {stmt}')
 
             case Statement.ImportFrom:
                 imports += _handle_import_from(stmt)
+                logger.debug(f'\tStatement: {stmt}')
 
             case Statement.Assign:
                 constants += _handle_assign(stmt)
+                logger.debug(f'\tStatement: {stmt}')
 
             case Statement.AnnAssign:
                 constants += _handle_annassign(stmt)
+                logger.debug(f'\tStatement: {stmt}')
 
             case Statement.ClassDef:
                 classes += _handle_class_def(stmt)
+                logger.debug(f'\tStatement: {stmt}')
 
             case Statement.FunctionDef | Statement.AsyncFunctionDef:
                 functions += _handle_function_def(stmt)
+                logger.debug(f'\tStatement: {stmt}')
 
             case Statement.Assert:
                 assertions += _handle_assert(stmt)
+                logger.debug(f'\tStatement: {stmt}')
 
             case _:
-                raise NotImplementedError('Should not fallback to this.')
+                logger.error('Statement shoud not be processed here:')
+                logger.error(stmt['statement'])
 
     if not len(imports):
+        logger.debug('No imports defined here')
         imports = '!!! info "NO IMPORT DEFINED HERE"'
     if not len(constants):
+        logger.debug('No constants defined here')
         constants = '!!! info "NO CONSTANT DEFINED HERE"'
     if not len(classes):
+        logger.debug('No classes defined here')
         classes = '!!! info "NO CLASS DEFINED HERE"'
     if not len(functions):
+        logger.debug('No functions defined here')
         functions = '!!! info "NO FUNCTION DEFINED HERE"'
     if not len(assertions):
+        logger.debug('No assertions defined here')
         assertions = '!!! info "NO ASSERT DEFINED HERE"'
 
     return FILE_MARKDOWN.format(
@@ -667,12 +697,15 @@ def _process_codebase(
 
     parents: list[str] = list(codebase.keys())
     docs_path: str = path.join(exit, 'docs')
+    logger.debug('"parents: list[str]" and "docs_path: str" defined')
 
     for key in parents:
+        logger.debug(f'Evaluating {key} of {parents}')
         value = codebase[key]
         new_path: str = path.join(basedir, key)
 
         if isinstance(value, list):
+            logger.debug(f'Processing file {key}')
             _process_file(key, value, new_path, root, docs_path)
         else:
             _process_codebase(value, root, exit, new_path)
@@ -718,6 +751,7 @@ def _process_file(
     """
 
     if not stmts:
+        logger.debug(f'{key} empty, has no statement')
         return
 
     content: str = _codebase_to_markdown(stmts, file_path)
@@ -726,12 +760,13 @@ def _process_file(
 
     if not path.exists(folder_path):
         makedirs(folder_path)
+        logger.debug(f'{folder_path} created')
 
-    _write_to_file(output_file_path, content)
-    _update_navigation(folder_path, docs_path, key, output_file_path)
+    __write_to_file(output_file_path, content)
+    __update_navigation(folder_path, docs_path, key, output_file_path)
 
 
-def _write_to_file(file_path: str, content: str) -> None:
+def __write_to_file(file_path: str, content: str) -> None:
     """
     Writes content to a specified file.
 
@@ -759,9 +794,10 @@ def _write_to_file(file_path: str, content: str) -> None:
 
     with open(file_path, 'w', encoding='utf-8') as file:
         file.write(content)
+        logger.debug(f'Content written to {file_path}')
 
 
-def _update_navigation(
+def __update_navigation(
     folder_path: str, docs_path: str, key: str, output_file_path: str
 ) -> None:
     """
@@ -805,11 +841,13 @@ def _update_navigation(
         for segment in folder_path.removeprefix(docs_path).split(path.sep)
         if segment
     ]
+    logger.debug('"nav_path: list[str]" created')
 
     if not nav_path:
         md_file_path: str = output_file_path.removeprefix(docs_path + path.sep)
         md_line: str = indent_code(f'- {key}: {md_file_path}', 2)
         NAV_MD.append(f'{md_line}\n')
+        logger.debug('"NAV_MD" updated with no "nav_path"')
         return
 
     for i in range(len(nav_path)):
@@ -818,8 +856,10 @@ def _update_navigation(
             NAV_DIRS.append(sub_nav_path)
             md_line: str = indent_code(f'- {nav_path[i]}:', 2 * (i + 1))
             NAV_MD.append(f'{md_line}\n')
+            logger.debug('"NAV_MD" updated with path not in "NAV_DIRS"')
 
         if i + 1 == len(nav_path):
             md_file_path: str = output_file_path.removeprefix(docs_path + path.sep)
             md_line: str = indent_code(f'- {key}: {md_file_path}', 2 * (i + 2))
             NAV_MD.append(f'{md_line}\n')
+            logger.debug('"NAV_MD" updated')
