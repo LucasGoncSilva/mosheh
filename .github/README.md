@@ -72,10 +72,10 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
 - [ ] Evaluate use of Rust for better proccessing
 - [ ] Evaluate the processing of more files than just Python ones (e.g. `.txt`, `.toml`)
 - [x] Migrate dependency system to use [UV](https://docs.astral.sh/uv/)
-- [ ] Process 25% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
-- [ ] Process 50% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
-- [ ] Process 75% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
-- [ ] Process 100% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
+- [x] Process 25% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
+- [x] Process 50% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
+- [x] Process 75% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
+- [x] Process 100% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
 - [ ] Accept structured file (e.g. `mosheh.json`) as parameters replacement
 - [ ] Provide an "exclude" config for files/dirs to ignore
 - [ ] Insert `tags` for `.md` based on their names/contexts
@@ -99,6 +99,7 @@ Here it is no different, a considerable part of Mosheh is, in fact, completely d
 │   ├── doc.py                  # Documentation build logic
 │   ├── handlers.py             # Codebase nodes handlers functions
 │   ├── main.py                 # Entrypoint
+│   ├── metadata.py             # Metadata about Mosheh itself
 │   └── utils.py                # Utilities
 │
 ├── tests                       # Template dir for testing
@@ -171,16 +172,17 @@ mosheh [-h] -root ROOT \
 
 #### Parameters
 
-|      Call       | Type  | Mandatory  | Default                          | Example                         | Description                                                |
-| :-------------: | :---: | :--------: | :------------------------------- | :------------------------------ | :--------------------------------------------------------- |
-| `-h`, `--help`  | `str` | `Optional` | `None`                           | `-h`, `--help`                  | Help message                                               |
-|     `-root`     | `str` | `Required` | `None`                           | `-root example/`                | Root dir, where the analysis starts.                       |
-|  `--repo-name`  | `str` | `Optional` | `'GitHub'`                       | `--repo-name toicin`            | Name of the code repository to be mapped.                  |
-|  `--repo-url`   | `str` | `Optional` | `'https://github.com/'`          | `--repo-url https://random.com` | URL of the code repository to be mapped.                   |
-|  `--edit-uri`   | `str` | `Optional` | `'blob/main/documentation/docs'` | `--edit-uri blob/main/docs`     | URI to view raw or edit blob file.                         |
-|  `--logo-path`  | `str` | `Optional` | `None`                           | `--repo-url .github/logo.svg`   | Path for doc/project logo, same Material MkDocs's formats. |
-| `--readme-path` | `str` | `Optional` | `None`                           | `--repo-url .github/README.md`  | Path for `README.md` file to used as homepage.             |
-|   `--output`    | `str` | `Optional` | `'.'`                            | `--output doc/`                 | Path for documentation output, where to be created.        |
+|      Call       | Type  | Mandatory  | Default                          | Example                         | Description                                                      |
+| :-------------: | :---: | :--------: | :------------------------------- | :------------------------------ | :--------------------------------------------------------------- |
+| `-h`, `--help`  | `str` | `Optional` | `None`                           | `-h`, `--help`                  | Help message                                                     |
+|     `-root`     | `str` | `Required` | `None`                           | `-root example/`                | Root dir, where the analysis starts.                             |
+|  `--repo-name`  | `str` | `Optional` | `'GitHub'`                       | `--repo-name toicin`            | Name of the code repository to be mapped.                        |
+|  `--repo-url`   | `str` | `Optional` | `'https://github.com/'`          | `--repo-url https://random.com` | URL of the code repository to be mapped.                         |
+|  `--edit-uri`   | `str` | `Optional` | `'blob/main/documentation/docs'` | `--edit-uri blob/main/docs`     | URI to view raw or edit blob file.                               |
+|  `--logo-path`  | `str` | `Optional` | `None`                           | `--repo-url .github/logo.svg`   | Path for doc/project logo, same Material MkDocs's formats.       |
+| `--readme-path` | `str` | `Optional` | `None`                           | `--repo-url .github/README.md`  | Path for `README.md` file to used as homepage.                   |
+|   `--verbose`   | `int` | `Optional` | `3` - `logging.INFO`             | `--verbose 4`                   | Verbosity level, from 0 (quiet/critical) to 4 (overshare/debug). |
+|   `--output`    | `str` | `Optional` | `'.'` - current dir              | `--output doc/`                 | Path for documentation output, where to be created.              |
 
 ## License
 

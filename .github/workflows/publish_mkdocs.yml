@@ -37,6 +37,7 @@ jobs:
           mkdocs-material-
 
     - name: Publish MkDocs
+      working-directory: ./documentation
       run: |
         pip install uv
         uv sync
