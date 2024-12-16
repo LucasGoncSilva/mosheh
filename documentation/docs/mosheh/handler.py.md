@@ -236,7 +236,7 @@ Kwargs: `#!py None`
             lst: list[str] = []
             for i in node.targets:
                 lst.extend(cast(list[str], _handle_node(i)))
-            if any(map(str.isupper, lst)) or any(map(lambda x: x in constants.ACCEPTABLE_LOWER_CONSTANTS, lst)):
+            if any(map(str.isupper, lst)) or any(map(lambda x: bin(x, constants.ACCEPTABLE_LOWER_CONSTANTS), lst)):
                 data = _handle_assign(data, node)
         elif isinstance(node, ast.AnnAssign):
             if isinstance(node.target, ast.Name) and node.target.id.isupper():

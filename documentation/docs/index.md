@@ -16,9 +16,9 @@ hide:
 ![GitHub License](https://img.shields.io/github/license/LucasGoncSilva/mosheh?labelColor=101010)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LucasGoncSilva/mosheh/unittest.yml?labelColor=101010)
 
-[![Static Badge](https://img.shields.io/badge/here-here?style=for-the-badge&label=changelog&labelColor=101010&color=fff)](https://github.com/LucasGoncSilva/mosheh/blob/main/.github/CHANGELOG.md)
+[![Changelog](https://img.shields.io/badge/here-here?style=for-the-badge&label=changelog&labelColor=101010&color=fff)](https://github.com/LucasGoncSilva/mosheh/blob/main/.github/CHANGELOG.md)
 
-[![Static Badge](https://img.shields.io/badge/here-here?style=for-the-badge&label=PyPI&labelColor=%233e6ea8&color=%23f3e136)](https://pypi.org/project/mosheh/)
+[![PyPI](https://img.shields.io/badge/here-here?style=for-the-badge&label=PyPI&labelColor=3e6ea8&color=f3e136)](https://pypi.org/project/mosheh/)
 
 Mosheh, a tool for creating docs for projects, from Python to Python.
 

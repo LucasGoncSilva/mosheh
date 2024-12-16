@@ -6,6 +6,18 @@ Path: `mosheh`
 
 ## Imports
 
+### `#!py import Sequence`
+
+Path: `#!py collections.abc`
+
+Category: Native
+
+??? example "SNIPPET"
+
+    ```py
+    from collections.abc import Sequence
+    ```
+
 ### `#!py import Final`
 
 Path: `#!py typing`
@@ -18,68 +30,56 @@ Category: Native
     from typing import Final
     ```
 
-### `#!py import Iterable`
-
-Path: `#!py typing`
-
-Category: Native
-
-??? example "SNIPPET"
-
-    ```py
-    from typing import Iterable
-    ```
-
 ---
 
 ## Consts
 
 ### `#!py BUILTIN_MODULES`
 
-Type: `#!py Final[Iterable[str]]`
+Type: `#!py Final[Sequence[str]]`
 
 Value: `#!py sorted(['__future__', '_testclinic', 'getopt', 'runpy', '_abc', '_testimportmultiple', 'getpass', 'sched', '_aix_support', '_testinternalcapi', 'gettext', 'secrets', '_ast', '_testmultiphase', 'glob', 'select', '_asyncio', '_thread', 'graphlib', 'selectors', '_bisect', '_threading_local', 'grp', 'setuptools', '_blake2', '_tracemalloc', 'gzip', 'shelve', '_bootsubprocess', '_uuid', 'hashlib', 'shlex', '_bz2', '_warnings', 'heapq', 'shutil', '_codecs', '_weakref', 'hmac', 'signal', '_codecs_cn', '_weakrefset', 'html', 'site', '_codecs_hk', '_xxsubinterpreters', 'http', 'sitecustomize', '_codecs_iso2022', '_xxtestfuzz', 'imaplib', 'smtpd', '_codecs_jp', '_zoneinfo', 'imghdr', 'smtplib', '_codecs_kr', 'abc', 'imp', 'sndhdr', '_codecs_tw', 'aifc', 'importlib', 'socket', '_collections', 'antigravity', 'inspect', 'socketserver', '_collections_abc', 'argparse', 'io', 'spwd', '_compat_pickle', 'array', 'ipaddress', 'sqlite3', '_compression', 'ast', 'itertools', 'sre_compile', '_contextvars', 'asynchat', 'json', 'sre_constants', '_crypt', 'asyncio', 'keyword', 'sre_parse', '_csv', 'asyncore', 'lib2to3', 'ssl', '_ctypes', 'atexit', 'linecache', 'stat', '_ctypes_test', 'audioop', 'locale', 'statistics', '_curses', 'base64', 'logging', 'string', '_curses_panel', 'bdb', 'lzma', 'stringprep', '_datetime', 'binascii', 'mailbox', 'struct', '_dbm', 'binhex', 'mailcap', 'subprocess', '_decimal', 'bisect', 'marshal', 'sunau', '_distutils_hack', 'builtins', 'math', 'symtable', '_distutils_system_mod', 'bz2', 'mimetypes', 'sys', '_elementtree', 'cProfile', 'mmap', 'sysconfig', '_functools', 'calendar', 'modulefinder', 'syslog', '_gdbm', 'cgi', 'multiprocessing', 'tabnanny', '_hashlib', 'cgitb', 'netrc', 'tarfile', '_heapq', 'chunk', 'nis', 'telnetlib', '_imp', 'cmath', 'nntplib', 'tempfile', '_io', 'cmd', 'ntpath', 'termios', '_json', 'code', 'nturl2path', 'test', '_locale', 'codecs', 'numbers', 'textwrap', '_lsprof', 'codeop', 'opcode', 'this', '_lzma', 'collections', 'operator', 'threading', '_markupbase', 'colorsys', 'optparse', 'time', '_md5', 'compileall', 'os', 'timeit', '_multibytecodec', 'concurrent', 'ossaudiodev', 'token', '_multiprocessing', 'configparser', 'pathlib', 'tokenize', '_opcode', 'contextlib', 'pdb', 'trace', '_operator', 'contextvars', 'pickle', 'traceback', '_osx_support', 'copy', 'pickletools', 'tracemalloc', '_pickle', 'copyreg', 'pip', 'tty', '_posixshmem', 'crypt', 'pipes', 'turtle', '_posixsubprocess', 'csv', 'pkg_resources', 'types', '_py_abc', 'ctypes', 'pkgutil', 'typing', '_pydecimal', 'curses', 'platform', 'unicodedata', '_pyio', 'dataclasses', 'plistlib', 'unittest', '_queue', 'datetime', 'poplib', 'urllib', '_random', 'dbm', 'posix', 'uu', '_sha1', 'decimal', 'posixpath', 'uuid', '_sha256', 'difflib', 'pprint', 'venv', '_sha3', 'dis', 'profile', 'warnings', '_sha512', 'distutils', 'pstats', 'wave', '_signal', 'doctest', 'pty', 'weakref', '_sitebuiltins', 'email', 'pwd', 'webbrowser', '_socket', 'encodings', 'py_compile', 'wsgiref', '_sqlite3', 'ensurepip', 'pyclbr', 'xdrlib', '_sre', 'enum', 'pydoc', 'xml', '_ssl', 'errno', 'pydoc_data', 'xmlrpc', '_stat', 'faulthandler', 'pyexpat', 'xpto', '_statistics', 'fcntl', 'queue', 'xxlimited', '_string', 'filecmp', 'quopri', 'xxlimited_35', '_strptime', 'fileinput', 'random', 'xxsubtype', '_struct', 'fnmatch', 're', 'zipapp', '_symtable', 'fractions', 'readline', 'zipfile', '_sysconfigdata__linux_x86_64-linux-gnu', 'ftplib', 'reprlib', 'zipimport', '_sysconfigdata__x86_64-linux-gnu', 'functools', 'resource', 'zlib', '_testbuffer', 'gc', 'rlcompleter', 'zoneinfo', '_testcapi', 'genericpath'])`
 
 ??? example "SNIPPET"
 
     ```py
-    BUILTIN_MODULES: Final[Iterable[str]] = sorted(['__future__', '_testclinic', 'getopt', 'runpy', '_abc', '_testimportmultiple', 'getpass', 'sched', '_aix_support', '_testinternalcapi', 'gettext', 'secrets', '_ast', '_testmultiphase', 'glob', 'select', '_asyncio', '_thread', 'graphlib', 'selectors', '_bisect', '_threading_local', 'grp', 'setuptools', '_blake2', '_tracemalloc', 'gzip', 'shelve', '_bootsubprocess', '_uuid', 'hashlib', 'shlex', '_bz2', '_warnings', 'heapq', 'shutil', '_codecs', '_weakref', 'hmac', 'signal', '_codecs_cn', '_weakrefset', 'html', 'site', '_codecs_hk', '_xxsubinterpreters', 'http', 'sitecustomize', '_codecs_iso2022', '_xxtestfuzz', 'imaplib', 'smtpd', '_codecs_jp', '_zoneinfo', 'imghdr', 'smtplib', '_codecs_kr', 'abc', 'imp', 'sndhdr', '_codecs_tw', 'aifc', 'importlib', 'socket', '_collections', 'antigravity', 'inspect', 'socketserver', '_collections_abc', 'argparse', 'io', 'spwd', '_compat_pickle', 'array', 'ipaddress', 'sqlite3', '_compression', 'ast', 'itertools', 'sre_compile', '_contextvars', 'asynchat', 'json', 'sre_constants', '_crypt', 'asyncio', 'keyword', 'sre_parse', '_csv', 'asyncore', 'lib2to3', 'ssl', '_ctypes', 'atexit', 'linecache', 'stat', '_ctypes_test', 'audioop', 'locale', 'statistics', '_curses', 'base64', 'logging', 'string', '_curses_panel', 'bdb', 'lzma', 'stringprep', '_datetime', 'binascii', 'mailbox', 'struct', '_dbm', 'binhex', 'mailcap', 'subprocess', '_decimal', 'bisect', 'marshal', 'sunau', '_distutils_hack', 'builtins', 'math', 'symtable', '_distutils_system_mod', 'bz2', 'mimetypes', 'sys', '_elementtree', 'cProfile', 'mmap', 'sysconfig', '_functools', 'calendar', 'modulefinder', 'syslog', '_gdbm', 'cgi', 'multiprocessing', 'tabnanny', '_hashlib', 'cgitb', 'netrc', 'tarfile', '_heapq', 'chunk', 'nis', 'telnetlib', '_imp', 'cmath', 'nntplib', 'tempfile', '_io', 'cmd', 'ntpath', 'termios', '_json', 'code', 'nturl2path', 'test', '_locale', 'codecs', 'numbers', 'textwrap', '_lsprof', 'codeop', 'opcode', 'this', '_lzma', 'collections', 'operator', 'threading', '_markupbase', 'colorsys', 'optparse', 'time', '_md5', 'compileall', 'os', 'timeit', '_multibytecodec', 'concurrent', 'ossaudiodev', 'token', '_multiprocessing', 'configparser', 'pathlib', 'tokenize', '_opcode', 'contextlib', 'pdb', 'trace', '_operator', 'contextvars', 'pickle', 'traceback', '_osx_support', 'copy', 'pickletools', 'tracemalloc', '_pickle', 'copyreg', 'pip', 'tty', '_posixshmem', 'crypt', 'pipes', 'turtle', '_posixsubprocess', 'csv', 'pkg_resources', 'types', '_py_abc', 'ctypes', 'pkgutil', 'typing', '_pydecimal', 'curses', 'platform', 'unicodedata', '_pyio', 'dataclasses', 'plistlib', 'unittest', '_queue', 'datetime', 'poplib', 'urllib', '_random', 'dbm', 'posix', 'uu', '_sha1', 'decimal', 'posixpath', 'uuid', '_sha256', 'difflib', 'pprint', 'venv', '_sha3', 'dis', 'profile', 'warnings', '_sha512', 'distutils', 'pstats', 'wave', '_signal', 'doctest', 'pty', 'weakref', '_sitebuiltins', 'email', 'pwd', 'webbrowser', '_socket', 'encodings', 'py_compile', 'wsgiref', '_sqlite3', 'ensurepip', 'pyclbr', 'xdrlib', '_sre', 'enum', 'pydoc', 'xml', '_ssl', 'errno', 'pydoc_data', 'xmlrpc', '_stat', 'faulthandler', 'pyexpat', 'xpto', '_statistics', 'fcntl', 'queue', 'xxlimited', '_string', 'filecmp', 'quopri', 'xxlimited_35', '_strptime', 'fileinput', 'random', 'xxsubtype', '_struct', 'fnmatch', 're', 'zipapp', '_symtable', 'fractions', 'readline', 'zipfile', '_sysconfigdata__linux_x86_64-linux-gnu', 'ftplib', 'reprlib', 'zipimport', '_sysconfigdata__x86_64-linux-gnu', 'functools', 'resource', 'zlib', '_testbuffer', 'gc', 'rlcompleter', 'zoneinfo', '_testcapi', 'genericpath'])
+    BUILTIN_MODULES: Final[Sequence[str]] = sorted(['__future__', '_testclinic', 'getopt', 'runpy', '_abc', '_testimportmultiple', 'getpass', 'sched', '_aix_support', '_testinternalcapi', 'gettext', 'secrets', '_ast', '_testmultiphase', 'glob', 'select', '_asyncio', '_thread', 'graphlib', 'selectors', '_bisect', '_threading_local', 'grp', 'setuptools', '_blake2', '_tracemalloc', 'gzip', 'shelve', '_bootsubprocess', '_uuid', 'hashlib', 'shlex', '_bz2', '_warnings', 'heapq', 'shutil', '_codecs', '_weakref', 'hmac', 'signal', '_codecs_cn', '_weakrefset', 'html', 'site', '_codecs_hk', '_xxsubinterpreters', 'http', 'sitecustomize', '_codecs_iso2022', '_xxtestfuzz', 'imaplib', 'smtpd', '_codecs_jp', '_zoneinfo', 'imghdr', 'smtplib', '_codecs_kr', 'abc', 'imp', 'sndhdr', '_codecs_tw', 'aifc', 'importlib', 'socket', '_collections', 'antigravity', 'inspect', 'socketserver', '_collections_abc', 'argparse', 'io', 'spwd', '_compat_pickle', 'array', 'ipaddress', 'sqlite3', '_compression', 'ast', 'itertools', 'sre_compile', '_contextvars', 'asynchat', 'json', 'sre_constants', '_crypt', 'asyncio', 'keyword', 'sre_parse', '_csv', 'asyncore', 'lib2to3', 'ssl', '_ctypes', 'atexit', 'linecache', 'stat', '_ctypes_test', 'audioop', 'locale', 'statistics', '_curses', 'base64', 'logging', 'string', '_curses_panel', 'bdb', 'lzma', 'stringprep', '_datetime', 'binascii', 'mailbox', 'struct', '_dbm', 'binhex', 'mailcap', 'subprocess', '_decimal', 'bisect', 'marshal', 'sunau', '_distutils_hack', 'builtins', 'math', 'symtable', '_distutils_system_mod', 'bz2', 'mimetypes', 'sys', '_elementtree', 'cProfile', 'mmap', 'sysconfig', '_functools', 'calendar', 'modulefinder', 'syslog', '_gdbm', 'cgi', 'multiprocessing', 'tabnanny', '_hashlib', 'cgitb', 'netrc', 'tarfile', '_heapq', 'chunk', 'nis', 'telnetlib', '_imp', 'cmath', 'nntplib', 'tempfile', '_io', 'cmd', 'ntpath', 'termios', '_json', 'code', 'nturl2path', 'test', '_locale', 'codecs', 'numbers', 'textwrap', '_lsprof', 'codeop', 'opcode', 'this', '_lzma', 'collections', 'operator', 'threading', '_markupbase', 'colorsys', 'optparse', 'time', '_md5', 'compileall', 'os', 'timeit', '_multibytecodec', 'concurrent', 'ossaudiodev', 'token', '_multiprocessing', 'configparser', 'pathlib', 'tokenize', '_opcode', 'contextlib', 'pdb', 'trace', '_operator', 'contextvars', 'pickle', 'traceback', '_osx_support', 'copy', 'pickletools', 'tracemalloc', '_pickle', 'copyreg', 'pip', 'tty', '_posixshmem', 'crypt', 'pipes', 'turtle', '_posixsubprocess', 'csv', 'pkg_resources', 'types', '_py_abc', 'ctypes', 'pkgutil', 'typing', '_pydecimal', 'curses', 'platform', 'unicodedata', '_pyio', 'dataclasses', 'plistlib', 'unittest', '_queue', 'datetime', 'poplib', 'urllib', '_random', 'dbm', 'posix', 'uu', '_sha1', 'decimal', 'posixpath', 'uuid', '_sha256', 'difflib', 'pprint', 'venv', '_sha3', 'dis', 'profile', 'warnings', '_sha512', 'distutils', 'pstats', 'wave', '_signal', 'doctest', 'pty', 'weakref', '_sitebuiltins', 'email', 'pwd', 'webbrowser', '_socket', 'encodings', 'py_compile', 'wsgiref', '_sqlite3', 'ensurepip', 'pyclbr', 'xdrlib', '_sre', 'enum', 'pydoc', 'xml', '_ssl', 'errno', 'pydoc_data', 'xmlrpc', '_stat', 'faulthandler', 'pyexpat', 'xpto', '_statistics', 'fcntl', 'queue', 'xxlimited', '_string', 'filecmp', 'quopri', 'xxlimited_35', '_strptime', 'fileinput', 'random', 'xxsubtype', '_struct', 'fnmatch', 're', 'zipapp', '_symtable', 'fractions', 'readline', 'zipfile', '_sysconfigdata__linux_x86_64-linux-gnu', 'ftplib', 'reprlib', 'zipimport', '_sysconfigdata__x86_64-linux-gnu', 'functools', 'resource', 'zlib', '_testbuffer', 'gc', 'rlcompleter', 'zoneinfo', '_testcapi', 'genericpath'])
     ```
 
 ### `#!py BUILTIN_FUNCTIONS`
 
-Type: `#!py Final[Iterable[str]]`
+Type: `#!py Final[Sequence[str]]`
 
 Value: `#!py sorted(['abs', 'all', 'any', 'ascii', 'bin', 'bool', 'bytearray', 'bytes', 'callable', 'chr', 'classmethod', 'compile', 'complex', 'delattr', 'dict', 'dir', 'divmod', 'enumerate', 'eval', 'exec', 'filter', 'float', 'format', 'frozenset', 'getattr', 'globals', 'hasattr', 'hash', 'help', 'hex', 'id', 'input', 'int', 'isinstance', 'issubclass', 'iter', 'len', 'list', 'locals', 'map', 'max', 'memoryview', 'min', 'next', 'object', 'oct', 'open', 'ord', 'pow', 'print', 'property', 'range', 'repr', 'reversed', 'round', 'set', 'setattr', 'slice', 'sorted', 'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip'])`
 
 ??? example "SNIPPET"
 
     ```py
-    BUILTIN_FUNCTIONS: Final[Iterable[str]] = sorted(['abs', 'all', 'any', 'ascii', 'bin', 'bool', 'bytearray', 'bytes', 'callable', 'chr', 'classmethod', 'compile', 'complex', 'delattr', 'dict', 'dir', 'divmod', 'enumerate', 'eval', 'exec', 'filter', 'float', 'format', 'frozenset', 'getattr', 'globals', 'hasattr', 'hash', 'help', 'hex', 'id', 'input', 'int', 'isinstance', 'issubclass', 'iter', 'len', 'list', 'locals', 'map', 'max', 'memoryview', 'min', 'next', 'object', 'oct', 'open', 'ord', 'pow', 'print', 'property', 'range', 'repr', 'reversed', 'round', 'set', 'setattr', 'slice', 'sorted', 'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip'])
+    BUILTIN_FUNCTIONS: Final[Sequence[str]] = sorted(['abs', 'all', 'any', 'ascii', 'bin', 'bool', 'bytearray', 'bytes', 'callable', 'chr', 'classmethod', 'compile', 'complex', 'delattr', 'dict', 'dir', 'divmod', 'enumerate', 'eval', 'exec', 'filter', 'float', 'format', 'frozenset', 'getattr', 'globals', 'hasattr', 'hash', 'help', 'hex', 'id', 'input', 'int', 'isinstance', 'issubclass', 'iter', 'len', 'list', 'locals', 'map', 'max', 'memoryview', 'min', 'next', 'object', 'oct', 'open', 'ord', 'pow', 'print', 'property', 'range', 'repr', 'reversed', 'round', 'set', 'setattr', 'slice', 'sorted', 'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip'])
     ```
 
 ### `#!py BUILTIN_DUNDER_METHODS`
 
-Type: `#!py Final[Iterable[str]]`
+Type: `#!py Final[Sequence[str]]`
 
 Value: `#!py sorted(['__init__', '__new__', '__del__', '__repr__', '__str__', '__bytes__', '__format__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__hash__', '__bool__', '__getattr__', '__getattribute__', '__setattr__', '__delattr__', '__dir__', '__get__', '__set__', '__delete__', '__init_subclass__', '__set_name__', '__instancecheck__', '__subclasscheck__', '__class_getitem__', '__call__', '__len__', '__length_hint__', '__getitem__', '__setitem__', '__delitem__', '__missing__', '__iter__', '__reversed__', '__contains__', '__add__', '__radd__', '__iadd__', '__sub__', '__mul__', '__matmul__', '__truediv__', '__floordiv__', '__mod__', '__divmod__', '__pow__', '__lshift__', '__rshift__', '__and__', '__xor__', '__or__', '__neg__', '__pos__', '__abs__', '__invert__', '__complex__', '__int__', '__float__', '__index__', '__round__', '__trunc__', '__floor__', '__ceil__', '__enter__', '__exit__', '__await__', '__aiter__', '__anext__', '__aenter__', '__aexit__'])`
 
 ??? example "SNIPPET"
 
     ```py
-    BUILTIN_DUNDER_METHODS: Final[Iterable[str]] = sorted(['__init__', '__new__', '__del__', '__repr__', '__str__', '__bytes__', '__format__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__hash__', '__bool__', '__getattr__', '__getattribute__', '__setattr__', '__delattr__', '__dir__', '__get__', '__set__', '__delete__', '__init_subclass__', '__set_name__', '__instancecheck__', '__subclasscheck__', '__class_getitem__', '__call__', '__len__', '__length_hint__', '__getitem__', '__setitem__', '__delitem__', '__missing__', '__iter__', '__reversed__', '__contains__', '__add__', '__radd__', '__iadd__', '__sub__', '__mul__', '__matmul__', '__truediv__', '__floordiv__', '__mod__', '__divmod__', '__pow__', '__lshift__', '__rshift__', '__and__', '__xor__', '__or__', '__neg__', '__pos__', '__abs__', '__invert__', '__complex__', '__int__', '__float__', '__index__', '__round__', '__trunc__', '__floor__', '__ceil__', '__enter__', '__exit__', '__await__', '__aiter__', '__anext__', '__aenter__', '__aexit__'])
+    BUILTIN_DUNDER_METHODS: Final[Sequence[str]] = sorted(['__init__', '__new__', '__del__', '__repr__', '__str__', '__bytes__', '__format__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__hash__', '__bool__', '__getattr__', '__getattribute__', '__setattr__', '__delattr__', '__dir__', '__get__', '__set__', '__delete__', '__init_subclass__', '__set_name__', '__instancecheck__', '__subclasscheck__', '__class_getitem__', '__call__', '__len__', '__length_hint__', '__getitem__', '__setitem__', '__delitem__', '__missing__', '__iter__', '__reversed__', '__contains__', '__add__', '__radd__', '__iadd__', '__sub__', '__mul__', '__matmul__', '__truediv__', '__floordiv__', '__mod__', '__divmod__', '__pow__', '__lshift__', '__rshift__', '__and__', '__xor__', '__or__', '__neg__', '__pos__', '__abs__', '__invert__', '__complex__', '__int__', '__float__', '__index__', '__round__', '__trunc__', '__floor__', '__ceil__', '__enter__', '__exit__', '__await__', '__aiter__', '__anext__', '__aenter__', '__aexit__'])
     ```
 
 ### `#!py ACCEPTABLE_LOWER_CONSTANTS`
 
-Type: `#!py Final[list[str]]`
+Type: `#!py Final[Sequence[str]]`
 
-Value: `#!py ['app', 'application', 'urlpatterns', 'app_name', 'main']`
+Value: `#!py sorted(['__author__', '__copyright__', '__credits__', '__license__', '__maintainer__', '__email__', '__repository__', '__keywords__', '__version__', '__date__', '__status__', 'app', 'application', 'urlpatterns', 'app_name', 'main'])`
 
 ??? example "SNIPPET"
 
     ```py
-    ACCEPTABLE_LOWER_CONSTANTS: Final[list[str]] = ['app', 'application', 'urlpatterns', 'app_name', 'main']
+    ACCEPTABLE_LOWER_CONSTANTS: Final[Sequence[str]] = sorted(['__author__', '__copyright__', '__credits__', '__license__', '__maintainer__', '__email__', '__repository__', '__keywords__', '__version__', '__date__', '__status__', 'app', 'application', 'urlpatterns', 'app_name', 'main'])
     ```
 
 ### `#!py DEFAULT_MKDOCS_YML`
