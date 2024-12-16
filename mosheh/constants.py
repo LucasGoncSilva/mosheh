@@ -1,7 +1,8 @@
+from collections.abc import Sequence
 from typing import Final
 
 
-BUILTIN_MODULES: Final[list[str]] = sorted(
+BUILTIN_MODULES: Final[Sequence[str]] = sorted(
     [
         '__future__',
         '_testclinic',
@@ -316,7 +317,7 @@ BUILTIN_MODULES: Final[list[str]] = sorted(
     ]
 )
 
-BUILTIN_FUNCTIONS: Final[list[str]] = sorted(
+BUILTIN_FUNCTIONS: Final[Sequence[str]] = sorted(
     [
         'abs',
         'all',
@@ -388,7 +389,7 @@ BUILTIN_FUNCTIONS: Final[list[str]] = sorted(
     ]
 )
 
-BUILTIN_DUNDER_METHODS: Final[list[str]] = sorted(
+BUILTIN_DUNDER_METHODS: Final[Sequence[str]] = sorted(
     [
         '__init__',
         '__new__',
@@ -466,13 +467,26 @@ BUILTIN_DUNDER_METHODS: Final[list[str]] = sorted(
     ]
 )
 
-ACCEPTABLE_LOWER_CONSTANTS: Final[list[str]] = [
-    'app',
-    'application',
-    'urlpatterns',
-    'app_name',
-    'main',
-]
+ACCEPTABLE_LOWER_CONSTANTS: Final[Sequence[str]] = sorted(
+    [
+        '__author__',
+        '__copyright__',
+        '__credits__',
+        '__license__',
+        '__maintainer__',
+        '__email__',
+        '__repository__',
+        '__keywords__',
+        '__version__',
+        '__date__',
+        '__status__',
+        'app',
+        'application',
+        'urlpatterns',
+        'app_name',
+        'main',
+    ]
+)
 
 DEFAULT_MKDOCS_YML: Final[str] = """site_name: {proj_name}
 repo_url: {repo_url}

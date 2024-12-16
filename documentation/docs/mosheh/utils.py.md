@@ -18,6 +18,18 @@ Category: Native
     from collections import defaultdict
     ```
 
+### `#!py import Sequence`
+
+Path: `#!py collections.abc`
+
+Category: Native
+
+??? example "SNIPPET"
+
+    ```py
+    from collections.abc import Sequence
+    ```
+
 ### `#!py import deepcopy`
 
 Path: `#!py copy`
@@ -58,7 +70,7 @@ Category: Native
 
 Path: `#!py custom_types`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -84,20 +96,20 @@ Category: 3rd Party
 
 ### `#!py def bin`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py bool`
 
 Decorators: `#!py None`
 
-Args: `#!py item: Any, universe: list[Any] | tuple[Any]`
+Args: `#!py item: Any, universe: Sequence[Any]`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def bin(item: Any, universe: list[Any] | tuple[Any]) -> bool:
+    def bin(item: Any, universe: Sequence[Any]) -> bool:
         """
         Binary Search algorithm which returns not the index, but a boolean.
 
@@ -113,14 +125,14 @@ Kwargs: `#!py None`
         ```python
         lst: list[int] = [1, 2, 3, 4, 5]
         num: int = 4
-        result: bool = bin(num, lst)
+        bin(num, lst)
         # True
         ```
 
         :param item: The item to check if exists in.
         :type item: Any
         :param universe: The sorted iterable to be evaluated.
-        :type universe: list[Any] | tuple[Any]
+        :type universe: Sequence[Any]
         :return: If the item is found in the universe.
         :rtype: bool
         """
@@ -140,7 +152,7 @@ Kwargs: `#!py None`
 
 ### `#!py def is_lib_installed`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py bool`
 
@@ -162,7 +174,7 @@ Kwargs: `#!py None`
 
         Example:
         ```python
-        result: bool = is_lib_installed('fastapi')
+        is_lib_installed('fastapi')
         # False
         ```
 
@@ -172,17 +184,16 @@ Kwargs: `#!py None`
         :rtype: bool
         """
         try:
-            spec = find_spec(name)
-            return True if spec is not None else False
+            return True if find_spec(name) is not None else False
         except (ModuleNotFoundError, ValueError):
             return False
     ```
 
 ### `#!py def nested_dict`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
-Return Type: `#!py dict[Any, Any]`
+Return Type: `#!py defaultdict[Any, Any]`
 
 Decorators: `#!py None`
 
@@ -193,7 +204,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def nested_dict() -> dict[Any, Any]:
+    def nested_dict() -> defaultdict[Any, Any]:
         """
         Creates and returns a nested dictionary using `collections.defaultdict`.
 
@@ -214,27 +225,27 @@ Kwargs: `#!py None`
         ```
 
         :return: A `defaultdict` instance configured for recursive nesting.
-        :rtype: dict[Any, Any]
+        :rtype: defaultdict[Any, Any]
         """
         return defaultdict(nested_dict)
     ```
 
 ### `#!py def add_to_dict`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
-Return Type: `#!py dict[Any, Any]`
+Return Type: `#!py defaultdict[Any, Any]`
 
 Decorators: `#!py None`
 
-Args: `#!py structure: dict[Any, Any], path: list[str], data: list[StandardReturn]`
+Args: `#!py structure: defaultdict[Any, Any], path: list[str], data: list[StandardReturn]`
 
 Kwargs: `#!py None`
 
 ??? example "SNIPPET"
 
     ```py
-    def add_to_dict(structure: dict[Any, Any], path: list[str], data: list[StandardReturn]) -> dict[Any, Any]:
+    def add_to_dict(structure: defaultdict[Any, Any], path: list[str], data: list[StandardReturn]) -> defaultdict[Any, Any]:
         """
         Adds data to a nested dictionary structure based on a specified path.
 
@@ -252,21 +263,21 @@ Kwargs: `#!py None`
 
         Example:
         ```python
-        structure = {}
-        path = ['level1', 'level2', 'level3']
-        data = {'key': 'value'}
-        result = add_to_dict(structure, path, data)
-        # {'level1': {'level2': {'level3': {'key': 'value'}}}}
+        structure: defaultdict = nested_dict()
+        path: list[str] = ['level1', 'level2', 'level3']
+        data: list[StandardReturn] = [{'key': 'value'}]
+        add_to_dict(structure, path, data)
+        # defaultdict(defaultdict, {'level1': {'level2': {'level3': [{'key': 'value'}]}}})
         ```
 
         :param structure: The nested dictionary to modify.
-        :type structure: dict[Any, Any]
+        :type structure: defaultdict[Any, Any]
         :param path: A list of keys representing the path to the target location.
         :type path: list[str]
         :param data: The data to add at the specified path.
-        :type data: StandardReturn
+        :type data: list[StandardReturn]
         :return: The modified dictionary with the new data added.
-        :rtype: dict[Any, Any]
+        :rtype: defaultdict[Any, Any]
         """
         if len(path) == 1:
             structure[path[0]] = deepcopy(data)
@@ -277,7 +288,7 @@ Kwargs: `#!py None`
 
 ### `#!py def convert_to_regular_dict`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py dict[Any, Any]`
 
@@ -307,16 +318,9 @@ Kwargs: `#!py None`
 
         Example:
         ```python
-        from collections import defaultdict
-
-
-        def nested_dict():
-            return defaultdict(nested_dict)
-
-
-        d = nested_dict()
+        d: defaultdict = nested_dict()
         d['level1']['level2'] = 'value'
-        regular_dict = convert_to_regular_dict(d)
+        convert_to_regular_dict(d)
         # {'level1': {'level2': 'value'}}
         ```
 
@@ -326,13 +330,13 @@ Kwargs: `#!py None`
         :rtype: dict[Any, Any]
         """
         if isinstance(d, defaultdict):
-            d = {k: convert_to_regular_dict(v) for (k, v) in d.items()}
+            d = {k: convert_to_regular_dict(v) for k, v in d.items()}
         return d
     ```
 
 ### `#!py def standard_struct`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py StandardReturn`
 
@@ -375,7 +379,7 @@ Kwargs: `#!py None`
 
         Example:
         ```python
-        struct: StandardReturn = standard_struct()
+        standard_struct()
         # {}
         ```
 
@@ -388,7 +392,7 @@ Kwargs: `#!py None`
 
 ### `#!py def indent_code`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py str`
 
@@ -424,12 +428,12 @@ Kwargs: `#!py None`
         :param code: The code snippet to be formatted.
         :type code: str
         :param level: The number of spaces to leftpad each line.
-        :type level: int
+        :type level: int, optional
         :return: The code snippet leftpadded.
         :rtype: str
         '''
         indent = ' ' * level
-        new_code = '\n'.join((f'{indent}{line}' if line.strip() else '' for line in code.splitlines()))
+        new_code = '\n'.join(map(lambda line: f'{indent}{line}' if line.strip() else '', code.splitlines()))
         return new_code
     ```
 

@@ -40,6 +40,18 @@ Key Components of a Changelog:
 
 -->
 
+## v1.3.1 - 2024-12-16
+
+### Adds
+
+- Publish official documentation website: [https://lucasgoncsilva.github.io/mosheh/](https://lucasgoncsilva.github.io/mosheh/)
+
+### Updates
+
+- Remaking the Mosheh's documentation itself
+- Setting documentation website metadata on `pyproject.toml`
+- `mosheh.constants` constants `BUILTIN_MODULES`, `BUILTIN_FUNCTIONS`, `BUILTIN_DUNDER_METHODS` and `ACCEPTABLE_LOWER_CONSTANTS` from `typing.Iterator` to `typing.Sequence`
+
 ## v1.3.0 - 2024-12-13
 
 ### Adds

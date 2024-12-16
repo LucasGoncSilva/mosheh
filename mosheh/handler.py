@@ -60,7 +60,7 @@ def handle_def_nodes(node: ast.AST) -> list[StandardReturn]:
             lst.extend(cast(list[str], _handle_node(i)))
 
         if any(map(str.isupper, lst)) or any(
-            map(lambda x: x in constants.ACCEPTABLE_LOWER_CONSTANTS, lst)
+            map(lambda x: bin(x, constants.ACCEPTABLE_LOWER_CONSTANTS), lst)
         ):
             data = _handle_assign(data, node)
     elif isinstance(node, ast.AnnAssign):
