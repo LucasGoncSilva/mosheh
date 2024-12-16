@@ -73,11 +73,11 @@ Key Components of a Changelog:
 
 - `Statement` class from `mosheh.custom_types` unused types, such as `Statement.Call` - all below:
 
-|  Removed Types   |                  |                      |
-| :--------------: | :--------------: | :------------------- |
-| `BinOp = auto()` | `Call = auto()`  | `Compare = auto()`   |
-| `List = auto()`  |  `Set = auto()`  | `Tuple = auto()`     |
-| `Dict = auto()`  | `Slice = auto()` | `Subscript = auto()` |
+|     Removed Types      |                        |                            |
+| :--------------------: | :--------------------: | :------------------------- |
+| `#!py Statement.BinOp` | `#!py Statement.Call`  | `#!py Statement.Compare`   |
+| `#!py Statement.List`  |  `#!py Statement.Set`  | `#!py Statement.Tuple`     |
+| `#!py Statement.Dict`  | `#!py Statement.Slice` | `#!py Statement.Subscript` |
 
 ## v1.2.1 - 2024-12-10
 

@@ -18,6 +18,30 @@ Category: Native
     import subprocess
     ```
 
+### `#!py import Logger`
+
+Path: `#!py logging`
+
+Category: Native
+
+??? example "SNIPPET"
+
+    ```py
+    from logging import Logger
+    ```
+
+### `#!py import getLogger`
+
+Path: `#!py logging`
+
+Category: Native
+
+??? example "SNIPPET"
+
+    ```py
+    from logging import getLogger
+    ```
+
 ### `#!py import makedirs`
 
 Path: `#!py os`
@@ -28,18 +52,6 @@ Category: Native
 
     ```py
     from os import makedirs
-    ```
-
-### `#!py import mkdir`
-
-Path: `#!py os`
-
-Category: Native
-
-??? example "SNIPPET"
-
-    ```py
-    from os import mkdir
     ```
 
 ### `#!py import path`
@@ -66,18 +78,6 @@ Category: Native
     from shutil import copy2
     ```
 
-### `#!py import stdout`
-
-Path: `#!py sys`
-
-Category: Native
-
-??? example "SNIPPET"
-
-    ```py
-    from sys import stdout
-    ```
-
 ### `#!py import cast`
 
 Path: `#!py typing`
@@ -94,7 +94,7 @@ Category: Native
 
 Path: `#!py constants`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -106,7 +106,7 @@ Category: 3rd Party
 
 Path: `#!py constants`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -118,7 +118,7 @@ Category: 3rd Party
 
 Path: `#!py constants`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -130,7 +130,7 @@ Category: 3rd Party
 
 Path: `#!py constants`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -142,7 +142,7 @@ Category: 3rd Party
 
 Path: `#!py constants`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -154,7 +154,7 @@ Category: 3rd Party
 
 Path: `#!py constants`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -166,7 +166,7 @@ Category: 3rd Party
 
 Path: `#!py constants`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -178,7 +178,7 @@ Category: 3rd Party
 
 Path: `#!py custom_types`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -186,11 +186,23 @@ Category: 3rd Party
     from custom_types import CodebaseDict
     ```
 
+### `#!py import FunctionType`
+
+Path: `#!py custom_types`
+
+Category: Local
+
+??? example "SNIPPET"
+
+    ```py
+    from custom_types import FunctionType
+    ```
+
 ### `#!py import ImportType`
 
 Path: `#!py custom_types`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -202,7 +214,7 @@ Category: 3rd Party
 
 Path: `#!py custom_types`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -214,7 +226,7 @@ Category: 3rd Party
 
 Path: `#!py custom_types`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -226,7 +238,7 @@ Category: 3rd Party
 
 Path: `#!py utils`
 
-Category: 3rd Party
+Category: Local
 
 ??? example "SNIPPET"
 
@@ -254,12 +266,12 @@ Value: `#!py []`
 
 Type: `#!py list[str]`
 
-Value: `#!py ['nav:\n']`
+Value: `#!py ['nav:\n  - Homepage: index.md\n']`
 
 ??? example "SNIPPET"
 
     ```py
-    NAV_MD: list[str] = ['nav:\n']
+    NAV_MD: list[str] = ['nav:\n  - Homepage: index.md\n']
     ```
 
 ---
@@ -274,7 +286,7 @@ Value: `#!py ['nav:\n']`
 
 ### `#!py def generate_doc`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py None`
 
@@ -282,12 +294,12 @@ Decorators: `#!py None`
 
 Args: `#!py None`
 
-Kwargs: `#!py codebase: CodebaseDict, root: str, exit: str, proj_name: str, edit_uri: str = '', repo_name: str = 'GitHub', repo_url: str = '', logo_path: str = '', readme_path: str = ''`
+Kwargs: `#!py codebase: CodebaseDict, root: str, output: str, proj_name: str, logo_path: str | None, readme_path: str | None, edit_uri: str = 'blob/main/documentation/docs', repo_name: str = 'GitHub', repo_url: str = 'https://github.com'`
 
 ??? example "SNIPPET"
 
     ```py
-    def generate_doc(*, codebase: CodebaseDict, root: str, exit: str, proj_name: str, edit_uri: str='', repo_name: str='GitHub', repo_url: str='', logo_path: str='', readme_path: str='') -> None:
+    def generate_doc(*, codebase: CodebaseDict, root: str, output: str, proj_name: str, logo_path: str | None, readme_path: str | None, edit_uri: str='blob/main/documentation/docs', repo_name: str='GitHub', repo_url: str='https://github.com') -> None:
         """
         Generates a documentation structure for a Python codebase using MkDocs.
 
@@ -307,48 +319,58 @@ Kwargs: `#!py codebase: CodebaseDict, root: str, exit: str, proj_name: str, edit
 
         :param codebase: Dict containing nodes representing `.py` files and their stmts.
         :type codebase: CodebaseDict
-        :param root: The root path of the source code to be documented.
+        :param root: Root dir, where the analysis starts.
         :type root: str
-        :param exit: The output dir where the documentation will be generated.
-        :type exit: str
+        :param output: Path for documentation output, where to be created.
+        :type output: str
         :param proj_name: The name of the project, for generating MkDocs configuration.
         :type proj_name: str
-        :param edit_uri: optional URI for linking to source file edits (defaults to '').
+        :param logo_path: Path for doc/project logo, same Material MkDocs's formats.
+        :type logo_path: str | None
+        :param readme_path: The path of the `README.md` file, to be used as homepage.
+        :type readme_path: str | None
+        :param edit_uri: URI to view raw or edit blob file, default is
+                            `'blob/main/documentation/docs'`.
         :type edit_uri: str, optional
-        :param repo_name: The repository provider name (defaults to 'GitHub').
+        :param repo_name: Name of the code repository to be mapped, default is `'GitHub'`.
         :type repo_name: str, optional
         :param repo_url: The URL of the repository, used for linking in the documentation.
         :type repo_url: str, optional
-        :param logo_path: The path of the logo, to be used as icon and favicon.
-        :type logo_path: str, optional
-        :param readme_path: The path of the `README.md` file, to be used as homepage.
-        :type readme_path: str, optional
         :return: Nothing, just generates documentation files in the specified output path.
         :rtype: None
         """
-        exit_path: str = path.abspath(exit)
-        mkdocs_yml: str = path.join(exit_path, 'mkdocs.yml')
+        output_path: str = path.abspath(output)
+        mkdocs_yml: str = path.join(output_path, 'mkdocs.yml')
         try:
-            result = subprocess.run(['mkdocs', 'new', exit_path], check=True, capture_output=True, text=True)
-            stdout.write(result.stdout)
+            logger.debug('Running MkDocs')
+            result = subprocess.run(['mkdocs', 'new', output_path], check=True, capture_output=True, text=True)
+            logger.debug(result.stdout)
+            logger.info('MkDocs created')
         except subprocess.CalledProcessError as e:
-            stdout.write(f'Error: {e.stderr}')
+            logger.critical(f'Error: {e.stderr}')
+            raise e
+        logger.info('Creating default mkdocs.yml')
         with open(mkdocs_yml, 'w', encoding='utf-8') as f:
-            f.write(default_doc_config(proj_name=proj_name, edit_uri=edit_uri, exit=exit, repo_name=repo_name, repo_url=repo_url, logo_path=logo_path))
-        process_codebase(codebase, root, exit)
+            f.write(_default_doc_config(proj_name=proj_name, output=output, logo_path=logo_path, edit_uri=edit_uri, repo_name=repo_name, repo_url=repo_url))
+        logger.info('Processing codebase')
+        _process_codebase(codebase, root, output)
         with open(mkdocs_yml, 'a', encoding='utf-8') as f:
             f.writelines(NAV_MD)
-        if readme_path:
-            homepage: str = path.join(exit_path, 'docs', 'index.md')
+            logger.debug('Nav added to mkdocs.yml')
+        if readme_path is not None:
+            homepage: str = path.join(output_path, 'docs', 'index.md')
             with open(readme_path, encoding='utf-8') as f:
+                logger.debug(f'{readme_path} read')
                 content: list[str] = f.readlines()
             with open(homepage, 'w', encoding='utf-8') as f:
+                logger.debug(f'{homepage} written')
                 f.writelines(content)
+            logger.info('README.md copied to documentation')
     ```
 
-### `#!py def default_doc_config`
+### `#!py def _default_doc_config`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py str`
 
@@ -356,12 +378,12 @@ Decorators: `#!py None`
 
 Args: `#!py None`
 
-Kwargs: `#!py proj_name: str, edit_uri: str, exit: str, repo_name: str = 'GitHub', repo_url: str = 'https://github.com/', logo_path: str = ''`
+Kwargs: `#!py proj_name: str, output: str, logo_path: str | None, edit_uri: str = 'blob/main/documentation/docs', repo_name: str = 'GitHub', repo_url: str = 'https://github.com/'`
 
 ??? example "SNIPPET"
 
     ```py
-    def default_doc_config(*, proj_name: str, edit_uri: str, exit: str, repo_name: str='GitHub', repo_url: str='https://github.com/', logo_path: str='') -> str:
+    def _default_doc_config(*, proj_name: str, output: str, logo_path: str | None, edit_uri: str='blob/main/documentation/docs', repo_name: str='GitHub', repo_url: str='https://github.com/') -> str:
         """
         Generates the default configuration for an MkDocs documentation project.
 
@@ -374,37 +396,41 @@ Kwargs: `#!py proj_name: str, edit_uri: str, exit: str, repo_name: str = 'GitHub
         - Handles optional logos and ensures they are placed in the correct directory.
         - Returns a formatted YAML configuration as a string.
 
-        :param proj_name: Name of the project.
+        :param proj_name: The name of the project, for generating MkDocs configuration.
         :type proj_name: str
-        :param edit_uri: URI for editing doc file, typically a GitHub or GitLab edit link.
-        :type edit_uri: str
-        :param exit: Base output directory where documentation will be stored.
-        :type exit: str
-        :param repo_name: Name of the repository hosting the project, default is 'GitHub'.
+        :param output: Path for documentation output, where to be created.
+        :type output: str
+        :param logo_path: Path for doc/project logo, same Material MkDocs's formats.
+        :type logo_path: str
+        :param edit_uri: URI to view raw or edit blob file, default is
+                            `'blob/main/documentation/docs'`.
+        :type edit_uri: str, optional
+        :param repo_name: Name of the code repository to be mapped, default is `'GitHub'`.
         :type repo_name: str, optional
-        :param repo_url: URL to the project's repository, default is 'https://github.com/'.
+        :param repo_url: The URL of the repository, used for linking in the documentation.
         :type repo_url: str, optional
-        :param logo_path: Path to the project logo, optional.
-        :type logo_path: str, optional
         :return: Formatted MkDocs YAML configuration.
         :rtype: str
         """
-        if logo_path:
+        if logo_path is not None:
             ext: str = path.splitext(logo_path)[-1]
-            logo_file_path: str = path.join(exit, 'docs', 'img')
+            logo_file_path: str = path.join(output, 'docs', 'img')
             file_name: str = path.join(logo_file_path, f'logo{ext}')
+            logger.debug('Logo path handling done')
             if not path.exists(logo_file_path):
                 makedirs(logo_file_path)
+                logger.debug(f'{logo_file_path} logo file path created')
             copy2(logo_path, file_name)
-            logo_path = file_name.removeprefix(path.join(exit, 'docs', ''))
+            logger.info(f'{logo_path} copied to {file_name}')
+            logo_path = file_name.removeprefix(path.join(output, 'docs', ''))
         else:
             logo_path = 'https://squidfunk.github.io/mkdocs-material/assets/favicon.png'
         return DEFAULT_MKDOCS_YML.format(proj_name=proj_name, edit_uri=edit_uri, repo_name=repo_name, repo_url=repo_url, logo_path=logo_path)
     ```
 
-### `#!py def codebase_to_markdown`
+### `#!py def _codebase_to_markdown`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py str`
 
@@ -417,7 +443,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
+    def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
         """
         Converts a file's processed data into a structured Markdown representation.
 
@@ -442,8 +468,7 @@ Kwargs: `#!py None`
             {'statement': Statement.Import, 'name': 'os', ...},
             {'statement': Statement.ClassDef, 'name': 'MyClass', ...},
         ]
-        markdown_doc: str = codebase_to_markdown(filedata, '/path/to/module/file.py')
-        markdown_doc
+        _codebase_to_markdown(filedata, '/path/to/module/file.py')
         # Outputs a Markdown string with sections for imports and classes
         ```
 
@@ -462,40 +487,54 @@ Kwargs: `#!py None`
         classes: str = ''
         functions: str = ''
         assertions: str = ''
+        logger.debug(f'File: {basedir}')
         for stmt in filedata:
             match stmt['statement']:
                 case Statement.Import:
-                    imports += handle_import(stmt)
+                    imports += _handle_import(stmt)
+                    logger.debug(f'\tStatement: {stmt}')
                 case Statement.ImportFrom:
-                    imports += handle_import_from(stmt)
+                    imports += _handle_import_from(stmt)
+                    logger.debug(f'\tStatement: {stmt}')
                 case Statement.Assign:
-                    constants += handle_assign(stmt)
+                    constants += _handle_assign(stmt)
+                    logger.debug(f'\tStatement: {stmt}')
                 case Statement.AnnAssign:
-                    constants += handle_annassign(stmt)
+                    constants += _handle_annassign(stmt)
+                    logger.debug(f'\tStatement: {stmt}')
                 case Statement.ClassDef:
-                    classes += handle_class_def(stmt)
+                    classes += _handle_class_def(stmt)
+                    logger.debug(f'\tStatement: {stmt}')
                 case Statement.FunctionDef | Statement.AsyncFunctionDef:
-                    functions += handle_function_def(stmt)
+                    functions += _handle_function_def(stmt)
+                    logger.debug(f'\tStatement: {stmt}')
                 case Statement.Assert:
-                    assertions += handle_assert(stmt)
+                    assertions += _handle_assert(stmt)
+                    logger.debug(f'\tStatement: {stmt}')
                 case _:
-                    raise NotImplementedError('Should not fallback to this.')
+                    logger.error('Statement shoud not be processed here:')
+                    logger.error(stmt['statement'])
         if not len(imports):
+            logger.debug('No imports defined here')
             imports = '!!! info "NO IMPORT DEFINED HERE"'
         if not len(constants):
+            logger.debug('No constants defined here')
             constants = '!!! info "NO CONSTANT DEFINED HERE"'
         if not len(classes):
+            logger.debug('No classes defined here')
             classes = '!!! info "NO CLASS DEFINED HERE"'
         if not len(functions):
+            logger.debug('No functions defined here')
             functions = '!!! info "NO FUNCTION DEFINED HERE"'
         if not len(assertions):
+            logger.debug('No assertions defined here')
             assertions = '!!! info "NO ASSERT DEFINED HERE"'
         return FILE_MARKDOWN.format(filename=filename, filepath=filepath, filedoc=filedoc, imports=imports, constants=constants, classes=classes, functions=functions, assertions=assertions)
     ```
 
-### `#!py def handle_import`
+### `#!py def _handle_import`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py str`
 
@@ -508,7 +547,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def handle_import(stmt: StandardReturn) -> str:
+    def _handle_import(stmt: StandardReturn) -> str:
         """
         Generates a Markdown representation for an import statement.
 
@@ -531,8 +570,7 @@ Kwargs: `#!py None`
             'category': ImportType.Native,
             'code': 'import os',
         }
-        markdown_import: str = handle_import(stmt)
-        markdown_import
+        handle_import(stmt)
         # Outputs a formatted Markdown string representing the import
         ```
 
@@ -549,9 +587,9 @@ Kwargs: `#!py None`
         return IMPORT_MD_STRUCT.format(name=name, _path=_path, category=category, code=code)
     ```
 
-### `#!py def handle_import_from`
+### `#!py def _handle_import_from`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py str`
 
@@ -564,7 +602,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def handle_import_from(stmt: StandardReturn) -> str:
+    def _handle_import_from(stmt: StandardReturn) -> str:
         """
         Generates a Markdown representation for an import statement.
 
@@ -587,8 +625,7 @@ Kwargs: `#!py None`
             'category': ImportType.Native,
             'code': 'from os import environ',
         }
-        markdown_import: str = handle_import(stmt)
-        markdown_import
+        handle_import(stmt)
         # Outputs a formatted Markdown string representing the import
         ```
 
@@ -604,9 +641,9 @@ Kwargs: `#!py None`
         return IMPORT_MD_STRUCT.format(name=name, _path=_path, category=category, code=code)
     ```
 
-### `#!py def handle_assign`
+### `#!py def _handle_assign`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py str`
 
@@ -619,7 +656,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def handle_assign(stmt: StandardReturn) -> str:
+    def _handle_assign(stmt: StandardReturn) -> str:
         """
         Generates a Markdown representation for an `assign` statement.
 
@@ -642,8 +679,7 @@ Kwargs: `#!py None`
             'value': '(True, False)',
             'code': 'foo, bar = True, False',
         }
-        markdown_assign: str = handle_assign(stmt)
-        markdown_assign
+        handle_assign(stmt)
         # Outputs a formatted Markdown string representing the assign
         ```
 
@@ -660,9 +696,9 @@ Kwargs: `#!py None`
         return ASSIGN_MD_STRUCT.format(token=tokens, _type=_type, value=value, code=code)
     ```
 
-### `#!py def handle_annassign`
+### `#!py def _handle_annassign`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py str`
 
@@ -675,7 +711,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def handle_annassign(stmt: StandardReturn) -> str:
+    def _handle_annassign(stmt: StandardReturn) -> str:
         """
         Generates a Markdown representation for a `var: type = value` statement.
 
@@ -699,8 +735,7 @@ Kwargs: `#!py None`
             'value': '"example"',
             'code': 'var: str = "example"',
         }
-        markdown_annassign: str = handle_annassign(stmt)
-        markdown_annassign
+        handle_annassign(stmt)
         # Outputs a formatted Markdown string representing the annotated assign
         ```
 
@@ -717,9 +752,9 @@ Kwargs: `#!py None`
         return ASSIGN_MD_STRUCT.format(token=name, _type=annot, value=value, code=code)
     ```
 
-### `#!py def handle_class_def`
+### `#!py def _handle_class_def`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py str`
 
@@ -732,7 +767,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def handle_class_def(stmt: StandardReturn) -> str:
+    def _handle_class_def(stmt: StandardReturn) -> str:
         """
         Generates a Markdown representation for a `class` definition statement.
 
@@ -759,8 +794,7 @@ Kwargs: `#!py None`
             'kwargs': '',
             'code': 'class MyClass(BaseClass):',
         }
-        markdown_class: str = handle_class_def(stmt)
-        markdown_class
+        handle_class_def(stmt)
         # Outputs a formatted Markdown string representing the class definition
         ```
 
@@ -780,9 +814,9 @@ Kwargs: `#!py None`
         return CLASS_DEF_MD_STRUCT.format(name=name, inherit=inherit, decorators=decorators, kwargs=kwargs, code=code)
     ```
 
-### `#!py def handle_function_def`
+### `#!py def _handle_function_def`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py str`
 
@@ -795,7 +829,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def handle_function_def(stmt: StandardReturn) -> str:
+    def _handle_function_def(stmt: StandardReturn) -> str:
         """
         Generates a Markdown representation for a function definition statement.
 
@@ -823,8 +857,7 @@ Kwargs: `#!py None`
             'rtype': 'int',
             'code': 'def sum_thing(x: int, y: int) -> int: return x + y',
         }
-        markdown_function: str = handle_function_def(stmt)
-        markdown_function
+        handle_function_def(stmt)
         # Outputs a formatted Markdown string representing the function definition
         ```
 
@@ -835,6 +868,7 @@ Kwargs: `#!py None`
         """
         name: str = cast(str, stmt['name'])
         decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
+        category: str = cast(FunctionType, stmt['category']).value
         args: str = cast(str, stmt['args'])
         kwargs: str = cast(str, stmt['kwargs'])
         rtype: str = cast(str, stmt['rtype']) or 'Unknown'
@@ -844,12 +878,12 @@ Kwargs: `#!py None`
             args = 'None'
         if not kwargs:
             kwargs = 'None'
-        return FUNCTION_DEF_MD_STRUCT.format(name=name, decorators=decorators, args=args, kwargs=kwargs, rtype=rtype, code=code)
+        return FUNCTION_DEF_MD_STRUCT.format(name=name, decorators=decorators, category=category, args=args, kwargs=kwargs, rtype=rtype, code=code)
     ```
 
-### `#!py def handle_assert`
+### `#!py def _handle_assert`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py str`
 
@@ -862,7 +896,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def handle_assert(stmt: StandardReturn) -> str:
+    def _handle_assert(stmt: StandardReturn) -> str:
         """
         Generates a Markdown representation for an `assert x` statement.
 
@@ -886,8 +920,7 @@ Kwargs: `#!py None`
             'msg': '"x must be positive"',
             'code': 'assert x > 0, "x must be positive"',
         }
-        markdown_assert: str = handle_assert(stmt)
-        markdown_assert
+        handle_assert(stmt)
         # Outputs a formatted Markdown string representing the assert statement
         ```
 
@@ -903,9 +936,9 @@ Kwargs: `#!py None`
         return ASSERT_MD_STRUCT.format(test=test, msg=msg, code=code)
     ```
 
-### `#!py def process_codebase`
+### `#!py def _process_codebase`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py None`
 
@@ -918,7 +951,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def process_codebase(codebase: dict[str, CodebaseDict] | dict[str, list[StandardReturn]], root: str, exit: str, basedir: str='') -> None:
+    def _process_codebase(codebase: dict[str, CodebaseDict] | dict[str, list[StandardReturn]], root: str, exit: str, basedir: str='') -> None:
         """
         Recursively processes a codebase and generates documentation for each file.
 
@@ -951,18 +984,21 @@ Kwargs: `#!py None`
         """
         parents: list[str] = list(codebase.keys())
         docs_path: str = path.join(exit, 'docs')
+        logger.debug('"parents: list[str]" and "docs_path: str" defined')
         for key in parents:
+            logger.debug(f'Evaluating {key} of {parents}')
             value = codebase[key]
             new_path: str = path.join(basedir, key)
             if isinstance(value, list):
-                __process_file(key, value, new_path, root, docs_path)
+                logger.debug(f'Processing file {key}')
+                _process_file(key, value, new_path, root, docs_path)
             else:
-                process_codebase(value, root, exit, new_path)
+                _process_codebase(value, root, exit, new_path)
     ```
 
-### `#!py def __process_file`
+### `#!py def _process_file`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py None`
 
@@ -975,7 +1011,7 @@ Kwargs: `#!py None`
 ??? example "SNIPPET"
 
     ```py
-    def __process_file(key: str, stmts: list[StandardReturn], file_path: str, root: str, docs_path: str) -> None:
+    def _process_file(key: str, stmts: list[StandardReturn], file_path: str, root: str, docs_path: str) -> None:
         """
         Processes a file's stmts and generates corresponding documentation.
 
@@ -1008,19 +1044,21 @@ Kwargs: `#!py None`
         :rtype: None
         """
         if not stmts:
+            logger.debug(f'{key} empty, has no statement')
             return
-        content: str = codebase_to_markdown(stmts, file_path)
+        content: str = _codebase_to_markdown(stmts, file_path)
         output_file_path: str = path.join(docs_path, file_path.removeprefix(root) + '.md')
         folder_path: str = path.dirname(output_file_path)
         if not path.exists(folder_path):
             makedirs(folder_path)
+            logger.debug(f'{folder_path} created')
         __write_to_file(output_file_path, content)
         __update_navigation(folder_path, docs_path, key, output_file_path)
     ```
 
 ### `#!py def __write_to_file`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py None`
 
@@ -1060,11 +1098,12 @@ Kwargs: `#!py None`
         """
         with open(file_path, 'w', encoding='utf-8') as file:
             file.write(content)
+            logger.debug(f'Content written to {file_path}')
     ```
 
 ### `#!py def __update_navigation`
 
-Type: `#!py ...`
+Type: `#!py Function`
 
 Return Type: `#!py None`
 
@@ -1114,17 +1153,25 @@ Kwargs: `#!py None`
         :rtype: None
         """
         nav_path: list[str] = [segment for segment in folder_path.removeprefix(docs_path).split(path.sep) if segment]
-        nav_path = nav_path or ['Root']
+        logger.debug('"nav_path: list[str]" created')
+        if not nav_path:
+            md_file_path: str = output_file_path.removeprefix(docs_path + path.sep)
+            md_line: str = indent_code(f'- {key}: {md_file_path}', 2)
+            NAV_MD.append(f'{md_line}\n')
+            logger.debug('"NAV_MD" updated with no "nav_path"')
+            return
         for i in range(len(nav_path)):
             sub_nav_path: str = path.sep.join(nav_path[:i + 1])
             if sub_nav_path not in NAV_DIRS:
                 NAV_DIRS.append(sub_nav_path)
                 md_line: str = indent_code(f'- {nav_path[i]}:', 2 * (i + 1))
                 NAV_MD.append(f'{md_line}\n')
+                logger.debug('"NAV_MD" updated with path not in "NAV_DIRS"')
             if i + 1 == len(nav_path):
                 md_file_path: str = output_file_path.removeprefix(docs_path + path.sep)
                 md_line: str = indent_code(f'- {key}: {md_file_path}', 2 * (i + 2))
                 NAV_MD.append(f'{md_line}\n')
+                logger.debug('"NAV_MD" updated')
     ```
 
 ---

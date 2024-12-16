@@ -72,15 +72,6 @@ Kwargs: `#!py None`
         FunctionDef = auto()
         AsyncFunctionDef = auto()
         Assert = auto()
-        BinOp = auto()
-        Call = auto()
-        Compare = auto()
-        List = auto()
-        Set = auto()
-        Tuple = auto()
-        Dict = auto()
-        Slice = auto()
-        Subscript = auto()
     ```
 
 ### `#!py class ImportType`

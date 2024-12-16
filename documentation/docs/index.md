@@ -4,6 +4,8 @@ hide:
   - toc
 ---
 
+<br>
+
 <h1 align="center">
   <img src="https://raw.githubusercontent.com/lucasGoncSilva/mosheh/refs/heads/main/.github/logo.svg" height="300" width="300" alt="Logo Mosheh" />
   <br>

@@ -1,7 +1,7 @@
-from typing import Final
+from typing import Final, Iterable
 
 
-BUILTIN_MODULES: Final[list[str]] = sorted(
+BUILTIN_MODULES: Final[Iterable[str]] = sorted(
     [
         '__future__',
         '_testclinic',
@@ -316,7 +316,7 @@ BUILTIN_MODULES: Final[list[str]] = sorted(
     ]
 )
 
-BUILTIN_FUNCTIONS: Final[list[str]] = sorted(
+BUILTIN_FUNCTIONS: Final[Iterable[str]] = sorted(
     [
         'abs',
         'all',
@@ -388,7 +388,7 @@ BUILTIN_FUNCTIONS: Final[list[str]] = sorted(
     ]
 )
 
-BUILTIN_DUNDER_METHODS: Final[list[str]] = sorted(
+BUILTIN_DUNDER_METHODS: Final[Iterable[str]] = sorted(
     [
         '__init__',
         '__new__',

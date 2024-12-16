@@ -1,4 +1,5 @@
-site_name: MOSHEH
+site_name: Mosheh
+site_url: https://lucasgoncsilva.github.io/mosheh/
 repo_url: https://github.com/lucasgoncsilva/mosheh
 repo_name: LucasGoncSilva/mosheh
 edit_uri: blob/main/documentation/docs
@@ -147,11 +148,14 @@ copyright: Copyright (c) 2024 Lucas Gonçalves da Silva
 nav:
   - Homepage: index.md
   - Changelog: changelog.md
+  - Getting Started: starting.md
+
   - Mosheh:
-    - constants.py: constants.py.md
-    - codebase.py: codebase.py.md
-    - main.py: main.py.md
-    - handler.py: handler.py.md
-    - doc.py: doc.py.md
-    - utils.py: utils.py.md
-    - custom_types.py: custom_types.py.md
+    - Codebase: mosheh/index.md
+    - constants.py: mosheh/constants.py.md
+    - codebase.py: mosheh/codebase.py.md
+    - main.py: mosheh/main.py.md
+    - handler.py: mosheh/handler.py.md
+    - doc.py: mosheh/doc.py.md
+    - utils.py: mosheh/utils.py.md
+    - custom_types.py: mosheh/custom_types.py.md
