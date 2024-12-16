@@ -33,8 +33,7 @@ dev = ["pytest>=8.3.4", "ruff>=0.8.2", "setuptools>=75.6.0", "twine>=6.0.1"]
 mosheh = "mosheh.main:main"
 
 [project.urls]
-# Homepage = "https://example.com"
-# Documentation = "https://readthedocs.org"
+Documentation = "https://lucasgoncsilva.github.io/mosheh/"
 Repository = "https://github.com/lucasGoncSilva/mosheh/"
 Issues = "https://github.com/LucasGoncSilva/mosheh/issues"
 Changelog = "https://github.com/LucasGoncSilva/mosheh/blob/main/.github/CHANGELOG.md"

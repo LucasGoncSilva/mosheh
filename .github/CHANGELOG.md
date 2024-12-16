@@ -40,6 +40,17 @@ Key Components of a Changelog:
 
 -->
 
+## v1.3.1 - {DATE}
+
+### Adds
+
+- Publish official documentation website: [https://lucasgoncsilva.github.io/mosheh/](https://lucasgoncsilva.github.io/mosheh/)
+
+### Updates
+
+- Remaking the Mosheh's documentation itself
+- Setting documentation website metadata on `pyproject.toml`
+
 ## v1.3.0 - 2024-12-13
 
 ### Adds

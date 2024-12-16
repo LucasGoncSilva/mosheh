@@ -40,6 +40,17 @@ Key Components of a Changelog:
 
 -->
 
+## v1.3.1 - {DATE}
+
+### Adds
+
+- Publish official documentation website: [https://lucasgoncsilva.github.io/mosheh/](https://lucasgoncsilva.github.io/mosheh/)
+
+### Updates
+
+- Remaking the Mosheh's documentation itself
+- Setting documentation website metadata on `pyproject.toml`
+
 ## v1.3.0 - 2024-12-13
 
 ### Adds
@@ -73,11 +84,11 @@ Key Components of a Changelog:
 
 - `Statement` class from `mosheh.custom_types` unused types, such as `Statement.Call` - all below:
 
-|     Removed Types      |                        |                            |
-| :--------------------: | :--------------------: | :------------------------- |
-| `#!py Statement.BinOp` | `#!py Statement.Call`  | `#!py Statement.Compare`   |
-| `#!py Statement.List`  |  `#!py Statement.Set`  | `#!py Statement.Tuple`     |
-| `#!py Statement.Dict`  | `#!py Statement.Slice` | `#!py Statement.Subscript` |
+|  Removed Types   |                  |                      |
+| :--------------: | :--------------: | :------------------- |
+| `BinOp = auto()` | `Call = auto()`  | `Compare = auto()`   |
+| `List = auto()`  |  `Set = auto()`  | `Tuple = auto()`     |
+| `Dict = auto()`  | `Slice = auto()` | `Subscript = auto()` |
 
 ## v1.2.1 - 2024-12-10
 
