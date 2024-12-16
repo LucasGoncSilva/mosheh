@@ -6,6 +6,6 @@ __maintainer__ = 'LucasGonc'
 __email__ = 'lucasgoncsilva04@gmail.com'
 __repository__ = 'https://github.com/LucasGoncSilva/mosheh'
 __keywords__ = ['CLI', 'Python', 'documentation', 'MkDocs', 'automation', 'generation']
-__version__ = '1.3.0'
+__version__ = '1.3.1'
 __date__ = '2024-12-13'
 __status__ = 'Production'
