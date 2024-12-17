@@ -539,13 +539,14 @@ wheels = [
 
 [[package]]
 name = "mosheh"
-version = "1.3.1"
+version = "1.3.2"
 source = { editable = "." }
 dependencies = [
     { name = "mkdocs" },
     { name = "mkdocs-git-revision-date-localized-plugin" },
     { name = "mkdocs-material" },
     { name = "mkdocs-material-extensions" },
+    { name = "rich" },
 ]
 
 [package.dev-dependencies]
@@ -562,6 +563,7 @@ requires-dist = [
     { name = "mkdocs-git-revision-date-localized-plugin", specifier = "==1.3.0" },
     { name = "mkdocs-material", specifier = "==9.5.47" },
     { name = "mkdocs-material-extensions", specifier = "==1.3.1" },
+    { name = "rich", specifier = ">=13.9.4" },
 ]
 
 [package.metadata.requires-dev]

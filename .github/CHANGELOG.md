@@ -40,6 +40,21 @@ Key Components of a Changelog:
 
 -->
 
+## 1.3.2 - 2024-12-17
+
+### Adds
+
+- `_mark_methods` created on `mosheh.codebase` plus `encapsulated_mark_methods_for_unittest` for testing
+- Examples for `mosheh.handler` functions on docstrings
+
+### Updates
+
+- Sequence-like `mosheh.constants` constants sorted in code to better performing
+
+### Fixes
+
+- Implementing `rich` as direct dependency
+
 ## v1.3.1 - 2024-12-16
 
 ### Adds

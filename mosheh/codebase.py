@@ -49,10 +49,10 @@ def read_codebase(root: str) -> CodebaseDict:
             for node in ast.walk(tree):
                 logger.debug(f'Node: {type(node)}')
                 if isinstance(node, ast.ClassDef):
-                    for child_node in ast.iter_child_nodes(node):
-                        if isinstance(child_node, ast.FunctionDef):
-                            setattr(child_node, 'parent', ast.ClassDef)
-                if isinstance(node, ast.FunctionDef) and getattr(node, 'parent', None):
+                    _mark_methods(node)
+                elif isinstance(node, ast.FunctionDef) and getattr(
+                    node, 'parent', None
+                ):
                     continue
 
                 data: list[StandardReturn] = handle_def_nodes(node)
@@ -66,6 +66,38 @@ def read_codebase(root: str) -> CodebaseDict:
             logger.debug(f'{file} stmts added to CodebaseDict')
 
     return convert_to_regular_dict(codebase)
+
+
+def _mark_methods(node: ast.ClassDef) -> None:
+    """
+    Marks all `FunctionDef` nodes within a given `ClassDef` node by setting a
+    `parent` attribute to indicate their association with the class.
+
+    This function iterates over the child nodes of the provided class node, and
+    for each method (a `FunctionDef`), it assigns the class type (`ast.ClassDef`)
+    to the `parent` attribute of the method node.
+
+    :param node: The class definition node containing methods to be marked.
+    :type node: ast.ClassDef
+    :return: No data to be returned
+    :rtype: None
+    """
+
+    for child_node in ast.iter_child_nodes(node):
+        if isinstance(child_node, ast.FunctionDef):
+            setattr(child_node, 'parent', ast.ClassDef)
+
+
+def encapsulated_mark_methods_for_unittest(node: ast.ClassDef) -> None:
+    """
+    Just encapsulates `_mark_methods` function to external use, only for unittesting.
+
+    :param node: The class definition node containing methods to be marked.
+    :type node: ast.ClassDef
+    :return: No data to be returned
+    :rtype: None
+    """
+    _mark_methods(node)
 
 
 def _iterate(root: str) -> Generator[str, Any, Any]:

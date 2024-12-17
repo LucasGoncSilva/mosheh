@@ -50,7 +50,7 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
 
   - [ ] Description (docstring)
   - [x] Name (func name)
-  - [ ] Type `[Func | Method | Generator | Coroutine]`
+  - [x] Type `[Func | Method | Generator | Coroutine]`
   - [x] Parameters (name, type, default)
   - [x] Return Type (datatype)
   - [ ] Raises (exception throw)
@@ -125,7 +125,7 @@ Here it is no different, a considerable part of Mosheh is, in fact, completely d
 │
 ├── .github                     # Workflows and social stuff
 │
-├── LICENSE                     # Legal stuf, A.K.A donut sue me
+├── LICENSE                     # Legal stuff, A.K.A donut sue me
 │
 └── .gitignore                  # Git "exclude" file
 ```

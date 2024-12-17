@@ -118,7 +118,7 @@ def _handle_node(
     import ast
 
     source_code = 'def my_function():\\n    pass'
-    node = ast.parse(source_code).body[0]
+    node: ast.AST = ast.parse(source_code).body[0]
     handle_node(node)
     # Outputs a standardized representation of the function definition.
     ```
@@ -527,11 +527,11 @@ def _handle_import(
 
     Example:
     ```python
-    struct = standard_struct()
-    node = ast.parse('import os, sys').body[0]
-    updated_struct = handle_import(struct, node)
+    struct: dict = standard_struct()
+    node: ast.AST = ast.parse('import os, sys').body[0]
+    updated_struct: dict = _handle_import(struct, node)
     updated_struct
-    # Outputs standardized data for 'os' and 'sys' imports.
+    # Outputs standardized data for `os` and `sys` imports.
     ```
 
     :param struct: The structure to be updated with statement details.
@@ -562,6 +562,15 @@ def _handle_import_from(
     - Local: The module is neither built-in nor a third-party library, problably local.
 
     Each module's data includes its path and category, stored in a structured dict.
+
+    Example:
+    ```python
+    struct: dict = standard_struct()
+    node: ast.AST = ast.parse('from os import environ').body[0]
+    updated_struct: dict = _handle_import_from(struct, node)
+    updated_struct
+    # Outputs standardized data for `environ` with `os` as path.
+    ```
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
@@ -674,6 +683,15 @@ def _handle_assign(
     - tokens: A list of string repr for all target variables in the assignment.
     - value: A string repr of the value being assigned.
 
+    Example:
+    ```python
+    struct: dict = standard_struct()
+    node: ast.AST = ast.parse('num = 33').body[0]
+    updated_struct: dict = _handle_assign(struct, node)
+    updated_struct
+    # Outputs standardized data for `num` definition.
+    ```
+
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
     :param node: The AST node representing the node statement.
@@ -739,6 +757,15 @@ def _handle_annassign(
     - value: A string repr of the value being assigned.
     - annot: The type hint for the assignment.
 
+    Example:
+    ```python
+    struct: dict = standard_struct()
+    node: ast.AST = ast.parse('num: int = 33').body[0]
+    updated_struct: dict = _handle_anassign(struct, node)
+    updated_struct
+    # Outputs standardized data for `num` definition with `int` annotation.
+    ```
+
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
     :param node: The AST node representing the node statement.
@@ -790,7 +817,7 @@ def __format_arg(name: str, annotation: str | None, default: str | None) -> str:
 
     Example:
     ```python
-    formatted = __format_arg('param', 'int', '42')
+    formatted: str = __format_arg('param', 'int', '42')
     formatted
     # "param: int = 42"
     ```
@@ -833,9 +860,9 @@ def __process_function_args(node_args: ast.arguments) -> str:
     ```python
     import ast
 
-    source = "def example(a: int, b: str = 'default'): pass"
-    node = ast.parse(source).body[0]
-    formatted = __process_function_args(node.args)
+    source: str = "def example(a: int, b: str = 'default'): pass"
+    node: ast.AST = ast.parse(source).body[0]
+    formatted: str = __process_function_args(node.args)
     formatted
     # "a: int, b: str = 'default'"
     ```
@@ -883,9 +910,9 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
     ```python
     import ast
 
-    source = 'def example(*, debug: bool = True): pass'
-    node = ast.parse(source).body[0]
-    formatted = __process_function_kwargs(node.args)
+    source: str = 'def example(*, debug: bool = True): pass'
+    node: ast.AST = ast.parse(source).body[0]
+    formatted: str = __process_function_kwargs(node.args)
     formatted
     # "debug: bool = True"
     ```
@@ -956,6 +983,17 @@ def _handle_function_def(
     - Method: also base function, but defined inside a class (e.g. `def __init__():`).
     - Generator: process an iterable object at a time, on demand, with `yield` inside.
 
+    Example:
+    ```python
+    from typing import Any
+
+    struct: dict = standard_struct()
+    node: ast.AST = ast.parse('def foo(*args: Any):\n    pass').body[0]
+    updated_struct: dict = _handle_function_def(struct, node)
+    updated_struct
+    # Outputs standardized data for `foo` definition.
+    ```
+
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
     :param node: The AST node representing a func def statement.
@@ -1013,7 +1051,18 @@ def _handle_async_function_def(
     This function analyzes the components of a func def, mapping the name, decorators,
     arguments (name, type, default value), return type and even the type of function it
     is, which in this case can be only one:
-    - Coroutine: An async func, defined with `async def` syntax..
+    - Coroutine: An async func, defined with `async def` syntax...
+
+    Example:
+    ```python
+    from typing import Any
+
+    struct: dict = standard_struct()
+    node: ast.AST = ast.parse('async def foo(*args: Any):\n    pass').body[0]
+    updated_struct: dict = _handle_assign(struct, node)
+    updated_struct
+    # Outputs standardized data for async `foo` definition.
+    ```
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]
@@ -1075,8 +1124,8 @@ def __format_class_kwarg(name: str | None, value: ast.expr) -> str:
     ```python
     import ast
 
-    kwarg = ast.keyword(arg='debug', value=ast.Constant(value=True))
-    formatted = __format_class_kwarg(kwarg.arg, kwarg.value)
+    kwarg: ast.keyword = ast.keyword(arg='debug', value=ast.Constant(value=True))
+    formatted: str = __format_class_kwarg(kwarg.arg, kwarg.value)
     formatted
     # "debug = True"
     ```
@@ -1111,8 +1160,10 @@ def __process_class_kwargs(keywords: list[ast.keyword]) -> str:
 
     Example:
     ```python
-    keywords = [ast.keyword(arg='name', value=ast.Constant(value='MyClass'))]
-    formatted = __process_class_kwargs(keywords)
+    keywords: list[ast.keydwor] = [
+        ast.keyword(arg='name', value=ast.Constant(value='MyClass'))
+    ]
+    formatted: str = __process_class_kwargs(keywords)
     formatted
     # "name='MyClass'"
     ```
@@ -1144,6 +1195,15 @@ def _handle_class_def(
     - parents: A list of string reprs for the base classes of the class.
     - decos: A list of string reprs for all decorators applied to the class.
     - kwargs: A list of tuples, in `(name, value)` style.
+
+    Example:
+    ```python
+    struct: dict = standard_struct()
+    node: ast.AST = ast.parse('class Foo:\n    pass').body[0]
+    updated_struct: dict = _handle_class_def(struct, node)
+    updated_struct
+    # Outputs standardized data for `Foo` definition.
+    ```
 
     :param struct: The structure to be updated with statement details.
     :type struct: list[StandardReturn]

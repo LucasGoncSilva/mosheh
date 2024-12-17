@@ -1,9 +1,10 @@
 # ruff: noqa: E501
 
-from ast import AST, ClassDef, FunctionDef, iter_child_nodes, parse, walk
+from ast import AST, ClassDef, FunctionDef, parse, walk
 from pathlib import Path
 from typing import Any
 
+from mosheh.codebase import encapsulated_mark_methods_for_unittest
 from mosheh.custom_types import (
     FunctionType,
     ImportType,
@@ -22,9 +23,8 @@ def test_handle_def_nodes() -> None:
 
     for node in walk(tree):
         if isinstance(node, ClassDef):
-            for child_node in iter_child_nodes(node):
-                if isinstance(child_node, FunctionDef):
-                    setattr(child_node, 'parent', ClassDef)
+            encapsulated_mark_methods_for_unittest(node)
+
         if isinstance(node, FunctionDef) and getattr(node, 'parent', None):
             continue
 
