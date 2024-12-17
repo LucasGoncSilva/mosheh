@@ -1,0 +1,1688 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://lucasgoncsilva.github.io/mosheh/mosheh/utils.py/">
+      
+      
+        <link rel="prev" href="../doc.py/">
+      
+      
+        <link rel="next" href="../custom_types.py/">
+      
+      
+      <link rel="icon" href="../../img/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.47">
+    
+    
+      
+        <title>utils.py - Mosheh</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+  
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M64 32C28.7 32 0 60.7 0 96v320c0 35.3 28.7 64 64 64h224V368c0-26.5 21.5-48 48-48h112V96c0-35.3-28.7-64-64-64zm384 320H336c-8.8 0-16 7.2-16 16v112l32-32 64-64z"/></svg>');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96m0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32m32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16m16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16"/></svg>');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512m-40-176h24v-64h-24c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-80c-13.3 0-24-10.7-24-24s10.7-24 24-24m40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64"/></svg>');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="m372.5 256.5-.7-1.9C337.8 160.8 282 76.5 209.1 8.5l-3.3-3C202.1 2 197.1 0 192 0s-10.1 2-13.8 5.5l-3.3 3C102 76.5 46.2 160.8 12.2 254.6l-.7 1.9C3.9 277.3 0 299.4 0 321.6 0 426.7 86.8 512 192 512s192-85.3 192-190.4c0-22.2-3.9-44.2-11.5-65.1M281.7 306a73.3 73.3 0 0 1 6.2 29.5c0 53-43 96.5-96 96.5s-96-43.5-96-96.5c0-10.1 2.1-20.3 6.2-29.5l1.9-4.3c15.8-35.4 37.9-67.7 65.3-95.1l8.9-8.9c3.6-3.6 8.5-5.6 13.6-5.6s10 2 13.6 5.6l8.9 8.9c27.4 27.4 49.6 59.7 65.3 95.1l1.9 4.3z"/></svg>');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7l233.4-233.3c12.5-12.5 32.8-12.5 45.3 0z"/></svg>');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512m-86.2-346.7c7.9-22.3 29.1-37.3 52.8-37.3h58.3c34.9 0 63.1 28.3 63.1 63.1 0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6-13.3 0-24-10.7-24-24v-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1 0-8.4-6.8-15.1-15.1-15.1h-58.3c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1-64 0"/></svg>');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7.2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8.2-40.1l216-368C228.7 39.5 241.8 32 256 32m0 128c-13.3 0-24 10.7-24 24v112c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24m32 224a32 32 0 1 0-64 0 32 32 0 1 0 64 0"/></svg>');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3l105.4 105.3c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256z"/></svg>');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 398.9c58.5-41.1 96-104.1 96-174.9C512 100.3 397.4 0 256 0S0 100.3 0 224c0 70.7 37.5 133.8 96 174.9V464c0 26.5 21.5 48 48 48h48v-48c0-8.8 7.2-16 16-16s16 7.2 16 16v48h64v-48c0-8.8 7.2-16 16-16s16 7.2 16 16v48h48c26.5 0 48-21.5 48-48v-65.1M96 256a64 64 0 1 1 128 0 64 64 0 1 1-128 0m256-64a64 64 0 1 1 0 128 64 64 0 1 1 0-128"/></svg>');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M256 0c53 0 96 43 96 96v3.6c0 15.7-12.7 28.4-28.4 28.4H188.5c-15.7 0-28.4-12.7-28.4-28.4V96c0-53 43-96 96-96zM41.4 105.4c12.5-12.5 32.8-12.5 45.3 0l64 64c.7.7 1.3 1.4 1.9 2.1 14.2-7.3 30.4-11.4 47.5-11.4h112c17.1 0 33.2 4.1 47.5 11.4.6-.7 1.2-1.4 1.9-2.1l64-64c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-64 64c-.7.7-1.4 1.3-2.1 1.9 6.2 12 10.1 25.3 11.1 39.5h64.3c17.7 0 32 14.3 32 32s-14.3 32-32 32h-64c0 24.6-5.5 47.8-15.4 68.6q3.3 1.95 6 4.8l64 64c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0l-63.1-63.1c-24.5 21.8-55.8 36.2-90.3 39.6V240c0-8.8-7.2-16-16-16s-16 7.2-16 16v239.2c-34.5-3.4-65.8-17.8-90.3-39.6l-63.1 63c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l64-64c1.9-1.9 3.9-3.4 6-4.8C101.5 367.8 96 344.6 96 320H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h64.3c1.1-14.1 5-27.5 11.1-39.5-.7-.6-1.4-1.2-2.1-1.9l-64-64c-12.5-12.5-12.5-32.8 0-45.3z"/></svg>');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M288 0H128c-17.7 0-32 14.3-32 32s14.3 32 32 32v132.8c0 11.8-3.3 23.5-9.5 33.5L10.3 406.2C3.6 417.2 0 429.7 0 442.6 0 480.9 31.1 512 69.4 512h309.2c38.3 0 69.4-31.1 69.4-69.4 0-12.8-3.6-25.4-10.3-36.4L329.5 230.4c-6.2-10.1-9.5-21.7-9.5-33.5V64c17.7 0 32-14.3 32-32S337.7 0 320 0zm-96 196.8V64h64v132.8c0 23.7 6.6 46.9 19 67.1l34.5 56.1h-171l34.5-56.1c12.4-20.2 19-43.4 19-67.1"/></svg>');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M0 216C0 149.7 53.7 96 120 96h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V216m256 0c0-66.3 53.7-120 120-120h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64h-64c-35.3 0-64-28.7-64-64V216"/></svg>');}</style>
+
+
+
+  
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+  
+  <style>.md-tag.md-tag--homepage{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1v16.2c0 22.1-17.9 40-40 40h-16c-1.1 0-2.2 0-3.3-.1-1.4.1-2.8.1-4.2.1L416 512h-24c-22.1 0-40-17.9-40-40v-88c0-17.7-14.3-32-32-32h-64c-17.7 0-32 14.3-32 32v88c0 22.1-17.9 40-40 40h-55.9c-1.5 0-3-.1-4.5-.2-1.2.1-2.4.2-3.6.2h-16c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9.1-2.8v-69.7h-32c-18 0-32-14-32-32.1 0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7l255.4 224.5c8 7 12 15 11 24"/></svg>');}.md-tag.md-tag--index{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M0 64C0 28.7 28.7 0 64 0h160v128c0 17.7 14.3 32 32 32h128v288c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64zm384 64H256V0z"/></svg>');}.md-tag.md-tag--overview{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M128 32h32c17.7 0 32 14.3 32 32v32H96V64c0-17.7 14.3-32 32-32m64 96v320c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32v-59.1c0-34.6 9.4-68.6 27.2-98.3C40.9 267.8 49.7 242.4 53 216l7.5-60c2-16 15.6-28 31.8-28h99.8zm227.8 0c16.1 0 29.8 12 31.8 28l7.4 60c3.3 26.4 12.1 51.8 25.8 74.6 17.8 29.7 27.2 63.7 27.2 98.3V448c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V128zM320 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32v32h-96zm-32 64v160h-64V128z"/></svg>');}.md-tag.md-tag--test{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M175 389.4c-9.8 16-15 34.3-15 53.1-10 3.5-20.8 5.5-32 5.5-53 0-96-43-96-96V64C14.3 64 0 49.7 0 32S14.3 0 32 0h192c17.7 0 32 14.3 32 32s-14.3 32-32 32v245.9l-49 79.6zM96 64v96h64V64zM352 0h160c17.7 0 32 14.3 32 32s-14.3 32-32 32v150.9l117.7 191.3a69.54 69.54 0 0 1 10.3 36.4c0 38.3-31.1 69.4-69.4 69.4H261.4c-38.3 0-69.4-31.1-69.4-69.4 0-12.8 3.6-25.4 10.3-36.4L320 214.9V64c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32 64v160c0 5.9-1.6 11.7-4.7 16.8L330.5 320h171l-48.8-79.2c-3.1-5-4.7-10.8-4.7-16.8V64z"/></svg>');}.md-tag.md-tag--infra{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M64 32C28.7 32 0 60.7 0 96v64c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64zm280 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48m48 24a24 24 0 1 1 48 0 24 24 0 1 1-48 0M64 288c-35.3 0-64 28.7-64 64v64c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64v-64c0-35.3-28.7-64-64-64zm280 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48m56 24a24 24 0 1 1 48 0 24 24 0 1 1-48 0"/></svg>');}.md-tag.md-tag--doc{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96m0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32m32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16m16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16"/></svg>');}.md-tag.md-tag--legal{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M522.1 62.4c16.8-5.6 25.8-23.7 20.2-40.5S518.6-3.9 501.9 1.6l-113 37.7C375 15.8 349.3 0 320 0c-44.2 0-80 35.8-80 80 0 3 .2 5.9.5 8.8l-122.6 40.8c-16.8 5.6-25.8 23.7-20.2 40.5s23.7 25.8 40.5 20.2l135.5-45.2c4.5 3.2 9.3 5.9 14.4 8.2L288 480c0 17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32s-14.3-32-32-32H352V153.3c21-9.2 37.2-27 44.2-49l125.9-42zM439.6 288 512 163.8 584.4 288H439.5zm72.4 96c62.9 0 115.2-34 126-78.9 2.6-11-1-22.3-6.7-32.1l-95.2-163.2c-5-8.6-14.2-13.8-24.1-13.8s-19.1 5.3-24.1 13.8l-95.2 163.3c-5.7 9.8-9.3 21.1-6.7 32.1C396.8 350 449.1 384 512 384m-382.8-92.2L201.6 416H56.7l72.4-124.2zM3.2 433.1C14 478 66.3 512 129.2 512s115.2-34 126-78.9c2.6-11-1-22.3-6.7-32.1l-95.3-163.2c-5-8.6-14.2-13.8-24.1-13.8s-19.1 5.3-24.1 13.8L9.9 401.1c-5.7 9.8-9.3 21.1-6.7 32.1z"/></svg>');}.md-tag.md-tag--user{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M224 256a128 128 0 1 0 0-256 128 128 0 1 0 0 256m-45.7 48C79.8 304 0 383.8 0 482.3 0 498.7 13.3 512 29.7 512h388.6c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3z"/></svg>');}.md-tag.md-tag--API{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M308.5 135.3c7.1-6.3 9.9-16.2 6.2-25-2.3-5.3-4.8-10.5-7.6-15.5l-3.1-5.4c-3-5-6.3-9.9-9.8-14.6-5.7-7.6-15.7-10.1-24.7-7.1L241.3 77c-10.7-8.8-23-16-36.2-20.9l-6.1-29c-1.9-9.3-9.1-16.7-18.5-17.8-6.6-.9-13.3-1.3-20.1-1.3h-.7q-10.2 0-20.1 1.2c-9.4 1.1-16.6 8.6-18.5 17.8L115 56.1c-13.3 5-25.5 12.1-36.2 20.9l-28.3-9.2c-9-3-19-.5-24.7 7.1-3.5 4.7-6.8 9.6-9.9 14.6l-3 5.3c-2.8 5-5.3 10.2-7.6 15.6-3.7 8.7-.9 18.6 6.2 25l22.2 19.8c-1.1 6.7-1.7 13.7-1.7 20.8s.6 14.1 1.7 20.9l-22.2 19.8c-7.1 6.3-9.9 16.2-6.2 25 2.3 5.3 4.8 10.5 7.6 15.6l3 5.2c3 5.1 6.3 9.9 9.9 14.6 5.7 7.6 15.7 10.1 24.7 7.1l28.2-9.3c10.7 8.8 23 16 36.2 20.9l6.1 29.1c1.9 9.3 9.1 16.7 18.5 17.8q10.05 1.2 20.4 1.2c10.35 0 13.7-.4 20.4-1.2 9.4-1.1 16.6-8.6 18.5-17.8l6.1-29.1c13.3-5 25.5-12.1 36.2-20.9l28.2 9.3c9 3 19 .5 24.7-7.1 3.5-4.7 6.8-9.5 9.8-14.6l3.1-5.4c2.8-5 5.3-10.2 7.6-15.5 3.7-8.7.9-18.6-6.2-25l-22.2-19.8c1.1-6.8 1.7-13.8 1.7-20.9s-.6-14.1-1.7-20.9l22.2-19.8zM112 176a48 48 0 1 1 96 0 48 48 0 1 1-96 0m392.7 324.5c6.3 7.1 16.2 9.9 25 6.2 5.3-2.3 10.5-4.8 15.5-7.6l5.4-3.1c5-3 9.9-6.3 14.6-9.8 7.6-5.7 10.1-15.7 7.1-24.7l-9.3-28.2c8.8-10.7 16-23 20.9-36.2L613 391c9.3-1.9 16.7-9.1 17.8-18.5q1.2-10.05 1.2-20.4c0-10.35-.4-13.7-1.2-20.4-1.1-9.4-8.6-16.6-17.8-18.5l-29.1-6.2c-5-13.3-12.1-25.5-20.9-36.2l9.3-28.2c3-9 .5-19-7.1-24.7-4.7-3.5-9.6-6.8-14.6-9.9l-5.3-3c-5-2.8-10.2-5.3-15.6-7.6-8.7-3.7-18.6-.9-25 6.2l-19.8 22.2c-6.8-1.1-13.8-1.7-20.9-1.7s-14.1.6-20.9 1.7l-19.8-22.2c-6.3-7.1-16.2-9.9-25-6.2-5.3 2.3-10.5 4.8-15.6 7.6l-5.2 3c-5.1 3-9.9 6.3-14.6 9.9-7.6 5.7-10.1 15.7-7.1 24.7l9.3 28.2c-8.8 10.7-16 23-20.9 36.2l-29.1 6c-9.3 1.9-16.7 9.1-17.8 18.5q-1.2 10.05-1.2 20.4c0 10.35.4 13.7 1.2 20.4 1.1 9.4 8.6 16.6 17.8 18.5l29.1 6.1c5 13.3 12.1 25.5 20.9 36.2l-9.3 28.2c-3 9-.5 19 7.1 24.7 4.7 3.5 9.5 6.8 14.6 9.8l5.4 3.1c5 2.8 10.2 5.3 15.5 7.6 8.7 3.7 18.6.9 25-6.2l19.8-22.2c6.8 1.1 13.8 1.7 20.9 1.7s14.1-.6 20.9-1.7l19.8 22.2zM464 304a48 48 0 1 1 0 96 48 48 0 1 1 0-96"/></svg>');}.md-tag.md-tag--browser{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M64 0C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h176l-10.7 32H160c-17.7 0-32 14.3-32 32s14.3 32 32 32h256c17.7 0 32-14.3 32-32s-14.3-32-32-32h-69.3L336 416h176c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm448 64v224H64V64z"/></svg>');}</style>
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Ubuntu";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/dracula_at_night.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="brown" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#file-utilspy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Mosheh" class="md-header__button md-logo" aria-label="Mosheh" data-md-component="logo">
+      
+  <img src="../../img/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Mosheh
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              utils.py
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="brown" data-md-color-accent="green"  aria-label="Light/Dark Mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Light/Dark Mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="orange"  aria-label="Light/Dark Mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light/Dark Mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H109.3l105.3-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/lucasgoncsilva/mosheh" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    LucasGoncSilva/mosheh
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Homepage
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../starting/" class="md-tabs__link">
+        
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+    
+  
+  Mosheh
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Mosheh" class="md-nav__button md-logo" aria-label="Mosheh" data-md-component="logo">
+      
+  <img src="../../img/logo.svg" alt="logo">
+
+    </a>
+    Mosheh
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/lucasgoncsilva/mosheh" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    LucasGoncSilva/mosheh
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Homepage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../starting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Mosheh
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Mosheh
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../constants.py/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    constants.py
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../codebase.py/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    codebase.py
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../main.py/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    main.py
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handler.py/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    handler.py
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../doc.py/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    doc.py
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    utils.py
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    utils.py
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      Imports
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Imports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#import-defaultdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      import defaultdict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      import Sequence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-deepcopy" class="md-nav__link">
+    <span class="md-ellipsis">
+      import deepcopy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-find_spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      import find_spec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-any" class="md-nav__link">
+    <span class="md-ellipsis">
+      import Any
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-standardreturn" class="md-nav__link">
+    <span class="md-ellipsis">
+      import StandardReturn
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Classes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#def-bin" class="md-nav__link">
+    <span class="md-ellipsis">
+      def bin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#def-is_lib_installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      def is_lib_installed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#def-nested_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      def nested_dict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#def-add_to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      def add_to_dict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#def-convert_to_regular_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      def convert_to_regular_dict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#def-standard_struct" class="md-nav__link">
+    <span class="md-ellipsis">
+      def standard_struct
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#def-indent_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      def indent_code
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assertions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assertions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_types.py/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    custom_types.py
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/lucasgoncsilva/mosheh/blob/main/documentation/docs/mosheh/utils.py.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/lucasgoncsilva/mosheh/raw/main/documentation/docs/mosheh/utils.py.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
+    </a>
+  
+
+
+<h1 id="file-utilspy">File: <code>utils.py</code></h1>
+<p>Path: <code>mosheh</code></p>
+<hr />
+<h2 id="imports">Imports</h2>
+<h3 id="import-defaultdict"><code class="language-py highlight"><span class="kn">import</span> <span class="nn">defaultdict</span></code></h3>
+<p>Path: <code class="language-py highlight"><span class="n">collections</span></code></p>
+<p>Category: Native</p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="import-sequence"><code class="language-py highlight"><span class="kn">import</span> <span class="nn">Sequence</span></code></h3>
+<p>Path: <code class="language-py highlight"><span class="n">collections</span><span class="o">.</span><span class="n">abc</span></code></p>
+<p>Category: Native</p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="import-deepcopy"><code class="language-py highlight"><span class="kn">import</span> <span class="nn">deepcopy</span></code></h3>
+<p>Path: <code class="language-py highlight"><span class="n">copy</span></code></p>
+<p>Category: Native</p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="import-find_spec"><code class="language-py highlight"><span class="kn">import</span> <span class="nn">find_spec</span></code></h3>
+<p>Path: <code class="language-py highlight"><span class="n">importlib</span><span class="o">.</span><span class="n">util</span></code></p>
+<p>Category: Native</p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">importlib.util</span> <span class="kn">import</span> <span class="n">find_spec</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="import-any"><code class="language-py highlight"><span class="kn">import</span> <span class="nn">Any</span></code></h3>
+<p>Path: <code class="language-py highlight"><span class="n">typing</span></code></p>
+<p>Category: Native</p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="import-standardreturn"><code class="language-py highlight"><span class="kn">import</span> <span class="nn">StandardReturn</span></code></h3>
+<p>Path: <code class="language-py highlight"><span class="n">custom_types</span></code></p>
+<p>Category: Local</p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">custom_types</span> <span class="kn">import</span> <span class="n">StandardReturn</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<hr />
+<h2 id="consts">Consts</h2>
+<div class="admonition info">
+<p class="admonition-title">NO CONSTANT DEFINED HERE</p>
+</div>
+<hr />
+<h2 id="classes">Classes</h2>
+<div class="admonition info">
+<p class="admonition-title">NO CLASS DEFINED HERE</p>
+</div>
+<hr />
+<h2 id="functions">Functions</h2>
+<h3 id="def-bin"><code class="language-py highlight"><span class="k">def</span> <span class="nf">bin</span></code></h3>
+<p>Type: <code class="language-py highlight"><span class="n">Function</span></code></p>
+<p>Return Type: <code class="language-py highlight"><span class="nb">bool</span></code></p>
+<p>Decorators: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<p>Args: <code class="language-py highlight"><span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">universe</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span></code></p>
+<p>Kwargs: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span>
+<span class="normal"><a href="#__codelineno-6-13">13</a></span>
+<span class="normal"><a href="#__codelineno-6-14">14</a></span>
+<span class="normal"><a href="#__codelineno-6-15">15</a></span>
+<span class="normal"><a href="#__codelineno-6-16">16</a></span>
+<span class="normal"><a href="#__codelineno-6-17">17</a></span>
+<span class="normal"><a href="#__codelineno-6-18">18</a></span>
+<span class="normal"><a href="#__codelineno-6-19">19</a></span>
+<span class="normal"><a href="#__codelineno-6-20">20</a></span>
+<span class="normal"><a href="#__codelineno-6-21">21</a></span>
+<span class="normal"><a href="#__codelineno-6-22">22</a></span>
+<span class="normal"><a href="#__codelineno-6-23">23</a></span>
+<span class="normal"><a href="#__codelineno-6-24">24</a></span>
+<span class="normal"><a href="#__codelineno-6-25">25</a></span>
+<span class="normal"><a href="#__codelineno-6-26">26</a></span>
+<span class="normal"><a href="#__codelineno-6-27">27</a></span>
+<span class="normal"><a href="#__codelineno-6-28">28</a></span>
+<span class="normal"><a href="#__codelineno-6-29">29</a></span>
+<span class="normal"><a href="#__codelineno-6-30">30</a></span>
+<span class="normal"><a href="#__codelineno-6-31">31</a></span>
+<span class="normal"><a href="#__codelineno-6-32">32</a></span>
+<span class="normal"><a href="#__codelineno-6-33">33</a></span>
+<span class="normal"><a href="#__codelineno-6-34">34</a></span>
+<span class="normal"><a href="#__codelineno-6-35">35</a></span>
+<span class="normal"><a href="#__codelineno-6-36">36</a></span>
+<span class="normal"><a href="#__codelineno-6-37">37</a></span>
+<span class="normal"><a href="#__codelineno-6-38">38</a></span>
+<span class="normal"><a href="#__codelineno-6-39">39</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">def</span> <span class="nf">bin</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">universe</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="sd">    Binary Search algorithm which returns not the index, but a boolean.</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="sd">    It inicializes two &quot;pointers&quot;, one for the low or start of the iterator</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="sd">    and another for the high or the end of it. Gets the middle point and</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="sd">    compares it with the asked item.</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="sd">    If the item is greater/after the middle the middle becomes the new low</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="sd">    and repeats, otherwise, it becomes the new high and so on and so on and</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="sd">    so on... until the item is found and returns True or not, returning False.</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a>
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="sd">    Example:</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="sd">    ```python</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="sd">    lst: list[int] = [1, 2, 3, 4, 5]</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="sd">    num: int = 4</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="sd">    bin(num, lst)</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18"></a><span class="sd">    # True</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="sd">    ```</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20"></a>
+<a id="__codelineno-6-21" name="__codelineno-6-21"></a><span class="sd">    :param item: The item to check if exists in.</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22"></a><span class="sd">    :type item: Any</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23"></a><span class="sd">    :param universe: The sorted iterable to be evaluated.</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24"></a><span class="sd">    :type universe: Sequence[Any]</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25"></a><span class="sd">    :return: If the item is found in the universe.</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26"></a><span class="sd">    :rtype: bool</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28"></a>    <span class="n">low</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29"></a>    <span class="n">high</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">universe</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<a id="__codelineno-6-30" name="__codelineno-6-30"></a>    <span class="n">mid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-6-31" name="__codelineno-6-31"></a>    <span class="k">while</span> <span class="n">low</span> <span class="o">&lt;=</span> <span class="n">high</span><span class="p">:</span>
+<a id="__codelineno-6-32" name="__codelineno-6-32"></a>        <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">high</span> <span class="o">+</span> <span class="n">low</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+<a id="__codelineno-6-33" name="__codelineno-6-33"></a>        <span class="k">if</span> <span class="n">universe</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">item</span><span class="p">:</span>
+<a id="__codelineno-6-34" name="__codelineno-6-34"></a>            <span class="n">low</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+<a id="__codelineno-6-35" name="__codelineno-6-35"></a>        <span class="k">elif</span> <span class="n">universe</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">item</span><span class="p">:</span>
+<a id="__codelineno-6-36" name="__codelineno-6-36"></a>            <span class="n">high</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span>
+<a id="__codelineno-6-37" name="__codelineno-6-37"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-6-38" name="__codelineno-6-38"></a>            <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-6-39" name="__codelineno-6-39"></a>    <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="def-is_lib_installed"><code class="language-py highlight"><span class="k">def</span> <span class="nf">is_lib_installed</span></code></h3>
+<p>Type: <code class="language-py highlight"><span class="n">Function</span></code></p>
+<p>Return Type: <code class="language-py highlight"><span class="nb">bool</span></code></p>
+<p>Decorators: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<p>Args: <code class="language-py highlight"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span></code></p>
+<p>Kwargs: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-7-10">10</a></span>
+<span class="normal"><a href="#__codelineno-7-11">11</a></span>
+<span class="normal"><a href="#__codelineno-7-12">12</a></span>
+<span class="normal"><a href="#__codelineno-7-13">13</a></span>
+<span class="normal"><a href="#__codelineno-7-14">14</a></span>
+<span class="normal"><a href="#__codelineno-7-15">15</a></span>
+<span class="normal"><a href="#__codelineno-7-16">16</a></span>
+<span class="normal"><a href="#__codelineno-7-17">17</a></span>
+<span class="normal"><a href="#__codelineno-7-18">18</a></span>
+<span class="normal"><a href="#__codelineno-7-19">19</a></span>
+<span class="normal"><a href="#__codelineno-7-20">20</a></span>
+<span class="normal"><a href="#__codelineno-7-21">21</a></span>
+<span class="normal"><a href="#__codelineno-7-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="k">def</span> <span class="nf">is_lib_installed</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="sd">    Checks if a lib exists in the environment path.</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="sd">    By literally just... find spec using... unhh... find_spec()... searches</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="sd">    for modules in the environment path and returns it.</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="sd">    Example:</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="sd">    ```python</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="sd">    is_lib_installed(&#39;fastapi&#39;)</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11"></a><span class="sd">    # False</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12"></a><span class="sd">    ```</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13"></a>
+<a id="__codelineno-7-14" name="__codelineno-7-14"></a><span class="sd">    :param name: The name of the lib, e.g. numpy or numba.</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15"></a><span class="sd">    :type name: str</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16"></a><span class="sd">    :return: Whether the lib exists in the env.</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17"></a><span class="sd">    :rtype: bool</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20"></a>        <span class="k">return</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">find_spec</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21"></a>    <span class="k">except</span> <span class="p">(</span><span class="ne">ModuleNotFoundError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22"></a>        <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="def-nested_dict"><code class="language-py highlight"><span class="k">def</span> <span class="nf">nested_dict</span></code></h3>
+<p>Type: <code class="language-py highlight"><span class="n">Function</span></code></p>
+<p>Return Type: <code class="language-py highlight"><span class="n">defaultdict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code></p>
+<p>Decorators: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<p>Args: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<p>Kwargs: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-8-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-8-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-8-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-8-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-8-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-8-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-8-10">10</a></span>
+<span class="normal"><a href="#__codelineno-8-11">11</a></span>
+<span class="normal"><a href="#__codelineno-8-12">12</a></span>
+<span class="normal"><a href="#__codelineno-8-13">13</a></span>
+<span class="normal"><a href="#__codelineno-8-14">14</a></span>
+<span class="normal"><a href="#__codelineno-8-15">15</a></span>
+<span class="normal"><a href="#__codelineno-8-16">16</a></span>
+<span class="normal"><a href="#__codelineno-8-17">17</a></span>
+<span class="normal"><a href="#__codelineno-8-18">18</a></span>
+<span class="normal"><a href="#__codelineno-8-19">19</a></span>
+<span class="normal"><a href="#__codelineno-8-20">20</a></span>
+<span class="normal"><a href="#__codelineno-8-21">21</a></span>
+<span class="normal"><a href="#__codelineno-8-22">22</a></span>
+<span class="normal"><a href="#__codelineno-8-23">23</a></span>
+<span class="normal"><a href="#__codelineno-8-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="k">def</span> <span class="nf">nested_dict</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">defaultdict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="sd">    Creates and returns a nested dictionary using `collections.defaultdict`.</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="sd">    This function generates a `defaultdict` where each key defaults to another</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="sd">    `nested_dict`, allowing the creation of arbitrarily deep dictionaries without</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="sd">    needing to explicitly define each level.</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="sd">    Key concepts:</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10"></a><span class="sd">    - defaultdict: A specialized dictionary from the `collections` module</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="sd">      that automatically assigns a default value for missing keys. In this case, the</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12"></a><span class="sd">      default value is another `nested_dict`, enabling recursive dictionary nesting.</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13"></a>
+<a id="__codelineno-8-14" name="__codelineno-8-14"></a><span class="sd">    Example:</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15"></a><span class="sd">    ```python</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16"></a><span class="sd">    d = nested_dict()</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17"></a><span class="sd">    d[&#39;level1&#39;][&#39;level2&#39;][&#39;level3&#39;] = &#39;text&#39;</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18"></a><span class="sd">    # {&#39;level&#39;: {&#39;level2&#39;: {&#39;level3&#39;: &#39;text&#39;}}}</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19"></a><span class="sd">    ```</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20"></a>
+<a id="__codelineno-8-21" name="__codelineno-8-21"></a><span class="sd">    :return: A `defaultdict` instance configured for recursive nesting.</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22"></a><span class="sd">    :rtype: defaultdict[Any, Any]</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24"></a>    <span class="k">return</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">nested_dict</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="def-add_to_dict"><code class="language-py highlight"><span class="k">def</span> <span class="nf">add_to_dict</span></code></h3>
+<p>Type: <code class="language-py highlight"><span class="n">Function</span></code></p>
+<p>Return Type: <code class="language-py highlight"><span class="n">defaultdict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code></p>
+<p>Decorators: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<p>Args: <code class="language-py highlight"><span class="n">structure</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">path</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">StandardReturn</span><span class="p">]</span></code></p>
+<p>Kwargs: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-9-10">10</a></span>
+<span class="normal"><a href="#__codelineno-9-11">11</a></span>
+<span class="normal"><a href="#__codelineno-9-12">12</a></span>
+<span class="normal"><a href="#__codelineno-9-13">13</a></span>
+<span class="normal"><a href="#__codelineno-9-14">14</a></span>
+<span class="normal"><a href="#__codelineno-9-15">15</a></span>
+<span class="normal"><a href="#__codelineno-9-16">16</a></span>
+<span class="normal"><a href="#__codelineno-9-17">17</a></span>
+<span class="normal"><a href="#__codelineno-9-18">18</a></span>
+<span class="normal"><a href="#__codelineno-9-19">19</a></span>
+<span class="normal"><a href="#__codelineno-9-20">20</a></span>
+<span class="normal"><a href="#__codelineno-9-21">21</a></span>
+<span class="normal"><a href="#__codelineno-9-22">22</a></span>
+<span class="normal"><a href="#__codelineno-9-23">23</a></span>
+<span class="normal"><a href="#__codelineno-9-24">24</a></span>
+<span class="normal"><a href="#__codelineno-9-25">25</a></span>
+<span class="normal"><a href="#__codelineno-9-26">26</a></span>
+<span class="normal"><a href="#__codelineno-9-27">27</a></span>
+<span class="normal"><a href="#__codelineno-9-28">28</a></span>
+<span class="normal"><a href="#__codelineno-9-29">29</a></span>
+<span class="normal"><a href="#__codelineno-9-30">30</a></span>
+<span class="normal"><a href="#__codelineno-9-31">31</a></span>
+<span class="normal"><a href="#__codelineno-9-32">32</a></span>
+<span class="normal"><a href="#__codelineno-9-33">33</a></span>
+<span class="normal"><a href="#__codelineno-9-34">34</a></span>
+<span class="normal"><a href="#__codelineno-9-35">35</a></span>
+<span class="normal"><a href="#__codelineno-9-36">36</a></span>
+<span class="normal"><a href="#__codelineno-9-37">37</a></span>
+<span class="normal"><a href="#__codelineno-9-38">38</a></span>
+<span class="normal"><a href="#__codelineno-9-39">39</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="k">def</span> <span class="nf">add_to_dict</span><span class="p">(</span><span class="n">structure</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">path</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">StandardReturn</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">defaultdict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="sd">    Adds data to a nested dictionary structure based on a specified path.</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="sd">    This function traverses a nested dictionary (`structure`) using a list of keys</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="sd">    (`path`). If the path consists of a single key, the data is added directly to the</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="sd">    corresponding level. Otherwise, the function recursively traverses deeper into the</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="sd">    structure, creating nested dictionaries as needed, until the data is added at the</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="sd">    specified location.</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10"></a>
+<a id="__codelineno-9-11" name="__codelineno-9-11"></a><span class="sd">    Key concepts:</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12"></a><span class="sd">    - Deepcopy: The `deepcopy` function is used to ensure that the `data` is safely</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13"></a><span class="sd">      duplicated into the struc, avoiding unintended mutations of the original data.</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="sd">    - Recursive Traversal: The function calls itself recursively to traverse and modify</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="sd">      deeper levels of the nested dictionary.</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16"></a>
+<a id="__codelineno-9-17" name="__codelineno-9-17"></a><span class="sd">    Example:</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18"></a><span class="sd">    ```python</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19"></a><span class="sd">    structure: defaultdict = nested_dict()</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20"></a><span class="sd">    path: list[str] = [&#39;level1&#39;, &#39;level2&#39;, &#39;level3&#39;]</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21"></a><span class="sd">    data: list[StandardReturn] = [{&#39;key&#39;: &#39;value&#39;}]</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22"></a><span class="sd">    add_to_dict(structure, path, data)</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23"></a><span class="sd">    # defaultdict(defaultdict, {&#39;level1&#39;: {&#39;level2&#39;: {&#39;level3&#39;: [{&#39;key&#39;: &#39;value&#39;}]}}})</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24"></a><span class="sd">    ```</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25"></a>
+<a id="__codelineno-9-26" name="__codelineno-9-26"></a><span class="sd">    :param structure: The nested dictionary to modify.</span>
+<a id="__codelineno-9-27" name="__codelineno-9-27"></a><span class="sd">    :type structure: defaultdict[Any, Any]</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28"></a><span class="sd">    :param path: A list of keys representing the path to the target location.</span>
+<a id="__codelineno-9-29" name="__codelineno-9-29"></a><span class="sd">    :type path: list[str]</span>
+<a id="__codelineno-9-30" name="__codelineno-9-30"></a><span class="sd">    :param data: The data to add at the specified path.</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31"></a><span class="sd">    :type data: list[StandardReturn]</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32"></a><span class="sd">    :return: The modified dictionary with the new data added.</span>
+<a id="__codelineno-9-33" name="__codelineno-9-33"></a><span class="sd">    :rtype: defaultdict[Any, Any]</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-9-35" name="__codelineno-9-35"></a>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<a id="__codelineno-9-36" name="__codelineno-9-36"></a>        <span class="n">structure</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<a id="__codelineno-9-37" name="__codelineno-9-37"></a>    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<a id="__codelineno-9-38" name="__codelineno-9-38"></a>        <span class="n">structure</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">add_to_dict</span><span class="p">(</span><span class="n">structure</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">data</span><span class="p">)</span>
+<a id="__codelineno-9-39" name="__codelineno-9-39"></a>    <span class="k">return</span> <span class="n">structure</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="def-convert_to_regular_dict"><code class="language-py highlight"><span class="k">def</span> <span class="nf">convert_to_regular_dict</span></code></h3>
+<p>Type: <code class="language-py highlight"><span class="n">Function</span></code></p>
+<p>Return Type: <code class="language-py highlight"><span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code></p>
+<p>Decorators: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<p>Args: <code class="language-py highlight"><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code></p>
+<p>Kwargs: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-10-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-10-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-10-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-10-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-10-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-10-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-10-10">10</a></span>
+<span class="normal"><a href="#__codelineno-10-11">11</a></span>
+<span class="normal"><a href="#__codelineno-10-12">12</a></span>
+<span class="normal"><a href="#__codelineno-10-13">13</a></span>
+<span class="normal"><a href="#__codelineno-10-14">14</a></span>
+<span class="normal"><a href="#__codelineno-10-15">15</a></span>
+<span class="normal"><a href="#__codelineno-10-16">16</a></span>
+<span class="normal"><a href="#__codelineno-10-17">17</a></span>
+<span class="normal"><a href="#__codelineno-10-18">18</a></span>
+<span class="normal"><a href="#__codelineno-10-19">19</a></span>
+<span class="normal"><a href="#__codelineno-10-20">20</a></span>
+<span class="normal"><a href="#__codelineno-10-21">21</a></span>
+<span class="normal"><a href="#__codelineno-10-22">22</a></span>
+<span class="normal"><a href="#__codelineno-10-23">23</a></span>
+<span class="normal"><a href="#__codelineno-10-24">24</a></span>
+<span class="normal"><a href="#__codelineno-10-25">25</a></span>
+<span class="normal"><a href="#__codelineno-10-26">26</a></span>
+<span class="normal"><a href="#__codelineno-10-27">27</a></span>
+<span class="normal"><a href="#__codelineno-10-28">28</a></span>
+<span class="normal"><a href="#__codelineno-10-29">29</a></span>
+<span class="normal"><a href="#__codelineno-10-30">30</a></span>
+<span class="normal"><a href="#__codelineno-10-31">31</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="k">def</span> <span class="nf">convert_to_regular_dict</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="sd">    Converts a nested `defaultdict` into a regular dictionary.</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="sd">    This function recursively traverses a `defaultdict` and its nested dictionaries,</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="sd">    converting all instances of `defaultdict` into standard Python dictionaries. This</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="sd">    ensures the resulting structure is free of `defaultdict` behavior.</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="sd">    Key concepts:</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10"></a><span class="sd">    - defaultdict: A dictionary subclass from the `collections` module that provides</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11"></a><span class="sd">      default values for missing keys. This func removes that behavior by converting</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12"></a><span class="sd">      it into a regular dictionary.</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13"></a><span class="sd">    - Recursive Conversion: The function traverses and converts all nested dict,</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14"></a><span class="sd">      ensuring the entire structure is converted.</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15"></a>
+<a id="__codelineno-10-16" name="__codelineno-10-16"></a><span class="sd">    Example:</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17"></a><span class="sd">    ```python</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18"></a><span class="sd">    d: defaultdict = nested_dict()</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19"></a><span class="sd">    d[&#39;level1&#39;][&#39;level2&#39;] = &#39;value&#39;</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20"></a><span class="sd">    convert_to_regular_dict(d)</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21"></a><span class="sd">    # {&#39;level1&#39;: {&#39;level2&#39;: &#39;value&#39;}}</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22"></a><span class="sd">    ```</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23"></a>
+<a id="__codelineno-10-24" name="__codelineno-10-24"></a><span class="sd">    :param d: The dictionary to convert. Can include nested `defaultdict` instances.</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25"></a><span class="sd">    :type d: dict[Any, Any]</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26"></a><span class="sd">    :return: A dict where all `defaultdict` instances are converted to regular dicts.</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27"></a><span class="sd">    :rtype: dict[Any, Any]</span>
+<a id="__codelineno-10-28" name="__codelineno-10-28"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">defaultdict</span><span class="p">):</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30"></a>        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">convert_to_regular_dict</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<a id="__codelineno-10-31" name="__codelineno-10-31"></a>    <span class="k">return</span> <span class="n">d</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="def-standard_struct"><code class="language-py highlight"><span class="k">def</span> <span class="nf">standard_struct</span></code></h3>
+<p>Type: <code class="language-py highlight"><span class="n">Function</span></code></p>
+<p>Return Type: <code class="language-py highlight"><span class="n">StandardReturn</span></code></p>
+<p>Decorators: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<p>Args: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<p>Kwargs: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-11-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-11-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-11-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-11-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-11-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-11-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-11-10">10</a></span>
+<span class="normal"><a href="#__codelineno-11-11">11</a></span>
+<span class="normal"><a href="#__codelineno-11-12">12</a></span>
+<span class="normal"><a href="#__codelineno-11-13">13</a></span>
+<span class="normal"><a href="#__codelineno-11-14">14</a></span>
+<span class="normal"><a href="#__codelineno-11-15">15</a></span>
+<span class="normal"><a href="#__codelineno-11-16">16</a></span>
+<span class="normal"><a href="#__codelineno-11-17">17</a></span>
+<span class="normal"><a href="#__codelineno-11-18">18</a></span>
+<span class="normal"><a href="#__codelineno-11-19">19</a></span>
+<span class="normal"><a href="#__codelineno-11-20">20</a></span>
+<span class="normal"><a href="#__codelineno-11-21">21</a></span>
+<span class="normal"><a href="#__codelineno-11-22">22</a></span>
+<span class="normal"><a href="#__codelineno-11-23">23</a></span>
+<span class="normal"><a href="#__codelineno-11-24">24</a></span>
+<span class="normal"><a href="#__codelineno-11-25">25</a></span>
+<span class="normal"><a href="#__codelineno-11-26">26</a></span>
+<span class="normal"><a href="#__codelineno-11-27">27</a></span>
+<span class="normal"><a href="#__codelineno-11-28">28</a></span>
+<span class="normal"><a href="#__codelineno-11-29">29</a></span>
+<span class="normal"><a href="#__codelineno-11-30">30</a></span>
+<span class="normal"><a href="#__codelineno-11-31">31</a></span>
+<span class="normal"><a href="#__codelineno-11-32">32</a></span>
+<span class="normal"><a href="#__codelineno-11-33">33</a></span>
+<span class="normal"><a href="#__codelineno-11-34">34</a></span>
+<span class="normal"><a href="#__codelineno-11-35">35</a></span>
+<span class="normal"><a href="#__codelineno-11-36">36</a></span>
+<span class="normal"><a href="#__codelineno-11-37">37</a></span>
+<span class="normal"><a href="#__codelineno-11-38">38</a></span>
+<span class="normal"><a href="#__codelineno-11-39">39</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="k">def</span> <span class="nf">standard_struct</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">StandardReturn</span><span class="p">:</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="sd">    Has the attribuition of returning an empty dict but maintaining the standard keys.</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="sd">    The keys are listed below, followed by they types, as below:</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6"></a><span class="sd">    ```python</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7"></a><span class="sd">    dct: StandardReturn = {</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="sd">        &#39;statement&#39;: Statement,</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="sd">        &#39;name&#39;: str,</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="sd">        &#39;tokens&#39;: Tokens,</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11"></a><span class="sd">        &#39;annot&#39;: str,</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12"></a><span class="sd">        &#39;value&#39;: str,</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13"></a><span class="sd">        &#39;decorators&#39;: Decorators,</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14"></a><span class="sd">        &#39;inheritance&#39;: Inheritance,</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15"></a><span class="sd">        &#39;path&#39;: str,</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16"></a><span class="sd">        &#39;category&#39;: ImportType | FunctionType,</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17"></a><span class="sd">        &#39;rtype&#39;: str,</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18"></a><span class="sd">        &#39;args&#39;: ArgsKwargs,</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19"></a><span class="sd">        &#39;kwargs&#39;: ArgsKwargs,</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20"></a><span class="sd">        &#39;test&#39;: str,</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21"></a><span class="sd">        &#39;msg&#39;: str,</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22"></a><span class="sd">        &#39;code&#39;: str,</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23"></a><span class="sd">    }</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24"></a><span class="sd">    ```</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25"></a><span class="sd">    Any other datatype different from those above must be avoided as much as possible</span>
+<a id="__codelineno-11-26" name="__codelineno-11-26"></a><span class="sd">    to maintain the codebase at the same struct. Python is not the best when talking</span>
+<a id="__codelineno-11-27" name="__codelineno-11-27"></a><span class="sd">    about types like Java or Rust, so keep this in mind is really necessary.</span>
+<a id="__codelineno-11-28" name="__codelineno-11-28"></a>
+<a id="__codelineno-11-29" name="__codelineno-11-29"></a><span class="sd">    Example:</span>
+<a id="__codelineno-11-30" name="__codelineno-11-30"></a><span class="sd">    ```python</span>
+<a id="__codelineno-11-31" name="__codelineno-11-31"></a><span class="sd">    standard_struct()</span>
+<a id="__codelineno-11-32" name="__codelineno-11-32"></a><span class="sd">    # {}</span>
+<a id="__codelineno-11-33" name="__codelineno-11-33"></a><span class="sd">    ```</span>
+<a id="__codelineno-11-34" name="__codelineno-11-34"></a>
+<a id="__codelineno-11-35" name="__codelineno-11-35"></a><span class="sd">    :return: An empty dict annotated with special custom type.</span>
+<a id="__codelineno-11-36" name="__codelineno-11-36"></a><span class="sd">    :rtype: StandardReturn</span>
+<a id="__codelineno-11-37" name="__codelineno-11-37"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-11-38" name="__codelineno-11-38"></a>    <span class="n">data</span><span class="p">:</span> <span class="n">StandardReturn</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-11-39" name="__codelineno-11-39"></a>    <span class="k">return</span> <span class="n">data</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<h3 id="def-indent_code"><code class="language-py highlight"><span class="k">def</span> <span class="nf">indent_code</span></code></h3>
+<p>Type: <code class="language-py highlight"><span class="n">Function</span></code></p>
+<p>Return Type: <code class="language-py highlight"><span class="nb">str</span></code></p>
+<p>Decorators: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<p>Args: <code class="language-py highlight"><span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span></code></p>
+<p>Kwargs: <code class="language-py highlight"><span class="kc">None</span></code></p>
+<details class="example">
+<summary>SNIPPET</summary>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-12-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-12-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-12-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-12-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-12-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-12-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-12-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-12-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-12-10">10</a></span>
+<span class="normal"><a href="#__codelineno-12-11">11</a></span>
+<span class="normal"><a href="#__codelineno-12-12">12</a></span>
+<span class="normal"><a href="#__codelineno-12-13">13</a></span>
+<span class="normal"><a href="#__codelineno-12-14">14</a></span>
+<span class="normal"><a href="#__codelineno-12-15">15</a></span>
+<span class="normal"><a href="#__codelineno-12-16">16</a></span>
+<span class="normal"><a href="#__codelineno-12-17">17</a></span>
+<span class="normal"><a href="#__codelineno-12-18">18</a></span>
+<span class="normal"><a href="#__codelineno-12-19">19</a></span>
+<span class="normal"><a href="#__codelineno-12-20">20</a></span>
+<span class="normal"><a href="#__codelineno-12-21">21</a></span>
+<span class="normal"><a href="#__codelineno-12-22">22</a></span>
+<span class="normal"><a href="#__codelineno-12-23">23</a></span>
+<span class="normal"><a href="#__codelineno-12-24">24</a></span>
+<span class="normal"><a href="#__codelineno-12-25">25</a></span>
+<span class="normal"><a href="#__codelineno-12-26">26</a></span>
+<span class="normal"><a href="#__codelineno-12-27">27</a></span>
+<span class="normal"><a href="#__codelineno-12-28">28</a></span>
+<span class="normal"><a href="#__codelineno-12-29">29</a></span>
+<span class="normal"><a href="#__codelineno-12-30">30</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="k">def</span> <span class="nf">indent_code</span><span class="p">(</span><span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="sd">    Used just for applying indentation to code before building the doc `.md` file.</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="sd">    By receiving the code itself and an indentation number, defaulting to 4, and for</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="sd">    each line applies the desired indentation level, A.K.A leftpad.</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7"></a>
+<a id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="sd">    Example:</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="sd">    ```python</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10"></a><span class="sd">    code: str = &quot;&quot;&quot;for i in range(10):</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11"></a><span class="sd">        str(i)&quot;&quot;&quot;</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12"></a><span class="sd">    level: int = 4</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13"></a><span class="sd">    code</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14"></a><span class="sd">    # for i in range(10):</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15"></a><span class="sd">#     str(i)</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16"></a><span class="sd">    indent_code(code, level)</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17"></a><span class="sd">    #     for i in range(10):</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18"></a><span class="sd">#         str(i)</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19"></a><span class="sd">    ```</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20"></a>
+<a id="__codelineno-12-21" name="__codelineno-12-21"></a><span class="sd">    :param code: The code snippet to be formatted.</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22"></a><span class="sd">    :type code: str</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23"></a><span class="sd">    :param level: The number of spaces to leftpad each line.</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24"></a><span class="sd">    :type level: int, optional</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25"></a><span class="sd">    :return: The code snippet leftpadded.</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26"></a><span class="sd">    :rtype: str</span>
+<a id="__codelineno-12-27" name="__codelineno-12-27"></a><span class="sd">    &#39;&#39;&#39;</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28"></a>    <span class="n">indent</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="n">level</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29"></a>    <span class="n">new_code</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">indent</span><span class="si">}{</span><span class="n">line</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()))</span>
+<a id="__codelineno-12-30" name="__codelineno-12-30"></a>    <span class="k">return</span> <span class="n">new_code</span>
+</code></pre></div></td></tr></table></div>
+</details>
+<hr />
+<h2 id="assertions">Assertions</h2>
+<div class="admonition info">
+<p class="admonition-title">NO ASSERT DEFINED HERE</p>
+</div>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">December 17, 2024 23:43:43</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">December 17, 2024 23:43:43</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.3l105.4 105.3c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../doc.py/" class="md-footer__link md-footer__link--prev" aria-label="Previous: doc.py">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H109.3l105.3-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                doc.py
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../custom_types.py/" class="md-footer__link md-footer__link--next" aria-label="Next: custom_types.py">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                custom_types.py
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h306.7L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) 2024 Lucas Gonçalves da Silva
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.tabs", "navigation.top", "toc.integrate", "header.autohide", "navigation.footer", "content.action.view", "content.action.edit", "announce.dismiss", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "tags": {"API": "API", "Browser": "browser", "Documentation": "doc", "Homepage": "homepage", "Index": "index", "Infra": "infra", "Legal": "legal", "Overview": "overview", "Teste": "test", "Usu\u00e1rio": "user"}, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
