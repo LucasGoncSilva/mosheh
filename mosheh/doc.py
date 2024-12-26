@@ -27,7 +27,7 @@ logger: Logger = getLogger('mosheh')
 
 
 NAV_DIRS: list[str] = []
-NAV_MD: list[str] = ['nav:\n  - Homepage: index.md\n']
+NAV_MD: list[str] = ['nav:\n  - Homepage: index.md\n  - Codebase:\n']
 
 
 def generate_doc(
@@ -845,7 +845,7 @@ def __update_navigation(
 
     if not nav_path:
         md_file_path: str = output_file_path.removeprefix(docs_path + path.sep)
-        md_line: str = indent_code(f'- {key}: {md_file_path}', 2)
+        md_line: str = indent_code(f'- {key}: {md_file_path}', 4)
         NAV_MD.append(f'{md_line}\n')
         logger.debug('"NAV_MD" updated with no "nav_path"')
         return
@@ -854,12 +854,12 @@ def __update_navigation(
         sub_nav_path: str = path.sep.join(nav_path[: i + 1])
         if sub_nav_path not in NAV_DIRS:
             NAV_DIRS.append(sub_nav_path)
-            md_line: str = indent_code(f'- {nav_path[i]}:', 2 * (i + 1))
+            md_line: str = indent_code(f'- {nav_path[i]}:', 4 * (i + 1))
             NAV_MD.append(f'{md_line}\n')
             logger.debug('"NAV_MD" updated with path not in "NAV_DIRS"')
 
         if i + 1 == len(nav_path):
             md_file_path: str = output_file_path.removeprefix(docs_path + path.sep)
-            md_line: str = indent_code(f'- {key}: {md_file_path}', 2 * (i + 2))
+            md_line: str = indent_code(f'- {key}: {md_file_path}', 4 * (i + 2))
             NAV_MD.append(f'{md_line}\n')
             logger.debug('"NAV_MD" updated')
