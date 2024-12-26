@@ -626,6 +626,8 @@ copyright: Only God knows
 FILE_MARKDOWN: Final[str] = """
 # File: `{filename}`
 
+Role: {role}
+
 Path: `{filepath}`
 
 {filedoc}

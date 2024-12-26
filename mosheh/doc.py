@@ -15,6 +15,7 @@ from .constants import (
 )
 from .custom_types import (
     CodebaseDict,
+    FileRole,
     FunctionType,
     ImportType,
     StandardReturn,
@@ -236,6 +237,7 @@ def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     """
 
     filename: str = basedir.split(path.sep)[-1]
+    role: str = cast(FileRole, filedata.pop(0).get('__role__')).value
     filepath: str = (
         basedir.removesuffix(filename).replace(path.sep, '.').removesuffix('.')
     )
@@ -299,6 +301,7 @@ def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
 
     return FILE_MARKDOWN.format(
         filename=filename,
+        role=role,
         filepath=filepath,
         filedoc=filedoc,
         imports=imports,

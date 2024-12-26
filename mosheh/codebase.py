@@ -4,7 +4,7 @@ from logging import Logger, getLogger
 from os import path, sep, walk
 from typing import Any
 
-from .custom_types import CodebaseDict, StandardReturn
+from .custom_types import CodebaseDict, FileRole, StandardReturn
 from .handler import handle_def_nodes
 from .utils import add_to_dict, convert_to_regular_dict, nested_dict
 
@@ -61,6 +61,8 @@ def read_codebase(root: str) -> CodebaseDict:
                 if data:
                     statements.extend(data)
                     logger.debug('Node inserted into statement list')
+
+            statements.insert(0, {'__role__': FileRole.PythonSourceCode})
 
             add_to_dict(codebase, file.split(sep), statements)
             logger.debug(f'{file} stmts added to CodebaseDict')

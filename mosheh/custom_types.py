@@ -28,6 +28,10 @@ class FunctionType(Enum):
     Coroutine = 'Coroutine'
 
 
+class FileRole(Enum):
+    PythonSourceCode = 'Python Source Code'
+
+
 Tokens: TypeAlias = list[str]
 Decorators: TypeAlias = list[str]
 Inheritance: TypeAlias = list[str]
@@ -38,6 +42,7 @@ StandardReturn: TypeAlias = dict[
     Statement
     | ImportType
     | FunctionType
+    | FileRole
     | str
     | None
     | Tokens
