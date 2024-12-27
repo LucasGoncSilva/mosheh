@@ -1,5 +1,7 @@
 # File: `metadata.py`
 
+Role: Python Source Code
+
 Path: `mosheh`
 
 ---
@@ -112,24 +114,24 @@ Value: `#!py ['CLI', 'Python', 'documentation', 'MkDocs', 'automation', 'generat
 
 Type: `#!py Unknown`
 
-Value: `#!py '1.3.1'`
+Value: `#!py '1.3.2'`
 
 ??? example "SNIPPET"
 
     ```py
-    __version__ = '1.3.1'
+    __version__ = '1.3.2'
     ```
 
 ### `#!py __date__`
 
 Type: `#!py Unknown`
 
-Value: `#!py '2024-12-13'`
+Value: `#!py '2024-12-17'`
 
 ??? example "SNIPPET"
 
     ```py
-    __date__ = '2024-12-13'
+    __date__ = '2024-12-17'
     ```
 
 ### `#!py __status__`

@@ -623,8 +623,7 @@ copyright: Only God knows
 
 """
 
-FILE_MARKDOWN: Final[str] = """
-# File: `{filename}`
+FILE_MARKDOWN: Final[str] = """# File: `{filename}`
 
 Role: {role}
 

@@ -1,5 +1,7 @@
 # File: `custom_types.py`
 
+Role: Python Source Code
+
 Path: `mosheh`
 
 ---
@@ -60,10 +62,13 @@ Decorators: `#!py None`
 
 Kwargs: `#!py None`
 
+Enum-like class to enumerate in-code the dealed statements.
+
 ??? example "SNIPPET"
 
     ```py
     class Statement(Enum):
+        """Enum-like class to enumerate in-code the dealed statements."""
         Import = auto()
         ImportFrom = auto()
         Assign = auto()
@@ -82,10 +87,13 @@ Decorators: `#!py None`
 
 Kwargs: `#!py None`
 
+Enum-like class to enumerate in-code the import types.
+
 ??? example "SNIPPET"
 
     ```py
     class ImportType(Enum):
+        """Enum-like class to enumerate in-code the import types."""
         Native = 'Native'
         TrdParty = '3rd Party'
         Local = 'Local'
@@ -99,14 +107,35 @@ Decorators: `#!py None`
 
 Kwargs: `#!py None`
 
+Enum-like class to enumerate in-code the function types.
+
 ??? example "SNIPPET"
 
     ```py
     class FunctionType(Enum):
+        """Enum-like class to enumerate in-code the function types."""
         Function = 'Function'
         Method = 'Method'
         Generator = 'Generator'
         Coroutine = 'Coroutine'
+    ```
+
+### `#!py class FileRole`
+
+Parents: `Enum`
+
+Decorators: `#!py None`
+
+Kwargs: `#!py None`
+
+Enum-like class to enumerate in-code the files investigated.
+
+??? example "SNIPPET"
+
+    ```py
+    class FileRole(Enum):
+        """Enum-like class to enumerate in-code the files investigated."""
+        PythonSourceCode = 'Python Source Code'
     ```
 
 ---
