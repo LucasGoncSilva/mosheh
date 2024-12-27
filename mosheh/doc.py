@@ -538,17 +538,22 @@ def _handle_class_def(stmt: StandardReturn) -> str:
     """
 
     name: str = cast(str, stmt['name'])
+    docstring: str | None = cast(str | None, stmt['docstring'])
     inherit: str = ', '.join(cast(list[str], stmt['inheritance']))
     decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
     kwargs: str = cast(str, stmt['kwargs'])
     _code: str = cast(str, stmt['code'])
     code: str = indent_code(_code)
 
+    if not docstring:
+        docstring = 'No `docstring` provided.'
+
     if not kwargs:
         kwargs = 'None'
 
     return CLASS_DEF_MD_STRUCT.format(
         name=name,
+        docstring=docstring,
         inherit=inherit,
         decorators=decorators,
         kwargs=kwargs,

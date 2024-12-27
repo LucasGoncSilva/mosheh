@@ -699,6 +699,8 @@ Decorators: `#!py {decorators}`
 
 Kwargs: `#!py {kwargs}`
 
+{docstring}
+
 ??? example "SNIPPET"
 
     ```py

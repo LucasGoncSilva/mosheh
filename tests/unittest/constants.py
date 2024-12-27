@@ -94,7 +94,7 @@ def test_CLASS_DEF_MD_STRUCT() -> None:
     assert isinstance(CLASS_DEF_MD_STRUCT, str)
     assert is_formatable_and_get_fields(CLASS_DEF_MD_STRUCT) == (
         True,
-        ['name', 'inherit', 'decorators', 'kwargs', 'code'],
+        ['name', 'inherit', 'decorators', 'kwargs', 'docstring', 'code'],
     )
 
 

@@ -1,4 +1,5 @@
 # ruff: noqa: E501
+
 from ast import AST, ClassDef, FunctionDef, parse, walk
 from pathlib import Path
 from typing import Any
@@ -97,6 +98,7 @@ def test_handle_def_nodes() -> None:
         {
             'statement': Statement.ClassDef,
             'name': 'ExampleClass',
+            'docstring': 'A simple example class.',
             'inheritance': [],
             'decorators': [],
             'kwargs': '',
@@ -199,6 +201,7 @@ def test_handle_def_nodes() -> None:
         {
             'statement': Statement.ClassDef,
             'name': 'NestedClass',
+            'docstring': 'A nested class.',
             'inheritance': [],
             'decorators': [],
             'kwargs': '',

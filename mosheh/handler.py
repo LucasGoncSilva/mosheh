@@ -1219,6 +1219,7 @@ def _handle_class_def(
 
     statement: Final[Statement] = Statement.ClassDef
     name: Final[str] = node.name
+    docstring: Final[str | None] = ast.get_docstring(node)
     inheritance: Final[list[str]] = [
         cast(list[str], _handle_node(i))[0]
         for i in node.bases
@@ -1236,6 +1237,7 @@ def _handle_class_def(
         {
             'statement': statement,
             'name': name,
+            'docstring': docstring,
             'inheritance': inheritance,
             'decorators': decos,
             'kwargs': kwargs_str,
