@@ -719,6 +719,8 @@ Args: `#!py {args}`
 
 Kwargs: `#!py {kwargs}`
 
+{docstring}
+
 ??? example "SNIPPET"
 
     ```py
