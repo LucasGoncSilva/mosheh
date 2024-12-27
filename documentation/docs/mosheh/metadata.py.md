@@ -114,24 +114,24 @@ Value: `#!py ['CLI', 'Python', 'documentation', 'MkDocs', 'automation', 'generat
 
 Type: `#!py Unknown`
 
-Value: `#!py '1.3.2'`
+Value: `#!py '1.3.3'`
 
 ??? example "SNIPPET"
 
     ```py
-    __version__ = '1.3.2'
+    __version__ = '1.3.3'
     ```
 
 ### `#!py __date__`
 
 Type: `#!py Unknown`
 
-Value: `#!py '2024-12-17'`
+Value: `#!py '2024-12-27'`
 
 ??? example "SNIPPET"
 
     ```py
-    __date__ = '2024-12-17'
+    __date__ = '2024-12-27'
     ```
 
 ### `#!py __status__`

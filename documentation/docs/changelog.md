@@ -40,7 +40,7 @@ Key Components of a Changelog:
 
 -->
 
-## v1.3.3 - {DATE}
+## v1.3.3 - 2024-12-27
 
 ### Adds
 
