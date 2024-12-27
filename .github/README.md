@@ -31,7 +31,7 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
 
 - Classes `[ast.ClassDef]`
 
-  - [ ] Description (docstring)
+  - [x] Description (docstring)
   - [x] Name (class name)
   - [x] Parents (inheritance)
   - [ ] Methods Defined (nums and names)
@@ -40,7 +40,7 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
 
 - Funcs `[ast.FunctionDef | ast.AsyncFunctionDef]`
 
-  - [ ] Description (docstring)
+  - [x] Description (docstring)
   - [x] Name (func name)
   - [x] Type `[Func | Method | Generator | Coroutine]`
   - [x] Parameters (name, type, default)

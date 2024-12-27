@@ -40,7 +40,22 @@ Key Components of a Changelog:
 
 -->
 
-## 1.3.2 - 2024-12-17
+## v1.3.3 - 2024-12-27
+
+### Adds
+
+- "Role" defined and added to markdown generated doc files
+- Functions now has docstring description on markdown
+
+### Updates
+
+- Codebase readed files now documented under `- Codebase` section on generated `mkdocs.yml`
+
+### Security
+
+- `f'{name}'` to `f'{name}'` on `tests.PROJECT.dummy.views.index` test example
+
+## v1.3.2 - 2024-12-17
 
 ### Adds
 

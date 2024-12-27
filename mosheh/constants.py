@@ -623,8 +623,9 @@ copyright: Only God knows
 
 """
 
-FILE_MARKDOWN: Final[str] = """
-# File: `{filename}`
+FILE_MARKDOWN: Final[str] = """# File: `{filename}`
+
+Role: {role}
 
 Path: `{filepath}`
 
@@ -697,6 +698,8 @@ Decorators: `#!py {decorators}`
 
 Kwargs: `#!py {kwargs}`
 
+{docstring}
+
 ??? example "SNIPPET"
 
     ```py
@@ -716,6 +719,8 @@ Decorators: `#!py {decorators}`
 Args: `#!py {args}`
 
 Kwargs: `#!py {kwargs}`
+
+{docstring}
 
 ??? example "SNIPPET"
 

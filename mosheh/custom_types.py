@@ -5,6 +5,8 @@ from typing import TypeAlias
 
 
 class Statement(Enum):
+    """Enum-like class to enumerate in-code the dealed statements."""
+
     Import = auto()
     ImportFrom = auto()
     Assign = auto()
@@ -16,16 +18,26 @@ class Statement(Enum):
 
 
 class ImportType(Enum):
+    """Enum-like class to enumerate in-code the import types."""
+
     Native = 'Native'
     TrdParty = '3rd Party'
     Local = 'Local'
 
 
 class FunctionType(Enum):
+    """Enum-like class to enumerate in-code the function types."""
+
     Function = 'Function'
     Method = 'Method'
     Generator = 'Generator'
     Coroutine = 'Coroutine'
+
+
+class FileRole(Enum):
+    """Enum-like class to enumerate in-code the files investigated."""
+
+    PythonSourceCode = 'Python Source Code'
 
 
 Tokens: TypeAlias = list[str]
@@ -38,6 +50,7 @@ StandardReturn: TypeAlias = dict[
     Statement
     | ImportType
     | FunctionType
+    | FileRole
     | str
     | None
     | Tokens

@@ -202,6 +202,7 @@ def standard_struct() -> StandardReturn:
         'inheritance': Inheritance,
         'path': str,
         'category': ImportType | FunctionType,
+        'docstring': str | None,
         'rtype': str,
         'args': ArgsKwargs,
         'kwargs': ArgsKwargs,
@@ -248,7 +249,7 @@ def indent_code(code: str, level: int = 4) -> str:
     :param code: The code snippet to be formatted.
     :type code: str
     :param level: The number of spaces to leftpad each line.
-    :type level: int, optional
+    :type level: int
     :return: The code snippet leftpadded.
     :rtype: str
     """

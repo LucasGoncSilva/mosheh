@@ -98,6 +98,7 @@ def test_handle_def_nodes() -> None:
         {
             'statement': Statement.ClassDef,
             'name': 'ExampleClass',
+            'docstring': 'A simple example class.',
             'inheritance': [],
             'decorators': [],
             'kwargs': '',
@@ -105,6 +106,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': 'A simple function.',
             'name': 'simple_function',
             'category': FunctionType.Function,
             'decorators': [],
@@ -115,6 +117,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': 'A generator function.',
             'name': 'generator_function',
             'category': FunctionType.Generator,
             'decorators': [],
@@ -125,6 +128,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.AsyncFunctionDef,
+            'docstring': 'An asynchronous function.',
             'name': 'async_function',
             'category': FunctionType.Coroutine,
             'decorators': [],
@@ -135,6 +139,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': 'A simple decorator.',
             'name': 'decorator_function',
             'category': FunctionType.Function,
             'decorators': [],
@@ -145,6 +150,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': 'A decorated function.',
             'name': 'decorated_function',
             'category': FunctionType.Function,
             'decorators': ['decorator_function'],
@@ -161,6 +167,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': None,
             'name': 'annotated_function',
             'category': FunctionType.Function,
             'decorators': [],
@@ -171,6 +178,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': 'A function with a docstring example.\n\nExample:\n    result = example_usage_function(1, 2)\n    print(result)  # Outputs 3',
             'name': 'example_usage_function',
             'category': FunctionType.Function,
             'decorators': [],
@@ -181,6 +189,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': 'A function with an ellipsis.',
             'name': 'ellipsis_function',
             'category': FunctionType.Function,
             'decorators': [],
@@ -192,6 +201,7 @@ def test_handle_def_nodes() -> None:
         {
             'statement': Statement.ClassDef,
             'name': 'NestedClass',
+            'docstring': 'A nested class.',
             'inheritance': [],
             'decorators': [],
             'kwargs': '',
@@ -199,6 +209,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': None,
             'name': '__init__',
             'category': FunctionType.Method,
             'decorators': [],
@@ -209,6 +220,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': 'An instance method.',
             'name': 'instance_method',
             'category': FunctionType.Method,
             'decorators': [],
@@ -219,6 +231,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': 'A class method.',
             'name': 'class_method',
             'category': FunctionType.Method,
             'decorators': ['classmethod'],
@@ -229,6 +242,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': 'A static method.',
             'name': 'static_method',
             'category': FunctionType.Method,
             'decorators': ['staticmethod'],
@@ -246,6 +260,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': None,
             'name': 'wrapper',
             'category': FunctionType.Function,
             'decorators': [],
@@ -256,6 +271,7 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
+            'docstring': None,
             'name': '__init__',
             'category': FunctionType.Method,
             'decorators': [],

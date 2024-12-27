@@ -15,6 +15,7 @@ from .constants import (
 )
 from .custom_types import (
     CodebaseDict,
+    FileRole,
     FunctionType,
     ImportType,
     StandardReturn,
@@ -73,11 +74,11 @@ def generate_doc(
     :type readme_path: str | None
     :param edit_uri: URI to view raw or edit blob file, default is
                         `'blob/main/documentation/docs'`.
-    :type edit_uri: str, optional
+    :type edit_uri: str
     :param repo_name: Name of the code repository to be mapped, default is `'GitHub'`.
-    :type repo_name: str, optional
+    :type repo_name: str
     :param repo_url: The URL of the repository, used for linking in the documentation.
-    :type repo_url: str, optional
+    :type repo_url: str
     :return: Nothing, just generates documentation files in the specified output path.
     :rtype: None
     """
@@ -162,11 +163,11 @@ def _default_doc_config(
     :type logo_path: str
     :param edit_uri: URI to view raw or edit blob file, default is
                         `'blob/main/documentation/docs'`.
-    :type edit_uri: str, optional
+    :type edit_uri: str
     :param repo_name: Name of the code repository to be mapped, default is `'GitHub'`.
-    :type repo_name: str, optional
+    :type repo_name: str
     :param repo_url: The URL of the repository, used for linking in the documentation.
-    :type repo_url: str, optional
+    :type repo_url: str
     :return: Formatted MkDocs YAML configuration.
     :rtype: str
     """
@@ -236,6 +237,7 @@ def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     """
 
     filename: str = basedir.split(path.sep)[-1]
+    role: str = cast(FileRole, filedata.pop(0).get('__role__')).value
     filepath: str = (
         basedir.removesuffix(filename).replace(path.sep, '.').removesuffix('.')
     )
@@ -299,6 +301,7 @@ def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
 
     return FILE_MARKDOWN.format(
         filename=filename,
+        role=role,
         filepath=filepath,
         filedoc=filedoc,
         imports=imports,
@@ -535,17 +538,22 @@ def _handle_class_def(stmt: StandardReturn) -> str:
     """
 
     name: str = cast(str, stmt['name'])
+    docstring: str | None = cast(str | None, stmt['docstring'])
     inherit: str = ', '.join(cast(list[str], stmt['inheritance']))
     decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
     kwargs: str = cast(str, stmt['kwargs'])
     _code: str = cast(str, stmt['code'])
     code: str = indent_code(_code)
 
+    if not docstring:
+        docstring = 'No `docstring` provided.'
+
     if not kwargs:
         kwargs = 'None'
 
     return CLASS_DEF_MD_STRUCT.format(
         name=name,
+        docstring=docstring,
         inherit=inherit,
         decorators=decorators,
         kwargs=kwargs,
@@ -594,11 +602,22 @@ def _handle_function_def(stmt: StandardReturn) -> str:
     name: str = cast(str, stmt['name'])
     decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
     category: str = cast(FunctionType, stmt['category']).value
+    docstring: str | None = cast(str | None, stmt['docstring'])
     args: str = cast(str, stmt['args'])
     kwargs: str = cast(str, stmt['kwargs'])
     rtype: str = cast(str, stmt['rtype']) or 'Unknown'
     _code: str = cast(str, stmt['code'])
     code: str = indent_code(_code)
+
+    if not docstring:
+        docstring = 'No `docstring` provided.'
+    if docstring:
+        docstring = (
+            docstring.replace(':param', '\n:param')
+            .replace(':type', '\n:type')
+            .replace(':return', '\n:return')
+            .replace(':rtype', '\n:rtype')
+        )
 
     if not args:
         args = 'None'
@@ -607,6 +626,7 @@ def _handle_function_def(stmt: StandardReturn) -> str:
 
     return FUNCTION_DEF_MD_STRUCT.format(
         name=name,
+        docstring=docstring,
         decorators=decorators,
         category=category,
         args=args,
@@ -690,7 +710,7 @@ def _process_codebase(
     :param exit: The output directory where documentation will be saved.
     :type exit: str
     :param basedir: The base directory used during the recursive traversal.
-    :type basedir: str, optional, default is ''
+    :type basedir: str
     :return: None.
     :rtype: None
     """
@@ -755,7 +775,9 @@ def _process_file(
         return
 
     content: str = _codebase_to_markdown(stmts, file_path)
-    output_file_path: str = path.join(docs_path, file_path.removeprefix(root) + '.md')
+    output_file_path: str = path.join(
+        docs_path, 'Codebase', file_path.removeprefix(root) + '.md'
+    )
     folder_path: str = path.dirname(output_file_path)
 
     if not path.exists(folder_path):

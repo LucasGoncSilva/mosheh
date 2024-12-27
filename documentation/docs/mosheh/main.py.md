@@ -1,5 +1,7 @@
 # File: `main.py`
 
+Role: Python Source Code
+
 Path: `mosheh`
 
 ---
@@ -332,6 +334,20 @@ Args: `#!py v: int`
 
 Kwargs: `#!py None`
 
+Configures the logging level for the application based on the provided verbosity.
+
+Logging is handled using `RichHandler` for enhanced terminal output. The verbosity
+level `v` controls the logging granularity for the `mosheh` logger, and optionally
+for the `mkdocs` logger in debug mode.
+
+:param v: Verbosity level, from 0 (critical) to 4 (debug). Defaults to 3 (info). - 0: Critical - 1: Error - 2: Warning - 3: Info - 4: Debug
+
+:type v: int
+
+:returns: None.
+
+:rtype: None
+
 ??? example "SNIPPET"
 
     ```py
@@ -380,6 +396,14 @@ Decorators: `#!py None`
 Args: `#!py None`
 
 Kwargs: `#!py None`
+
+This is the script's entrypoint, kinda where everything starts.
+
+It takes no parameters inside code itself, but uses ArgumentParser to deal with
+them. Parsing the args, extracts the infos provided to deal and construct the
+output doc based on them.
+
+:rtype: None
 
 ??? example "SNIPPET"
 

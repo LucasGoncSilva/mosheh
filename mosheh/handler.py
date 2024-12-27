@@ -999,13 +999,14 @@ def _handle_function_def(
     :param node: The AST node representing a func def statement.
     :type node: ast.FunctionDef
     :param is_from_class: The arg who tells if shoud be directly defined as a Method.
-    :type is_from_class: bool, optional
+    :type is_from_class: bool
     :return: A dict containing the statement type and the data listed before.
     :rtype: list[StandardReturn]
     """
 
     statement: Final[Statement] = Statement.FunctionDef
     name: Final[str] = node.name
+    docstring: Final[str | None] = ast.get_docstring(node)
     decos: Final[list[str]] = [
         cast(list[str], _handle_node(i))[0] for i in node.decorator_list
     ]
@@ -1028,6 +1029,7 @@ def _handle_function_def(
             'statement': statement,
             'name': name,
             'category': category,
+            'docstring': docstring,
             'decorators': decos,
             'rtype': rtype,
             'args': args_str,
@@ -1074,6 +1076,7 @@ def _handle_async_function_def(
 
     statement: Final[Statement] = Statement.AsyncFunctionDef
     name: Final[str] = node.name
+    docstring: Final[str | None] = ast.get_docstring(node)
     decos: Final[list[str]] = [
         cast(list[str], _handle_node(i))[0] for i in node.decorator_list
     ]
@@ -1094,6 +1097,7 @@ def _handle_async_function_def(
             'statement': statement,
             'name': name,
             'category': FunctionType.Coroutine,
+            'docstring': docstring,
             'decorators': decos,
             'rtype': rtype,
             'args': args_str,
@@ -1215,6 +1219,7 @@ def _handle_class_def(
 
     statement: Final[Statement] = Statement.ClassDef
     name: Final[str] = node.name
+    docstring: Final[str | None] = ast.get_docstring(node)
     inheritance: Final[list[str]] = [
         cast(list[str], _handle_node(i))[0]
         for i in node.bases
@@ -1232,6 +1237,7 @@ def _handle_class_def(
         {
             'statement': statement,
             'name': name,
+            'docstring': docstring,
             'inheritance': inheritance,
             'decorators': decos,
             'kwargs': kwargs_str,
