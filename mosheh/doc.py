@@ -780,8 +780,8 @@ def _process_file(
     )
     folder_path: str = path.dirname(output_file_path)
 
-    if not path.exists(folder_path):
-        makedirs(folder_path)
+    if not path.exists(path.join('.', folder_path)):
+        makedirs(path.join('.', folder_path))
         logger.debug(f'{folder_path} created')
 
     __write_to_file(output_file_path, content)
@@ -814,7 +814,7 @@ def __write_to_file(file_path: str, content: str) -> None:
     :rtype: None
     """
 
-    with open(file_path, 'w', encoding='utf-8') as file:
+    with open(path.join('.', file_path), 'w', encoding='utf-8') as file:
         file.write(content)
         logger.debug(f'Content written to {file_path}')
 
