@@ -1,3 +1,9 @@
+"""
+If there is a file containing eater eggs and secrets, this one is not the one.
+
+Here are just info about Mosheh itself, data about data. No more than this.
+"""
+
 __author__ = 'LucasGonc'
 __copyright__ = 'Copyright (c) 2024 Lucas Gonçalves da Silva'
 __credits__ = ['LucasGonc']

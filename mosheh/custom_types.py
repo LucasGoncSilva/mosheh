@@ -1,3 +1,18 @@
+"""
+For every type hint and notation that goes beyond the traditional, there is a custom
+type here created.
+
+The idea of this types is to keep everything logical and short, with proper types and
+in-code description. This is a way to turn Python into a "typed" lang, kinda.
+
+The `Statement`, `ImportType`, `FunctionType` and `FileRole` classes are enums with a
+really useful function: to standardize the possible types of their own types (for
+example, a function strictly assumes only 4 different types, and exactly one of
+them).
+
+The other ones are `typing.TypeAlias`, simpler but also fuctional.
+"""
+
 # ruff: noqa
 
 from enum import Enum, auto

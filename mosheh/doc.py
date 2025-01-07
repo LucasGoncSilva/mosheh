@@ -1,3 +1,15 @@
+"""
+Used to create the output documentation, this file deals with the codebase generated
+`custom_types.CodebaseDict` and creates `.md` files based on its collected information.
+
+The only public/exposed function here is `generate_doc`, which takes care of all of the
+private functions.
+
+There is a function for each step and statement type: `ast.Import`, `ast.ImportFrom`,
+`ast.Assign`, `ast.AnnAssign`, `ast.ClassDef`, `ast.FunctionDef`, `ast.AsyncFunctionDef`
+and `ast.Assert`, plus utility stuff like processing files.
+"""
+
 import subprocess
 from logging import Logger, getLogger
 from os import makedirs, path
@@ -784,11 +796,11 @@ def _process_file(
         makedirs(path.join('.', folder_path))
         logger.debug(f'{folder_path} created')
 
-    __write_to_file(output_file_path, content)
-    __update_navigation(folder_path, docs_path, key, output_file_path)
+    _write_to_file(output_file_path, content)
+    _update_navigation(folder_path, docs_path, key, output_file_path)
 
 
-def __write_to_file(file_path: str, content: str) -> None:
+def _write_to_file(file_path: str, content: str) -> None:
     """
     Writes content to a specified file.
 
@@ -819,7 +831,7 @@ def __write_to_file(file_path: str, content: str) -> None:
         logger.debug(f'Content written to {file_path}')
 
 
-def __update_navigation(
+def _update_navigation(
     folder_path: str, docs_path: str, key: str, output_file_path: str
 ) -> None:
     """
