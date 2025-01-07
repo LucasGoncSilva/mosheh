@@ -709,7 +709,9 @@ Category: {category}
 
     ```py
 {code}
-    ```"""
+    ```
+
+"""
 
 ASSIGN_MD_STRUCT: Final[str] = """### `#!py {token}`
 
@@ -721,7 +723,9 @@ Value: `#!py {value}`
 
     ```py
 {code}
-    ```"""
+    ```
+
+"""
 
 CLASS_DEF_MD_STRUCT: Final[str] = """### `#!py class {name}`
 
@@ -737,7 +741,9 @@ Kwargs: `#!py {kwargs}`
 
     ```py
 {code}
-    ```"""
+    ```
+
+"""
 
 FUNCTION_DEF_MD_STRUCT: Final[str] = """### `#!py def {name}`
 
@@ -757,7 +763,9 @@ Kwargs: `#!py {kwargs}`
 
     ```py
 {code}
-    ```"""
+    ```
+
+"""
 
 ASSERT_MD_STRUCT: Final[str] = """### `#!py assert {test}`
 
@@ -767,4 +775,6 @@ Message: `#!py {msg}`
 
     ```py
 {code}
-    ```"""
+    ```
+
+"""

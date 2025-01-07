@@ -4,6 +4,10 @@ Role: Python Source Code
 
 Path: `mosheh`
 
+If there is a file containing eater eggs and secrets, this one is not the one.
+
+Here are just info about Mosheh itself, data about data. No more than this.
+
 ---
 
 ## Imports
