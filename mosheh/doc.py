@@ -248,12 +248,14 @@ def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     :rtype: str
     """
 
+    __meta__: StandardReturn = filedata.pop(0)
+
     filename: str = basedir.split(path.sep)[-1]
-    role: str = cast(FileRole, filedata.pop(0).get('__role__')).value
+    role: str = cast(FileRole, __meta__.get('__role__')).value
     filepath: str = (
         basedir.removesuffix(filename).replace(path.sep, '.').removesuffix('.')
     )
-    filedoc: str = ''
+    filedoc: str = cast(str, __meta__.get('__docstring__'))
     imports: str = ''
     constants: str = ''
     classes: str = ''
