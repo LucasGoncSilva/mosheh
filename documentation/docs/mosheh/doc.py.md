@@ -4,6 +4,16 @@ Role: Python Source Code
 
 Path: `mosheh`
 
+Used to create the output documentation, this file deals with the codebase generated
+`custom_types.CodebaseDict` and creates `.md` files based on its collected information.
+
+The only public/exposed function here is `generate_doc`, which takes care of all of the
+private functions.
+
+There is a function for each step and statement type: `ast.Import`, `ast.ImportFrom`,
+`ast.Assign`, `ast.AnnAssign`, `ast.ClassDef`, `ast.FunctionDef`, `ast.AsyncFunctionDef`
+and `ast.Assert`, plus utility stuff like processing files.
+
 ---
 
 ## Imports
@@ -633,10 +643,11 @@ _codebase_to_markdown(filedata, '/path/to/module/file.py')
         :return: A Markdown-formatted string documenting the contents of the file.
         :rtype: str
         """
+        __meta__: StandardReturn = filedata.pop(0)
         filename: str = basedir.split(path.sep)[-1]
-        role: str = cast(FileRole, filedata.pop(0).get('__role__')).value
+        role: str = cast(FileRole, __meta__.get('__role__')).value
         filepath: str = basedir.removesuffix(filename).replace(path.sep, '.').removesuffix('.')
-        filedoc: str = ''
+        filedoc: str = cast(str, __meta__.get('__docstring__'))
         imports: str = ''
         constants: str = ''
         classes: str = ''
@@ -1551,14 +1562,14 @@ __process_file('module_name', stmts, 'src/module.py', '/root', '/docs')
         content: str = _codebase_to_markdown(stmts, file_path)
         output_file_path: str = path.join(docs_path, 'Codebase', file_path.removeprefix(root) + '.md')
         folder_path: str = path.dirname(output_file_path)
-        if not path.exists(folder_path):
-            makedirs(folder_path)
+        if not path.exists(path.join('.', folder_path)):
+            makedirs(path.join('.', folder_path))
             logger.debug(f'{folder_path} created')
-        __write_to_file(output_file_path, content)
-        __update_navigation(folder_path, docs_path, key, output_file_path)
+        _write_to_file(output_file_path, content)
+        _update_navigation(folder_path, docs_path, key, output_file_path)
     ```
 
-### `#!py def __write_to_file`
+### `#!py def _write_to_file`
 
 Type: `#!py Function`
 
@@ -1603,7 +1614,7 @@ __write_to_file('output.md', 'This is some content.')
 ??? example "SNIPPET"
 
     ```py
-    def __write_to_file(file_path: str, content: str) -> None:
+    def _write_to_file(file_path: str, content: str) -> None:
         """
         Writes content to a specified file.
 
@@ -1628,12 +1639,12 @@ __write_to_file('output.md', 'This is some content.')
         :return: None.
         :rtype: None
         """
-        with open(file_path, 'w', encoding='utf-8') as file:
+        with open(path.join('.', file_path), 'w', encoding='utf-8') as file:
             file.write(content)
             logger.debug(f'Content written to {file_path}')
     ```
 
-### `#!py def __update_navigation`
+### `#!py def _update_navigation`
 
 Type: `#!py Function`
 
@@ -1693,7 +1704,7 @@ __update_navigation(
 ??? example "SNIPPET"
 
     ```py
-    def __update_navigation(folder_path: str, docs_path: str, key: str, output_file_path: str) -> None:
+    def _update_navigation(folder_path: str, docs_path: str, key: str, output_file_path: str) -> None:
         """
         Updates the navigation structure for documentation generation.
 

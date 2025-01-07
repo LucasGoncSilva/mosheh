@@ -40,6 +40,23 @@ Key Components of a Changelog:
 
 -->
 
+## v1.3.4 - 2025-01-07
+
+### Adds
+
+- File docstrings for source code, documenting the file role
+- File docstrings now observed and inserted into output documentation markdown
+
+### Updates
+
+- Mosheh now requires Python 3.13
+- Dependencies now supports versions in `lib>=x.x.x` style, no more `lib==x.x.x` only
+- `mosheh.doc` functions `__write_to_file` to `_write_to_file` and `__update_navigation` to `_update_navigation`
+
+### Fixes
+
+- `'.'` added to generated documentation files and dirs on `mosheh.doc` creation lines
+
 ## v1.3.3 - 2024-12-27
 
 ### Adds

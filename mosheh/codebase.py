@@ -1,3 +1,48 @@
+"""
+This module provides functionality to analyze a Python codebase, extracting and
+organizing its structural information.
+
+The primary purpose of this module is to traverse a directory tree, identify Python
+source files, and parse their abstract syntax trees (AST) to collect metadata about
+their classes, functions, and methods. The gathered data is organized in a nested
+dictionary format (`CodebaseDict`) to facilitate further processing and analysis.
+
+Key Functions:
+
+- `read_codebase`: Orchestrates the entire process by iterating through the codebase,
+    parsing Python files, and storing structured information about their contents.
+
+- `_mark_methods`: Annotates methods in class definitions with a `parent` attribute to
+    link them back to their parent class.
+
+- `encapsulated_mark_methods_for_unittest`: Exposes `_mark_methods` for external testing
+    purposes.
+
+- `_iterate`: Recursively yields file paths within the provided root directory for
+    iteration.
+
+How It Works:
+
+1. The `read_codebase` function starts by invoking `_iterate` to traverse the directory
+    tree starting from the given root path.
+
+2. For each Python file encountered, the file is read, and its AST is parsed to extract
+    relevant information.
+
+3. The `_mark_methods` function adds parent annotations to methods inside class
+    definitions to establish context.
+
+4. The extracted data is processed using the `handle_def_nodes` function and added to
+    the nested dictionary structure using utilities like `add_to_dict`.
+
+5. The result is a comprehensive dictionary (`CodebaseDict`) containing all collected
+    data, which is returned as a standard dictionary for compatibility.
+
+This module is a foundational component for automated documentation generation,
+providing the structural insights needed for subsequent steps in the documentation
+pipeline.
+"""
+
 import ast
 from collections.abc import Generator
 from logging import Logger, getLogger
@@ -46,9 +91,18 @@ def read_codebase(root: str) -> CodebaseDict:
 
             statements: list[StandardReturn] = []
 
+            __meta__: StandardReturn = {
+                '__role__': FileRole.PythonSourceCode,
+                '__docstring__': 'No file docstring provided.',
+            }
+
             for node in ast.walk(tree):
                 logger.debug(f'Node: {type(node)}')
-                if isinstance(node, ast.ClassDef):
+                if isinstance(node, ast.Module) and (
+                    __docstring__ := ast.get_docstring(node)
+                ):
+                    __meta__['__docstring__'] = __docstring__
+                elif isinstance(node, ast.ClassDef):
                     _mark_methods(node)
                 elif isinstance(node, ast.FunctionDef) and getattr(
                     node, 'parent', None
@@ -62,7 +116,7 @@ def read_codebase(root: str) -> CodebaseDict:
                     statements.extend(data)
                     logger.debug('Node inserted into statement list')
 
-            statements.insert(0, {'__role__': FileRole.PythonSourceCode})
+            statements.insert(0, __meta__)
 
             add_to_dict(codebase, file.split(sep), statements)
             logger.debug(f'{file} stmts added to CodebaseDict')

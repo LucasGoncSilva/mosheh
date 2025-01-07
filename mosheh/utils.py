@@ -1,3 +1,12 @@
+"""
+If a func can help and be classified as an "utility function" problably will be here.
+
+Functions to be here must be independent, work isolated from other ones and decoupled
+away from any external or global logic. They must work just by itself.
+
+Usually here are maintained reusable code applicable everywhere.
+"""
+
 from collections import defaultdict
 from collections.abc import Sequence
 from copy import deepcopy

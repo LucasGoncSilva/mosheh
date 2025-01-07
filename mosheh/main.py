@@ -9,38 +9,43 @@ the AST and then generating (using MkDocs) a documentation respecting the dirs a
 hierarchy. The stuff documented for each file are listed below:
 
 - Imports `[ast.Import | ast.ImportFrom]`
-  - [x] Type `[Native | TrdParty | Local]`
-  - [x] Path (e.g. 'django.http')
-  - [x] Code
+
+    - [x] Type `[Native | TrdParty | Local]`
+    - [x] Path (e.g. 'django.http')
+    - [x] Code
 
 - Constants `[ast.Assign | ast.AnnAssign]`
-  - [x] Name (token name)
-  - [x] Typing Notation (datatype)
-  - [x] Value (literal or call)
-  - [x] Code
+
+    - [x] Name (token name)
+    - [x] Typing Notation (datatype)
+    - [x] Value (literal or call)
+    - [x] Code
 
 - Classes `[ast.ClassDef]`
-  - [ ] Description (docstring)
-  - [x] Name (class name)
-  - [x] Parents (inheritance)
-  - [ ] Methods Defined (nums and names)
-  - [ ] Example (usage)
-  - [x] Code
+
+    - [x] Description (docstring)
+    - [x] Name (class name)
+    - [x] Parents (inheritance)
+    - [ ] Methods Defined (nums and names)
+    - [ ] Example (usage)
+    - [x] Code
 
 - Funcs `[ast.FunctionDef | ast.AsyncFunctionDef]`
-  - [ ] Description (docstring)
-  - [x] Name (func name)
-  - [ ] Type `[Func | Method | Generator | Coroutine]`
-  - [x] Parameters (name, type, default)
-  - [x] Return Type (datatype)
-  - [ ] Raises (exception throw)
-  - [ ] Example (usage)
-  - [x] Code
+
+    - [x] Description (docstring)
+    - [x] Name (func name)
+    - [x] Type `[Func | Method | Generator | Coroutine]`
+    - [x] Parameters (name, type, default)
+    - [x] Return Type (datatype)
+    - [ ] Raises (exception throw)
+    - [ ] Example (usage)
+    - [x] Code
 
 - Assertions `[ast.Assert]`
-  - [x] Test (assertion by itself)
-  - [x] Message (opt. message in fail case)
-  - [x] Code
+
+    - [x] Test (assertion by itself)
+    - [x] Message (opt. message in fail case)
+    - [x] Code
 """
 
 from .metadata import *  # noqa: F403

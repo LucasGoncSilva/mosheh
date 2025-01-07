@@ -4,6 +4,41 @@ Role: Python Source Code
 
 Path: `mosheh`
 
+This module defines constants and templates used throughout the project.
+
+It aims to standardize project-wide values, ensure consistency, and streamline the
+development and documentation process.
+
+The constants defined here are:
+
+1. `BUILTIN_MODULES`: A comprehensive list of Python's built-in modules for reference or
+   validation purposes.
+
+2. `BUILTIN_FUNCTIONS`: A list of Python's built-in functions to support validation,
+   documentation or tooling needs.
+
+3. `BUILTIN_DUNDER_METHODS`: Commonly used double-underscore (dunder) methods in Python,
+   aiding in validation or documentation.
+
+4. `ACCEPTABLE_LOWER_CONSTANTS`: Lowercase constants acceptable in the project to
+   enforce naming conventions.
+
+5. `DEFAULT_MKDOCS_YML`: A template for MkDocs configuration using the Material theme,
+   with custom settings for a consistent and professional documentation structure.
+
+6. Markdown Templates:
+   - Files (`FILE_MARKDOWN`)
+   - Imports (`IMPORT_MD_STRUCT`)
+   - Assignments (`ASSIGN_MD_STRUCT`)
+   - Classes (`CLASS_DEF_MD_STRUCT`)
+   - Functions (`FUNCTION_DEF_MD_STRUCT`)
+   - Assertions (`ASSERT_MD_STRUCT`)
+
+These constants can be imported and reused wherever needed in the project. Be careful
+when updating this file to maintain consistency across the project. Remember that this
+file should remain immutable during runtime and utilize Python's `typing.Final` type
+hint to mark constants as non-overridable.
+
 ---
 
 ## Imports
@@ -88,12 +123,12 @@ Value: `#!py 'site_name: {proj_name}\nrepo_url: {repo_url}\nrepo_name: {repo_nam
 
 Type: `#!py Final[str]`
 
-Value: `#!py '\n# File: `{filename}`\n\nRole: {role}\n\nPath: `{filepath}`\n\n{filedoc}\n\n---\n\n## Imports\n\n{imports}\n\n---\n\n## Consts\n\n{constants}\n\n---\n\n## Classes\n\n{classes}\n\n---\n\n## Functions\n\n{functions}\n\n---\n\n## Assertions\n\n{assertions}\n'`
+Value: `#!py '# File: `{filename}`\n\nRole: {role}\n\nPath: `{filepath}`\n\n{filedoc}\n\n---\n\n## Imports\n\n{imports}\n\n---\n\n## Consts\n\n{constants}\n\n---\n\n## Classes\n\n{classes}\n\n---\n\n## Functions\n\n{functions}\n\n---\n\n## Assertions\n\n{assertions}\n'`
 
 ??? example "SNIPPET"
 
     ```py
-    FILE_MARKDOWN: Final[str] = '\n# File: `{filename}`\n\nRole: {role}\n\nPath: `{filepath}`\n\n{filedoc}\n\n---\n\n## Imports\n\n{imports}\n\n---\n\n## Consts\n\n{constants}\n\n---\n\n## Classes\n\n{classes}\n\n---\n\n## Functions\n\n{functions}\n\n---\n\n## Assertions\n\n{assertions}\n'
+    FILE_MARKDOWN: Final[str] = '# File: `{filename}`\n\nRole: {role}\n\nPath: `{filepath}`\n\n{filedoc}\n\n---\n\n## Imports\n\n{imports}\n\n---\n\n## Consts\n\n{constants}\n\n---\n\n## Classes\n\n{classes}\n\n---\n\n## Functions\n\n{functions}\n\n---\n\n## Assertions\n\n{assertions}\n'
     ```
 
 ### `#!py IMPORT_MD_STRUCT`

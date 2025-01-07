@@ -1,3 +1,40 @@
+"""
+This module defines constants and templates used throughout the project.
+
+It aims to standardize project-wide values, ensure consistency, and streamline the
+development and documentation process.
+
+The constants defined here are:
+
+1. `BUILTIN_MODULES`: A comprehensive list of Python's built-in modules for reference or
+    validation purposes.
+
+2. `BUILTIN_FUNCTIONS`: A list of Python's built-in functions to support validation,
+    documentation or tooling needs.
+
+3. `BUILTIN_DUNDER_METHODS`: Commonly used double-underscore (dunder) methods in Python,
+    aiding in validation or documentation.
+
+4. `ACCEPTABLE_LOWER_CONSTANTS`: Lowercase constants acceptable in the project to
+    enforce naming conventions.
+
+5. `DEFAULT_MKDOCS_YML`: A template for MkDocs configuration using the Material theme,
+    with custom settings for a consistent and professional documentation structure.
+
+6. Markdown Templates:
+    * Files (`FILE_MARKDOWN`)
+    * Imports (`IMPORT_MD_STRUCT`)
+    * Assignments (`ASSIGN_MD_STRUCT`)
+    * Classes (`CLASS_DEF_MD_STRUCT`)
+    * Functions (`FUNCTION_DEF_MD_STRUCT`)
+    * Assertions (`ASSERT_MD_STRUCT`)
+
+These constants can be imported and reused wherever needed in the project. Be careful
+when updating this file to maintain consistency across the project. Remember that this
+file should remain immutable during runtime and utilize Python's `typing.Final` type
+hint to mark constants as non-overridable.
+"""
+
 from typing import Final
 
 

@@ -68,7 +68,7 @@ theme:
     - navigation.indexes
     - navigation.tabs
     - navigation.top
-    - toc.integrate
+    # - toc.integrate
     - header.autohide
     - navigation.footer
     - content.action.view
@@ -152,9 +152,11 @@ nav:
 
   - Mosheh:
     - Codebase: mosheh/index.md
+    - __init__.py: mosheh/__init__.py.md
+    - metadata.py: mosheh/metadata.py.md
+    - main.py: mosheh/main.py.md
     - constants.py: mosheh/constants.py.md
     - codebase.py: mosheh/codebase.py.md
-    - main.py: mosheh/main.py.md
     - handler.py: mosheh/handler.py.md
     - doc.py: mosheh/doc.py.md
     - utils.py: mosheh/utils.py.md

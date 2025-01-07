@@ -4,6 +4,52 @@ Role: Python Source Code
 
 Path: `mosheh`
 
+Mosheh, a tool for creating docs for projects, from Python to Python.
+
+Basically, Mosheh lists all files you points to, saves every single notorious statement
+of definition on each file iterated, all using Python `ast` native module for handling
+the AST and then generating (using MkDocs) a documentation respecting the dirs and files
+hierarchy. The stuff documented for each file are listed below:
+
+- Imports `[ast.Import | ast.ImportFrom]`
+
+  - [x] Type `[Native | TrdParty | Local]`
+  - [x] Path (e.g. 'django.http')
+  - [x] Code
+
+- Constants `[ast.Assign | ast.AnnAssign]`
+
+  - [x] Name (token name)
+  - [x] Typing Notation (datatype)
+  - [x] Value (literal or call)
+  - [x] Code
+
+- Classes `[ast.ClassDef]`
+
+  - [x] Description (docstring)
+  - [x] Name (class name)
+  - [x] Parents (inheritance)
+  - [ ] Methods Defined (nums and names)
+  - [ ] Example (usage)
+  - [x] Code
+
+- Funcs `[ast.FunctionDef | ast.AsyncFunctionDef]`
+
+  - [x] Description (docstring)
+  - [x] Name (func name)
+  - [x] Type `[Func | Method | Generator | Coroutine]`
+  - [x] Parameters (name, type, default)
+  - [x] Return Type (datatype)
+  - [ ] Raises (exception throw)
+  - [ ] Example (usage)
+  - [x] Code
+
+- Assertions `[ast.Assert]`
+
+  - [x] Test (assertion by itself)
+  - [x] Message (opt. message in fail case)
+  - [x] Code
+
 ---
 
 ## Imports
