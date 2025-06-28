@@ -147,14 +147,6 @@ There is no secret about this one. You passes the path to project's logo and Mos
 
 There is also no secret about this one. You passes the path to project's `README.md` and Mosheh uses it as documentation Homepage. Just like this. If not provided, this wiil be using the default MkDocs index page content.
 
-### `--verbose`
-
-- Mandatory: `#!py Optional`
-- Type: `#!py int`
-- Default: `#!py 3`
-
-When running the script, may be util to see what's going on under the hoods... or not. For this case, `--verbose` comes to play allowing you to choose between different types of logging, from 0 to 4: `#!py logging.CRITICAL`, `#!py logging.ERROR`, `#!py logging.WARNING`, `#!py logging.INFO` and `#!py logging.DEBUG`.
-
 ### `--output`
 
 - Mandatory: `#!py Optional`
@@ -162,3 +154,11 @@ When running the script, may be util to see what's going on under the hoods... o
 - Default: `#!py '.'`
 
 Similar to `--root`, but for the generated documentation. The path provided here is the path to find the documentation at the end of the day. Not too much about this one.
+
+### `--verbose`
+
+- Mandatory: `#!py Optional`
+- Type: `#!py int`
+- Default: `#!py 3`
+
+When running the script, may be util to see what's going on under the hoods... or not. For this case, `--verbose` comes to play allowing you to choose between different types of logging, from 0 to 4: `#!py logging.CRITICAL`, `#!py logging.ERROR`, `#!py logging.WARNING`, `#!py logging.INFO` and `#!py logging.DEBUG`.

@@ -142,13 +142,20 @@ extra_css:
   - css/dracula_at_night.css
 
 
-copyright: Copyright (c) 2024 Lucas Gonçalves da Silva
+copyright: Copyright (c) 2025 Lucas Gonçalves da Silva
 
 
 nav:
   - Homepage: index.md
-  - Changelog: changelog.md
   - Getting Started: starting.md
+  - Guidelines:
+    - index: guidelines/index.md
+    - Code of Conduct: guidelines/code_of_conduct.md
+    - Coding Style: guidelines/coding_style.md
+    - Contributing: guidelines/contributing.md
+    - To Do: guidelines/todo.md
+    - Support: guidelines/support.md
+  - Changelog: changelog.md
 
   - Mosheh:
     - Codebase: mosheh/index.md

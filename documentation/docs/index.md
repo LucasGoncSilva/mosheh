@@ -22,7 +22,7 @@ hide:
 
 Mosheh, a tool for creating docs for projects, from Python to Python.
 
-Basically, Mosheh lists all files you points to, saves every single notorious statement of definition on each file iterated, all using Python `ast` native module for handling the AST and then generating with [MkDocs](https://www.mkdocs.org/) and [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) a documentation respecting the dirs and files hierarchy. The stuff documented for each file are listed below:
+Basically, Mosheh lists all files you points to, saves every single notorious statement of definition on each file iterated, all using Python `ast` native module for handling the AST and then generating with [MkDocs](https://www.mkdocs.org/) and [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) a documentation respecting the dirs and files hierarchy. The stuff documented for each file is shown below:
 
 - Imports `[ast.Import | ast.ImportFrom]`
 
@@ -75,22 +75,9 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
 ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-fff?style=for-the-badge&logo=github-pages&logoColor=222222)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088ff?style=for-the-badge&logo=github-actions&logoColor=fff)
 
-## ToDo List
+## Contributing
 
-- [ ] Evaluate use of Rust for better proccessing
-- [ ] Evaluate the processing of more files than just Python ones (e.g. `.txt`, `.toml`)
-- [x] Migrate dependency system to use [uv](https://docs.astral.sh/uv/)
-- [x] Process 25% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
-- [x] Process 50% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
-- [x] Process 75% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
-- [x] Process 100% of Python [AST](https://docs.python.org/3/library/ast.html)'s nodes on `mosheh.handler`
-- [ ] Accept structured file (e.g. `mosheh.json`) as parameters replacement
-- [ ] Provide an "exclude" config for files/dirs to ignore
-- [ ] Insert `tags` for `.md` based on their names/contexts
-- [ ] Get and list all metrics of above's statements featured
-- [ ] Check for files docstrings and write below filepath
-- [ ] Create detail page for classes with docstring and listing class constants and methods
-- [ ] Create detail page for functions with docstring and body detail
+Before getting access to the To-Do List, Coding Style or even forking the project, we **strongly recommend** reading [Mosheh's Guidelines](https://lucasgoncsilva.github.io/mosheh/guitelines/)
 
 ## Arch
 
@@ -141,29 +128,39 @@ It is to be expected that if the `tests/` directory is deleted, Mosheh itself wi
 #### Installing Dependencies
 
 ```sh
-pip install uv  # For installing uv to handle the environment
-
-uv sync  # Automatically creates a .venv, activates it and install libs based on uv.lock and pyproject.toml
+# Automatically handles everything with .venv
+uv sync
 ```
 
 #### Runing Locally
 
 ```sh
-uv run -m mosheh.main  # For running using uv and dealing with Mosheh as a module
+# For running using uv and dealing with Mosheh as a module
+uv run -m mosheh.main
 ```
 
 #### Installing Locally
 
 ```sh
-uv build  # Build pip-like file
+# Build pip-like file
+uv build
 
-uv pip install dist/mosheh-<VERSION>-py3-none-any.whl --force-reinstall  # Install Mosheh using generated pip-like file
+# Install Mosheh using generated pip-like file
+uv pip install dist/mosheh-<VERSION>-py3-none-any.whl --force-reinstall
 ```
 
 ### Testing
 
 ```sh
-uv run pytest  # Run pytest
+# Run all the testing workflow
+uv run task test
+```
+
+### Lint
+
+```sh
+# Run all the linting workflow
+uv run task lint
 ```
 
 ### Parameters
@@ -177,8 +174,8 @@ uv run pytest  # Run pytest
 |  `--edit-uri`   | `str`  | `Optional` | `'blob/main/documentation/docs'` | `--edit-uri blob/main/docs`     | URI to view raw or edit blob file.                               |
 |  `--logo-path`  | `Path` | `Optional` | `None`                           | `--repo-url .github/logo.svg`   | Path for doc/project logo, same Material MkDocs's formats.       |
 | `--readme-path` | `Path` | `Optional` | `None`                           | `--repo-url .github/README.md`  | Path for `README.md` file to used as homepage.                   |
-|   `--verbose`   | `int`  | `Optional` | `3` - `logging.INFO`             | `--verbose 4`                   | Verbosity level, from 0 (quiet/critical) to 4 (overshare/debug). |
 |   `--output`    | `Path` | `Optional` | `'.'` - current dir              | `--output doc/`                 | Path for documentation output, where to be created.              |
+|   `--verbose`   | `int`  | `Optional` | `3` - `logging.INFO`             | `--verbose 4`                   | Verbosity level, from 0 (quiet/critical) to 4 (overshare/debug). |
 
 ## License
 
