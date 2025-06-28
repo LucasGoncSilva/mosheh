@@ -5,21 +5,18 @@ type here created.
 The idea of this types is to keep everything logical and short, with proper types and
 in-code description. This is a way to turn Python into a "typed" lang, kinda.
 
-The `Statement`, `ImportType`, `FunctionType` and `FileRole` classes are enums with a
+The `Statement`, `ImportType`, `FunctionType` and `FileRole` classes are strenums with a
 really useful function: to standardize the possible types of their own types (for
 example, a function strictly assumes only 4 different types, and exactly one of
 them).
 
-The other ones are `typing.TypeAlias`, simpler but also fuctional.
+The other ones are common `type` definitions, simpler but also fuctional.
 """
 
-# ruff: noqa
-
-from enum import Enum, auto
-from typing import TypeAlias
+from enum import StrEnum, auto
 
 
-class Statement(Enum):
+class Statement(StrEnum):
     """Enum-like class to enumerate in-code the dealed statements."""
 
     Import = auto()
@@ -32,35 +29,37 @@ class Statement(Enum):
     Assert = auto()
 
 
-class ImportType(Enum):
+class ImportType(StrEnum):
     """Enum-like class to enumerate in-code the import types."""
 
-    Native = 'Native'
-    TrdParty = '3rd Party'
-    Local = 'Local'
+    Native = auto()
+    TrdParty = auto()
+    Local = auto()
 
 
-class FunctionType(Enum):
+class FunctionType(StrEnum):
     """Enum-like class to enumerate in-code the function types."""
 
-    Function = 'Function'
-    Method = 'Method'
-    Generator = 'Generator'
-    Coroutine = 'Coroutine'
+    Function = auto()
+    Method = auto()
+    Generator = auto()
+    Coroutine = auto()
 
 
-class FileRole(Enum):
+class FileRole(StrEnum):
     """Enum-like class to enumerate in-code the files investigated."""
 
-    PythonSourceCode = 'Python Source Code'
+    PythonSourceCode = auto()
 
 
-Tokens: TypeAlias = list[str]
-Decorators: TypeAlias = list[str]
-Inheritance: TypeAlias = list[str]
-ArgsKwargs: TypeAlias = list[tuple[str, str | None, str | None]]
+type Token = str
+type Tokens = list[Token]
+type Decorators = Tokens
+type Inheritance = Tokens
+type ArgKwarg = tuple[str, str | None, str | None]
+type ArgsKwargs = list[ArgKwarg]
 
-StandardReturn: TypeAlias = dict[
+type StandardReturn = dict[
     str,
     Statement
     | ImportType
@@ -74,6 +73,6 @@ StandardReturn: TypeAlias = dict[
     | ArgsKwargs,
 ]
 
-StandardReturnProcessor: TypeAlias = str | StandardReturn
+type StandardReturnProcessor = str | StandardReturn
 
-CodebaseDict: TypeAlias = dict[str, list[StandardReturn]]
+type CodebaseDict = dict[str, list[StandardReturn]]
