@@ -49,9 +49,9 @@ from logging import Logger, getLogger
 from os import path, sep, walk
 from typing import Any
 
-from .custom_types import CodebaseDict, FileRole, StandardReturn
-from .handler import handle_def_nodes
-from .utils import add_to_dict, convert_to_regular_dict, nested_dict
+from mosheh.custom_types import CodebaseDict, FileRole, StandardReturn
+from mosheh.handler import handle_def_nodes
+from mosheh.utils import add_to_dict, convert_to_regular_dict, nested_dict
 
 
 logger: Logger = getLogger('mosheh')

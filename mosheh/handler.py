@@ -12,15 +12,19 @@ import ast
 from logging import Logger, getLogger
 from typing import Final, cast
 
-from . import constants
-from .custom_types import (
+from mosheh.constants import (
+    ACCEPTABLE_LOWER_CONSTANTS,
+    BUILTIN_DUNDER_METHODS,
+    BUILTIN_MODULES,
+)
+from mosheh.custom_types import (
     FunctionType,
     ImportType,
     StandardReturn,
     StandardReturnProcessor,
     Statement,
 )
-from .utils import bin, is_lib_installed, standard_struct
+from mosheh.utils import bin, is_lib_installed, standard_struct
 
 
 logger: Logger = getLogger('mosheh')
@@ -70,7 +74,7 @@ def handle_def_nodes(node: ast.AST) -> list[StandardReturn]:
             lst.extend(cast(list[str], _handle_node(i)))
 
         if any(map(str.isupper, lst)) or any(
-            map(lambda x: bin(x, constants.ACCEPTABLE_LOWER_CONSTANTS), lst)
+            map(lambda x: bin(x, ACCEPTABLE_LOWER_CONSTANTS), lst)
         ):
             data = _handle_assign(data, node)
     elif isinstance(node, ast.AnnAssign):
@@ -498,7 +502,7 @@ def __handle_import(lib_name: str) -> StandardReturn:
     path: Final[None] = None
     category: ImportType = ImportType.Local
 
-    if bin(lib_name, constants.BUILTIN_MODULES):
+    if bin(lib_name, BUILTIN_MODULES):
         category = ImportType.Native
     elif is_lib_installed(lib_name):
         category = ImportType.TrdParty
@@ -600,7 +604,7 @@ def _handle_import_from(
 
     if bin(
         f'{mod}.'.split('.')[0],
-        constants.BUILTIN_MODULES,
+        BUILTIN_MODULES,
     ):
         category = ImportType.Native
     elif is_lib_installed(mod):
@@ -971,7 +975,7 @@ def __process_function_type(node: ast.FunctionDef, is_from_class: bool) -> Funct
     :rtype: FunctionType
     """
 
-    if is_from_class or bin(node.name, constants.BUILTIN_DUNDER_METHODS):
+    if is_from_class or bin(node.name, BUILTIN_DUNDER_METHODS):
         return FunctionType.Method
 
     elif any(isinstance(n, ast.Yield | ast.YieldFrom) for n in ast.walk(node)):

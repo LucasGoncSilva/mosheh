@@ -48,7 +48,7 @@ hierarchy. The stuff documented for each file is shown below:
     - [x] Code
 """
 
-from .metadata import *  # noqa: F403
+from mosheh.metadata import *  # noqa: F403
 
 
 __description__ = __doc__
@@ -61,9 +61,9 @@ from subprocess import CalledProcessError
 
 from rich.logging import RichHandler
 
-from .codebase import read_codebase
-from .custom_types import CodebaseDict
-from .doc import generate_doc
+from mosheh.codebase import read_codebase
+from mosheh.custom_types import CodebaseDict
+from mosheh.doc import generate_doc
 
 
 def set_logging_config(v: int = 3) -> None:

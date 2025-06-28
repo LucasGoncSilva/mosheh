@@ -16,7 +16,7 @@ from os import makedirs, path
 from shutil import copy2
 from typing import cast
 
-from .constants import (
+from mosheh.constants import (
     ASSERT_MD_STRUCT,
     ASSIGN_MD_STRUCT,
     CLASS_DEF_MD_STRUCT,
@@ -25,7 +25,7 @@ from .constants import (
     FUNCTION_DEF_MD_STRUCT,
     IMPORT_MD_STRUCT,
 )
-from .custom_types import (
+from mosheh.custom_types import (
     CodebaseDict,
     FileRole,
     FunctionType,
@@ -33,6 +33,7 @@ from .custom_types import (
     StandardReturn,
     Statement,
 )
+
 from .utils import indent_code
 
 
