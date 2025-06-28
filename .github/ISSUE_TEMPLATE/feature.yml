@@ -1,0 +1,53 @@
+name: Feature request
+description: Suggest an idea for this project you think will improve it
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to complete this bug report! Please fill everything as much as you can to ensure you are providing as info as possible, for a quick review!
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Guidelines
+      description: By submitting this issue, you agree to follow our guidelines available [here](https://lucasgoncsilva.github.io/mosheh/guidelines/).
+      options:
+        - label: I agree to follow this project's Guidelines.
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Clearly and concisely describe what you would like to change, add, or implement.
+      placeholder: Tell us your idea.
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Is your feature request related to a problem?
+      placeholder: What problem will this solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How should this be solved?
+      placeholder: How do you think this should be implemented?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Are there other possible approaches?
+      placeholder: Can you think of any other options?
+    validations:
+      required: true
