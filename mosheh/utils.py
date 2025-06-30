@@ -247,7 +247,7 @@ def indent_code(code: str, level: int = 4) -> str:
 
     Example:
     ```python
-    code: str = \"\"\"for i in range(10):\n\t\tstr(i)\"\"\"
+    code: str = \"\"\"for i in range(10):\n        str(i)\"\"\"
     level: int = 4
     code
     # for i in range(10):\n#     str(i)

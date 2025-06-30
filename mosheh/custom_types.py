@@ -10,7 +10,7 @@ really useful function: to standardize the possible types of their own types (fo
 example, a function strictly assumes only 4 different types, and exactly one of
 them).
 
-The other ones are common `type` definitions, simpler but also fuctional.
+The other ones are common `type` definitions, simpler but also useful.
 """
 
 from enum import StrEnum, auto
@@ -53,11 +53,17 @@ class FileRole(StrEnum):
 
 
 type Token = str
-type Tokens = list[Token]
-type Decorators = Tokens
-type Inheritance = Tokens
-type ArgKwarg = tuple[str, str | None, str | None]
+type Notation = str
+type DefaultValue = str
+
+type Decorator = Token
+type Inheritance = Token
+type ArgKwarg = tuple[str, Notation | None, DefaultValue | None]
+
+type Decorators = list[Decorator]
 type ArgsKwargs = list[ArgKwarg]
+
+type Tokens = list[Token | Decorator | Inheritance]
 
 type StandardReturn = dict[
     str,
@@ -66,11 +72,11 @@ type StandardReturn = dict[
     | FunctionType
     | FileRole
     | str
-    | None
     | Tokens
     | Decorators
     | Inheritance
-    | ArgsKwargs,
+    | ArgsKwargs
+    | None,
 ]
 
 type StandardReturnProcessor = str | StandardReturn

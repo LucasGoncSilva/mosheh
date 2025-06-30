@@ -33,8 +33,7 @@ from mosheh.custom_types import (
     StandardReturn,
     Statement,
 )
-
-from .utils import indent_code
+from mosheh.utils import indent_code
 
 
 logger: Logger = getLogger('mosheh')
