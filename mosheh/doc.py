@@ -890,12 +890,14 @@ def _update_navigation(
         sub_nav_path: str = path.sep.join(nav_path[: i + 1])
         if sub_nav_path not in NAV_DIRS:
             NAV_DIRS.append(sub_nav_path)
-            md_line: str = indent_code(f'- {nav_path[i]}:', 2 * (i + 1))
-            NAV_MD.append(f'{md_line}\n')
+            md_indented_line: str = indent_code(f'- {nav_path[i]}:', 2 * (i + 1))
+            NAV_MD.append(f'{md_indented_line}\n')
             logger.debug('"NAV_MD" updated with path not in "NAV_DIRS"')
 
         if i + 1 == len(nav_path):
-            md_file_path: str = output_file_path.removeprefix(docs_path + path.sep)
-            md_line: str = indent_code(f'- {key}: {md_file_path}', 2 * (i + 2))
-            NAV_MD.append(f'{md_line}\n')
+            md_last_file_path: str = output_file_path.removeprefix(docs_path + path.sep)
+            md_last_file_indented_line: str = indent_code(
+                f'- {key}: {md_last_file_path}', 2 * (i + 2)
+            )
+            NAV_MD.append(f'{md_last_file_indented_line}\n')
             logger.debug('"NAV_MD" updated')

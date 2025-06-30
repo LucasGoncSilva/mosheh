@@ -1024,7 +1024,7 @@ def _handle_function_def(
     decos: Final[list[str]] = [
         cast(list[str], _handle_node(i))[0] for i in node.decorator_list
     ]
-    rtype: Final[str] | None = (
+    rtype: Final[str | None] = (
         cast(list[str], _handle_node(node.returns))[0]
         if node.returns is not None
         else None
@@ -1094,7 +1094,7 @@ def _handle_async_function_def(
     decos: Final[list[str]] = [
         cast(list[str], _handle_node(i))[0] for i in node.decorator_list
     ]
-    rtype: Final[str] | None = (
+    rtype: Final[str | None] = (
         cast(list[str], _handle_node(node.returns))[0]
         if node.returns is not None
         else None
@@ -1263,9 +1263,9 @@ def _handle_class_def(
 
     for child in node.body:
         if isinstance(child, ast.FunctionDef):
-            data: StandardReturn = standard_struct()
-            data.update(_handle_function_def([], child, is_from_class=True)[0])
-            struct.append(data)
+            function_data: StandardReturn = standard_struct()
+            function_data.update(_handle_function_def([], child, is_from_class=True)[0])
+            struct.append(function_data)
 
     return struct
 
