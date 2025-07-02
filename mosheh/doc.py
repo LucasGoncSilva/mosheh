@@ -25,12 +25,11 @@ from mosheh.constants import (
     FUNCTION_DEF_MD_STRUCT,
     IMPORT_MD_STRUCT,
 )
-from mosheh.custom_types import (
-    CodebaseDict,
+from mosheh.types.basic import CodebaseDict, StandardReturn
+from mosheh.types.enums import (
     FileRole,
     FunctionType,
     ImportType,
-    StandardReturn,
     Statement,
 )
 from mosheh.utils import indent_code
@@ -553,7 +552,7 @@ def _handle_class_def(stmt: StandardReturn) -> str:
 
     name: str = cast(str, stmt['name'])
     docstring: str | None = cast(str | None, stmt['docstring'])
-    inherit: str = ', '.join(cast(list[str], stmt['inheritance']))
+    inheritance: str = ', '.join(cast(list[str], stmt['inheritance']))
     decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
     kwargs: str = cast(str, stmt['kwargs'])
     _code: str = cast(str, stmt['code'])
@@ -562,13 +561,16 @@ def _handle_class_def(stmt: StandardReturn) -> str:
     if not docstring:
         docstring = 'No `docstring` provided.'
 
+    if not inheritance:
+        inheritance = 'None'
+
     if not kwargs:
         kwargs = 'None'
 
     return CLASS_DEF_MD_STRUCT.format(
         name=name,
         docstring=docstring,
-        inherit=inherit,
+        inheritance=inheritance,
         decorators=decorators,
         kwargs=kwargs,
         code=code,

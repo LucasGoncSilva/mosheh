@@ -729,7 +729,7 @@ Value: `#!py {value}`
 
 CLASS_DEF_MD_STRUCT: Final[str] = """### `#!py class {name}`
 
-Parents: `{inherit}`
+Parents: `{inheritance}`
 
 Decorators: `#!py {decorators}`
 

@@ -5,16 +5,18 @@ from pathlib import Path
 from typing import Any
 
 from mosheh.codebase import encapsulated_mark_methods_for_unittest
-from mosheh.custom_types import (
+from mosheh.handler import handle_std_nodes
+from mosheh.types.basic import (
+    StandardReturn,
+)
+from mosheh.types.enums import (
     FunctionType,
     ImportType,
-    StandardReturn,
     Statement,
 )
-from mosheh.handler import handle_def_nodes
 
 
-def test_handle_def_nodes() -> None:
+def test_handle_std_nodes() -> None:
     with open(f'{Path(__file__).parent}/mock.py.txt', encoding='utf-8') as f:
         code: str = f.read()
 
@@ -28,7 +30,7 @@ def test_handle_def_nodes() -> None:
         if isinstance(node, FunctionDef) and getattr(node, 'parent', None):
             continue
 
-        data: list[StandardReturn] = handle_def_nodes(node)
+        data: list[StandardReturn] = handle_std_nodes(node)
 
         if data:
             statements.extend(data)

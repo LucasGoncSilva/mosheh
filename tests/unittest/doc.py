@@ -1,8 +1,9 @@
 from typing import Any
 from unittest.mock import MagicMock, mock_open, patch
 
-from mosheh.custom_types import CodebaseDict, Statement
 from mosheh.doc import generate_doc
+from mosheh.types.basic import CodebaseDict
+from mosheh.types.enums import Statement
 
 
 def side_effect_join(*args: Any) -> str:

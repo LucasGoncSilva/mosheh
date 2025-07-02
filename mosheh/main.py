@@ -62,8 +62,8 @@ from subprocess import CalledProcessError
 from rich.logging import RichHandler
 
 from mosheh.codebase import read_codebase
-from mosheh.custom_types import CodebaseDict
 from mosheh.doc import generate_doc
+from mosheh.types.basic import CodebaseDict
 
 
 def set_logging_config(v: int = 3) -> None:

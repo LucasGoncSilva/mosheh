@@ -37,7 +37,7 @@ How It Works:
 3. The `_mark_methods` function adds parent annotations to methods inside class
    definitions to establish context.
 
-4. The extracted data is processed using the `handle_def_nodes` function and added to
+4. The extracted data is processed using the `handle_std_nodes` function and added to
    the nested dictionary structure using utilities like `add_to_dict`.
 
 5. The result is a comprehensive dictionary (`CodebaseDict`) containing all collected
@@ -183,7 +183,7 @@ Category: Local
     from custom_types import StandardReturn
     ```
 
-### `#!py import handle_def_nodes`
+### `#!py import handle_std_nodes`
 
 Path: `#!py handler`
 
@@ -192,7 +192,7 @@ Category: Local
 ??? example "SNIPPET"
 
     ```py
-    from handler import handle_def_nodes
+    from handler import handle_std_nodes
     ```
 
 ### `#!py import add_to_dict`
@@ -261,7 +261,7 @@ Kwargs: `#!py None`
 
 Iterates through the codebase and collects all info needed.
 
-Using `iterate()` to navigate and `handle_def_nodes()` to get data,
+Using `iterate()` to navigate and `handle_std_nodes()` to get data,
 stores the collected data in a dict of type CodebaseDict, defined
 in constants.py file.
 
@@ -283,7 +283,7 @@ leading each file to its flow.
         """
         Iterates through the codebase and collects all info needed.
 
-        Using `iterate()` to navigate and `handle_def_nodes()` to get data,
+        Using `iterate()` to navigate and `handle_std_nodes()` to get data,
         stores the collected data in a dict of type CodebaseDict, defined
         in constants.py file.
 
@@ -316,7 +316,7 @@ leading each file to its flow.
                         _mark_methods(node)
                     elif isinstance(node, ast.FunctionDef) and getattr(node, 'parent', None):
                         continue
-                    data: list[StandardReturn] = handle_def_nodes(node)
+                    data: list[StandardReturn] = handle_std_nodes(node)
                     logger.debug('Node processed')
                     if data:
                         statements.extend(data)

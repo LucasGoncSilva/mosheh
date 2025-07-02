@@ -13,7 +13,7 @@ from copy import deepcopy
 from importlib.util import find_spec
 from typing import Any
 
-from mosheh.custom_types import StandardReturn
+from mosheh.types.basic import CodebaseDict, ModuleName, StandardReturn
 
 
 def bin(item: Any, universe: Sequence[Any]) -> bool:
@@ -61,7 +61,7 @@ def bin(item: Any, universe: Sequence[Any]) -> bool:
     return False
 
 
-def is_lib_installed(name: str) -> bool:
+def is_lib_installed(name: ModuleName) -> bool:
     """
     Checks if a lib exists in the environment path.
 
@@ -160,7 +160,7 @@ def add_to_dict(
     return structure
 
 
-def convert_to_regular_dict(d: dict[Any, Any]) -> dict[Any, Any]:
+def convert_to_regular_dict(d: dict[Any, Any]) -> CodebaseDict:
     """
     Converts a nested `defaultdict` into a regular dictionary.
 
@@ -184,9 +184,9 @@ def convert_to_regular_dict(d: dict[Any, Any]) -> dict[Any, Any]:
     ```
 
     :param d: The dictionary to convert. Can include nested `defaultdict` instances.
-    :type d: dict[Any, Any]
+    :type d: CodebaseDict
     :return: A dict where all `defaultdict` instances are converted to regular dicts.
-    :rtype: dict[Any, Any]
+    :rtype: CodebaseDict
     """
 
     if isinstance(d, defaultdict):
@@ -207,14 +207,14 @@ def standard_struct() -> StandardReturn:
         'tokens': Tokens,
         'annot': str,
         'value': str,
-        'decorators': Decorators,
+        'decorators': list[Decorator],
         'inheritance': Inheritance,
         'path': str,
         'category': ImportType | FunctionType,
         'docstring': str | None,
         'rtype': str,
-        'args': ArgsKwargs,
-        'kwargs': ArgsKwargs,
+        'args': ArgTuple,
+        'kwargs': ArgTuple,
         'test': str,
         'msg': str,
         'code': str,

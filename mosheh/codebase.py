@@ -32,7 +32,7 @@ How It Works:
 3. The `_mark_methods` function adds parent annotations to methods inside class
     definitions to establish context.
 
-4. The extracted data is processed using the `handle_def_nodes` function and added to
+4. The extracted data is processed using the `handle_std_nodes` function and added to
     the nested dictionary structure using utilities like `add_to_dict`.
 
 5. The result is a comprehensive dictionary (`CodebaseDict`) containing all collected
@@ -44,13 +44,15 @@ pipeline.
 """
 
 import ast
+from collections import defaultdict
 from collections.abc import Generator
 from logging import Logger, getLogger
 from os import path, sep, walk
 from typing import Any
 
-from mosheh.custom_types import CodebaseDict, FileRole, StandardReturn
-from mosheh.handler import handle_def_nodes
+from mosheh.handler import handle_std_nodes
+from mosheh.types.basic import CodebaseDict, StandardReturn
+from mosheh.types.enums import FileRole
 from mosheh.utils import add_to_dict, convert_to_regular_dict, nested_dict
 
 
@@ -61,7 +63,7 @@ def read_codebase(root: str) -> CodebaseDict:
     """
     Iterates through the codebase and collects all info needed.
 
-    Using `iterate()` to navigate and `handle_def_nodes()` to get data,
+    Using `iterate()` to navigate and `handle_std_nodes()` to get data,
     stores the collected data in a dict of type CodebaseDict, defined
     in constants.py file.
 
@@ -74,7 +76,7 @@ def read_codebase(root: str) -> CodebaseDict:
     :rtype: CodebaseDict
     """
 
-    codebase: CodebaseDict = nested_dict()
+    codebase: defaultdict[Any, Any] = nested_dict()
 
     logger.info(f'Starting iteration through {root}')
     for file in _iterate(root):
@@ -109,7 +111,7 @@ def read_codebase(root: str) -> CodebaseDict:
                 ):
                     continue
 
-                data: list[StandardReturn] = handle_def_nodes(node)
+                data: list[StandardReturn] = handle_std_nodes(node)
                 logger.debug('Node processed')
 
                 if data:

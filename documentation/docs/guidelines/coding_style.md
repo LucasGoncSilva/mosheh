@@ -62,7 +62,7 @@ Example from `handler.py`:
 """
 Being the longest file, this one's role is process the source codebase.
 
-By calling `handle_def_nodes` with an `ast.AST` node, it's going to parse the node type
+By calling `handle_std_nodes` with an `ast.AST` node, it's going to parse the node type
 and call the right handle func. The defined nodes are `ast.Import`, `ast.ImportFrom`,
 ... and `ast.Assert`; if more nodes inside them, `_handle_node` is called to process
 the new one.

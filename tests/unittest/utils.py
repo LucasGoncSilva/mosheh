@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from mosheh.custom_types import StandardReturn
+from mosheh.types.basic import StandardReturn
 from mosheh.utils import (
     add_to_dict,
     bin,

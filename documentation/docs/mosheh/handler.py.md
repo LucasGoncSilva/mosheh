@@ -6,7 +6,7 @@ Path: `mosheh`
 
 Being the longest file, this one's role is process the source codebase.
 
-By calling `handle_def_nodes` with an `ast.AST` node, it's going to parse the node type
+By calling `handle_std_nodes` with an `ast.AST` node, it's going to parse the node type
 and call the right handle func. The defined nodes are `ast.Import`, `ast.ImportFrom`,
 `ast.Assign`, `ast.AnnAssign`, `ast.FunctionDef`, `ast.AsyncFunctionDef`, `ast.ClassDef`
 and `ast.Assert`; if more nodes inside them, `_handle_node` is called to process the new
@@ -200,7 +200,7 @@ Category: Local
 
 ## Functions
 
-### `#!py def handle_def_nodes`
+### `#!py def handle_std_nodes`
 
 Type: `#!py Function`
 
@@ -238,7 +238,7 @@ The function categorizes and handles nodes as follows:
 ??? example "SNIPPET"
 
     ```py
-    def handle_def_nodes(node: ast.AST) -> list[StandardReturn]:
+    def handle_std_nodes(node: ast.AST) -> list[StandardReturn]:
         """
         Processes an abstract syntax tree (AST) node and returns a handler for the node.
 
@@ -300,7 +300,7 @@ Kwargs: `#!py None`
 
 Processes various types of AST nodes and returns a standardized representation.
 
-This function extends the capabilities of `handle_def_nodes()` by supporting a
+This function extends the capabilities of `handle_std_nodes()` by supporting a
 wider range of Python Abstract Syntax Tree (AST) node types. It identifies the
 node type, delegates processing to the appropriate handler function, and
 accumulates the results into a standardized format.
@@ -341,7 +341,7 @@ no node is provided.
         """
         Processes various types of AST nodes and returns a standardized representation.
 
-        This function extends the capabilities of `handle_def_nodes()` by supporting a
+        This function extends the capabilities of `handle_std_nodes()` by supporting a
         wider range of Python Abstract Syntax Tree (AST) node types. It identifies the
         node type, delegates processing to the appropriate handler function, and
         accumulates the results into a standardized format.
