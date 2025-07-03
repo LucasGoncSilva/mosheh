@@ -27,7 +27,7 @@ Path: `#!py enum`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from enum import Enum
@@ -39,7 +39,7 @@ Path: `#!py enum`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from enum import auto
@@ -51,7 +51,7 @@ Path: `#!py typing`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from typing import TypeAlias
@@ -77,7 +77,7 @@ Kwargs: `#!py None`
 
 Enum-like class to enumerate in-code the dealed statements.
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     class Statement(Enum):
@@ -102,7 +102,7 @@ Kwargs: `#!py None`
 
 Enum-like class to enumerate in-code the import types.
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     class ImportType(Enum):
@@ -122,7 +122,7 @@ Kwargs: `#!py None`
 
 Enum-like class to enumerate in-code the function types.
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     class FunctionType(Enum):
@@ -143,7 +143,7 @@ Kwargs: `#!py None`
 
 Enum-like class to enumerate in-code the files investigated.
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     class FileRole(Enum):

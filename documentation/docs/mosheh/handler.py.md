@@ -22,7 +22,7 @@ Path: `#!py None`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     import ast
@@ -34,7 +34,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import Logger
@@ -46,7 +46,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import getLogger
@@ -58,7 +58,7 @@ Path: `#!py typing`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from typing import Final
@@ -70,7 +70,7 @@ Path: `#!py typing`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from typing import cast
@@ -82,7 +82,7 @@ Path: `#!py None`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from None import constants
@@ -94,7 +94,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import FunctionType
@@ -106,7 +106,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import ImportType
@@ -118,7 +118,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import StandardReturn
@@ -130,7 +130,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import StandardReturnProcessor
@@ -142,7 +142,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import Statement
@@ -154,7 +154,7 @@ Path: `#!py utils`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from utils import bin
@@ -166,7 +166,7 @@ Path: `#!py utils`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from utils import is_lib_installed
@@ -178,7 +178,7 @@ Path: `#!py utils`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from utils import standard_struct
@@ -235,7 +235,7 @@ The function categorizes and handles nodes as follows:
 
 :rtype: list[StandardReturn]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def handle_std_nodes(node: ast.AST) -> list[StandardReturn]:
@@ -334,7 +334,7 @@ no node is provided.
 
 :rtype: list[StandardReturnProcessor] | None
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_node(node: ast.AST | ast.expr | None) -> list[StandardReturnProcessor] | None:
@@ -551,7 +551,7 @@ data
 
 :rtype: list[StandardReturn]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def __handle_import(lib_name: str) -> StandardReturn:
@@ -649,7 +649,7 @@ updated_struct
 
 :rtype: list[StandardReturn]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_import(struct: list[StandardReturn], node: ast.Import) -> list[StandardReturn]:
@@ -734,7 +734,7 @@ updated_struct
 
 :rtype: list[StandardReturn]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_import_from(struct: list[StandardReturn], node: ast.ImportFrom) -> list[StandardReturn]:
@@ -809,7 +809,7 @@ Processes an `ast.Attribute` node and returns its code-like representation as st
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_attribute(struct: list[StandardReturnProcessor], node: ast.Attribute) -> list[StandardReturnProcessor]:
@@ -853,7 +853,7 @@ Processes an `ast.Call` node and returns its code-like representation as str.
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_call(struct: list[StandardReturnProcessor], node: ast.Call) -> list[StandardReturnProcessor]:
@@ -897,7 +897,7 @@ Processes an `ast.Constant` node and returns its code-like representation as str
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_constant(struct: list[StandardReturnProcessor], node: ast.Constant) -> list[StandardReturnProcessor]:
@@ -959,7 +959,7 @@ updated_struct
 
 :rtype: list[StandardReturn]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_assign(struct: list[StandardReturn], node: ast.Assign) -> list[StandardReturn]:
@@ -1025,7 +1025,7 @@ Processes an `ast.BinOp` node and returns its code-like representation as str.
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_binop(struct: list[StandardReturnProcessor], node: ast.BinOp) -> list[StandardReturnProcessor]:
@@ -1089,7 +1089,7 @@ updated_struct
 
 :rtype: list[StandardReturn]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_annassign(struct: list[StandardReturn], node: ast.AnnAssign) -> list[StandardReturn]:
@@ -1184,7 +1184,7 @@ formatted
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def __format_arg(name: str, annotation: str | None, default: str | None) -> str:
@@ -1273,7 +1273,7 @@ formatted
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def __process_function_args(node_args: ast.arguments) -> str:
@@ -1364,7 +1364,7 @@ formatted
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def __process_function_kwargs(node_args: ast.arguments) -> str:
@@ -1443,7 +1443,7 @@ a generator, or a regular function.
 
 :rtype: FunctionType
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def __process_function_type(node: ast.FunctionDef, is_from_class: bool) -> FunctionType:
@@ -1522,7 +1522,7 @@ updated_struct
 
 :rtype: list[StandardReturn]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_function_def(struct: list[StandardReturn], node: ast.FunctionDef, is_from_class: bool=False) -> list[StandardReturn]:
@@ -1617,7 +1617,7 @@ updated_struct
 
 :rtype: list[StandardReturn]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_async_function_def(struct: list[StandardReturn], node: ast.AsyncFunctionDef) -> list[StandardReturn]:
@@ -1709,7 +1709,7 @@ formatted
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def __format_class_kwarg(name: str | None, value: ast.expr) -> str:
@@ -1792,7 +1792,7 @@ formatted
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def __process_class_kwargs(keywords: list[ast.keyword]) -> str:
@@ -1876,7 +1876,7 @@ updated_struct
 
 :rtype: list[StandardReturn]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_class_def(struct: list[StandardReturn], node: ast.ClassDef) -> list[StandardReturn]:
@@ -1954,7 +1954,7 @@ Processes an `ast.Compare` node and returns its code-like representation as str.
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_compare(struct: list[StandardReturnProcessor], node: ast.Compare) -> list[StandardReturnProcessor]:
@@ -1998,7 +1998,7 @@ Processes an `ast.UnaryOp` node and returns its code-like representation as str.
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_unary(struct: list[StandardReturnProcessor], node: ast.UnaryOp) -> list[StandardReturnProcessor]:
@@ -2052,7 +2052,7 @@ Key elements of the returned data:
 
 :rtype: list[StandardReturn]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_assert(struct: list[StandardReturn], node: ast.Assert) -> list[StandardReturn]:
@@ -2111,7 +2111,7 @@ Processes an `ast.List` node and returns its code-like representation as str.
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_list(struct: list[StandardReturnProcessor], node: ast.List) -> list[StandardReturnProcessor]:
@@ -2155,7 +2155,7 @@ Processes an `ast.Tuple` node and returns its code-like representation as str.
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_tuple(struct: list[StandardReturnProcessor], node: ast.Tuple) -> list[StandardReturnProcessor]:
@@ -2199,7 +2199,7 @@ Processes an `ast.Set` node and returns its code-like representation as str.
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_set(struct: list[StandardReturnProcessor], node: ast.Set) -> list[StandardReturnProcessor]:
@@ -2243,7 +2243,7 @@ Processes an `ast.Dict` node and returns its code-like representation as str.
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_dict(struct: list[StandardReturnProcessor], node: ast.Dict) -> list[StandardReturnProcessor]:
@@ -2287,7 +2287,7 @@ Processes an `ast.Subscript` node and returns its code-like representation as st
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_subscript(struct: list[StandardReturnProcessor], node: ast.Subscript) -> list[StandardReturnProcessor]:
@@ -2331,7 +2331,7 @@ Processes an `ast.Slice` node and returns its code-like representation as str.
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_slice(struct: list[StandardReturnProcessor], node: ast.Slice) -> list[StandardReturnProcessor]:
@@ -2377,7 +2377,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_name(struct: list[StandardReturnProcessor], node: ast.Name) -> list[StandardReturnProcessor]:
@@ -2425,7 +2425,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_joined_str(struct: list[StandardReturnProcessor], node: ast.JoinedStr) -> list[StandardReturnProcessor]:
@@ -2473,7 +2473,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_if_expression(struct: list[StandardReturnProcessor], node: ast.IfExp) -> list[StandardReturnProcessor]:
@@ -2521,7 +2521,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_bool_op(struct: list[StandardReturnProcessor], node: ast.BoolOp) -> list[StandardReturnProcessor]:
@@ -2569,7 +2569,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_comprehensions(struct: list[StandardReturnProcessor], node: ast.ListComp | ast.DictComp | ast.SetComp | ast.GeneratorExp) -> list[StandardReturnProcessor]:
@@ -2617,7 +2617,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_lambda(struct: list[StandardReturnProcessor], node: ast.Lambda) -> list[StandardReturnProcessor]:
@@ -2665,7 +2665,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_formatted_value(struct: list[StandardReturnProcessor], node: ast.FormattedValue) -> list[StandardReturnProcessor]:
@@ -2713,7 +2713,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_load(struct: list[StandardReturnProcessor], node: ast.Load) -> list[StandardReturnProcessor]:
@@ -2761,7 +2761,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_store(struct: list[StandardReturnProcessor], node: ast.Store) -> list[StandardReturnProcessor]:
@@ -2809,7 +2809,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_del(struct: list[StandardReturnProcessor], node: ast.Del) -> list[StandardReturnProcessor]:
@@ -2857,7 +2857,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_starred(struct: list[StandardReturnProcessor], node: ast.Starred) -> list[StandardReturnProcessor]:
@@ -2905,7 +2905,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_expr(struct: list[StandardReturnProcessor], node: ast.Expr) -> list[StandardReturnProcessor]:
@@ -2953,7 +2953,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_named_expr(struct: list[StandardReturnProcessor], node: ast.NamedExpr) -> list[StandardReturnProcessor]:
@@ -3001,7 +3001,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_augassign(struct: list[StandardReturnProcessor], node: ast.AugAssign) -> list[StandardReturnProcessor]:
@@ -3049,7 +3049,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_raise(struct: list[StandardReturnProcessor], node: ast.Raise) -> list[StandardReturnProcessor]:
@@ -3097,7 +3097,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_delete(struct: list[StandardReturnProcessor], node: ast.Delete) -> list[StandardReturnProcessor]:
@@ -3145,7 +3145,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_pass(struct: list[StandardReturnProcessor], node: ast.Pass) -> list[StandardReturnProcessor]:
@@ -3193,7 +3193,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_type_alias(struct: list[StandardReturnProcessor], node: ast.TypeAlias) -> list[StandardReturnProcessor]:
@@ -3241,7 +3241,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_if(struct: list[StandardReturnProcessor], node: ast.If) -> list[StandardReturnProcessor]:
@@ -3289,7 +3289,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_for(struct: list[StandardReturnProcessor], node: ast.For) -> list[StandardReturnProcessor]:
@@ -3337,7 +3337,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_while(struct: list[StandardReturnProcessor], node: ast.While) -> list[StandardReturnProcessor]:
@@ -3385,7 +3385,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_break(struct: list[StandardReturnProcessor], node: ast.Break) -> list[StandardReturnProcessor]:
@@ -3433,7 +3433,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_continue(struct: list[StandardReturnProcessor], node: ast.Continue) -> list[StandardReturnProcessor]:
@@ -3481,7 +3481,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_try(struct: list[StandardReturnProcessor], node: ast.Try) -> list[StandardReturnProcessor]:
@@ -3529,7 +3529,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_try_star(struct: list[StandardReturnProcessor], node: ast.TryStar) -> list[StandardReturnProcessor]:
@@ -3577,7 +3577,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_except_handler(struct: list[StandardReturnProcessor], node: ast.ExceptHandler) -> list[StandardReturnProcessor]:
@@ -3625,7 +3625,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_with(struct: list[StandardReturnProcessor], node: ast.With) -> list[StandardReturnProcessor]:
@@ -3673,7 +3673,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_match(struct: list[StandardReturnProcessor], node: ast.Match) -> list[StandardReturnProcessor]:
@@ -3721,7 +3721,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_type_var(struct: list[StandardReturnProcessor], node: ast.TypeVar) -> list[StandardReturnProcessor]:
@@ -3769,7 +3769,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_param_spec(struct: list[StandardReturnProcessor], node: ast.ParamSpec) -> list[StandardReturnProcessor]:
@@ -3817,7 +3817,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_type_var_tuple(struct: list[StandardReturnProcessor], node: ast.TypeVarTuple) -> list[StandardReturnProcessor]:
@@ -3865,7 +3865,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_return(struct: list[StandardReturnProcessor], node: ast.Return) -> list[StandardReturnProcessor]:
@@ -3913,7 +3913,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_yield(struct: list[StandardReturnProcessor], node: ast.Yield) -> list[StandardReturnProcessor]:
@@ -3961,7 +3961,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_yield_from(struct: list[StandardReturnProcessor], node: ast.YieldFrom) -> list[StandardReturnProcessor]:
@@ -4009,7 +4009,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_global(struct: list[StandardReturnProcessor], node: ast.Global) -> list[StandardReturnProcessor]:
@@ -4057,7 +4057,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_nonlocal(struct: list[StandardReturnProcessor], node: ast.Nonlocal) -> list[StandardReturnProcessor]:
@@ -4105,7 +4105,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_await(struct: list[StandardReturnProcessor], node: ast.Await) -> list[StandardReturnProcessor]:
@@ -4153,7 +4153,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_async_for(struct: list[StandardReturnProcessor], node: ast.AsyncFor) -> list[StandardReturnProcessor]:
@@ -4201,7 +4201,7 @@ This function just returns the node id, as str...
 
 :rtype: list[StandardReturnProcessor]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_async_with(struct: list[StandardReturnProcessor], node: ast.AsyncWith) -> list[StandardReturnProcessor]:
@@ -4235,7 +4235,7 @@ Kwargs: `#!py None`
 
 No `docstring` provided.
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def update_data(new_data: list[StandardReturn]):

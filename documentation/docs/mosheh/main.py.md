@@ -60,7 +60,7 @@ Path: `#!py metadata`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from metadata import *
@@ -72,7 +72,7 @@ Path: `#!py argparse`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from argparse import ArgumentParser
@@ -84,7 +84,7 @@ Path: `#!py argparse`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from argparse import Namespace
@@ -96,7 +96,7 @@ Path: `#!py argparse`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from argparse import RawDescriptionHelpFormatter
@@ -108,7 +108,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import CRITICAL
@@ -120,7 +120,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import DEBUG
@@ -132,7 +132,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import ERROR
@@ -144,7 +144,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import INFO
@@ -156,7 +156,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import WARNING
@@ -168,7 +168,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import basicConfig
@@ -180,7 +180,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import getLogger
@@ -192,7 +192,7 @@ Path: `#!py os`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from os import path
@@ -204,7 +204,7 @@ Path: `#!py subprocess`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from subprocess import CalledProcessError
@@ -216,7 +216,7 @@ Path: `#!py rich.logging`
 
 Category: 3rd Party
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from rich.logging import RichHandler
@@ -228,7 +228,7 @@ Path: `#!py codebase`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from codebase import read_codebase
@@ -240,7 +240,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import CodebaseDict
@@ -252,7 +252,7 @@ Path: `#!py doc`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from doc import generate_doc
@@ -268,7 +268,7 @@ Type: `#!py str`
 
 Value: `#!py args.root`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     ROOT: str = args.root
@@ -280,7 +280,7 @@ Type: `#!py str`
 
 Value: `#!py path.abspath(path.curdir).split(path.sep)[-1].upper()`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     PROJ_NAME: str = path.abspath(path.curdir).split(path.sep)[-1].upper()
@@ -292,7 +292,7 @@ Type: `#!py str`
 
 Value: `#!py args.repo_name`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     REPO_NAME: str = args.repo_name
@@ -304,7 +304,7 @@ Type: `#!py str`
 
 Value: `#!py args.repo_url`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     REPO_URL: str = args.repo_url
@@ -316,7 +316,7 @@ Type: `#!py str`
 
 Value: `#!py args.edit_uri`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     EDIT_URI: str = args.edit_uri
@@ -328,7 +328,7 @@ Type: `#!py str | None`
 
 Value: `#!py args.logo_path`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     LOGO_PATH: str | None = args.logo_path
@@ -340,7 +340,7 @@ Type: `#!py str | None`
 
 Value: `#!py args.readme_path`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     README_PATH: str | None = args.readme_path
@@ -352,7 +352,7 @@ Type: `#!py str`
 
 Value: `#!py args.output`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     OUTPUT: str = args.output
@@ -394,7 +394,7 @@ for the `mkdocs` logger in debug mode.
 
 :rtype: None
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def set_logging_config(v: int=3) -> None:
@@ -451,7 +451,7 @@ output doc based on them.
 
 :rtype: None
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def main() -> None:

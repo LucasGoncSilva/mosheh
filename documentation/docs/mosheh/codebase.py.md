@@ -57,7 +57,7 @@ Path: `#!py None`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     import ast
@@ -69,7 +69,7 @@ Path: `#!py collections.abc`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from collections.abc import Generator
@@ -81,7 +81,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import Logger
@@ -93,7 +93,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import getLogger
@@ -105,7 +105,7 @@ Path: `#!py os`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from os import path
@@ -117,7 +117,7 @@ Path: `#!py os`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from os import sep
@@ -129,7 +129,7 @@ Path: `#!py os`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from os import walk
@@ -141,7 +141,7 @@ Path: `#!py typing`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from typing import Any
@@ -153,7 +153,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import CodebaseDict
@@ -165,7 +165,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import FileRole
@@ -177,7 +177,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import StandardReturn
@@ -189,7 +189,7 @@ Path: `#!py handler`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from handler import handle_std_nodes
@@ -201,7 +201,7 @@ Path: `#!py utils`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from utils import add_to_dict
@@ -213,7 +213,7 @@ Path: `#!py utils`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from utils import convert_to_regular_dict
@@ -225,7 +225,7 @@ Path: `#!py utils`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from utils import nested_dict
@@ -276,7 +276,7 @@ leading each file to its flow.
 
 :rtype: CodebaseDict
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def read_codebase(root: str) -> CodebaseDict:
@@ -354,7 +354,7 @@ to the `parent` attribute of the method node.
 
 :rtype: None
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _mark_methods(node: ast.ClassDef) -> None:
@@ -398,7 +398,7 @@ Just encapsulates `_mark_methods` function to external use, only for unittesting
 
 :rtype: None
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def encapsulated_mark_methods_for_unittest(node: ast.ClassDef) -> None:
@@ -438,7 +438,7 @@ files yields the path for each file from the provided root to it.
 
 :rtype: Generator[str, Any, Any]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _iterate(root: str) -> Generator[str, Any, Any]:

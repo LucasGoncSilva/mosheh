@@ -24,7 +24,7 @@ Path: `#!py None`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     import subprocess
@@ -36,7 +36,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import Logger
@@ -48,7 +48,7 @@ Path: `#!py logging`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from logging import getLogger
@@ -60,7 +60,7 @@ Path: `#!py os`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from os import makedirs
@@ -72,7 +72,7 @@ Path: `#!py os`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from os import path
@@ -84,7 +84,7 @@ Path: `#!py shutil`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from shutil import copy2
@@ -96,7 +96,7 @@ Path: `#!py typing`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from typing import cast
@@ -108,7 +108,7 @@ Path: `#!py constants`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from constants import ASSERT_MD_STRUCT
@@ -120,7 +120,7 @@ Path: `#!py constants`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from constants import ASSIGN_MD_STRUCT
@@ -132,7 +132,7 @@ Path: `#!py constants`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from constants import CLASS_DEF_MD_STRUCT
@@ -144,7 +144,7 @@ Path: `#!py constants`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from constants import DEFAULT_MKDOCS_YML
@@ -156,7 +156,7 @@ Path: `#!py constants`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from constants import FILE_MARKDOWN
@@ -168,7 +168,7 @@ Path: `#!py constants`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from constants import FUNCTION_DEF_MD_STRUCT
@@ -180,7 +180,7 @@ Path: `#!py constants`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from constants import IMPORT_MD_STRUCT
@@ -192,7 +192,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import CodebaseDict
@@ -204,7 +204,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import FileRole
@@ -216,7 +216,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import FunctionType
@@ -228,7 +228,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import ImportType
@@ -240,7 +240,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import StandardReturn
@@ -252,7 +252,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import Statement
@@ -264,7 +264,7 @@ Path: `#!py utils`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from utils import indent_code
@@ -280,7 +280,7 @@ Type: `#!py list[str]`
 
 Value: `#!py []`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     NAV_DIRS: list[str] = []
@@ -292,7 +292,7 @@ Type: `#!py list[str]`
 
 Value: `#!py ['nav:\n  - Homepage: index.md\n']`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     NAV_MD: list[str] = ['nav:\n  - Homepage: index.md\n']
@@ -378,7 +378,7 @@ Key concepts:
 
 :rtype: None
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def generate_doc(*, codebase: CodebaseDict, root: str, output: str, proj_name: str, logo_path: str | None, readme_path: str | None, edit_uri: str='blob/main/documentation/docs', repo_name: str='GitHub', repo_url: str='https://github.com') -> None:
@@ -503,7 +503,7 @@ Key features:
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _default_doc_config(*, proj_name: str, output: str, logo_path: str | None, edit_uri: str='blob/main/documentation/docs', repo_name: str='GitHub', repo_url: str='https://github.com/') -> str:
@@ -604,7 +604,7 @@ _codebase_to_markdown(filedata, '/path/to/module/file.py')
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
@@ -745,7 +745,7 @@ handle_import(stmt)
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_import(stmt: StandardReturn) -> str:
@@ -835,7 +835,7 @@ handle_import(stmt)
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_import_from(stmt: StandardReturn) -> str:
@@ -924,7 +924,7 @@ handle_assign(stmt)
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_assign(stmt: StandardReturn) -> str:
@@ -1015,7 +1015,7 @@ handle_annassign(stmt)
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_annassign(stmt: StandardReturn) -> str:
@@ -1110,7 +1110,7 @@ handle_class_def(stmt)
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_class_def(stmt: StandardReturn) -> str:
@@ -1215,7 +1215,7 @@ handle_function_def(stmt)
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_function_def(stmt: StandardReturn) -> str:
@@ -1323,7 +1323,7 @@ handle_assert(stmt)
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _handle_assert(stmt: StandardReturn) -> str:
@@ -1418,7 +1418,7 @@ process_codebase(codebase, '/root', '/output')
 
 :rtype: None
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _process_codebase(codebase: dict[str, CodebaseDict] | dict[str, list[StandardReturn]], root: str, exit: str, basedir: str='') -> None:
@@ -1521,7 +1521,7 @@ __process_file('module_name', stmts, 'src/module.py', '/root', '/docs')
 
 :rtype: None
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _process_file(key: str, stmts: list[StandardReturn], file_path: str, root: str, docs_path: str) -> None:
@@ -1611,7 +1611,7 @@ __write_to_file('output.md', 'This is some content.')
 
 :rtype: None
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _write_to_file(file_path: str, content: str) -> None:
@@ -1701,7 +1701,7 @@ __update_navigation(
 
 :rtype: None
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def _update_navigation(folder_path: str, docs_path: str, key: str, output_file_path: str) -> None:

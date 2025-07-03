@@ -293,22 +293,23 @@ def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
                 logger.debug(f'\tStatement: {stmt}')
 
             case _:
-                logger.error('Statement shoud not be processed here:')
-                logger.error(stmt['statement'])
+                logger.error(
+                    f'Statement shoud not be processed here: {stmt["statement"]}'
+                )
 
-    if not len(imports):
+    if not imports:
         logger.debug('No imports defined here')
         imports = '!!! info "NO IMPORT DEFINED HERE"'
-    if not len(constants):
+    if not constants:
         logger.debug('No constants defined here')
         constants = '!!! info "NO CONSTANT DEFINED HERE"'
-    if not len(classes):
+    if not classes:
         logger.debug('No classes defined here')
         classes = '!!! info "NO CLASS DEFINED HERE"'
-    if not len(functions):
+    if not functions:
         logger.debug('No functions defined here')
         functions = '!!! info "NO FUNCTION DEFINED HERE"'
-    if not len(assertions):
+    if not assertions:
         logger.debug('No assertions defined here')
         assertions = '!!! info "NO ASSERT DEFINED HERE"'
 
@@ -359,14 +360,12 @@ def _handle_import(stmt: StandardReturn) -> str:
     """
 
     name: str = cast(str, stmt['name'])
-    _path: None = None
     category: str = cast(ImportType, stmt['category']).value
-    _code: str = cast(str, stmt['code'])
-    code: str = indent_code(_code)
+    code: str = indent_code(cast(str, stmt['code']))
 
     return IMPORT_MD_STRUCT.format(
         name=name,
-        _path=_path,
+        _path=None,
         category=category,
         code=code,
     )
@@ -452,14 +451,12 @@ def _handle_assign(stmt: StandardReturn) -> str:
     """
 
     tokens: str = ', '.join(cast(list[str], stmt['tokens']))
-    _type: str = 'Unknown'
     value: str = cast(str, stmt['value'])
-    _code: str = cast(str, stmt['code'])
-    code: str = indent_code(_code)
+    code: str = indent_code(cast(str, stmt['code']))
 
     return ASSIGN_MD_STRUCT.format(
         token=tokens,
-        _type=_type,
+        _type='Unknown',
         value=value,
         code=code,
     )
@@ -502,8 +499,7 @@ def _handle_annassign(stmt: StandardReturn) -> str:
     name: str = cast(str, stmt['name'])
     annot: str = cast(str, stmt['annot'])
     value: str = cast(str, stmt['value'])
-    _code: str = cast(str, stmt['code'])
-    code: str = indent_code(_code)
+    code: str = indent_code(cast(str, stmt['code']))
 
     return ASSIGN_MD_STRUCT.format(
         token=name,
@@ -555,11 +551,12 @@ def _handle_class_def(stmt: StandardReturn) -> str:
     inheritance: str = ', '.join(cast(list[str], stmt['inheritance']))
     decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
     kwargs: str = cast(str, stmt['kwargs'])
-    _code: str = cast(str, stmt['code'])
-    code: str = indent_code(_code)
+    code: str = indent_code(cast(str, stmt['code']))
 
-    if not docstring:
-        docstring = 'No `docstring` provided.'
+    if docstring:
+        docstring = indent_code(docstring)
+    else:
+        docstring = 'No docstring provided.'
 
     if not inheritance:
         inheritance = 'None'
@@ -622,18 +619,17 @@ def _handle_function_def(stmt: StandardReturn) -> str:
     args: str = cast(str, stmt['args'])
     kwargs: str = cast(str, stmt['kwargs'])
     rtype: str = cast(str, stmt['rtype']) or 'Unknown'
-    _code: str = cast(str, stmt['code'])
-    code: str = indent_code(_code)
+    code: str = indent_code(cast(str, stmt['code']))
 
-    if not docstring:
-        docstring = 'No `docstring` provided.'
     if docstring:
-        docstring = (
+        docstring = indent_code(
             docstring.replace(':param', '\n:param')
             .replace(':type', '\n:type')
             .replace(':return', '\n:return')
             .replace(':rtype', '\n:rtype')
         )
+    else:
+        docstring = 'No docstring provided.'
 
     if not args:
         args = 'None'
@@ -688,8 +684,7 @@ def _handle_assert(stmt: StandardReturn) -> str:
 
     test: str = cast(str, stmt['test'])
     msg: str = cast(str, stmt['msg'])
-    _code: str = cast(str, stmt['code'])
-    code: str = indent_code(_code)
+    code: str = indent_code(cast(str, stmt['code']))
 
     return ASSERT_MD_STRUCT.format(test=test, msg=msg, code=code)
 

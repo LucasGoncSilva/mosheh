@@ -21,7 +21,7 @@ Path: `#!py collections`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from collections import defaultdict
@@ -33,7 +33,7 @@ Path: `#!py collections.abc`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from collections.abc import Sequence
@@ -45,7 +45,7 @@ Path: `#!py copy`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from copy import deepcopy
@@ -57,7 +57,7 @@ Path: `#!py importlib.util`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from importlib.util import find_spec
@@ -69,7 +69,7 @@ Path: `#!py typing`
 
 Category: Native
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from typing import Any
@@ -81,7 +81,7 @@ Path: `#!py custom_types`
 
 Category: Local
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     from custom_types import StandardReturn
@@ -146,7 +146,7 @@ bin(num, lst)
 
 :rtype: bool
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def bin(item: Any, universe: Sequence[Any]) -> bool:
@@ -222,7 +222,7 @@ is_lib_installed('fastapi')
 
 :rtype: bool
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def is_lib_installed(name: str) -> bool:
@@ -285,7 +285,7 @@ d['level1']['level2']['level3'] = 'text'
 
 :rtype: defaultdict[Any, Any]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def nested_dict() -> defaultdict[Any, Any]:
@@ -367,7 +367,7 @@ add_to_dict(structure, path, data)
 
 :rtype: defaultdict[Any, Any]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def add_to_dict(structure: defaultdict[Any, Any], path: list[str], data: list[StandardReturn]) -> defaultdict[Any, Any]:
@@ -454,7 +454,7 @@ convert_to_regular_dict(d)
 
 :rtype: dict[Any, Any]
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def convert_to_regular_dict(d: dict[Any, Any]) -> dict[Any, Any]:
@@ -542,7 +542,7 @@ standard_struct()
 
 :rtype: StandardReturn
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def standard_struct() -> StandardReturn:
@@ -633,7 +633,7 @@ Kwargs: `#!py None`
 
 :rtype: str
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     def indent_code(code: str, level: int=4) -> str:

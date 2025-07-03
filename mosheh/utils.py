@@ -9,7 +9,6 @@ Usually here are maintained reusable code applicable everywhere.
 
 from collections import defaultdict
 from collections.abc import Sequence
-from copy import deepcopy
 from importlib.util import find_spec
 from typing import Any
 
@@ -153,7 +152,7 @@ def add_to_dict(
     """
 
     if len(path) == 1:
-        structure[path[0]] = deepcopy(data)
+        structure[path[0]] = data
     elif len(path) > 1:
         structure[path[0]] = add_to_dict(structure[path[0]], path[1:], data)
 

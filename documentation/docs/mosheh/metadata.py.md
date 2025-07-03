@@ -24,7 +24,7 @@ Type: `#!py Unknown`
 
 Value: `#!py 'LucasGonc'`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __author__ = 'LucasGonc'
@@ -36,7 +36,7 @@ Type: `#!py Unknown`
 
 Value: `#!py 'Copyright (c) 2024 Lucas Gonçalves da Silva'`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __copyright__ = 'Copyright (c) 2024 Lucas Gonçalves da Silva'
@@ -48,7 +48,7 @@ Type: `#!py Unknown`
 
 Value: `#!py ['LucasGonc']`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __credits__ = ['LucasGonc']
@@ -60,7 +60,7 @@ Type: `#!py Unknown`
 
 Value: `#!py 'MIT'`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __license__ = 'MIT'
@@ -72,7 +72,7 @@ Type: `#!py Unknown`
 
 Value: `#!py 'LucasGonc'`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __maintainer__ = 'LucasGonc'
@@ -84,7 +84,7 @@ Type: `#!py Unknown`
 
 Value: `#!py 'lucasgoncsilva04@gmail.com'`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __email__ = 'lucasgoncsilva04@gmail.com'
@@ -96,7 +96,7 @@ Type: `#!py Unknown`
 
 Value: `#!py 'https://github.com/LucasGoncSilva/mosheh'`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __repository__ = 'https://github.com/LucasGoncSilva/mosheh'
@@ -108,7 +108,7 @@ Type: `#!py Unknown`
 
 Value: `#!py ['CLI', 'Python', 'documentation', 'MkDocs', 'automation', 'generation']`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __keywords__ = ['CLI', 'Python', 'documentation', 'MkDocs', 'automation', 'generation']
@@ -120,7 +120,7 @@ Type: `#!py Unknown`
 
 Value: `#!py '1.3.3'`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __version__ = '1.3.3'
@@ -132,7 +132,7 @@ Type: `#!py Unknown`
 
 Value: `#!py '2024-12-27'`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __date__ = '2024-12-27'
@@ -144,7 +144,7 @@ Type: `#!py Unknown`
 
 Value: `#!py 'Production'`
 
-??? example "SNIPPET"
+??? example "Snippet"
 
     ```py
     __status__ = 'Production'
