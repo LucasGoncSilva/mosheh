@@ -18,7 +18,7 @@ from mosheh.constants import (
     BUILTIN_MODULES,
 )
 from mosheh.types.basic import (
-    Arg,
+    Args,
     AssertionMessage,
     AssertionTest,
     CodeSnippet,
@@ -27,7 +27,7 @@ from mosheh.types.basic import (
     Docstring,
     ImportedIdentifier,
     Inheritance,
-    Kwarg,
+    Kwargs,
     ModuleName,
     ModulePath,
     Notation,
@@ -511,7 +511,7 @@ def _handle_annassign(
 
 def __format_arg(
     name: Token, annotation: Notation | None, default: DefaultValue | None
-) -> Arg:
+) -> Args:
     """
     Formats a function argument into a string repr with optional type annotations and
     default values.
@@ -528,7 +528,7 @@ def __format_arg(
 
     Example:
     ```python
-    formatted: Arg = __format_arg('param', 'int', '42')
+    formatted: Args = __format_arg('param', 'int', '42')
     formatted
     # "param: int = 42"
     ```
@@ -540,7 +540,7 @@ def __format_arg(
     :param default: The default value of the argument, if any.
     :type default: DefaultValue | None
     :return: A formatted string representing the argument.
-    :rtype: Arg
+    :rtype: Args
     """
 
     if annotation and default:
@@ -563,7 +563,7 @@ def __process_function_args(node_args: ast.arguments) -> str:
     for documentation or code generation.
 
     Key concepts:
-    - Positional Arguments: Handles arguments that can be passed by position.
+    - Positional Argsuments: Handles arguments that can be passed by position.
     - Type Annotations: Extracts and formats type annotations, if present.
     - Default Values: Aligns each argument with its default value, if provided.
 
@@ -584,7 +584,7 @@ def __process_function_args(node_args: ast.arguments) -> str:
     :rtype: str
     """
 
-    formatted_args: list[Arg] = []
+    formatted_args: list[Args] = []
 
     for i, arg in enumerate(node_args.args):
         name: Token = arg.arg
@@ -598,7 +598,7 @@ def __process_function_args(node_args: ast.arguments) -> str:
         if i < len(node_args.kw_defaults):
             default_node = node_args.kw_defaults[i]
             if default_node:
-                default = str(cast(list[Arg], _handle_node(default_node))[0])
+                default = str(cast(list[Args], _handle_node(default_node))[0])
 
         formatted_args.append(__format_arg(name, annotation, default))
 
@@ -615,7 +615,7 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
     or code generation.
 
     Key concepts:
-    - Keyword-only Arguments: Processes arguments that must be passed by keyword.
+    - Keyword-only Argsuments: Processes arguments that must be passed by keyword.
     - Type Annotations: Extracts and formats type annotations if present.
     - Default Values: Handles default values, aligning them with their own arguments.
 
@@ -639,7 +639,7 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
     formatted_kwargs: list[str] = []
 
     for i, arg in enumerate(node_args.kwonlyargs):
-        name: Arg = arg.arg
+        name: Kwargs = arg.arg
         annotation: Notation | None = (
             cast(list[Notation], _handle_node(arg.annotation))[0]
             if arg.annotation
@@ -732,8 +732,8 @@ def _handle_function_def(
     )
     code: Final[CodeSnippet] = ast.unparse(node)
 
-    args_str: Final[Arg] = __process_function_args(node.args)
-    kwargs_str: Final[Kwarg] = __process_function_kwargs(node.args)
+    args_str: Final[Args] = __process_function_args(node.args)
+    kwargs_str: Final[Kwargs] = __process_function_kwargs(node.args)
 
     category: Final[FunctionType] = __process_function_type(node, is_from_class)
 
@@ -802,8 +802,8 @@ def _handle_async_function_def(
     )
     code: Final[CodeSnippet] = ast.unparse(node)
 
-    args_str: Arg = __process_function_args(node.args)
-    kwargs_str: Kwarg = __process_function_kwargs(node.args)
+    args_str: Final[Args] = __process_function_args(node.args)
+    kwargs_str: Final[Kwargs] = __process_function_kwargs(node.args)
 
     contract: AsyncFunctionDefContract = AsyncFunctionDefContract(
         statement=statement,
@@ -943,7 +943,7 @@ def _handle_class_def(
     decos: Final[list[Decorator]] = [
         cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
     ]
-    kwargs_str: Kwarg = __process_class_kwargs(node.keywords)
+    kwargs_str: Kwargs = __process_class_kwargs(node.keywords)
     code: Final[CodeSnippet] = ast.unparse(node)
 
     contract: ClassDefContract = ClassDefContract(

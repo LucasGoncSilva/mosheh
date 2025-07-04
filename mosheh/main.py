@@ -27,7 +27,6 @@ hierarchy. The stuff documented for each file is shown below:
     - [x] Name (class name)
     - [x] Parents (inheritance)
     - [ ] Methods Defined (nums and names)
-    - [ ] Example (usage)
     - [x] Code
 
 - Funcs `[ast.FunctionDef | ast.AsyncFunctionDef]`
@@ -38,7 +37,6 @@ hierarchy. The stuff documented for each file is shown below:
     - [x] Parameters (name, type, default)
     - [x] Return Type (datatype)
     - [ ] Raises (exception throw)
-    - [ ] Example (usage)
     - [x] Code
 
 - Assertions `[ast.Assert]`

@@ -2,7 +2,7 @@ from dataclasses import asdict, dataclass
 from typing import Any, Self
 
 from mosheh.types.basic import (
-    Arg,
+    Args,
     AssertionMessage,
     AssertionTest,
     CodeSnippet,
@@ -10,7 +10,7 @@ from mosheh.types.basic import (
     Docstring,
     ImportedIdentifier,
     Inheritance,
-    Kwarg,
+    Kwargs,
     ModuleName,
     ModulePath,
     Notation,
@@ -70,8 +70,8 @@ class FunctionDefContract(BaseContract):
     docstring: Docstring | None
     decorators: list[Decorator]
     rtype: Notation | None
-    args: Arg
-    kwargs: Kwarg
+    args: Args
+    kwargs: Kwargs
     code: CodeSnippet
 
 
@@ -83,8 +83,8 @@ class AsyncFunctionDefContract(BaseContract):
     docstring: Docstring | None
     decorators: list[Decorator]
     rtype: Notation | None
-    args: Arg
-    kwargs: Kwarg
+    args: Args
+    kwargs: Kwargs
     code: CodeSnippet
 
 
@@ -95,7 +95,7 @@ class ClassDefContract(BaseContract):
     docstring: Docstring | None
     inheritance: list[Inheritance]
     decorators: list[Decorator]
-    kwargs: Kwarg
+    kwargs: Kwargs
     code: CodeSnippet
 
 

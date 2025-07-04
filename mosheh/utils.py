@@ -127,8 +127,6 @@ def add_to_dict(
     specified location.
 
     Key concepts:
-    - Deepcopy: The `deepcopy` function is used to ensure that the `data` is safely
-      duplicated into the struc, avoiding unintended mutations of the original data.
     - Recursive Traversal: The function calls itself recursively to traverse and modify
       deeper levels of the nested dictionary.
 
@@ -202,21 +200,21 @@ def standard_struct() -> StandardReturn:
     ```python
     dct: StandardReturn = {
         'statement': Statement,
-        'name': str,
-        'tokens': Tokens,
-        'annot': str,
-        'value': str,
+        'name': Token,
+        'tokens': list[Token | ImportedIdentifier],
+        'annot': Notation,
+        'value': Value,
         'decorators': list[Decorator],
-        'inheritance': Inheritance,
-        'path': str,
+        'inheritance': list[Inheritance],
+        'path': ModulePath,
         'category': ImportType | FunctionType,
-        'docstring': str | None,
-        'rtype': str,
-        'args': ArgTuple,
-        'kwargs': ArgTuple,
-        'test': str,
-        'msg': str,
-        'code': str,
+        'docstring': Docstring | None,
+        'rtype': Notation,
+        'args': Arg,
+        'kwargs': Kwarg,
+        'test': AssertionTest,
+        'msg': AssertionMessage,
+        'code': CodeSnippet,
     }
     ```
     Any other datatype different from those above must be avoided as much as possible

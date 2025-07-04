@@ -1,25 +1,25 @@
+from typing import Annotated
+
 from mosheh.types.enums import FileRole, FunctionType, ImportType, Statement
 
 
-type Token = str
-type ModuleName = str
-type Notation = str
-type Value = str
-type DefaultValue = str
-type FilePath = str
-type ModulePath = str
-type StatementName = str
-type CodeSnippet = str
-type Arg = str
-type Kwarg = str
-type AssertionTest = str
-type AssertionMessage = str
-type Docstring = str
+type Token = Annotated[str, 'Variable, function or parameter name']
+type ModuleName = Annotated[str, 'Imported module name']
+type Notation = Annotated[str, 'Typing notation']
+type Value = Annotated[str, 'Variable assigned value']
+type DefaultValue = Annotated[str, 'Default value']
+type FilePath = Annotated[str, 'File or dir name']
+type ModulePath = Annotated[str, 'Path for a module import']
+type CodeSnippet = Annotated[str, 'Code snippet, example']
+type Args = Annotated[str, 'Arguments (e.g. `name: type = default`)']
+type Kwargs = Annotated[str, 'Arguments (e.g. `name: type = default`)']
+type AssertionTest = Annotated[str, 'Assertion itself']
+type AssertionMessage = Annotated[str, 'Assertion return message']
+type Docstring = Annotated[str, 'Class or function docstring']
 
-type ImportedIdentifier = Token | ModuleName
-type Decorator = Token | ModuleName
-type Inheritance = Token | ModuleName
-type ArgTuple = tuple[str, Notation | None, DefaultValue | None]
+type ImportedIdentifier = Annotated[Token | ModuleName, 'Importable stuff']
+type Decorator = Annotated[Token | ModuleName, 'Class or func decorator']
+type Inheritance = Annotated[Token | ModuleName, 'Classes which a class inherits']
 
 type StandardReturn = dict[
     str,
@@ -28,14 +28,11 @@ type StandardReturn = dict[
     | FunctionType
     | list[Decorator]
     | Inheritance
-    | list[ArgTuple]
     | FileRole
     | None,
 ]
 
 
 type StandardReturnProcessor = str | StandardReturn
-
-type CodebaseDictValue = FilePath | StatementName
 
 type CodebaseDict = dict[FilePath, list[StandardReturn]]
