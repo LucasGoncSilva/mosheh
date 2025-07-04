@@ -43,17 +43,15 @@ providing the structural insights needed for subsequent steps in the documentati
 pipeline.
 """
 
-import ast
 from collections import defaultdict
 from collections.abc import Generator
 from logging import Logger, getLogger
-from os import path, sep, walk
+from os import path, walk
 from typing import Any
 
-from mosheh.handler import handle_std_nodes
-from mosheh.types.basic import CodebaseDict, StandardReturn
-from mosheh.types.enums import FileRole
-from mosheh.utils import add_to_dict, convert_to_regular_dict, nested_dict
+from mosheh.handlers import handle_python_file
+from mosheh.types.basic import CodebaseDict
+from mosheh.utils import convert_to_regular_dict, nested_dict
 
 
 logger: Logger = getLogger('mosheh')
@@ -84,78 +82,9 @@ def read_codebase(root: str) -> CodebaseDict:
 
         if file.endswith('.py'):
             logger.debug(f'.py: {file}')
-            with open(file, encoding='utf-8') as f:
-                code: str = f.read()
-                logger.debug(f'{file} read')
-
-            tree: ast.AST = ast.parse(code, filename=file)
-            logger.debug('Code tree parsed')
-
-            statements: list[StandardReturn] = []
-
-            __meta__: StandardReturn = {
-                '__role__': FileRole.PythonSourceCode,
-                '__docstring__': 'No file docstring provided.',
-            }
-
-            for node in ast.walk(tree):
-                logger.debug(f'Node: {type(node)}')
-                if isinstance(node, ast.Module) and (
-                    __docstring__ := ast.get_docstring(node)
-                ):
-                    __meta__['__docstring__'] = __docstring__
-                elif isinstance(node, ast.ClassDef):
-                    _mark_methods(node)
-                elif isinstance(node, ast.FunctionDef) and getattr(
-                    node, 'parent', None
-                ):
-                    continue
-
-                data: list[StandardReturn] = handle_std_nodes(node)
-                logger.debug('Node processed')
-
-                if data:
-                    statements.extend(data)
-                    logger.debug('Node inserted into statement list')
-
-            statements.insert(0, __meta__)
-
-            add_to_dict(codebase, file.split(sep), statements)
-            logger.debug(f'{file} stmts added to CodebaseDict')
+            codebase = handle_python_file(codebase, file)
 
     return convert_to_regular_dict(codebase)
-
-
-def _mark_methods(node: ast.ClassDef) -> None:
-    """
-    Marks all `FunctionDef` nodes within a given `ClassDef` node by setting a
-    `parent` attribute to indicate their association with the class.
-
-    This function iterates over the child nodes of the provided class node, and
-    for each method (a `FunctionDef`), it assigns the class type (`ast.ClassDef`)
-    to the `parent` attribute of the method node.
-
-    :param node: The class definition node containing methods to be marked.
-    :type node: ast.ClassDef
-    :return: No data to be returned
-    :rtype: None
-    """
-
-    for child_node in ast.iter_child_nodes(node):
-        if isinstance(child_node, ast.FunctionDef):
-            setattr(child_node, 'parent', ast.ClassDef)
-
-
-def encapsulated_mark_methods_for_unittest(node: ast.ClassDef) -> None:
-    """
-    Just encapsulates `_mark_methods` function to external use, only for unittesting.
-
-    :param node: The class definition node containing methods to be marked.
-    :type node: ast.ClassDef
-    :return: No data to be returned
-    :rtype: None
-    """
-    _mark_methods(node)
 
 
 def _iterate(root: str) -> Generator[str, Any, Any]:

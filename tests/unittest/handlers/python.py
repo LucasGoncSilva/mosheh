@@ -4,8 +4,10 @@ from ast import AST, ClassDef, FunctionDef, parse, walk
 from pathlib import Path
 from typing import Any
 
-from mosheh.codebase import encapsulated_mark_methods_for_unittest
-from mosheh.handler import handle_std_nodes
+from mosheh.handlers.python import (
+    encapsulated_handle_std_nodes_for_unittest,
+    encapsulated_mark_methods_for_unittest,
+)
 from mosheh.types.basic import (
     StandardReturn,
 )
@@ -30,7 +32,7 @@ def test_handle_std_nodes() -> None:
         if isinstance(node, FunctionDef) and getattr(node, 'parent', None):
             continue
 
-        data: list[StandardReturn] = handle_std_nodes(node)
+        data: list[StandardReturn] = encapsulated_handle_std_nodes_for_unittest(node)
 
         if data:
             statements.extend(data)
