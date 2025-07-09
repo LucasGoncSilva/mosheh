@@ -252,7 +252,11 @@ def _codebase_to_markdown(filedata: list[StandardReturn], basedir: str) -> str:
     filename: str = basedir.split(path.sep)[-1]
     role: str = cast(FileRole, __meta__.get('__role__')).value
     filepath: str = (
-        basedir.removesuffix(filename).replace(path.sep, '.').removesuffix('.')
+        basedir.removesuffix(filename)
+        .replace(path.sep, '.')
+        .removeprefix('..')
+        .removeprefix('.')
+        .removesuffix('.')
     )
     filedoc: str = cast(str, __meta__.get('__docstring__'))
     imports: str = ''
@@ -556,7 +560,7 @@ def _handle_class_def(stmt: StandardReturn) -> str:
     if docstring:
         docstring = indent_code(docstring)
     else:
-        docstring = 'No docstring provided.'
+        docstring = indent_code('No docstring provided.')
 
     if not inheritance:
         inheritance = 'None'
@@ -629,7 +633,7 @@ def _handle_function_def(stmt: StandardReturn) -> str:
             .replace(':rtype', '\n:rtype')
         )
     else:
-        docstring = 'No docstring provided.'
+        docstring = indent_code('No docstring provided.')
 
     if not args:
         args = 'None'

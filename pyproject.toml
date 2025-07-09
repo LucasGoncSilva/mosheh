@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mosheh"
-description = "Mosheh, a tool for creating docs for projects, from Python to Python."
+description = "Mosheh, a tool for documenting projects, from Python to Python."
 readme = { file = ".github/README.md", content-type = "text/markdown" }
 license = { file = "LICENSE" }
 authors = [{ name = "LucasGonc", email = "lucasgoncsilva04@gmail.com" }]
@@ -79,5 +79,5 @@ strict = true
 [tool.taskipy.tasks]
 lint = "uv run ruff check; uv run ruff format; uv run mypy mosheh"
 pytest = "uv run pytest"
-doctest = "uv run -m mosheh.main -root ./tests/PROJECT/ --output ./tests/DOC/ --verbose 3"
+doctest = "cd ./tests/DOC/; uv run -m mosheh.main run --json ."
 test = "uv run task pytest; uv run task doctest"
