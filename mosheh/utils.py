@@ -1,10 +1,12 @@
 """
-If a func can help and be classified as an "utility function" problably will be here.
+If a func can help and be classified as an "utility function", problably that function
+is going to be here.
 
 Functions to be here must be independent, work isolated from other ones and decoupled
-away from any external or global logic. They must work just by itself.
+away from any external or global logic. They must work just by itself, even if
+implementing some functionality which can be related.
 
-Usually here are maintained reusable code applicable everywhere.
+Here are usually maintained reusable code applicable everywhere.
 """
 
 from collections import defaultdict
@@ -37,7 +39,7 @@ def bin(item: Any, universe: Sequence[Any]) -> bool:
 
     :param item: The item to check if exists in.
     :type item: Any
-    :param universe: The sorted iterable to be evaluated.
+    :param universe: The SORTED iterable to be evaluated.
     :type universe: Sequence[Any]
     :return: If the item is found in the universe.
     :rtype: bool
@@ -74,7 +76,7 @@ def is_lib_installed(name: ModuleName) -> bool:
     ```
 
     :param name: The name of the lib, e.g. numpy or numba.
-    :type name: str
+    :type name: ModuleName
     :return: Whether the lib exists in the env.
     :rtype: bool
     """
@@ -157,7 +159,7 @@ def add_to_dict(
     return structure
 
 
-def convert_to_regular_dict(d: dict[Any, Any]) -> CodebaseDict:
+def convert_to_regular_dict(d: defaultdict[Any, Any] | dict[Any, Any]) -> CodebaseDict:
     """
     Converts a nested `defaultdict` into a regular dictionary.
 
@@ -181,7 +183,7 @@ def convert_to_regular_dict(d: dict[Any, Any]) -> CodebaseDict:
     ```
 
     :param d: The dictionary to convert. Can include nested `defaultdict` instances.
-    :type d: CodebaseDict
+    :type d: defaultdict[Any, Any] | dict[Any, Any]
     :return: A dict where all `defaultdict` instances are converted to regular dicts.
     :rtype: CodebaseDict
     """
@@ -194,7 +196,7 @@ def convert_to_regular_dict(d: dict[Any, Any]) -> CodebaseDict:
 
 def standard_struct() -> StandardReturn:
     """
-    Has the attribuition of returning an empty dict but maintaining the standard keys.
+    Defines the standard keys and values of code data dict.
 
     The keys are listed below, followed by they types, as below:
     ```python
@@ -231,8 +233,7 @@ def standard_struct() -> StandardReturn:
     :rtype: StandardReturn
     """
 
-    data: StandardReturn = {}
-    return data
+    return {}
 
 
 def indent_code(code: str, level: int = 4) -> str:
