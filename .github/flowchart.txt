@@ -8,8 +8,8 @@ end
 subgraph MOSHEH
     main("main.py"):::Mosheh
     codebase("codebase.py"):::Mosheh
-    handlers("handlers.py"):::Mosheh
-    types{{"custom_types.py"}}:::Mosheh
+    handlers("handlers/*"):::Mosheh
+    types{{"types/*"}}:::Mosheh
     utils{{"utils.py"}}:::Mosheh
     const("constants.py"):::Mosheh
     doc("doc.py"):::Mosheh
@@ -35,3 +35,4 @@ classDef Mosheh fill:#404040,color:#fff,stroke:#ccc;
 
 linkStyle default stroke:#808080
 linkStyle 10,11,12,13 stroke:#fff
+

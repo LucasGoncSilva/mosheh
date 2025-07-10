@@ -7,13 +7,13 @@ Impact: [low | medium | high] <!-- Size of impact this updates causes -->
 Related to: [#num #num | Not Applicable] <!-- PR's or issues this one is related to: #556 #762 -->
 Implements: [#num #num | Not Applicable] <!-- PR's or issues this one is resolving: #4002 #8922 -->
 Depends on: [#num #num | Not Applicable] <!-- PR's or issues this one depends but is not blocked by: #404 -->
-Blocked by: [#num #num | Not Applicable] <!-- PR's or issues blocking this one: #13 #40 -->
+Blocked by: [#num #num | Not Applicable] <!-- PR's or issues blocking this one: #17 #22 -->
 
 Created/Updated Tests: [Yes | Not Applicable]
 
 ## Deployment Considerations
 
-- New Flag or Arg: [Yes | Not Applicable]
+- New Command, Flag or Arg: [Yes | Not Applicable]
 - Documentation Updated: [Yes | Not Applicable]
 - CI/CD Impact: [Yes | No]
 

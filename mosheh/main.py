@@ -49,7 +49,7 @@ def set_logging_config(v: int = 3) -> None:
         - 0: Critical
         - 1: Error
         - 2: Warning
-        - 3: Info
+        - 3: Info (default)
         - 4: Debug
     :type v: int
     :returns: None.

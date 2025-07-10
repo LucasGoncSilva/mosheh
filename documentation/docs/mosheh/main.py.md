@@ -4,7 +4,7 @@ Role: Python Source Code
 
 Path: `mosheh`
 
-Mosheh, a tool for creating docs for projects, from Python to Python.
+Mosheh, a tool for documenting projects, from Python to Python.
 
 Basically, Mosheh lists all files you points to, saves every single notorious statement
 of definition on each file iterated, all using Python `ast` native module for handling

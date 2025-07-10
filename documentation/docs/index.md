@@ -20,7 +20,7 @@ hide:
 
 [![PyPI](https://img.shields.io/badge/here-here?style=for-the-badge&label=PyPI&labelColor=3e6ea8&color=f3e136)](https://pypi.org/project/mosheh/)
 
-Mosheh, a tool for creating docs for projects, from Python to Python.
+Mosheh, a tool for documenting projects, from Python to Python.
 
 Basically, Mosheh lists all files you points to, saves every single notorious statement of definition on each file iterated, all using Python `ast` native module for handling the AST and then generating with [MkDocs](https://www.mkdocs.org/) and [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) a documentation respecting the dirs and files hierarchy. The stuff documented for each file is shown below:
 
