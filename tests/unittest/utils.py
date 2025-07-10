@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from mosheh.types.basic import StandardReturn
+from mosheh.types.basic import CodebaseDict, StandardReturn
 from mosheh.utils import (
     add_to_dict,
     bin,
@@ -28,11 +28,13 @@ def test_nested_dict() -> None:
 
 
 def test_add_to_dict() -> None:
-    structure: defaultdict[str, str] = nested_dict()
+    structure: defaultdict[str, dict[str, dict[str, list[dict[str, str]]]]] = (
+        nested_dict()
+    )
     path: list[str] = ['level1', 'level2', 'level3']
     data: list[StandardReturn] = [{'key': 'value'}]
 
-    result: defaultdict[str, str | defaultdict[str, str]] = add_to_dict(
+    result: defaultdict[str, dict[str, dict[str, list[dict[str, str]]]]] = add_to_dict(
         structure, path, data
     )
 
@@ -48,7 +50,7 @@ def test_convert_to_regular_dict() -> None:
     added: defaultdict[str, str] = add_to_dict(
         structure, ['level1'], [{'key': 'value'}]
     )
-    result: dict[str, dict[str, str]] = convert_to_regular_dict(added)
+    result: CodebaseDict = convert_to_regular_dict(added)
 
     assert isinstance(result, dict)
     assert not isinstance(result, defaultdict)
