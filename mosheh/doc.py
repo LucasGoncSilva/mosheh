@@ -1,6 +1,6 @@
 """
 Used to create the output documentation, this file deals with the codebase generated
-`custom_types.CodebaseDict` and creates `.md` files based on its collected information.
+`types.basic.CodebaseDict` and creates `.md` files based on its contained information.
 
 The only public/exposed function here is `generate_doc`, which takes care of all of the
 private functions.
@@ -25,7 +25,25 @@ from mosheh.constants import (
     FUNCTION_DEF_MD_STRUCT,
     IMPORT_MD_STRUCT,
 )
-from mosheh.types.basic import CodebaseDict, StandardReturn
+from mosheh.types.basic import (
+    Args,
+    AssertionMessage,
+    AssertionTest,
+    CodeSnippet,
+    CodebaseDict,
+    Decorator,
+    Docstring,
+    FilePath,
+    ImportedIdentifier,
+    Inheritance,
+    Kwargs,
+    ModuleName,
+    ModulePath,
+    Notation,
+    StandardReturn,
+    Token,
+    Value,
+)
 from mosheh.types.enums import (
     FileRole,
     FunctionType,
@@ -55,15 +73,15 @@ def generate_doc(
     repo_url: str = 'https://github.com',
 ) -> None:
     """
-    Generates a documentation structure for a Python codebase using MkDocs.
+    Generates a documentation for a Python codebase using MkDocs.
 
     This function creates a new MkDocs project at the specified output path, writes a
-    configuration file, and processes the provided codebase to generate documentation.
+    configuration file and processes the provided codebase to generate documentation.
 
     Key concepts:
     - Kwargs: By starting args with "*", this function only accepts key-word arguments.
     - MkDocs: A static site generator that's geared towards project documentation.
-    - Codebase Processing: The function relies on `process_codebase` to handle the
+    - Codebase Processing: The function relies on `_process_codebase` to handle the
       codebase structure and populate the documentation content based on Python files
       and their stmts.
     - Configuration: Builds a `mkdocs.yml` configuration file with project details,
@@ -131,7 +149,7 @@ def generate_doc(
         f.writelines(NAV_MD)
         logger.debug('Nav added to mkdocs.yml')
 
-    if readme_path is not None:
+    if readme_path:
         homepage: str = path.join(output_path, 'docs', 'index.md')
 
         with open(readme_path, encoding='utf-8') as f:
@@ -171,7 +189,7 @@ def _default_doc_config(
     :param output: Path for documentation output, where to be created.
     :type output: str
     :param logo_path: Path for doc/project logo, same Material MkDocs's formats.
-    :type logo_path: str
+    :type logo_path: str | None
     :param edit_uri: URI to view raw or edit blob file, default is
                         `'blob/main/documentation/docs'`.
     :type edit_uri: str
@@ -183,10 +201,12 @@ def _default_doc_config(
     :rtype: str
     """
 
-    if logo_path is not None:
-        ext: str = path.splitext(logo_path)[-1]
+    new_logo_path: str
+
+    if logo_path:
+        extension: str = path.splitext(logo_path)[-1]
         logo_file_path: str = path.join(output, 'docs', 'img')
-        file_name: str = path.join(logo_file_path, f'logo{ext}')
+        file_name: str = path.join(logo_file_path, f'logo{extension}')
         logger.debug('Logo path handling done')
 
         if not path.exists(logo_file_path):
@@ -196,17 +216,17 @@ def _default_doc_config(
         copy2(logo_path, file_name)
         logger.info(f'{logo_path} copied to {file_name}')
 
-        logo_path = file_name.removeprefix(path.join(output, 'docs', ''))
+        new_logo_path = file_name.removeprefix(path.join(output, 'docs', ''))
 
     else:
-        logo_path = 'https://squidfunk.github.io/mkdocs-material/assets/favicon.png'
+        new_logo_path = 'https://squidfunk.github.io/mkdocs-material/assets/favicon.png'
 
     return DEFAULT_MKDOCS_YML.format(
         proj_name=proj_name,
         edit_uri=edit_uri,
         repo_name=repo_name,
         repo_url=repo_url,
-        logo_path=logo_path,
+        logo_path=new_logo_path,
     )
 
 
@@ -363,14 +383,14 @@ def _handle_import(stmt: StandardReturn) -> str:
     :rtype: str
     """
 
-    name: str = cast(str, stmt['name'])
-    category: str = cast(ImportType, stmt['category']).value
-    code: str = indent_code(cast(str, stmt['code']))
+    name: ModuleName = cast(ModuleName, stmt['name'])
+    category: ImportType = cast(ImportType, stmt['category'])
+    code: CodeSnippet = indent_code(cast(CodeSnippet, stmt['code']))
 
     return IMPORT_MD_STRUCT.format(
         name=name,
         _path=None,
-        category=category,
+        category=category.value,
         code=code,
     )
 
@@ -408,15 +428,15 @@ def _handle_import_from(stmt: StandardReturn) -> str:
     :rtype: str
     """
 
-    name: str = cast(str, stmt['name'])
-    _path: str = cast(str, stmt['path'])
-    category: str = cast(ImportType, stmt['category']).value
-    code: str = indent_code(f'from {_path} import {name}')
+    name: ImportedIdentifier = cast(ImportedIdentifier, stmt['name'])
+    _path: ModulePath = cast(ModulePath, stmt['path'])
+    category: ImportType = cast(ImportType, stmt['category'])
+    code: CodeSnippet = indent_code(f'from {_path} import {name}')
 
     return IMPORT_MD_STRUCT.format(
         name=name,
         _path=_path,
-        category=category,
+        category=category.value,
         code=code,
     )
 
@@ -454,9 +474,9 @@ def _handle_assign(stmt: StandardReturn) -> str:
     :rtype: str
     """
 
-    tokens: str = ', '.join(cast(list[str], stmt['tokens']))
-    value: str = cast(str, stmt['value'])
-    code: str = indent_code(cast(str, stmt['code']))
+    tokens: Token = ', '.join(cast(list[Token], stmt['tokens']))
+    value: Value = cast(Value, stmt['value'])
+    code: CodeSnippet = indent_code(cast(str, stmt['code']))
 
     return ASSIGN_MD_STRUCT.format(
         token=tokens,
@@ -500,10 +520,10 @@ def _handle_annassign(stmt: StandardReturn) -> str:
     :rtype: str
     """
 
-    name: str = cast(str, stmt['name'])
-    annot: str = cast(str, stmt['annot'])
-    value: str = cast(str, stmt['value'])
-    code: str = indent_code(cast(str, stmt['code']))
+    name: Token = cast(Token, stmt['name'])
+    annot: Notation = cast(Notation, stmt['annot'])
+    value: Value = cast(Value, stmt['value'])
+    code: CodeSnippet = indent_code(cast(str, stmt['code']))
 
     return ASSIGN_MD_STRUCT.format(
         token=name,
@@ -538,7 +558,7 @@ def _handle_class_def(stmt: StandardReturn) -> str:
         'inheritance': ['BaseClass'],
         'decorators': ['@dataclass'],
         'kwargs': '',
-        'code': 'class MyClass(BaseClass):',
+        'code': '@dataclass\nclass MyClass(BaseClass): ...',
     }
     handle_class_def(stmt)
     # Outputs a formatted Markdown string representing the class definition
@@ -550,12 +570,14 @@ def _handle_class_def(stmt: StandardReturn) -> str:
     :rtype: str
     """
 
-    name: str = cast(str, stmt['name'])
-    docstring: str | None = cast(str | None, stmt['docstring'])
-    inheritance: str = ', '.join(cast(list[str], stmt['inheritance']))
-    decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
-    kwargs: str = cast(str, stmt['kwargs'])
-    code: str = indent_code(cast(str, stmt['code']))
+    name: Token = cast(Token, stmt['name'])
+    docstring: Docstring | None = cast(Docstring | None, stmt['docstring'])
+    inheritance: Inheritance = ', '.join(cast(list[Inheritance], stmt['inheritance']))
+    decorators: Decorator = (
+        ', '.join(cast(list[Decorator], stmt['decorators'])) or 'None'
+    )
+    kwargs: Kwargs = cast(Kwargs, stmt['kwargs'])
+    code: CodeSnippet = indent_code(cast(str, stmt['code']))
 
     if docstring:
         docstring = indent_code(docstring)
@@ -600,9 +622,9 @@ def _handle_function_def(stmt: StandardReturn) -> str:
     stmt: StandardReturn = {
         'statement': Statement.FunctionDef,
         'name': 'sum_thing',
-        'decorators': ['@staticmethod'],
-        'args': [('x', 'int', None), ('y', 'int', None)],
-        'kwargs': [],
+        'decorators': '',
+        'args': 'x: int, y: int',
+        'kwargs': '',
         'rtype': 'int',
         'code': 'def sum_thing(x: int, y: int) -> int: return x + y',
     }
@@ -616,14 +638,16 @@ def _handle_function_def(stmt: StandardReturn) -> str:
     :rtype: str
     """
 
-    name: str = cast(str, stmt['name'])
-    decorators: str = ', '.join(cast(list[str], stmt['decorators'])) or 'None'
-    category: str = cast(FunctionType, stmt['category']).value
-    docstring: str | None = cast(str | None, stmt['docstring'])
-    args: str = cast(str, stmt['args'])
-    kwargs: str = cast(str, stmt['kwargs'])
-    rtype: str = cast(str, stmt['rtype']) or 'Unknown'
-    code: str = indent_code(cast(str, stmt['code']))
+    name: Token = cast(Token, stmt['name'])
+    decorators: Decorator = (
+        ', '.join(cast(list[Decorator], stmt['decorators'])) or 'None'
+    )
+    category: FunctionType = cast(FunctionType, stmt['category'])
+    docstring: Docstring | None = cast(Docstring | None, stmt['docstring'])
+    args: Args = cast(Args, stmt['args'])
+    kwargs: Kwargs = cast(Kwargs, stmt['kwargs'])
+    rtype: Notation = cast(Notation, stmt['rtype']) or 'Unknown'
+    code: CodeSnippet = indent_code(cast(str, stmt['code']))
 
     if docstring:
         docstring = indent_code(
@@ -644,7 +668,7 @@ def _handle_function_def(stmt: StandardReturn) -> str:
         name=name,
         docstring=docstring,
         decorators=decorators,
-        category=category,
+        category=category.value,
         args=args,
         kwargs=kwargs,
         rtype=rtype,
@@ -686,9 +710,9 @@ def _handle_assert(stmt: StandardReturn) -> str:
     :rtype: str
     """
 
-    test: str = cast(str, stmt['test'])
-    msg: str = cast(str, stmt['msg'])
-    code: str = indent_code(cast(str, stmt['code']))
+    test: AssertionTest = cast(AssertionTest, stmt['test'])
+    msg: AssertionMessage = cast(AssertionMessage, stmt['msg'])
+    code: CodeSnippet = indent_code(cast(str, stmt['code']))
 
     return ASSERT_MD_STRUCT.format(test=test, msg=msg, code=code)
 
@@ -803,7 +827,7 @@ def _process_file(
     _update_navigation(folder_path, docs_path, key, output_file_path)
 
 
-def _write_to_file(file_path: str, content: str) -> None:
+def _write_to_file(file_path: FilePath, content: str) -> None:
     """
     Writes content to a specified file.
 
@@ -822,7 +846,7 @@ def _write_to_file(file_path: str, content: str) -> None:
     ```
 
     :param file_path: The path to the file where the content will be written.
-    :type file_path: str
+    :type file_path: FilePath
     :param content: The content to be written to the file.
     :type content: str
     :return: None.
