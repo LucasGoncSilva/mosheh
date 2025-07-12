@@ -33,7 +33,7 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
 - Constants `[ast.Assign | ast.AnnAssign]`
 
   - [x] Name (token name)
-  - [x] Typing Notation (datatype)
+  - [x] Typing Annotation (datatype)
   - [x] Value (literal or call)
   - [x] Code
 

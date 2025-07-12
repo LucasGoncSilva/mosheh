@@ -25,7 +25,7 @@ Inspirated by `cargodoc` - a Rust tool for code documenting - and using [MkDocs]
 - Constants `[ast.Assign | ast.AnnAssign]`
 
   - [x] Name (token name)
-  - [x] Typing Notation (datatype)
+  - [x] Typing Annotation (datatype)
   - [x] Value (literal or call)
   - [x] Code
 

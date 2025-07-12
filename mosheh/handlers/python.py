@@ -20,6 +20,7 @@ from mosheh.constants import (
     BUILTIN_MODULES,
 )
 from mosheh.types.basic import (
+    Annotation,
     Args,
     AssertionMessage,
     AssertionTest,
@@ -32,7 +33,6 @@ from mosheh.types.basic import (
     Inheritance,
     Kwargs,
     ModulePath,
-    Notation,
     StandardReturn,
     StandardReturnProcessor,
     Token,
@@ -519,7 +519,7 @@ def _handle_annassign(
     Processes an `ast.AnnAssign` node and returns its data.
 
     This function analyzes the components of an assignment, including the target var
-    and the assigned value, plus the typing notation, returning a structured dict with
+    and the assigned value, plus the typing annotation, returning a structured dict with
     the extracted details.
 
     Key elements of the returned data:
@@ -547,7 +547,7 @@ def _handle_annassign(
 
     statement: Statement = Statement.AnnAssign
     name: Token = cast(list[Token], _handle_node(node.target))[0]
-    annot: Notation = cast(list[Notation], _handle_node(node.annotation))[0]
+    annot: Annotation = cast(list[Annotation], _handle_node(node.annotation))[0]
     value: Value = cast(list[Value], _handle_node(node.value))[0] if node.value else ''
     code: CodeSnippet = ast.unparse(node)
 
@@ -569,7 +569,7 @@ def _handle_annassign(
 
 
 def __format_arg(
-    name: Token, annotation: Notation | None, default: DefaultValue | None
+    name: Token, annotation: Annotation | None, default: DefaultValue | None
 ) -> Args:
     """
     Formats a function argument into a string repr with optional type annotations and
@@ -595,7 +595,7 @@ def __format_arg(
     :param name: The name of the argument.
     :type name: Token
     :param annotation: The type annotation for the argument, if any.
-    :type annotation: Notation | None
+    :type annotation: Annotation | None
     :param default: The default value of the argument, if any.
     :type default: DefaultValue | None
     :return: A formatted string representing the argument.
@@ -647,8 +647,8 @@ def __process_function_args(node_args: ast.arguments) -> str:
 
     for i, arg in enumerate(node_args.args):
         name: Token = arg.arg
-        annotation: Notation | None = (
-            cast(list[Notation], _handle_node(arg.annotation))[0]
+        annotation: Annotation | None = (
+            cast(list[Annotation], _handle_node(arg.annotation))[0]
             if arg.annotation
             else None
         )
@@ -700,8 +700,8 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
 
     for i, arg in enumerate(node_args.kwonlyargs):
         name: Kwargs = arg.arg
-        annotation: Notation | None = (
-            cast(list[Notation], _handle_node(arg.annotation))[0]
+        annotation: Annotation | None = (
+            cast(list[Annotation], _handle_node(arg.annotation))[0]
             if arg.annotation
             else None
         )
@@ -785,8 +785,8 @@ def _handle_function_def(
     decos: Final[list[Decorator]] = [
         cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
     ]
-    rtype: Final[Notation | None] = (
-        cast(list[Notation], _handle_node(node.returns))[0] if node.returns else None
+    rtype: Final[Annotation | None] = (
+        cast(list[Annotation], _handle_node(node.returns))[0] if node.returns else None
     )
     code: Final[CodeSnippet] = ast.unparse(node)
 
@@ -852,8 +852,8 @@ def _handle_async_function_def(
     decos: Final[list[Decorator]] = [
         cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
     ]
-    rtype: Final[Notation | None] = (
-        cast(list[Notation], _handle_node(node.returns))[0] if node.returns else None
+    rtype: Final[Annotation | None] = (
+        cast(list[Annotation], _handle_node(node.returns))[0] if node.returns else None
     )
     code: Final[CodeSnippet] = ast.unparse(node)
 

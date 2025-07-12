@@ -1,5 +1,5 @@
 """
-To ensure the correct type notation of the default config file `mosheh.json` this file
+To ensure the correct type annotation of the default config file `mosheh.json` this file
 invokes the `typing.TypedDict` powers for leading this mission.
 
 The config JSON itself is divided at 2 parts: Documentation and IO:

@@ -26,6 +26,7 @@ from mosheh.constants import (
     IMPORT_MD_STRUCT,
 )
 from mosheh.types.basic import (
+    Annotation,
     Args,
     AssertionMessage,
     AssertionTest,
@@ -39,7 +40,6 @@ from mosheh.types.basic import (
     Kwargs,
     ModuleName,
     ModulePath,
-    Notation,
     StandardReturn,
     Token,
     Value,
@@ -521,7 +521,7 @@ def _handle_annassign(stmt: StandardReturn) -> str:
     """
 
     name: Token = cast(Token, stmt['name'])
-    annot: Notation = cast(Notation, stmt['annot'])
+    annot: Annotation = cast(Annotation, stmt['annot'])
     value: Value = cast(Value, stmt['value'])
     code: CodeSnippet = indent_code(cast(str, stmt['code']))
 
@@ -646,7 +646,7 @@ def _handle_function_def(stmt: StandardReturn) -> str:
     docstring: Docstring | None = cast(Docstring | None, stmt['docstring'])
     args: Args = cast(Args, stmt['args'])
     kwargs: Kwargs = cast(Kwargs, stmt['kwargs'])
-    rtype: Notation = cast(Notation, stmt['rtype']) or 'Unknown'
+    rtype: Annotation = cast(Annotation, stmt['rtype']) or 'Unknown'
     code: CodeSnippet = indent_code(cast(str, stmt['code']))
 
     if docstring:

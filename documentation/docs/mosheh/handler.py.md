@@ -1058,7 +1058,7 @@ Kwargs: `#!py None`
 Processes an `ast.AnnAssign` node and returns its data.
 
 This function analyzes the components of an assignment, including the target var
-and the assigned value, plus the typing notation, returning a structured dict with
+and the assigned value, plus the typing annotation, returning a structured dict with
 the extracted details.
 
 Key elements of the returned data:
@@ -1097,7 +1097,7 @@ updated_struct
         Processes an `ast.AnnAssign` node and returns its data.
 
         This function analyzes the components of an assignment, including the target var
-        and the assigned value, plus the typing notation, returning a structured dict with
+        and the assigned value, plus the typing annotation, returning a structured dict with
         the extracted details.
 
         Key elements of the returned data:

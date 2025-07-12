@@ -17,7 +17,7 @@ from mosheh.types.enums import FileRole, FunctionType, ImportType, Statement
 
 type Token = Annotated[str, 'Variable, function or parameter name']
 type ModuleName = Annotated[str, 'Imported module name']
-type Notation = Annotated[str, 'Typing notation']
+type Annotation = Annotated[str, 'Typing annotation']
 type Value = Annotated[str, 'Variable assigned value']
 type DefaultValue = Annotated[str, 'Default value']
 type FilePath = Annotated[str, 'File or dir name']

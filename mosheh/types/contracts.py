@@ -1,5 +1,5 @@
 """
-Thinking on security during runtime execution, specially for typing notations and
+Thinking on security during runtime execution, specially for typing annotations and
 standard contracts - since Python has not type checking it's strength - here are
 defined the "Contracts" for each statement tracked.
 
@@ -11,6 +11,7 @@ from dataclasses import asdict, dataclass
 from typing import Any, Self
 
 from mosheh.types.basic import (
+    Annotation,
     Args,
     AssertionMessage,
     AssertionTest,
@@ -22,7 +23,6 @@ from mosheh.types.basic import (
     Kwargs,
     ModuleName,
     ModulePath,
-    Notation,
     Token,
     Value,
 )
@@ -76,7 +76,7 @@ class AnnAssignContract(BaseContract):
 
     statement: Statement
     name: Token
-    annot: Notation
+    annot: Annotation
     value: Value
     code: CodeSnippet
 
@@ -90,7 +90,7 @@ class FunctionDefContract(BaseContract):
     category: FunctionType
     docstring: Docstring | None
     decorators: list[Decorator]
-    rtype: Notation | None
+    rtype: Annotation | None
     args: Args
     kwargs: Kwargs
     code: CodeSnippet
@@ -105,7 +105,7 @@ class AsyncFunctionDefContract(BaseContract):
     category: FunctionType
     docstring: Docstring | None
     decorators: list[Decorator]
-    rtype: Notation | None
+    rtype: Annotation | None
     args: Args
     kwargs: Kwargs
     code: CodeSnippet

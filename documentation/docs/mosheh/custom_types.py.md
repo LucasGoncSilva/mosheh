@@ -4,7 +4,7 @@ Role: Python Source Code
 
 Path: `mosheh`
 
-For every type hint and notation that goes beyond the traditional, there is a custom
+For every type hint and annotation that goes beyond the traditional, there is a custom
 type here created.
 
 The idea of this types is to keep everything logical and short, with proper types and
