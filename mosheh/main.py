@@ -52,7 +52,7 @@ def set_logging_config(v: int = 3) -> None:
         - 3: Info (default)
         - 4: Debug
     :type v: int
-    :returns: None.
+    :return: None.
     :rtype: None
     """
 

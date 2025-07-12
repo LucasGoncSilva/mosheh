@@ -27,10 +27,10 @@ from mosheh.types.basic import (
     Decorator,
     DefaultValue,
     Docstring,
+    FilePath,
     ImportedIdentifier,
     Inheritance,
     Kwargs,
-    ModuleName,
     ModulePath,
     Notation,
     StandardReturn,
@@ -61,8 +61,24 @@ logger: Logger = getLogger('mosheh')
 
 
 def handle_python_file(
-    codebase: defaultdict[Any, Any], file: str
+    codebase: defaultdict[Any, Any], file: FilePath
 ) -> defaultdict[Any, Any]:
+    """
+    Processes the .py file and returns it's data.
+
+    By receiving the codebase datastructure, empty or not, and a filepath, first
+    parses the code, then defines the file metadata, such as role (from
+    `types.enums.FileRole`), navigates into it's AST nodes (statements) and calls the
+    `handle_std_nodes` function for dealing with the default observed statements.
+
+    :param codebase: Nested defaultdict with the codebase data, empty or not.
+    :type codebase: defaultdict[Any, Any]
+    :param file: Path for the Python file to be documented.
+    :type file: FilePath
+    :return: The same codebase data struct, with the parsed file.
+    :rtype: defaultdict[Any, Any]
+    """
+
     with open(file, encoding='utf-8') as f:
         code: str = f.read()
         logger.debug(f'{file} read')
@@ -278,7 +294,7 @@ def _handle_node(
     return data
 
 
-def __handle_import(lib_name: str) -> StandardReturn:
+def __handle_import(imported_identifier: ImportedIdentifier) -> StandardReturn:
     """
     Constructs a standardized dictionary representation for an import statement.
 
@@ -308,8 +324,8 @@ def __handle_import(lib_name: str) -> StandardReturn:
     # }
     ```
 
-    :param lib_name: The name of the library to be imported.
-    :type lib_name: str
+    :param imported_identifier: The name of the lib, mod or element imported.
+    :type imported_identifier: ImportedIdentifier
     :return: A standardized dictionary representing the import statement.
     :rtype: list[StandardReturn]
     """
@@ -318,17 +334,17 @@ def __handle_import(lib_name: str) -> StandardReturn:
     path: Final[None] = None
     category: ImportType = ImportType.Local
 
-    if bin(lib_name, BUILTIN_MODULES):
+    if bin(imported_identifier, BUILTIN_MODULES):
         category = ImportType.Native
-    elif is_lib_installed(lib_name):
+    elif is_lib_installed(imported_identifier):
         category = ImportType.TrdParty
 
     contract: ImportContract = ImportContract(
         statement=statement,
-        name=lib_name,
+        name=imported_identifier,
         path=path,
         category=category,
-        code=f'import {lib_name}',
+        code=f'import {imported_identifier}',
     )
 
     data: StandardReturn = standard_struct()
@@ -342,7 +358,7 @@ def _handle_import(
     struct: list[StandardReturn], node: ast.Import
 ) -> list[StandardReturn]:
     """
-    Updates a standardized structure with information from an import statement node.
+    Updates a standard structure with information from an import statement node.
 
     This function processes an AST import node, extracts the library names being
     imported, and updates the given `StandardReturn` structure with details about
@@ -357,9 +373,10 @@ def _handle_import(
 
     Example:
     ```python
-    struct: dict = standard_struct()
+    import ast
+
     node: ast.AST = ast.parse('import os, sys').body[0]
-    updated_struct: dict = _handle_import(struct, node)
+    updated_struct: list[StandardReturn] = _handle_import([], node)
     updated_struct
     # Outputs standardized data for `os` and `sys` imports.
     ```
@@ -382,7 +399,7 @@ def _handle_import_from(
     struct: list[StandardReturn], node: ast.ImportFrom
 ) -> list[StandardReturn]:
     """
-    Processes an `ast.ImportFrom` node and returnes its data.
+    Processes an `ast.ImportFrom` node and returns its data.
 
     This function iterates over the imported module names within an `ast.ImportFrom`
     node, classifying each module into one of the following categorys, as
@@ -395,9 +412,10 @@ def _handle_import_from(
 
     Example:
     ```python
-    struct: dict = standard_struct()
+    import ast
+
     node: ast.AST = ast.parse('from os import environ').body[0]
-    updated_struct: dict = _handle_import_from(struct, node)
+    updated_struct: list[StandardReturn] = _handle_import_from([], node)
     updated_struct
     # Outputs standardized data for `environ` with `os` as path.
     ```
@@ -416,14 +434,12 @@ def _handle_import_from(
     category: ImportType = ImportType.Local
     code: Final[CodeSnippet] = ast.unparse(node)
 
-    mod: ModuleName = f'{node.module}'
-
     if bin(
-        f'{mod}.'.split('.')[0],
+        f'{path}.'.split('.')[0],
         BUILTIN_MODULES,
     ):
         category = ImportType.Native
-    elif is_lib_installed(mod):
+    elif is_lib_installed(str(path)):
         category = ImportType.TrdParty
 
     for i in names:
@@ -457,9 +473,10 @@ def _handle_assign(
 
     Example:
     ```python
-    struct: dict = standard_struct()
+    import ast
+
     node: ast.AST = ast.parse('num = 33').body[0]
-    updated_struct: dict = _handle_assign(struct, node)
+    updated_struct: list[StandardReturn] = _handle_assign([], node)
     updated_struct
     # Outputs standardized data for `num` definition.
     ```
@@ -512,9 +529,10 @@ def _handle_annassign(
 
     Example:
     ```python
-    struct: dict = standard_struct()
+    import ast
+
     node: ast.AST = ast.parse('num: int = 33').body[0]
-    updated_struct: dict = _handle_anassign(struct, node)
+    updated_struct: list[StandardReturn] = _handle_anassign([], node)
     updated_struct
     # Outputs standardized data for `num` definition with `int` annotation.
     ```
@@ -530,11 +548,8 @@ def _handle_annassign(
     statement: Statement = Statement.AnnAssign
     name: Token = cast(list[Token], _handle_node(node.target))[0]
     annot: Notation = cast(list[Notation], _handle_node(node.annotation))[0]
-    value: Value = ''
+    value: Value = cast(list[Value], _handle_node(node.value))[0] if node.value else ''
     code: CodeSnippet = ast.unparse(node)
-
-    if node.value is not None:
-        value = cast(list[Value], _handle_node(node.value))[0]
 
     contract: AnnAssignContract = AnnAssignContract(
         statement=statement,
@@ -639,6 +654,7 @@ def __process_function_args(node_args: ast.arguments) -> str:
         )
 
         default: DefaultValue | None = None
+
         if i < len(node_args.kw_defaults):
             default_node = node_args.kw_defaults[i]
             if default_node:
@@ -691,6 +707,7 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
         )
 
         default: DefaultValue | None = None
+
         if i < len(node_args.kw_defaults):
             default_node = node_args.kw_defaults[i]
             if default_node:
@@ -744,11 +761,10 @@ def _handle_function_def(
 
     Example:
     ```python
-    from typing import Any
+    import ast
 
-    struct: dict = standard_struct()
-    node: ast.AST = ast.parse('def foo(*args: Any):\n    pass').body[0]
-    updated_struct: dict = _handle_function_def(struct, node)
+    node: ast.AST = ast.parse('def foo(*args: Any): pass').body[0]
+    updated_struct: list[StandardReturn] = _handle_function_def([], node)
     updated_struct
     # Outputs standardized data for `foo` definition.
     ```
@@ -770,9 +786,7 @@ def _handle_function_def(
         cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
     ]
     rtype: Final[Notation | None] = (
-        cast(list[Notation], _handle_node(node.returns))[0]
-        if node.returns is not None
-        else None
+        cast(list[Notation], _handle_node(node.returns))[0] if node.returns else None
     )
     code: Final[CodeSnippet] = ast.unparse(node)
 
@@ -816,11 +830,10 @@ def _handle_async_function_def(
 
     Example:
     ```python
-    from typing import Any
+    import ast
 
-    struct: dict = standard_struct()
-    node: ast.AST = ast.parse('async def foo(*args: Any):\n    pass').body[0]
-    updated_struct: dict = _handle_assign(struct, node)
+    node: ast.AST = ast.parse('async def foo(*args: Any): pass').body[0]
+    updated_struct: list[StandardReturn] = _handle_assign([], node)
     updated_struct
     # Outputs standardized data for async `foo` definition.
     ```
@@ -840,9 +853,7 @@ def _handle_async_function_def(
         cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
     ]
     rtype: Final[Notation | None] = (
-        cast(list[Notation], _handle_node(node.returns))[0]
-        if node.returns is not None
-        else None
+        cast(list[Notation], _handle_node(node.returns))[0] if node.returns else None
     )
     code: Final[CodeSnippet] = ast.unparse(node)
 
@@ -902,8 +913,10 @@ def __format_class_kwarg(name: str | None, value: ast.expr) -> str:
     """
 
     value_str: str = ast.unparse(value)
+
     if name:
         return f'{name} = {value_str}'
+
     return value_str
 
 
@@ -923,7 +936,9 @@ def __process_class_kwargs(keywords: list[ast.keyword]) -> str:
 
     Example:
     ```python
-    keywords: list[ast.keydwor] = [
+    import ast
+
+    keywords: list[ast.keyword] = [
         ast.keyword(arg='name', value=ast.Constant(value='MyClass'))
     ]
     formatted: str = __process_class_kwargs(keywords)
@@ -940,6 +955,7 @@ def __process_class_kwargs(keywords: list[ast.keyword]) -> str:
     formatted_kwargs: list[str] = [
         __format_class_kwarg(kw.arg, kw.value) for kw in keywords
     ]
+
     return ', '.join(formatted_kwargs)
 
 
@@ -961,9 +977,10 @@ def _handle_class_def(
 
     Example:
     ```python
-    struct: dict = standard_struct()
-    node: ast.AST = ast.parse('class Foo:\n    pass').body[0]
-    updated_struct: dict = _handle_class_def(struct, node)
+    import ast
+
+    node: ast.AST = ast.parse('class Foo: pass').body[0]
+    updated_struct: list[StandardReturn] = _handle_class_def([], node)
     updated_struct
     # Outputs standardized data for `Foo` definition.
     ```
@@ -1084,8 +1101,7 @@ def _handle_general(
 
 def _mark_methods(node: ast.ClassDef) -> None:
     """
-    Marks all `FunctionDef` nodes within a given `ClassDef` node by setting a
-    `parent` attribute to indicate their association with the class.
+    Marks all functions within a given `ClassDef` node as methods.
 
     This function iterates over the child nodes of the provided class node, and
     for each method (a `FunctionDef`), it assigns the class type (`ast.ClassDef`)
@@ -1102,7 +1118,7 @@ def _mark_methods(node: ast.ClassDef) -> None:
             setattr(child_node, 'parent', ast.ClassDef)
 
 
-def encapsulated_mark_methods_for_unittest(node: ast.ClassDef) -> None:
+def wrapped_mark_methods_for_testing(node: ast.ClassDef) -> None:
     """
     Just encapsulates `_mark_methods` function, just for unittesting.
 
@@ -1111,10 +1127,11 @@ def encapsulated_mark_methods_for_unittest(node: ast.ClassDef) -> None:
     :return: No data to be returned
     :rtype: None
     """
+
     _mark_methods(node)
 
 
-def encapsulated_handle_std_nodes_for_unittest(node: ast.AST) -> list[StandardReturn]:
+def wrapped_handle_std_nodes_for_testing(node: ast.AST) -> list[StandardReturn]:
     """
     Just encapsulates `_handle_std_nodes` function, just for unittesting.
 
@@ -1123,4 +1140,5 @@ def encapsulated_handle_std_nodes_for_unittest(node: ast.AST) -> list[StandardRe
     :return: An object containing information associated with the node.
     :rtype: list[StandardReturn]
     """
+
     return _handle_std_nodes(node)

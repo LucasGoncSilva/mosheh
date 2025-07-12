@@ -5,8 +5,8 @@ from pathlib import Path
 from typing import Any
 
 from mosheh.handlers.python import (
-    encapsulated_handle_std_nodes_for_unittest,
-    encapsulated_mark_methods_for_unittest,
+    wrapped_handle_std_nodes_for_testing,
+    wrapped_mark_methods_for_testing,
 )
 from mosheh.types.basic import (
     StandardReturn,
@@ -27,12 +27,12 @@ def test_handle_std_nodes() -> None:
 
     for node in walk(tree):
         if isinstance(node, ClassDef):
-            encapsulated_mark_methods_for_unittest(node)
+            wrapped_mark_methods_for_testing(node)
 
         if isinstance(node, FunctionDef) and getattr(node, 'parent', None):
             continue
 
-        data: list[StandardReturn] = encapsulated_handle_std_nodes_for_unittest(node)
+        data: list[StandardReturn] = wrapped_handle_std_nodes_for_testing(node)
 
         if data:
             statements.extend(data)

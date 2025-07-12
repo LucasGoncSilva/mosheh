@@ -630,9 +630,9 @@ Key concepts:
 Example:
 
 ```python
-struct: dict = standard_struct()
+struct: StandardReturn = standard_struct()
 node: ast.AST = ast.parse('import os, sys').body[0]
-updated_struct: dict = _handle_import(struct, node)
+updated_struct: list[StandardReturn] = _handle_import(struct, node)
 updated_struct
 # Outputs standardized data for `os` and `sys` imports.
 ```
@@ -669,9 +669,9 @@ updated_struct
 
         Example:
         ```python
-        struct: dict = standard_struct()
+        struct: StandardReturn = standard_struct()
         node: ast.AST = ast.parse('import os, sys').body[0]
-        updated_struct: dict = _handle_import(struct, node)
+        updated_struct: list[StandardReturn] = _handle_import(struct, node)
         updated_struct
         # Outputs standardized data for `os` and `sys` imports.
         ```
@@ -715,9 +715,9 @@ Each module's data includes its path and category, stored in a structured dict.
 Example:
 
 ```python
-struct: dict = standard_struct()
+struct: StandardReturn = standard_struct()
 node: ast.AST = ast.parse('from os import environ').body[0]
-updated_struct: dict = _handle_import_from(struct, node)
+updated_struct: list[StandardReturn] = _handle_import_from(struct, node)
 updated_struct
 # Outputs standardized data for `environ` with `os` as path.
 ```
@@ -752,9 +752,9 @@ updated_struct
 
         Example:
         ```python
-        struct: dict = standard_struct()
+        struct: StandardReturn = standard_struct()
         node: ast.AST = ast.parse('from os import environ').body[0]
-        updated_struct: dict = _handle_import_from(struct, node)
+        updated_struct: list[StandardReturn] = _handle_import_from(struct, node)
         updated_struct
         # Outputs standardized data for `environ` with `os` as path.
         ```
@@ -940,9 +940,9 @@ Key elements of the returned data:
 Example:
 
 ```python
-struct: dict = standard_struct()
+struct: StandardReturn = standard_struct()
 node: ast.AST = ast.parse('num = 33').body[0]
-updated_struct: dict = _handle_assign(struct, node)
+updated_struct: list[StandardReturn] = _handle_assign(struct, node)
 updated_struct
 # Outputs standardized data for `num` definition.
 ```
@@ -975,9 +975,9 @@ updated_struct
 
         Example:
         ```python
-        struct: dict = standard_struct()
+        struct: StandardReturn = standard_struct()
         node: ast.AST = ast.parse('num = 33').body[0]
-        updated_struct: dict = _handle_assign(struct, node)
+        updated_struct: list[StandardReturn] = _handle_assign(struct, node)
         updated_struct
         # Outputs standardized data for `num` definition.
         ```
@@ -1070,9 +1070,9 @@ Key elements of the returned data:
 Example:
 
 ```python
-struct: dict = standard_struct()
+struct: StandardReturn = standard_struct()
 node: ast.AST = ast.parse('num: int = 33').body[0]
-updated_struct: dict = _handle_anassign(struct, node)
+updated_struct: list[StandardReturn] = _handle_anassign(struct, node)
 updated_struct
 # Outputs standardized data for `num` definition with `int` annotation.
 ```
@@ -1107,9 +1107,9 @@ updated_struct
 
         Example:
         ```python
-        struct: dict = standard_struct()
+        struct: StandardReturn = standard_struct()
         node: ast.AST = ast.parse('num: int = 33').body[0]
-        updated_struct: dict = _handle_anassign(struct, node)
+        updated_struct: list[StandardReturn] = _handle_anassign(struct, node)
         updated_struct
         # Outputs standardized data for `num` definition with `int` annotation.
         ```
@@ -1498,10 +1498,10 @@ Example:
 ```python
 from typing import Any
 
-struct: dict = standard_struct()
+struct: StandardReturn = standard_struct()
 node: ast.AST = ast.parse('def foo(*args: Any):
 pass').body[0]
-updated_struct: dict = _handle_function_def(struct, node)
+updated_struct: list[StandardReturn] = _handle_function_def(struct, node)
 updated_struct
 # Outputs standardized data for `foo` definition.
 ```
@@ -1540,10 +1540,10 @@ updated_struct
         ```python
         from typing import Any
 
-        struct: dict = standard_struct()
+        struct: StandardReturn = standard_struct()
         node: ast.AST = ast.parse('def foo(*args: Any):
         pass').body[0]
-        updated_struct: dict = _handle_function_def(struct, node)
+        updated_struct: list[StandardReturn] = _handle_function_def(struct, node)
         updated_struct
         # Outputs standardized data for `foo` definition.
         ```
@@ -1597,10 +1597,10 @@ Example:
 ```python
 from typing import Any
 
-struct: dict = standard_struct()
+struct: StandardReturn = standard_struct()
 node: ast.AST = ast.parse('async def foo(*args: Any):
 pass').body[0]
-updated_struct: dict = _handle_assign(struct, node)
+updated_struct: list[StandardReturn] = _handle_assign(struct, node)
 updated_struct
 # Outputs standardized data for async `foo` definition.
 ```
@@ -1633,10 +1633,10 @@ updated_struct
         ```python
         from typing import Any
 
-        struct: dict = standard_struct()
+        struct: StandardReturn = standard_struct()
         node: ast.AST = ast.parse('async def foo(*args: Any):
         pass').body[0]
-        updated_struct: dict = _handle_assign(struct, node)
+        updated_struct: list[StandardReturn] = _handle_assign(struct, node)
         updated_struct
         # Outputs standardized data for async `foo` definition.
         ```
@@ -1856,10 +1856,10 @@ Key elements of the returned data:
 Example:
 
 ```python
-struct: dict = standard_struct()
+struct: StandardReturn = standard_struct()
 node: ast.AST = ast.parse('class Foo:
 pass').body[0]
-updated_struct: dict = _handle_class_def(struct, node)
+updated_struct: list[StandardReturn] = _handle_class_def(struct, node)
 updated_struct
 # Outputs standardized data for `Foo` definition.
 ```
@@ -1895,10 +1895,10 @@ updated_struct
 
         Example:
         ```python
-        struct: dict = standard_struct()
+        struct: StandardReturn = standard_struct()
         node: ast.AST = ast.parse('class Foo:
         pass').body[0]
-        updated_struct: dict = _handle_class_def(struct, node)
+        updated_struct: list[StandardReturn] = _handle_class_def(struct, node)
         updated_struct
         # Outputs standardized data for `Foo` definition.
         ```
