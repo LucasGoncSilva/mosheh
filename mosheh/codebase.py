@@ -12,30 +12,19 @@ Key Functions:
 - `read_codebase`: Orchestrates the entire process by iterating through the codebase,
     parsing Python files, and storing structured information about their contents.
 
-- `_mark_methods`: Annotates methods in class definitions with a `parent` attribute to
-    link them back to their parent class.
-
-- `encapsulated_mark_methods_for_unittest`: Exposes `_mark_methods` for external testing
-    purposes.
-
 - `_iterate`: Recursively yields file paths within the provided root directory for
     iteration.
 
 How It Works:
 
-1. The `read_codebase` function starts by invoking `_iterate` to traverse the directory
-    tree starting from the given root path.
+1. The `read_codebase` function starts by invoking `_iterate` to navigate into the
+    directory tree starting from the given root path.
 
-2. For each Python file encountered, the file is read, and its AST is parsed to extract
-    relevant information.
+2. For each file encountered, if a valid extension, the file is read and its AST or
+    content - if not a programming language file - is parsed to extract relevant
+    information.
 
-3. The `_mark_methods` function adds parent annotations to methods inside class
-    definitions to establish context.
-
-4. The extracted data is processed using the `handle_std_nodes` function and added to
-    the nested dictionary structure using utilities like `add_to_dict`.
-
-5. The result is a comprehensive dictionary (`CodebaseDict`) containing all collected
+3. The result is a comprehensive dictionary (`CodebaseDict`) containing all collected
     data, which is returned as a standard dictionary for compatibility.
 
 This module is a foundational component for automated documentation generation,
@@ -59,11 +48,11 @@ logger: Logger = getLogger('mosheh')
 
 def read_codebase(root: str) -> CodebaseDict:
     """
-    Iterates through the codebase and collects all info needed.
+    Iterates through the codebase and collects all info possibly needed.
 
-    Using `iterate()` to navigate and `handle_std_nodes()` to get data,
-    stores the collected data in a dict of type CodebaseDict, defined
-    in constants.py file.
+    Using `_iterate()` to navigate, stores the collected data in a dict
+    of type CodebaseDict, matching the file type and processing based
+    on it.
 
     Also works as a dispatch-like, matching the files extensions,
     leading each file to its flow.
