@@ -1,3 +1,15 @@
+"""
+Not a secret about these definitions, it's as simple as possible.
+
+The idea here is not to create custom complex types, but to serve as hints about
+what shoud be here or there; most of the type aliases are just commom strings, but
+their names helps when reading a long, deeper code, showing if that string should
+be an argument or a code snippet.
+
+The use of `typing.Annotated` does not change the alias itself, but helps with a
+description about the type.
+"""
+
 from typing import Annotated
 
 from mosheh.types.enums import FileRole, FunctionType, ImportType, Statement

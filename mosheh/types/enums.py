@@ -1,3 +1,13 @@
+"""
+As a professional alternative to dealing with options (e.g. to choose between roles),
+this file provides standard interfaces for the entire operation of the project.
+
+The classes here declared (using any enum type - Enum, StrEnum, IntEnum, ...) are enums
+with a really useful function: to standardize the possible types of their own types
+(for example, a function strictly assumes only 4 different types, and exactly one of
+them).
+"""
+
 from enum import StrEnum, auto
 
 

@@ -1,3 +1,12 @@
+"""
+Thinking on security during runtime execution, specially for typing notations and
+standard contracts - since Python has not type checking it's strength - here are
+defined the "Contracts" for each statement tracked.
+
+These dataclasses are used to ensure the correct value type and attribution, so every
+time each of them appears, they are going to have the desired and expected behavior.
+"""
+
 from dataclasses import asdict, dataclass
 from typing import Any, Self
 
@@ -22,6 +31,8 @@ from mosheh.types.enums import FunctionType, ImportType, Statement
 
 @dataclass
 class BaseContract:
+    """Base dataclass to shortcut `as_dict` definition."""
+
     @property
     def as_dict(self: Self) -> dict[str, Any]:
         return asdict(self)
@@ -29,6 +40,8 @@ class BaseContract:
 
 @dataclass
 class ImportContract(BaseContract):
+    """`ast.Import` contract for typing and declaration security."""
+
     statement: Statement
     name: ModuleName
     path: None
@@ -38,6 +51,8 @@ class ImportContract(BaseContract):
 
 @dataclass
 class ImportFromContract(BaseContract):
+    """`ast.ImportFrom` contract for typing and declaration security."""
+
     statement: Statement
     name: ImportedIdentifier
     path: ModulePath | None
@@ -47,6 +62,8 @@ class ImportFromContract(BaseContract):
 
 @dataclass
 class AssignContract(BaseContract):
+    """`ast.Assign` contract for typing and declaration security."""
+
     statement: Statement
     tokens: list[Token]
     value: Value
@@ -55,6 +72,8 @@ class AssignContract(BaseContract):
 
 @dataclass
 class AnnAssignContract(BaseContract):
+    """`ast.AnnAssign` contract for typing and declaration security."""
+
     statement: Statement
     name: Token
     annot: Notation
@@ -64,6 +83,8 @@ class AnnAssignContract(BaseContract):
 
 @dataclass
 class FunctionDefContract(BaseContract):
+    """`ast.FunctionDef` contract for typing and declaration security."""
+
     statement: Statement
     name: Token
     category: FunctionType
@@ -77,6 +98,8 @@ class FunctionDefContract(BaseContract):
 
 @dataclass
 class AsyncFunctionDefContract(BaseContract):
+    """`ast.AsyncFunctionDef` contract for typing and declaration security."""
+
     statement: Statement
     name: Token
     category: FunctionType
@@ -90,6 +113,8 @@ class AsyncFunctionDefContract(BaseContract):
 
 @dataclass
 class ClassDefContract(BaseContract):
+    """`ast.ClassDef` contract for typing and declaration security."""
+
     statement: Statement
     name: Token
     docstring: Docstring | None
@@ -101,6 +126,8 @@ class ClassDefContract(BaseContract):
 
 @dataclass
 class AssertContract(BaseContract):
+    """`ast.Assert` contract for typing and declaration security."""
+
     statement: Statement
     test: AssertionTest
     msg: AssertionMessage | None
