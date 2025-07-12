@@ -1,3 +1,8 @@
+"""
+Encapsulating the `init` command logic, this file uses the `types.jsoncfg` TypedDict
+classes for ensure the correct structure over the `mosheh.json` config file generated.
+"""
+
 from argparse import Namespace
 from json import dumps
 from logging import Logger, getLogger
@@ -33,6 +38,19 @@ DEFAULT_JSON: Final[DefaultJSON] = {
 
 
 def init(args: Namespace) -> None:
+    """
+    Creates the `mosheh.json` config file.
+
+    By using the `types.jsoncfg` TypedDict classes for ensure the correct structure
+    over the `mosheh.json` config file generated, this function incorporates the role
+    of bringing this config file, following the path designited by the own CLI call.
+
+    :param args: Namespace object containing the creation information.
+    :type args: argparse.Namespace
+    :return: None.
+    :rtype: None
+    """
+
     try:
         filepath: str = join(args.path, 'mosheh.json')
 

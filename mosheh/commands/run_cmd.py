@@ -1,3 +1,12 @@
+"""
+Encapsulating the `run` command logic, this file deals with the most important feature
+present on Mosheh: to create the codebase documentation.
+
+It seems extremely complex, but reading just a few lines shows that here is handled
+more about the IO and data validation from the `mosheh.json` config file than the
+logic implementation itself.
+"""
+
 from argparse import Namespace
 from json import loads
 from logging import Logger, getLogger
@@ -14,6 +23,19 @@ logger: Logger = getLogger('mosheh')
 
 
 def run(args: Namespace) -> None:
+    """
+    Runs the main Mosheh's feature.
+
+    While handling the IO and data validation form the `mosheh.json` config file,
+    which takes the most lines of it's body, once everything is ok, call the proper
+    read-codebase function and then the generate-documentation one.
+
+    :param args: Namespace object containing the creation information.
+    :type args: argparse.Namespace
+    :return: None.
+    :rtype: None
+    """
+
     success_json_reading: bool = False
     doc_config: DocumentationJSON | None = None
     io_config: IOJSON | None = None
