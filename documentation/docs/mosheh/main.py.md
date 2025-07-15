@@ -4,7 +4,7 @@ Role: Python Source Code
 
 Path: `mosheh`
 
-Mosheh, a tool for documenting projects, from Python to Python.
+Mosheh, automatic and elegant documentation of Python code with MkDocs.
 
 Basically, Mosheh lists all files you points to, saves every single notorious statement
 of definition on each file iterated, all using Python `ast` native module for handling
@@ -14,7 +14,7 @@ hierarchy. The stuff documented for each file is shown below:
 - Imports `[ast.Import | ast.ImportFrom]`
 
   - [x] Type `[Native | TrdParty | Local]`
-  - [x] Path (e.g. 'django.http')
+  - [x] Path (e.g. 'math.sqrt')
   - [x] Code
 
 - Constants `[ast.Assign | ast.AnnAssign]`

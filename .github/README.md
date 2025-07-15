@@ -12,14 +12,26 @@
 
 [![PyPI](https://img.shields.io/badge/here-here?style=for-the-badge&label=PyPI&labelColor=3e6ea8&color=f3e136)](https://pypi.org/project/mosheh/)
 
-Mosheh, a tool for documenting projects, from Python to Python.
+Mosheh, automatic and elegant documentation of Python code with MkDocs.
 
-Inspirated by `cargodoc` - a Rust tool for code documenting - and using [MkDocs](https://www.mkdocs.org/) and [Material MkDocs](https://squidfunk.github.io/mkdocs-material/), Mosheh lists all files you points to, saves every single notorious statement of definition on each file iterated, all using Python `ast` native module for handling the AST and then generating a documentation respecting the dirs and files hierarchy. The stuff documented for each file is shown below:
+Inspirated by `cargodoc` - a Rust tool for code documenting - and using [MkDocs](https://www.mkdocs.org/) + [Material MkDocs](https://squidfunk.github.io/mkdocs-material/), Mosheh is an **easy, fast, plug-and-play** tool which saves time while **automating** the process of documenting the **source code of a Python codebase**.
+
+| Project/Codebase | PLoC  | Mosheh's Exec Time |         |
+| ---------------- | ----- | ------------------ | ------- |
+| Mosheh           | ~4k   | █                  | 0.303s  |
+| scikit-learn     | ~862k | ███████████        | 11.783s |
+| NumPy            | ~204k | ████████████       | 12.205s |
+
+> PLoC: Python Lines of Code
+
+This is not an alternative to MkDocs, but a complement based on it, since Mosheh lists all files you points to, saves every single notorious definition statement on each file iterated, all using Python `ast` native module for handling the AST and then, generating a modern documentation respecting the dirs and files hierarchy.
+
+At the moment, Mosheh documents only Python files (`.py`, `.pyi`), where the stuff documented for each file is shown below:
 
 - Imports `[ast.Import | ast.ImportFrom]`
 
   - [x] Type `[Native | TrdParty | Local]`
-  - [x] Path (e.g. 'django.http')
+  - [x] Path (e.g. 'math.sqrt')
   - [x] Code
 
 - Constants `[ast.Assign | ast.AnnAssign]`
@@ -98,7 +110,8 @@ Here it is no different, a considerable part of Mosheh is, in fact, completely d
 │
 ├── documentation/              # Mosheh's documentation dir
 │   ├── docs/                   # Dir containing .md files and assets
-│   └── mkdocs.yml              # MkDocs config file
+│   ├── mkdocs.yml              # MkDocs's config file
+│   └── mosheh.json             # Mosheh's exec config file
 │
 ├── pyproject.toml              # Mosheh's config file for almost everything
 ├── uv.lock                     # uv's lockfile for dealing with dependencies

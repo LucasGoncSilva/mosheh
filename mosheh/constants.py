@@ -157,7 +157,6 @@ theme:
     - navigation.indexes
     - navigation.tabs
     - navigation.top
-    - toc.integrate
     - header.autohide
     - navigation.footer
     - content.action.view
@@ -176,7 +175,6 @@ markdown_extensions:
       use_pygments: true
       pygments_lang_class: true
       auto_title: true
-      linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences:

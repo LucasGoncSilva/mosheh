@@ -1,11 +1,3 @@
----
-hide:
-  - navigation
-  - toc
----
-
-<br>
-
 <h1 align="center">
   <img src="https://raw.githubusercontent.com/lucasGoncSilva/mosheh/refs/heads/main/.github/logo.svg" height="300" width="300" alt="Logo Mosheh" />
   <br>
@@ -20,14 +12,26 @@ hide:
 
 [![PyPI](https://img.shields.io/badge/here-here?style=for-the-badge&label=PyPI&labelColor=3e6ea8&color=f3e136)](https://pypi.org/project/mosheh/)
 
-Mosheh, a tool for documenting projects, from Python to Python.
+Mosheh, automatic and elegant documentation of Python code with MkDocs.
 
-Basically, Mosheh lists all files you points to, saves every single notorious statement of definition on each file iterated, all using Python `ast` native module for handling the AST and then generating with [MkDocs](https://www.mkdocs.org/) and [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) a documentation respecting the dirs and files hierarchy. The stuff documented for each file is shown below:
+Inspirated by `cargodoc` - a Rust tool for code documenting - and using [MkDocs](https://www.mkdocs.org/) + [Material MkDocs](https://squidfunk.github.io/mkdocs-material/), Mosheh is an **easy, fast, plug-and-play** tool which saves time while **automating** the process of documenting the **source code of a Python codebase**.
+
+| Project/Codebase | PLoC  | Mosheh's Exec Time |         |
+| ---------------- | ----- | ------------------ | ------- |
+| Mosheh           | ~4k   | █                  | 0.303s  |
+| scikit-learn     | ~862k | ███████████        | 11.783s |
+| NumPy            | ~204k | ████████████       | 12.205s |
+
+> PLoC: Python Lines of Code
+
+This is not an alternative to MkDocs, but a complement based on it, since Mosheh lists all files you points to, saves every single notorious definition statement on each file iterated using Python `ast` native module for handling the AST and then generating a modern documentation respecting the dirs and files hierarchy.
+
+At the moment, Mosheh documents only Python files (`.py`, `.pyi`), where the stuff documented for each file is shown below:
 
 - Imports `[ast.Import | ast.ImportFrom]`
 
   - [x] Type `[Native | TrdParty | Local]`
-  - [x] Path (e.g. 'django.http')
+  - [x] Path (e.g. 'math.sqrt')
   - [x] Code
 
 - Constants `[ast.Assign | ast.AnnAssign]`
@@ -43,7 +47,6 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
   - [x] Name (class name)
   - [x] Parents (inheritance)
   - [ ] Methods Defined (nums and names)
-  - [ ] Example (usage)
   - [x] Code
 
 - Funcs `[ast.FunctionDef | ast.AsyncFunctionDef]`
@@ -54,7 +57,6 @@ Basically, Mosheh lists all files you points to, saves every single notorious st
   - [x] Parameters (name, type, default)
   - [x] Return Type (datatype)
   - [ ] Raises (exception throw)
-  - [ ] Example (usage)
   - [x] Code
 
 - Assertions `[ast.Assert]`
@@ -87,66 +89,88 @@ Here it is no different, a considerable part of Mosheh is, in fact, completely d
 
 ```sh
 .
-├── mosheh                      # Mosheh's source-code
+├── mosheh/                     # Mosheh's source-code
+│   ├── commands/*              # Logics for each command
+│   ├── handlers/*              # Codebase handlers for each file
+│   ├── types/                  # Custom data types
+│   │   ├── basic.py            # Basic types (e.g. "type Token = str")
+│   │   ├── contracts.py        # Contracts to ensure correct typing
+│   │   ├── enums.py            # Enums for standardizing assignments
+│   │   └── jsoncfg.py          # JSON for structuring commands config
 │   ├── codebase.py             # Codebase reading logic
 │   ├── constants.py            # Constants to be evaluated
-│   ├── custom_types.py         # Custom data types
 │   ├── doc.py                  # Documentation build logic
-│   ├── handlers.py             # Codebase nodes handlers functions
 │   ├── main.py                 # Entrypoint
-│   ├── metadata.py             # Metadata about Mosheh itself
 │   └── utils.py                # Utilities
 │
-├── tests                       # Template dir for testing
+├── tests/                      # Template dir for testing
 │   ├── DOC                     # Doc output dir
 │   ├── PROJECT                 # Template project dir
 │   └── unittest                # Automated tests
 │
-├── documentation               # Mosheh's documentation dir
-│   ├── docs                    # Dir containing .md files and assets
+├── documentation/              # Mosheh's documentation dir
+│   ├── docs/                   # Dir containing .md files and assets
 │   └── mkdocs.yml              # MkDocs config file
 │
 ├── pyproject.toml              # Mosheh's config file for almost everything
 ├── uv.lock                     # uv's lockfile for dealing with dependencies
 ├── .python-version             # Default Python's version to use
 │
-├── .github                     # Workflows and social stuff
+├── .github/                    # Workflows and social stuff
 │
 ├── LICENSE                     # Legal stuff, A.K.A donut sue me
 │
 └── .gitignore                  # Git "exclude" file
 ```
 
-It is to be expected that if the `tests/` directory is deleted, Mosheh itself will not be altered in any way, so much so that when a tool is downloaded via `pip` or similar, the tool is not accompanied by tests, licenses, development configuration files or workflows. So, to help you understand how the `mosheh/` directory works, here's how the functional elements interact with each other:
+It is to be expected that if the `tests/` directory is deleted, Mosheh's core will not be altered in any way, so much so that when a tool is downloaded via `pip` or similar, the tool is not accompanied by tests, licenses, development configuration files or workflows. So, to help you understand how the `mosheh/` directory works, here's how the functional elements interact with each other:
 
 ![Flowchart diagram](https://raw.githubusercontent.com/lucasGoncSilva/mosheh/refs/heads/main/.github/flowchart.svg)
 
 ## Usage
 
-### Local Build and Installation
+After installing Mosheh as a development dependency, create the documentation folder if not exists and run `mosheh init [--path .]`; this will result in a `mosheh.json` config file just as below:
 
-#### Installing Dependencies
+```json
+{
+  "documentation": {
+    "projectName": "Mosheh",
+    "repoName": "mosheh",
+    "repoUrl": "https://github.com/lucasgoncsilva/mosheh",
+    "editUri": "blob/main/documentation/docs",
+    "logoPath": "./path/to/logo.svg",
+    "readmePath": "./path/to/README.md"
+  },
+  "io": {
+    "rootDir": "./app/",
+    "outputDir": "./path/to/output/"
+  }
+}
+```
+
+After making sure the data on that JSON reflex the desired (more about this file at the official documentation), running `mosheh run [--json .]` results in a documentation following the default MkDocs structure with Material MkDocs as theme, with the codebase documented over "Codebase" named-section.
+
+## Development
+
+### Installing Dependencies
 
 ```sh
 # Automatically handles everything with .venv
 uv sync
 ```
 
-#### Runing Locally
+### Runing Locally
 
 ```sh
 # For running using uv and dealing with Mosheh as a module
 uv run -m mosheh.main
 ```
 
-#### Installing Locally
+### Building Locally
 
 ```sh
 # Build pip-like file
 uv build
-
-# Install Mosheh using generated pip-like file
-uv pip install dist/mosheh-<VERSION>-py3-none-any.whl --force-reinstall
 ```
 
 ### Testing
@@ -162,20 +186,6 @@ uv run task test
 # Run all the linting workflow
 uv run task lint
 ```
-
-### Parameters
-
-|      Call       |  Type  | Mandatory  | Default                          | Example                         | Description                                                      |
-| :-------------: | :----: | :--------: | :------------------------------- | :------------------------------ | :--------------------------------------------------------------- |
-| `-h`, `--help`  | `str`  | `Optional` | `None`                           | `-h`, `--help`                  | Help message                                                     |
-|     `-root`     | `Path` | `Required` | `None`                           | `-root example/`                | Root dir, where the analysis starts.                             |
-|  `--repo-name`  | `str`  | `Optional` | `'GitHub'`                       | `--repo-name toicin`            | Name of the code repository to be mapped.                        |
-|  `--repo-url`   | `URL`  | `Optional` | `'https://github.com/'`          | `--repo-url https://random.com` | URL of the code repository to be mapped.                         |
-|  `--edit-uri`   | `str`  | `Optional` | `'blob/main/documentation/docs'` | `--edit-uri blob/main/docs`     | URI to view raw or edit blob file.                               |
-|  `--logo-path`  | `Path` | `Optional` | `None`                           | `--repo-url .github/logo.svg`   | Path for doc/project logo, same Material MkDocs's formats.       |
-| `--readme-path` | `Path` | `Optional` | `None`                           | `--repo-url .github/README.md`  | Path for `README.md` file to used as homepage.                   |
-|   `--output`    | `Path` | `Optional` | `'.'` - current dir              | `--output doc/`                 | Path for documentation output, where to be created.              |
-|   `--verbose`   | `int`  | `Optional` | `3` - `logging.INFO`             | `--verbose 4`                   | Verbosity level, from 0 (quiet/critical) to 4 (overshare/debug). |
 
 ## License
 
