@@ -45,3 +45,4 @@ class FileRole(StrEnum):
     """Enum-like class to enumerate in-code the files investigated."""
 
     PythonSourceCode = ':material-language-python: Python Source Code'
+    PythonStubFile = ':material-language-python: Python Stub File'

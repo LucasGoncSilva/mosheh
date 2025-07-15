@@ -65,13 +65,12 @@ def read_codebase(root: str) -> CodebaseDict:
 
     codebase: defaultdict[Any, Any] = nested_dict()
 
-    logger.info(f'Starting iteration through {root}')
     for file in _iterate(root):
-        logger.debug(f'Iterating: {file}')
-
-        if file.endswith('.py'):
-            logger.debug(f'.py: {file}')
+        if file.endswith('.py') or file.endswith('.pyi'):
+            logger.info(f'Handling Python file: {file}')
             codebase = handle_python_file(codebase, file)
+        else:
+            logger.info(f'File not handled: {file}')
 
     return convert_to_regular_dict(codebase)
 

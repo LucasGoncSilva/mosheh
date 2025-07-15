@@ -58,8 +58,10 @@ def test_function_type_enum() -> None:
 def test_file_role_enum() -> None:
     assert [
         'PythonSourceCode',
+        'PythonStubFile',
     ] == [i.name for i in FileRole]
 
     assert [
         ':material-language-python: Python Source Code',
+        ':material-language-python: Python Stub File',
     ] == [i.value for i in FileRole]

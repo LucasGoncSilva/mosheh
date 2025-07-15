@@ -64,38 +64,38 @@ def run(args: Namespace) -> None:
     assert io_config and doc_config, 'io_config and doc_config must not be None'
 
     ROOT: str = abspath(join(args.json, io_config.get('rootDir', './')))
-    logger.debug(f'{ROOT = }')
+    logger.debug(f'JSON "io.rootDir" = {ROOT}')
 
     OUTPUT: str = abspath(join(args.json, io_config.get('outputDir', './')))
-    logger.debug(f'{OUTPUT = }')
+    logger.debug(f'JSON "io.outputDir" = {OUTPUT}')
 
     PROJ_NAME: str = doc_config.get('projectName', 'PROJECT')
-    logger.debug(f'{PROJ_NAME = }')
+    logger.debug(f'JSON "documentation.projectName" = {PROJ_NAME}')
 
     REPO_NAME: str = doc_config.get('repoName', 'REPO_NAME')
-    logger.debug(f'{REPO_NAME = }')
+    logger.debug(f'JSON "documentation.repoName" = {REPO_NAME}')
 
     REPO_URL: str = doc_config.get('repoUrl', 'REPO_URL')
-    logger.debug(f'{REPO_URL = }')
+    logger.debug(f'JSON "documentation.repoUrl" = {REPO_URL}')
 
     EDIT_URI: str = doc_config.get('editUri', 'blob/main/documentation/docs')
-    logger.debug(f'{EDIT_URI = }')
+    logger.debug(f'JSON "documentation.editUri" = {EDIT_URI}')
 
     LOGO_PATH: str | None = doc_config.get('logoPath')
-    logger.debug(f'{LOGO_PATH = }')
+    logger.debug(f'JSON "documentation.logoPath" = {LOGO_PATH}')
 
     README_PATH: str | None = doc_config.get('readmePath')
-    logger.debug(f'{README_PATH = }')
+    logger.debug(f'JSON "documentation.readmePath" = {README_PATH}')
 
     logger.info('Arguments parsed successfully')
 
     # Codebase Reading
-    logger.info(f'Starting to read codebase at {ROOT}')
+    logger.info(f'Starting codebase loading at {ROOT}')
     data: CodebaseDict = read_codebase(ROOT)
-    logger.info('Codebase read successfully')
+    logger.info('Codebase successfully loaded')
 
     # Doc Generation
-    logger.info('Starting to generate documentation')
+    logger.info('Starting final documentation generation')
     try:
         generate_doc(
             codebase=data,

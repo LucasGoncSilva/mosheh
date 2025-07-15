@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Mosheh, a tool for documenting projects, from Python to Python.
+Mosheh, automatic and elegant documentation of Python code with MkDocs.
 
 Basically, Mosheh lists all files you points to, saves every single notorious statement
 of definition on each file iterated, all using Python `ast` native module for handling
@@ -20,8 +20,6 @@ __license__ = 'MIT'
 __repository__ = 'https://github.com/LucasGoncSilva/mosheh'
 __keywords__ = ['CLI', 'Python', 'documentation', 'MkDocs', 'automation', 'generation']
 
-__version__ = '1.3.4'
-__date__ = '2025-01-07'
 __status__ = 'Production'
 
 __copyright__ = 'Copyright (c) 2025 Lucas Gonçalves da Silva'
@@ -119,9 +117,6 @@ def main() -> None:
     args: Namespace = parser.parse_args()
 
     set_logging_config(args.verbose)
-
-    logger = getLogger('mosheh')
-    logger.info('Logger config done')
 
     args.func(args)
 

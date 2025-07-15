@@ -81,20 +81,22 @@ def handle_python_file(
 
     with open(file, encoding='utf-8') as f:
         code: str = f.read()
-        logger.debug(f'{file} read')
 
     tree: ast.AST = ast.parse(code, filename=file)
-    logger.debug('Code tree parsed')
+    logger.debug('\tCode tree parsed')
 
     statements: list[StandardReturn] = []
 
     __meta__: StandardReturn = {
-        '__role__': FileRole.PythonSourceCode,
+        '__role__': (
+            FileRole.PythonSourceCode
+            if file.endswith('.py')
+            else FileRole.PythonStubFile
+        ),
         '__docstring__': 'No file docstring provided.',
     }
 
     for node in ast.walk(tree):
-        logger.debug(f'Node: {type(node)}')
         if isinstance(node, ast.Module) and (__docstring__ := ast.get_docstring(node)):
             __meta__['__docstring__'] = __docstring__
         elif isinstance(node, ast.ClassDef):
@@ -103,16 +105,15 @@ def handle_python_file(
             continue
 
         data: list[StandardReturn] = _handle_std_nodes(node)
-        logger.debug('Node processed')
 
         if data:
             statements.extend(data)
-            logger.debug('Node inserted into statement list')
+            logger.debug("\tNode inserted into file's structure")
 
     statements.insert(0, __meta__)
 
     add_to_dict(codebase, file.split(sep), statements)
-    logger.debug(f'{file} stmts added to CodebaseDict')
+    logger.debug(f'\t{file} parsing successfully done')
 
     return codebase
 
@@ -140,7 +141,21 @@ def _handle_std_nodes(node: ast.AST) -> list[StandardReturn]:
     """
 
     data: list[StandardReturn] = []
-    logger.debug('"data: list[StandardReturn]" created')
+
+    if not isinstance(
+        node,
+        ast.Import
+        | ast.ImportFrom
+        | ast.Assign
+        | ast.AnnAssign
+        | ast.FunctionDef
+        | ast.AsyncFunctionDef
+        | ast.ClassDef
+        | ast.Assert,
+    ):
+        return data
+
+    logger.debug(f'\tStd node found: {type(node)}')
 
     # -------------------------
     # Imports - ast.Import | ast.ImportFrom
@@ -188,10 +203,9 @@ def _handle_std_nodes(node: ast.AST) -> list[StandardReturn]:
     # Assertions - ast.Assert
     # -------------------------
 
-    elif isinstance(node, ast.Assert):
+    else:
         data = _handle_assert(data, node)
 
-    logger.debug('Returning "data"')
     return data
 
 
