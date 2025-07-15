@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "mosheh"
-description = "Mosheh, a tool for documenting projects, from Python to Python."
+description = "Mosheh, automatic and elegant documentation of Python code with MkDocs."
 readme = { file = ".github/README.md", content-type = "text/markdown" }
 license = { file = "LICENSE" }
 authors = [{ name = "LucasGonc", email = "lucasgoncsilva04@gmail.com" }]
@@ -32,9 +32,7 @@ dev = [
     "mypy>=1.16.1",
     "pytest>=8.4.1",
     "ruff>=0.12.2",
-    "setuptools>=80.9.0",
     "taskipy>=1.14.1",
-    "twine>=6.1.0",
 ]
 
 [project.scripts]
@@ -79,5 +77,5 @@ strict = true
 [tool.taskipy.tasks]
 lint = "uv run ruff check; uv run ruff format; uv run mypy mosheh"
 pytest = "uv run pytest"
-doctest = "cd ./tests/DOC/; uv run -m mosheh.main run --json ."
+doctest = "cd ./tests/DOC/; uv run -m mosheh.main --verbose 3 run --json ."
 test = "uv run task pytest; uv run task doctest"
