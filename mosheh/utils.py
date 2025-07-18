@@ -12,7 +12,7 @@ Here are usually maintained reusable code applicable everywhere.
 from collections import defaultdict
 from collections.abc import Sequence
 from importlib.util import find_spec
-from typing import Any
+from typing import Any, cast
 
 from mosheh.types.basic import CodebaseDict, ModuleName, StandardReturn
 
@@ -30,6 +30,7 @@ def bin(item: Any, universe: Sequence[Any]) -> bool:
     so on... until the item is found and returns True or not, returning False.
 
     Example:
+
     ```python
     lst: list[int] = [1, 2, 3, 4, 5]
     num: int = 4
@@ -70,6 +71,7 @@ def is_lib_installed(name: ModuleName) -> bool:
     for modules in the environment path and returns it.
 
     Example:
+
     ```python
     is_lib_installed('fastapi')
     # False
@@ -87,22 +89,23 @@ def is_lib_installed(name: ModuleName) -> bool:
         return False
 
 
-def nested_dict() -> defaultdict[Any, Any]:
+def nested_defaultdict() -> defaultdict[Any, Any]:
     """
     Creates and returns a nested dictionary using `collections.defaultdict`.
 
     This function generates a `defaultdict` where each key defaults to another
-    `nested_dict`, allowing the creation of arbitrarily deep dictionaries without
+    `nested_defaultdict`, allowing the creation of arbitrarily deep dictionaries without
     needing to explicitly define each level.
 
     Key concepts:
     - defaultdict: A specialized dictionary from the `collections` module
       that automatically assigns a default value for missing keys. In this case, the
-      default value is another `nested_dict`, enabling recursive dictionary nesting.
+      default value is another `nested_defaultdict`, enabling recursive dict nesting.
 
     Example:
+
     ```python
-    d = nested_dict()
+    d = nested_defaultdict()
     d['level1']['level2']['level3'] = 'text'
     # {'level': {'level2': {'level3': 'text'}}}
     ```
@@ -111,10 +114,10 @@ def nested_dict() -> defaultdict[Any, Any]:
     :rtype: defaultdict[Any, Any]
     """
 
-    return defaultdict(nested_dict)
+    return defaultdict(nested_defaultdict)
 
 
-def add_to_dict(
+def add_to_nested_defaultdict(
     structure: defaultdict[Any, Any],
     path: list[str],
     data: list[StandardReturn],
@@ -133,11 +136,12 @@ def add_to_dict(
       deeper levels of the nested dictionary.
 
     Example:
+
     ```python
-    structure: defaultdict = nested_dict()
+    structure: defaultdict = nested_defaultdict()
     path: list[str] = ['level1', 'level2', 'level3']
     data: list[StandardReturn] = [{'key': 'value'}]
-    add_to_dict(structure, path, data)
+    add_to_nested_defaultdict(structure, path, data)
     # defaultdict(defaultdict, {'level1': {'level2': {'level3': [{'key': 'value'}]}}})
     ```
 
@@ -154,9 +158,80 @@ def add_to_dict(
     if len(path) == 1:
         structure[path[0]] = data
     elif len(path) > 1:
-        structure[path[0]] = add_to_dict(structure[path[0]], path[1:], data)
+        structure[path[0]] = add_to_nested_defaultdict(
+            structure[path[0]], path[1:], data
+        )
 
     return structure
+
+
+def build_nav_struct(
+    tree: CodebaseDict, base_path: str = 'Codebase', prefix: str = ''
+) -> list[dict[str, Any]]:
+    """
+    Processes the `codebase.read_codebase` into valid yaml "Nav" dump format.
+
+    While taking the codebase structure, processed by `codebase.read_codebase` on the
+    `Codebase` format, recursively iterates the codebase mapping every file and
+    directory, returning something similar to the example below:
+
+    ```python
+    [
+        {
+            'PROJECT': [
+                {'manage.py': 'Codebase/PROJECT/manage.py.md'},
+                {
+                    'dummy': [
+                        {'tests.py': 'Codebase/PROJECT/dummy/tests.py.md'},
+                        {'admin.py': 'Codebase/PROJECT/dummy/admin.py.md'},
+                        {'apps.py': 'Codebase/PROJECT/dummy/apps.py.md'},
+                        {'models.py': 'Codebase/PROJECT/dummy/models.py.md'},
+                        {'urls.py': 'Codebase/PROJECT/dummy/urls.py.md'},
+                        {'__init__.py': 'Codebase/PROJECT/dummy/__init__.py.md'},
+                        {'views.py': 'Codebase/PROJECT/dummy/views.py.md'},
+                    ]
+                },
+                {
+                    'CORE': [
+                        {'wsgi.py': 'Codebase/PROJECT/CORE/wsgi.py.md'},
+                        {'asgi.py': 'Codebase/PROJECT/CORE/asgi.py.md'},
+                        {'urls.py': 'Codebase/PROJECT/CORE/urls.py.md'},
+                        {'settings.py': 'Codebase/PROJECT/CORE/settings.py.md'},
+                        {'__init__.py': 'Codebase/PROJECT/CORE/__init__.py.md'},
+                    ]
+                },
+            ]
+        }
+    ]
+    ```
+
+    The directories has a list as key-value pair, while files has their markdown
+    equivalent path for their markdown documented result.
+
+    :param tree: Codebase `codebase.read_codebase` struct.
+    :type tree: Codebase
+    :param base_path: Expected codebase nav name to be used/found.
+    :type base_path: str = 'Codebase'
+    :param prefix: Accumulative string path for concat.
+    :type tree: str = ''
+    :return: Formatted "yaml-nav-dumpable" codebase structure.
+    :rtype: list[dict[str, Any]]
+    """
+
+    result: list[dict[str, Any]] = []
+
+    for name, content in cast(dict[str, Any], tree).items():
+        full_path = f'{prefix}/{name}' if prefix else name
+
+        if isinstance(content, list):
+            result.append({name: f'{base_path}/{full_path}.md'})
+        else:
+            nested: list[dict[str, Any]] = build_nav_struct(
+                content, base_path, full_path
+            )
+            result.append({name: nested})
+
+    return result
 
 
 def convert_to_regular_dict(d: defaultdict[Any, Any] | dict[Any, Any]) -> CodebaseDict:
@@ -175,8 +250,9 @@ def convert_to_regular_dict(d: defaultdict[Any, Any] | dict[Any, Any]) -> Codeba
       ensuring the entire structure is converted.
 
     Example:
+
     ```python
-    d: defaultdict = nested_dict()
+    d: defaultdict = nested_defaultdict()
     d['level1']['level2'] = 'value'
     convert_to_regular_dict(d)
     # {'level1': {'level2': 'value'}}
@@ -199,6 +275,7 @@ def standard_struct() -> StandardReturn:
     Defines the standard keys and values of code data dict.
 
     The keys are listed below, followed by they types, as below:
+
     ```python
     dct: StandardReturn = {
         'statement': Statement,
@@ -224,6 +301,7 @@ def standard_struct() -> StandardReturn:
     about types like Java or Rust, so keep this in mind is really necessary.
 
     Example:
+
     ```python
     standard_struct()
     # {}
@@ -244,6 +322,7 @@ def indent_code(code: str, level: int = 4) -> str:
     each line applies the desired indentation level, A.K.A leftpad.
 
     Example:
+
     ```python
     code: str = \"\"\"for i in range(10):\n        str(i)\"\"\"
     level: int = 4
@@ -256,14 +335,67 @@ def indent_code(code: str, level: int = 4) -> str:
     :param code: The code snippet to be formatted.
     :type code: str
     :param level: The number of spaces to leftpad each line.
-    :type level: int
+    :type level: int = 4
     :return: The code snippet leftpadded.
     :rtype: str
     """
 
-    indent = ' ' * level
-    new_code = '\n'.join(
+    indent:str = ' ' * level
+    new_code:str = '\n'.join(
         map(lambda line: f'{indent}{line}' if line.strip() else '', code.splitlines())
     )
 
     return new_code
+
+
+def remove_abspath_from_codebase(
+    d: CodebaseDict,
+) -> CodebaseDict:
+    """
+    Removes abspath dirs names from `CodebaseDict` structure.
+
+    Because of typing annotation stuff, this function just invokes the sibling with
+    almost the same name, which is recursive, to handle the codebase-generated dict
+    and remove any path outside the codebase but present due `os.path.abspath` calls.
+
+    The output is exactly the same `CodebaseDict` but with no abspath dir present.
+
+    :param d: `codebase.read_codebase` output structure.
+    :type d: CodebaseDict
+    :return: `codebase.read_codebase` output removing abspath.
+    :rtype: CodebaseDict
+    """
+
+    return _remove_abspath_from_codebase_helper(next(iter(d.values())))
+
+
+def _remove_abspath_from_codebase_helper(
+    d: CodebaseDict | list[StandardReturn],
+) -> CodebaseDict:
+    """
+    ### YOU SHOULD NOT BE CALLING THIS FUNCTION!
+
+    Removes abspath dirs names from `CodebaseDict` structure.
+
+    The real recursive abspath-remove-o-matic function, not used primary just because
+    of typing annotations.
+
+    Inside it, recursively iterates the income `d`, goes until the first non-dictionary
+    or single-length item is found, returning from this point.
+
+    :param d: `codebase.read_codebase` output structure.
+    :type d: CodebaseDict | list[StandardReturn]
+    :return: `codebase.read_codebase` output removing abspath.
+    :rtype: CodebaseDict
+    """
+
+    if isinstance(d, dict):
+        deeper = next(iter(d.values()))
+
+        if isinstance(deeper, dict) and len(deeper) == 1:
+            return _remove_abspath_from_codebase_helper(deeper)
+
+    return cast(CodebaseDict, d)
+
+
+
