@@ -54,7 +54,12 @@ from mosheh.types.enums import (
     ImportType,
     Statement,
 )
-from mosheh.utils import add_to_dict, bin, is_lib_installed, standard_struct
+from mosheh.utils import (
+    add_to_nested_defaultdict,
+    bin,
+    is_lib_installed,
+    standard_struct,
+)
 
 
 logger: Logger = getLogger('mosheh')
@@ -112,7 +117,7 @@ def handle_python_file(
 
     statements.insert(0, __meta__)
 
-    add_to_dict(codebase, file.split(sep), statements)
+    add_to_nested_defaultdict(codebase, file.split(sep), statements)
     logger.debug(f'\t{file} parsing successfully done')
 
     return codebase
@@ -229,6 +234,7 @@ def _handle_node(
       (`StandardReturnProcessor`).
 
     Example:
+
     ```python
     import ast
 
@@ -240,8 +246,8 @@ def _handle_node(
 
     :param node: The AST node to be processed.
     :type node: ast.AST | ast.expr | None
-    :return: A list of standardized data representing the processed node, or `None` if
-                no node is provided.
+    :return: Standardized data list representing the processed node, `None` if no node
+            is provided.
     :rtype: list[StandardReturnProcessor] | None
     """
 
@@ -326,6 +332,7 @@ def __handle_import(imported_identifier: ImportedIdentifier) -> StandardReturn:
       the library name.
 
     Example:
+
     ```python
     data: StandardReturn = __handle_import('os')
     data
@@ -386,6 +393,7 @@ def _handle_import(
     - Structure Update: Modifies the provided `struct` in-place with import data.
 
     Example:
+
     ```python
     import ast
 
@@ -425,6 +433,7 @@ def _handle_import_from(
     Each module's data includes its path and category, stored in a structured dict.
 
     Example:
+
     ```python
     import ast
 
@@ -486,6 +495,7 @@ def _handle_assign(
     - value: A string repr of the value being assigned.
 
     Example:
+
     ```python
     import ast
 
@@ -542,6 +552,7 @@ def _handle_annassign(
     - annot: The type hint for the assignment.
 
     Example:
+
     ```python
     import ast
 
@@ -600,6 +611,7 @@ def __format_arg(
       defaults to 'Unknown'.
 
     Example:
+
     ```python
     formatted: Args = __format_arg('param', 'int', '42')
     formatted
@@ -641,6 +653,7 @@ def __process_function_args(node_args: ast.arguments) -> str:
     - Default Values: Aligns each argument with its default value, if provided.
 
     Example:
+
     ```python
     import ast
 
@@ -694,6 +707,7 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
     - Default Values: Handles default values, aligning them with their own arguments.
 
     Example:
+
     ```python
     import ast
 
@@ -774,6 +788,7 @@ def _handle_function_def(
     - Generator: process an iterable object at a time, on demand, with `yield` inside.
 
     Example:
+
     ```python
     import ast
 
@@ -788,7 +803,7 @@ def _handle_function_def(
     :param node: The AST node representing a func def statement.
     :type node: ast.FunctionDef
     :param is_from_class: The arg who tells if shoud be directly defined as a Method.
-    :type is_from_class: bool
+    :type is_from_class: bool = False
     :return: A dict containing the statement type and the data listed before.
     :rtype: list[StandardReturn]
     """
@@ -832,7 +847,7 @@ def _handle_function_def(
 
 def _handle_async_function_def(
     struct: list[StandardReturn],
-    node: ast.AsyncFunctionDef,
+    node: ast.AsyncFunctionDef
 ) -> list[StandardReturn]:
     """
     Processes an `ast.AsyncFunctionDef` node and returns its data.
@@ -843,6 +858,7 @@ def _handle_async_function_def(
     - Coroutine: An async func, defined with `async def` syntax...
 
     Example:
+
     ```python
     import ast
 
@@ -909,6 +925,7 @@ def __format_class_kwarg(name: str | None, value: ast.expr) -> str:
     - Conditional Formatting: Handles named and unnamed (positional) keyword arguments.
 
     Example:
+
     ```python
     import ast
 
@@ -949,6 +966,7 @@ def __process_class_kwargs(keywords: list[ast.keyword]) -> str:
       single string for use in documentation or code generation.
 
     Example:
+
     ```python
     import ast
 
@@ -990,6 +1008,7 @@ def _handle_class_def(
     - kwargs: A list of tuples, in `(name, value)` style.
 
     Example:
+
     ```python
     import ast
 
@@ -1123,7 +1142,7 @@ def _mark_methods(node: ast.ClassDef) -> None:
 
     :param node: The class definition node containing methods to be marked.
     :type node: ast.ClassDef
-    :return: No data to be returned
+    :return: None
     :rtype: None
     """
 
@@ -1138,7 +1157,7 @@ def wrapped_mark_methods_for_testing(node: ast.ClassDef) -> None:
 
     :param node: The class definition node containing methods to be marked.
     :type node: ast.ClassDef
-    :return: No data to be returned
+    :return: None
     :rtype: None
     """
 
