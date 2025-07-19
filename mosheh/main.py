@@ -3,28 +3,13 @@
 """
 Mosheh, automatic and elegant documentation of Python code with MkDocs.
 
-Basically, Mosheh lists all files you points to, saves every single notorious statement
-of definition on each file iterated, all using Python `ast` native module for handling
-the AST and then generating (using MkDocs) a documentation respecting the dirs and files
-hierarchy.
+Inspirated by `cargodoc` - a Rust tool for code documenting - and using MkDocs +
+Material MkDocs, Mosheh is an **easy, fast, plug-and-play** tool which saves time
+while **automating** the process of documenting the **source code of a Python
+codebase**.
 
 The stuff documented for each file is avaible at https://lucasgoncsilva.github.io/mosheh
 """
-
-__author__ = 'LucasGonc'
-__maintainer__ = 'LucasGonc'
-__credits__ = ['LucasGonc']
-__email__ = 'lucasgoncsilva04@gmail.com'
-
-__license__ = 'MIT'
-__repository__ = 'https://github.com/LucasGoncSilva/mosheh'
-__keywords__ = ['CLI', 'Python', 'documentation', 'MkDocs', 'automation', 'generation']
-
-__status__ = 'Production'
-
-__copyright__ = 'Copyright (c) 2025 Lucas Gonçalves da Silva'
-
-__description__ = __doc__
 
 
 from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
@@ -32,7 +17,7 @@ from logging import CRITICAL, DEBUG, ERROR, INFO, WARNING, basicConfig, getLogge
 
 from rich.logging import RichHandler
 
-from mosheh.commands import init, run
+from mosheh.commands import create, init, update
 
 
 def set_logging_config(v: int = 3) -> None:
@@ -43,14 +28,14 @@ def set_logging_config(v: int = 3) -> None:
     level `v` controls the logging granularity for the `mosheh` logger, and optionally
     for the `mkdocs` logger in debug mode.
 
-    :param v: Verbosity level, from 0 (critical) to 4 (debug). Defaults to 3 (info).
+    :param v: Verbosity level, from 0 (critical) to 4 (debug). Defaults to 3 (info).\n
         - 0: Critical
         - 1: Error
         - 2: Warning
         - 3: Info (default)
         - 4: Debug
-    :type v: int
-    :return: None.
+    :type v: int = 3
+    :return: None
     :rtype: None
     """
 
@@ -82,6 +67,7 @@ def main() -> None:
     them. Parsing the args, extracts the infos provided to deal and construct the
     output doc based on them.
 
+    :return: None
     :rtype: None
     """
 
@@ -92,19 +78,34 @@ def main() -> None:
     )
     subparsers = parser.add_subparsers(required=True)
 
+    # Command: init
     parser_init = subparsers.add_parser(
-        'init', help='Create the config file for using Mosheh.'
+        'init', help='Creates the config file for using Mosheh.'
     )
     parser_init.add_argument(
-        '--path', type=str, default='.', help='Where the config file must be.'
+        '--path', type=str, default='.', help='Path for `mosheh.json` config file.'
     )
     parser_init.set_defaults(func=init)
 
-    parser_run = subparsers.add_parser('run', help='Actually runs the program itself.')
-    parser_run.add_argument(
-        '--json', type=str, default='./', help='Where the config file must be.'
+    # Command: create
+    parser_create = subparsers.add_parser(
+        'create', help='Creates the final documentation based on `mosheh.json`.'
     )
-    parser_run.set_defaults(func=run)
+    parser_create.add_argument(
+        '--json', type=str, default='.', help='Path for `mosheh.json` config file.'
+    )
+    parser_create.set_defaults(func=create)
+
+    # Command: update
+    parser_update = subparsers.add_parser(
+        'update',
+        help='Updates existing documentation "nav.Codebase" based on `mosheh.json`'
+        " and reading the current codebase's situation.",
+    )
+    parser_update.add_argument(
+        '--json', type=str, default='.', help='Path for `mosheh.json` config file.'
+    )
+    parser_update.set_defaults(func=update)
 
     parser.add_argument(
         '--verbose',
