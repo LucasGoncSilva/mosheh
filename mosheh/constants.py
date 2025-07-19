@@ -36,7 +36,6 @@ hint to mark constants as non-overridable.
 """
 
 import builtins
-from collections.abc import Sequence
 from inspect import isclass
 from pkgutil import iter_modules
 from sys import builtin_module_names
@@ -45,12 +44,12 @@ from types import BuiltinFunctionType
 from typing import Final
 
 
-BUILTIN_MODULES: Final[Sequence[str]] = sorted(
+BUILTIN_MODULES: Final[list[str]] = sorted(
     set(builtin_module_names)
     | {name for _, name, _ in iter_modules([get_paths()['stdlib']])}
 )
 
-BUILTIN_FUNCTIONS: Final[Sequence[str]] = sorted(
+BUILTIN_FUNCTIONS: Final[list[str]] = sorted(
     i
     for i in dir(builtins)
     if isinstance(getattr(builtins, i), BuiltinFunctionType)
@@ -61,7 +60,7 @@ BUILTIN_FUNCTIONS: Final[Sequence[str]] = sorted(
     )
 )
 
-BUILTIN_DUNDER_METHODS: Final[Sequence[str]] = sorted(
+BUILTIN_DUNDER_METHODS: Final[list[str]] = sorted(
     attr
     for name in dir(builtins)
     if isclass(getattr(builtins, name))
@@ -69,7 +68,7 @@ BUILTIN_DUNDER_METHODS: Final[Sequence[str]] = sorted(
     if attr.startswith('__') and attr.endswith('__')
 )
 
-ACCEPTABLE_LOWER_CONSTANTS: Final[list[str]] = [
+ACCEPTABLE_LOWER_CONSTANTS: Final[tuple[str, ...]] = (
     '__author__',
     '__copyright__',
     '__credits__',
@@ -86,7 +85,7 @@ ACCEPTABLE_LOWER_CONSTANTS: Final[list[str]] = [
     'application',
     'main',
     'urlpatterns',
-]
+)
 
 DEFAULT_MKDOCS_YML: Final[str] = """site_name: {proj_name}
 repo_url: {repo_url}
@@ -103,6 +102,13 @@ theme:
     text: Ubuntu
 
   icon:
+    next: fontawesome/solid/arrow-right
+    previous: fontawesome/solid/arrow-left
+    top: fontawesome/solid/arrow-up
+    repo: fontawesome/brands/git-alt
+    edit: material/pencil
+    view: material/eye
+
     tag:
       homepage: fontawesome/solid/house
       index: fontawesome/solid/file
@@ -115,12 +121,6 @@ theme:
       API: fontawesome/solid/gears
       browser: fontawesome/solid/desktop
 
-    next: fontawesome/solid/arrow-right
-    previous: fontawesome/solid/arrow-left
-    top: fontawesome/solid/arrow-up
-    repo: fontawesome/brands/git-alt
-    edit: material/pencil
-    view: material/eye
     admonition:
       note: fontawesome/solid/note-sticky
       abstract: fontawesome/solid/book
@@ -167,6 +167,12 @@ theme:
 
 markdown_extensions:
   - attr_list
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.details
+  - md_in_html
+  - def_list
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -175,22 +181,15 @@ markdown_extensions:
       use_pygments: true
       pygments_lang_class: true
       auto_title: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-  - admonition
-  - pymdownx.details
-  - attr_list
-  - md_in_html
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.arithmatex:
       generic: true
-  - def_list
   - pymdownx.tasklist:
       custom_checkbox: true
       clickable_checkbox: false
@@ -203,7 +202,6 @@ plugins:
       enable_creation_date: true
       type: datetime
       enabled: true
-      enable_creation_date: true
       fallback_to_build_date: true
       locale: en
 
@@ -227,6 +225,10 @@ extra:
 
 copyright: Only God knows
 
+nav:
+  - Homepage: index.md
+  - {codebase_nav_path}:
+    - main.py: main.py.md
 
 """
 
