@@ -22,6 +22,7 @@ class DocumentationJSON(TypedDict):
     editUri: str
     logoPath: str | None
     readmePath: str | None
+    codebaseNavPath: str
 
 
 class IOJSON(TypedDict):
