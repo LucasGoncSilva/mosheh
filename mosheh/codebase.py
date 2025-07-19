@@ -1,5 +1,5 @@
 """
-This module provides functionality to analyze a Python codebase, extracting and
+This module provides functionality to analyze a Python codebase extracting and
 organizing its structural information.
 
 The primary purpose of this module is to traverse a directory tree, identify Python
@@ -20,8 +20,8 @@ How It Works:
 1. The `read_codebase` function starts by invoking `_iterate` to navigate into the
     directory tree starting from the given root path.
 
-2. For each file encountered, if a valid extension, the file is read and its AST or
-    content - if not a programming language file - is parsed to extract relevant
+2. For each file encountered, if a valid, expected extension, the file is read and its
+    AST or content - if not a programming language file - is parsed to extract relevant
     information.
 
 3. The result is a comprehensive dictionary (`CodebaseDict`) containing all collected
@@ -40,7 +40,7 @@ from typing import Any
 
 from mosheh.handlers import handle_python_file
 from mosheh.types.basic import CodebaseDict
-from mosheh.utils import convert_to_regular_dict, nested_dict
+from mosheh.utils import convert_to_regular_dict, nested_defaultdict
 
 
 logger: Logger = getLogger('mosheh')
@@ -63,7 +63,7 @@ def read_codebase(root: str) -> CodebaseDict:
     :rtype: CodebaseDict
     """
 
-    codebase: defaultdict[Any, Any] = nested_dict()
+    codebase: defaultdict[Any, Any] = nested_defaultdict()
 
     for file in _iterate(root):
         if file.endswith('.py') or file.endswith('.pyi'):
