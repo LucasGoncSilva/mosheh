@@ -17,8 +17,8 @@ from os import makedirs, path
 from shutil import copy2
 
 from mosheh.constants import DEFAULT_MKDOCS_YML
-from mosheh.doc.shared import process_codebase, get_update_set_nav
-from mosheh.types.basic import CodebaseDict,FilePath
+from mosheh.doc.shared import get_update_set_nav, process_codebase
+from mosheh.types.basic import CodebaseDict, FilePath
 from mosheh.utils import remove_abspath_from_codebase
 
 
@@ -107,7 +107,7 @@ def create_doc(
         edit_uri,
         repo_name,
         repo_url,
-        codebase_nav_path
+        codebase_nav_path,
     )
     logger.info('Default "mkdocs.yml" created')
 
@@ -139,7 +139,7 @@ def _create_default_mkdocs(
     edit_uri: str = 'blob/main/documentation/docs',
     repo_name: str = 'GitHub',
     repo_url: str = 'https://github.com',
-    codebase_nav_path:str = 'Codebase'
+    codebase_nav_path: str = 'Codebase',
 ) -> None:
     with open(mkdocs_yml, 'w', encoding='utf-8') as f:
         f.write(
@@ -163,7 +163,7 @@ def _default_doc_config(
     edit_uri: str = 'blob/main/documentation/docs',
     repo_name: str = 'GitHub',
     repo_url: str = 'https://github.com/',
-    codebase_nav_path:str = 'Codebase'
+    codebase_nav_path: str = 'Codebase',
 ) -> str:
     """
     Generates the default configuration for an MkDocs documentation project.
@@ -220,5 +220,5 @@ def _default_doc_config(
         repo_name=repo_name,
         repo_url=repo_url,
         logo_path=new_logo_path,
-        codebase_nav_path=codebase_nav_path
+        codebase_nav_path=codebase_nav_path,
     )

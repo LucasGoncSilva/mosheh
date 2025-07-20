@@ -15,7 +15,7 @@ all using internal calls for functions such as `process_codebase` and
 from logging import Logger, getLogger
 from os import path
 
-from mosheh.doc.shared import process_codebase,get_update_set_nav
+from mosheh.doc.shared import get_update_set_nav, process_codebase
 from mosheh.types.basic import CodebaseDict, FilePath
 from mosheh.utils import remove_abspath_from_codebase
 

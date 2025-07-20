@@ -236,7 +236,7 @@ FILE_MARKDOWN: Final[str] = """# File: `{filename}`
 
 Role: {role}
 
-Path: `{filepath}`
+Path: `{file_path}`
 
 {filedoc}
 

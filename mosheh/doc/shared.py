@@ -14,7 +14,6 @@ from this same file; this is to keep the logic in the same space, while keeping 
 code base less confusing.
 """
 
-from collections import defaultdict
 from logging import Logger, getLogger
 from os import makedirs, path, sep
 from typing import Any, cast
@@ -54,12 +53,10 @@ from mosheh.types.enums import (
     ImportType,
     Statement,
 )
-from mosheh.utils import indent_code,build_nav_struct
+from mosheh.utils import build_nav_struct, indent_code
 
 
 logger: Logger = getLogger('mosheh')
-
-
 
 
 def process_codebase(
@@ -633,7 +630,7 @@ def _handle_function_def(stmt: StandardReturn) -> str:
     rtype: Annotation = cast(Annotation, stmt['rtype']) or 'Unknown'
     code: CodeSnippet = indent_code(cast(str, stmt['code']))
 
-    if docstring:=cast(Docstring | None, stmt['docstring']):
+    if docstring := cast(Docstring | None, stmt['docstring']):
         docstring = indent_code(
             docstring.replace(':param', '\n:param')
             .replace(':type', '\n:type')
@@ -643,9 +640,9 @@ def _handle_function_def(stmt: StandardReturn) -> str:
     else:
         docstring = indent_code('No docstring provided.')
 
-    if not (args:=cast(Args, stmt['args'])):
+    if not (args := cast(Args, stmt['args'])):
         args = 'None'
-    if not (kwargs:=cast(Kwargs, stmt['kwargs'])):
+    if not (kwargs := cast(Kwargs, stmt['kwargs'])):
         kwargs = 'None'
 
     return FUNCTION_DEF_MD_STRUCT.format(
@@ -702,7 +699,11 @@ def _handle_assert(stmt: StandardReturn) -> str:
     return ASSERT_MD_STRUCT.format(test=test, msg=msg, code=code)
 
 
-def get_update_set_nav(mkdocs_yml:FilePath,cleaned_codebase:CodebaseDict,codebase_nav_path: str = 'Codebase')->None:
+def get_update_set_nav(
+    mkdocs_yml: FilePath,
+    cleaned_codebase: CodebaseDict,
+    codebase_nav_path: str = 'Codebase',
+) -> None:
     """
     Sets the `mkdocs.yml` Nav "Codebase" section to the current state, updating it.
 
@@ -721,7 +722,7 @@ def get_update_set_nav(mkdocs_yml:FilePath,cleaned_codebase:CodebaseDict,codebas
     :return: None
     :rtype: None
     """
-    
+
     with open(mkdocs_yml, encoding='utf-8') as f:
         yml: dict[str, list[Any]] = yaml.load(f.read(), Loader=yaml.CLoader)
 

@@ -166,7 +166,7 @@ def add_to_nested_defaultdict(
 
 
 def build_nav_struct(
-    tree: CodebaseDict, base_path: str = 'Codebase', prefix: str = ''
+    tree: CodebaseDict, codebase_nav_path: str = 'Codebase', prefix: str = ''
 ) -> list[dict[str, Any]]:
     """
     Processes the `codebase.read_codebase` into valid yaml "Nav" dump format.
@@ -210,8 +210,8 @@ def build_nav_struct(
 
     :param tree: Codebase `codebase.read_codebase` struct.
     :type tree: Codebase
-    :param base_path: Expected codebase nav name to be used/found.
-    :type base_path: str = 'Codebase'
+    :param codebase_nav_path: Expected codebase nav name to be used/found.
+    :type codebase_nav_path: str = 'Codebase'
     :param prefix: Accumulative string path for concat.
     :type tree: str = ''
     :return: Formatted "yaml-nav-dumpable" codebase structure.
@@ -224,10 +224,10 @@ def build_nav_struct(
         full_path = f'{prefix}/{name}' if prefix else name
 
         if isinstance(content, list):
-            result.append({name: f'{base_path}/{full_path}.md'})
+            result.append({name: f'{codebase_nav_path}/{full_path}.md'})
         else:
             nested: list[dict[str, Any]] = build_nav_struct(
-                content, base_path, full_path
+                content, codebase_nav_path, full_path
             )
             result.append({name: nested})
 
@@ -340,8 +340,8 @@ def indent_code(code: str, level: int = 4) -> str:
     :rtype: str
     """
 
-    indent:str = ' ' * level
-    new_code:str = '\n'.join(
+    indent: str = ' ' * level
+    new_code: str = '\n'.join(
         map(lambda line: f'{indent}{line}' if line.strip() else '', code.splitlines())
     )
 
@@ -396,6 +396,3 @@ def _remove_abspath_from_codebase_helper(
             return _remove_abspath_from_codebase_helper(deeper)
 
     return cast(CodebaseDict, d)
-
-
-

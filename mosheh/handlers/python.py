@@ -71,7 +71,7 @@ def handle_python_file(
     """
     Processes the .py file and returns it's data.
 
-    By receiving the codebase datastructure, empty or not, and a filepath, first
+    By receiving the codebase datastructure, empty or not, and a file_path, first
     parses the code, then defines the file metadata, such as role (from
     `types.enums.FileRole`), navigates into it's AST nodes (statements) and calls the
     `handle_std_nodes` function for dealing with the default observed statements.
@@ -846,8 +846,7 @@ def _handle_function_def(
 
 
 def _handle_async_function_def(
-    struct: list[StandardReturn],
-    node: ast.AsyncFunctionDef
+    struct: list[StandardReturn], node: ast.AsyncFunctionDef
 ) -> list[StandardReturn]:
     """
     Processes an `ast.AsyncFunctionDef` node and returns its data.

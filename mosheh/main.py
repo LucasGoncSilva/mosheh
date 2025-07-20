@@ -11,7 +11,6 @@ codebase**.
 The stuff documented for each file is avaible at https://lucasgoncsilva.github.io/mosheh
 """
 
-
 from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
 from logging import CRITICAL, DEBUG, ERROR, INFO, WARNING, basicConfig, getLogger
 
