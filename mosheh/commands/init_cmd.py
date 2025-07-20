@@ -22,6 +22,7 @@ DOCUMENTATION_JSON: Final[DocumentationJSON] = DocumentationJSON(
     editUri='blob/main/documentation/docs',
     logoPath='./path/to/logo.svg',
     readmePath='./path/to/README.md',
+    codebaseNavPath='Codebase',
 )
 
 
@@ -47,17 +48,17 @@ def init(args: Namespace) -> None:
 
     :param args: Namespace object containing the creation information.
     :type args: argparse.Namespace
-    :return: None.
+    :return: None
     :rtype: None
     """
 
     try:
-        filepath: str = join(args.path, 'mosheh.json')
+        file_path: str = join(args.path, 'mosheh.json')
 
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(file_path, 'w', encoding='utf-8') as f:
             f.write(dumps(DEFAULT_JSON, indent=2))
 
-        logger.info(f'"mosheh.json" created at {abspath(filepath)}')
+        logger.info(f'"mosheh.json" created at {abspath(file_path)}')
         logger.debug(f'"mosheh.json" = {DEFAULT_JSON}')
 
     except FileNotFoundError:

@@ -1,6 +1,6 @@
 """
-Encapsulating the `run` command logic, this file deals with the most important feature
-present on Mosheh: to create the codebase documentation.
+Encapsulating the `update` command logic, this file deals with the most important
+feature present on Mosheh: to update the codebase documentation.
 
 It seems extremely complex, but reading just a few lines shows that here is handled
 more about the IO and data validation from the `mosheh.json` config file than the
@@ -14,7 +14,7 @@ from os.path import abspath, join
 from subprocess import CalledProcessError
 
 from mosheh.codebase import read_codebase
-from mosheh.doc import generate_doc
+from mosheh.doc.update import update_doc
 from mosheh.types.basic import CodebaseDict
 from mosheh.types.jsoncfg import IOJSON, DefaultJSON, DocumentationJSON
 
@@ -22,17 +22,17 @@ from mosheh.types.jsoncfg import IOJSON, DefaultJSON, DocumentationJSON
 logger: Logger = getLogger('mosheh')
 
 
-def run(args: Namespace) -> None:
+def update(args: Namespace) -> None:
     """
-    Runs the main Mosheh's feature.
+    Runs the Mosheh's feature for codebase tracking and updating.
 
-    While handling the IO and data validation form the `mosheh.json` config file,
+    While handling the IO and data validation from the `mosheh.json` config file,
     which takes the most lines of it's body, once everything is ok, call the proper
     read-codebase function and then the generate-documentation one.
 
     :param args: Namespace object containing the creation information.
     :type args: argparse.Namespace
-    :return: None.
+    :return: None
     :rtype: None
     """
 
@@ -87,6 +87,9 @@ def run(args: Namespace) -> None:
     README_PATH: str | None = doc_config.get('readmePath')
     logger.debug(f'JSON "documentation.readmePath" = {README_PATH}')
 
+    CODEBASE_NAV_PATH: str = doc_config.get('codebaseNavPath', 'Codebase')
+    logger.debug(f'JSON "documentation.codebaseNavPath" = {CODEBASE_NAV_PATH}')
+
     logger.info('Arguments parsed successfully')
 
     # Codebase Reading
@@ -95,20 +98,16 @@ def run(args: Namespace) -> None:
     logger.info('Codebase successfully loaded')
 
     # Doc Generation
-    logger.info('Starting final documentation generation')
+    logger.info('Starting final documentation updating')
     try:
-        generate_doc(
+        update_doc(
             codebase=data,
             root=ROOT,
-            proj_name=PROJ_NAME,
-            repo_name=REPO_NAME,
-            repo_url=REPO_URL,
-            edit_uri=EDIT_URI,
-            logo_path=LOGO_PATH,
             readme_path=README_PATH,
             output=OUTPUT,
+            codebase_nav_path=CODEBASE_NAV_PATH,
         )
-        logger.info('Documentation created successfully')
+        logger.info('Documentation updated successfully')
 
     except CalledProcessError as e:
         logger.error(e)
