@@ -2,12 +2,12 @@ from collections import defaultdict
 
 from mosheh.types.basic import CodebaseDict, StandardReturn
 from mosheh.utils import (
-    add_to_dict,
+    add_to_nested_defaultdict,
     bin,
     convert_to_regular_dict,
     indent_code,
     is_lib_installed,
-    nested_dict,
+    nested_defaultdict,
     standard_struct,
 )
 
@@ -22,20 +22,20 @@ def test_is_lib_installed() -> None:
     assert not is_lib_installed('numpy')
 
 
-def test_nested_dict() -> None:
-    assert isinstance(nested_dict(), dict)
-    assert isinstance(nested_dict(), defaultdict)
+def test_nested_defaultdict() -> None:
+    assert isinstance(nested_defaultdict(), dict)
+    assert isinstance(nested_defaultdict(), defaultdict)
 
 
-def test_add_to_dict() -> None:
+def test_add_to_nested_defaultdict() -> None:
     structure: defaultdict[str, dict[str, dict[str, list[dict[str, str]]]]] = (
-        nested_dict()
+        nested_defaultdict()
     )
     path: list[str] = ['level1', 'level2', 'level3']
     data: list[StandardReturn] = [{'key': 'value'}]
 
-    result: defaultdict[str, dict[str, dict[str, list[dict[str, str]]]]] = add_to_dict(
-        structure, path, data
+    result: defaultdict[str, dict[str, dict[str, list[dict[str, str]]]]] = (
+        add_to_nested_defaultdict(structure, path, data)
     )
 
     assert isinstance(result, dict)
@@ -46,8 +46,8 @@ def test_add_to_dict() -> None:
 
 
 def test_convert_to_regular_dict() -> None:
-    structure: defaultdict[str, str] = nested_dict()
-    added: defaultdict[str, str] = add_to_dict(
+    structure: defaultdict[str, str] = nested_defaultdict()
+    added: defaultdict[str, str] = add_to_nested_defaultdict(
         structure, ['level1'], [{'key': 'value'}]
     )
     result: CodebaseDict = convert_to_regular_dict(added)
