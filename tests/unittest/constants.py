@@ -114,10 +114,10 @@ def test_FUNCTION_DEF_MD_STRUCT() -> None:
         [
             'name',
             'category',
-            'rtype',
             'decorators',
             'args',
             'kwargs',
+            'rtype',
             'docstring',
             'code',
         ],
