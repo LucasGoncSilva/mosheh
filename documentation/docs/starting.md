@@ -76,36 +76,10 @@ mosheh [-h] [--verbose {0,1,2,3,4}] {init,run} ...
 Elif using **uv**, call `mosheh` from `uv run` to be concise with the ecosystem in use:
 
 ```sh
-uv run mosheh [-h] [--verbose {0,1,2,3,4}] {init,run} ...
+uv run mosheh [-h] [--verbose {0,1,2,3,4}] {init,create} ...
 ```
 
 ## Commands
-
-Mosheh currently supports two main commands that represent its usage modes: `init` and `run`. Each has its own parameters, and there’s also a global one available across executions: `--verbose`.
-
-### `init`
-
-Initializes Mosheh by creating the configuration file that enables its usage.
-
-#### `--path`
-
-- Mandatory: `#!py Optional`
-- Type: `#!py str`
-- Default: `#!py '.'`
-
-Defines where the configuration file should be created. If nothing is informed, it defaults to the current directory (`.`). This allows flexibility to scaffold the config at any desired location inside the project.
-
-### `run`
-
-This is the actual execution command for Mosheh. It runs the tool based on the configuration and setup defined.
-
-#### `--json`
-
-- Mandatory: `#!py Optional`
-- Type: `#!py str`
-- Default: `#!py '.'`
-
-Defines where to read the configuration file from. If not provided, it will assume the current directory. This parameter enables control over which config Mosheh should consider when running.
 
 ### Global Parameter
 
@@ -119,10 +93,87 @@ Apart from command-specific parameters, there’s also one global parameter that
 
 Controls the verbosity level of the CLI output, ranging from `0` to `4`:
 
-- `0`: Quiet / Critical only
-- `1`: Errors
-- `2`: Warnings
-- `3`: Default info level
-- `4`: Full debug / oversharing
+- `#!py 0`: Quiet / Critical only
+- `#!py 1`: Errors
+- `#!py 2`: Warnings
+- `#!py 3`: Default info level
+- `#!py 4`: Full debug / oversharing
 
 Use this flag depending on your context — whether you need clean output or full transparency for debugging and tracking.
+
+Mosheh currently supports two main commands that represent its usage modes: `init` and `create`. Each has its own parameters, and there’s also a global one available across executions: `--verbose`.
+
+### `init`
+
+Initializes Mosheh by creating the configuration file that enables its usage. Nothing can be done without this config file with the name of `mosheh.json`
+
+#### `--path`
+
+- Mandatory: `#!py Optional`
+- Type: `#!py str`
+- Default: `#!py '.'`
+
+Defines where the configuration file should be created. If nothing is informed, it defaults to the current directory (`.`). This allows flexibility to scaffold the config at any desired location inside the project. The config file generated is detailed below:
+
+```json
+{
+  "documentation": {
+    "projectName": "Mosheh",
+    "repoName": "mosheh",
+    "repoUrl": "https://github.com/lucasgoncsilva/mosheh",
+    "editUri": "blob/main/documentation/docs",
+    "siteUrl": "https://lucasgoncsilva.github.io/mosheh/",
+    "logoPath": "./path/to/logo.svg",
+    "readmePath": "./path/to/README.md",
+    "codebaseNavPath": "Codebase"
+  },
+  "io": {
+    "rootDir": "./app/",
+    "outputDir": "./path/to/output/"
+  }
+}
+```
+
+#### Section `#!json "documentation"`
+
+Documentation-related data
+
+- `#!json "projectName"`: Name of the project (e.g. "Mosheh")
+- `#!json "repoName"`: Name of the repository (e.g. "django-ninja")
+- `#!json "repoUrl"`: URL of the repository (e.g. "https://github.com/matplotlib/matplotlib")
+- `#!json "editUri"`: Editting URI (e.g. "blob/main/documentation/docs")
+- `#!json "siteUrl"`: URL of the documentation website (path included if necessary)
+- `#!json "logoPath"`: Relative path of the project's logo (inside repository)
+- `#!json "readmePath"`: Relative path of the project's README (inside repository)
+- `#!json "codebaseNavPath"`: Documentation path to the codebase section
+
+#### Section `#!json "io"`
+
+IO-related data
+
+- `#!json "rootDir"`: Relative path for the codebase dir
+- `#!json "outputDir"`: Relative path for the documentation output dir
+
+### `create`
+
+Mosheh's feature for codebase tracking and documentation creation. It runs the tool based on the configuration and setup defined. By reading the config file, evaluates the pointed codebase, registers it's data and generates the output file markdown for each file, writing every file to a path respecting the codebase path.
+
+#### `--json`
+
+- Mandatory: `#!py Optional`
+- Type: `#!py str`
+- Default: `#!py '.'`
+
+Defines where to read the configuration file from. If not provided, it will assume the current directory. This parameter enables control over which config Mosheh should consider when running.
+
+### `update`
+
+Mosheh's feature for codebase tracking and documentation updating. It runs the tool based on the configuration and setup defined. Executes almost the same logic of `create` command, but just updating the codebase markdown files instead of creating the documentation from scratch.
+
+#### `--json`
+
+- Mandatory: `#!py Optional`
+- Type: `#!py str`
+- Default: `#!py '.'`
+
+Defines where to read the configuration file from. If not provided, it will assume the current directory. This parameter enables control over which config Mosheh should consider when running.

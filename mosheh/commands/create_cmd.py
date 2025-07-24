@@ -24,7 +24,7 @@ logger: Logger = getLogger('mosheh')
 
 def create(args: Namespace) -> None:
     """
-    Runs the Mosheh's feature for codebase tracking and creation.
+    Runs the Mosheh's feature for codebase tracking and documentation creation.
 
     While handling the IO and data validation form the `mosheh.json` config file,
     which takes the most lines of it's body, once everything is ok, call the proper
@@ -80,6 +80,9 @@ def create(args: Namespace) -> None:
 
     EDIT_URI: str = doc_config.get('editUri', 'blob/main/documentation/docs')
     logger.debug(f'JSON "documentation.editUri" = {EDIT_URI}')
+
+    SITE_URL: str = doc_config.get('siteUrl', 'https://lucasgoncsilva.github.io/mosheh')
+    logger.debug(f'JSON "documentation.siteUrl" = {SITE_URL}')
 
     LOGO_PATH: str | None = doc_config.get('logoPath')
     logger.debug(f'JSON "documentation.logoPath" = {LOGO_PATH}')

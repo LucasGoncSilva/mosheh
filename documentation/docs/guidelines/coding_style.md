@@ -1,6 +1,6 @@
 # Coding Style
 
-> In Mosheh, consistency is essential. This guide outlines the Python conventions we follow: PEP-aligned, type-safe, readable, and testable. Clean code comes first; style is automated.
+> In Mosheh, consistency is essential. This guide outlines the Python conventions we follow: PEP-aligned, type-safe, readable, and testable. Clean code comes first.
 
 ## General Principles
 
@@ -31,18 +31,18 @@ All reported issues must be resolved before merging.
 
 ## Naming Conventions
 
-| Entity            | Style                | Example           |
-| ----------------- | -------------------- | ----------------- |
-| Simple Variables  | snake_case           | `DEFAULT_TIMEOUT` |
-| Constants         | UPPER_SNAKE_CASE     | `DEFAULT_TIMEOUT` |
-| Classes           | PascalCase           | `DocumentBuilder` |
-| Functions/methods | snake_case           | `render_docs()`   |
-| Private members   | \_leading_underscore | `_resolve_type()` |
-| Type aliases      | PascalCase           | `FilePath = str`  |
+| Entity            | Style                | Example                         |
+| ----------------- | -------------------- | ------------------------------- |
+| Simple Variables  | snake_case           | `simple_timeout: [type] = ...`  |
+| Constants         | UPPER_SNAKE_CASE     | `DEFAULT_TIMEOUT: [type] = ...` |
+| Functions/Methods | snake_case           | `def render_docs()`             |
+| Classes           | PascalCase           | `class DocumentBuilder`         |
+| Private Members   | \_leading_underscore | `def _internal_method()`        |
+| Type Aliases      | PascalCase           | `type FilePath = str`           |
 
 ## Type Annotations
 
-- All variables, functions and methods **must** have type annotations.
+- Variables, functions and methods, as all as possible, **must** have type annotations.
 - Use `mypy` with `strict = true`; fix all type issues.
 - Avoid `Any` unless explicitly justified.
 - Prefer clear naming or comments over complex casts.
@@ -51,27 +51,28 @@ All reported issues must be resolved before merging.
 
 - Prefix any private function/method/variable with a single underscore (`_`).
 - Private elements must **not** be used outside their intended scope.
-- If you need broader access, make it public and add proper docstrings.
+- If you need broader access, problably you do not need it; make it public in a proper way and add a proper docstrings (or just encapsulate the code for testing, if the case, following the same logic of the existing ones).
 
 ## Comments & Docstrings
 
 **Always** include a module-level docstring at the top of every `.py` file.
-Example from `handler.py`:
+
+Example from `constants.py`:
 
 ```py
 """
-Being the longest file, this one's role is process the source codebase.
+This module defines constants and templates used throughout the project.
 
-By calling `handle_std_nodes` with an `ast.AST` node, it's going to parse the node type
-and call the right handle func. The defined nodes are `ast.Import`, `ast.ImportFrom`,
-... and `ast.Assert`; if more nodes inside them, `_handle_node` is called to process
-the new one.
+It aims to standardize project-wide values, ensure consistency, and streamline the
+development and documentation process.
+
+...
 """
 ```
 
-### Function/method docstrings
+### Function/Method Docstrings
 
-Use the following style—with a one-line summary, blank line, details, and Sphinx-style `:param:`/`:type:`/`:returns:`/`:rtype:` sections:
+Use the following style—with a one-line summary, blank line, details, and Sphinx-style `:param:`/`:type:`/`:return:`/`:rtype:` sections:
 
 ```py
 def set_logging_config(v: int = 3) -> None:
@@ -86,23 +87,24 @@ def set_logging_config(v: int = 3) -> None:
         - 0: Critical
         - 1: Error
         - 2: Warning
-        - 3: Info
+        - 3: Info (default)
         - 4: Debug
     :type v: int
-    :returns: None.
+    :return: None
     :rtype: None
     """
+
     ...
 ```
 
 - The first line is a summary.
 - Leave a blank line, then provide details or notes.
-- Use `:param:`, `:type:`, `:returns:`, `:rtype:` — do not include `:raises:` unless warranted.
+- Use `:param:`, `:type:`, `:return:`, `:rtype:` — do not include `:raises:` unless warranted.
 - Avoid redundant comments that restate obvious code.
 
 ## Testing
 
-- Code changes must include or update **pytest** tests (in `tests/unittest/`) for all non-trivial logic.
+- Code changes must include or update **pytest** tests (in `tests/unittest/`).
 - Use descriptive test names and avoid relying on docstrings alone.
 - Run both unit and documentation CLI tests:
 
@@ -115,7 +117,7 @@ uv run task test
 Before your PR, ensure:
 
 - [x] Style and naming follow conventions
-- [x] `uv run task lint` yields zero issues
+- [x] `uv run task lint` yields zero issues (runs 2x if needed)
 - [x] `uv run task test` passes
 - [x] All files start with meaningful module docstrings
 - [x] No debug prints or commented-out code remain

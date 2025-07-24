@@ -38,7 +38,7 @@ In short, since you are most likely a developer, **provide a ticket that you wou
 
 ## Feature Requests
 
-Feature requests are welcome! While we will consider all requests, we cannot guarantee your request will be accepted. We want to avoid [feature creep](https://en.wikipedia.org/wiki/Feature_creep). Your idea may be great, but also out-of-scope for the project. If accepted, we cannot make any commitments regarding the timeline for implementation and release. However, you are welcome to submit a pull request to help!
+Feature requests are welcome! While we will consider all requests, we cannot guarantee your request will be accepted. We want to avoid [feature creep](https://en.wikipedia.org/wiki/Feature_creep). Your idea may be great, but also out-of-scope for the project. If accepted, we cannot make any commitments regarding the timeline for implementation and release. However, you are welcome to submit a pull request or create an issue to help!
 
 - **Do not open a duplicate feature request.** Search for existing feature requests first. If you find your feature (or one very similar) previously requested, comment on that issue.
 
@@ -84,7 +84,7 @@ Do
 </th>
 <th>
 
-Do **NOT**
+Do <strong>NOT</strong>
 
 </th>
 </tr>
@@ -188,7 +188,7 @@ Please [write a great commit message](https://chris.beams.io/posts/git-commit/).
 Suggest list of tags after the demonstration:
 
 ```
-[TAG](SCOPE): Short summary of changes in 50 chars or less
+[tag]: Short summary of changes in 50 chars or less
 
 Add a more detailed explanation here, if necessary. Possibly give
 some background about the issue being fixed, etc. The body of the
@@ -220,21 +220,21 @@ Resolves: #123
 See also: #456, #789
 ```
 
-Scope: There is no table with _all_ possible options, it depends directly on what was commited. The idea is to define in one word where the commit changes the codebase; some possible examples below (stuff like "{apps}" means app names, not "apps" literally):
+Scope: There is no table with _all_ possible options, it depends directly on what was commited. The idea is to define in one word where the commit changes the codebase; some possible examples below - already used ones:
 
-| Tag        | Description                                                             | Example                                      |
-| :--------- | :---------------------------------------------------------------------- | :------------------------------------------- |
-| `feat`     | Addition of new feature.                                                | `feat: Add recovery password logic`          |
-| `fix`      | Bug fixing.                                                             | `fix: Correct button alignment`              |
-| `docs`     | Docs updating (README, code examples, etc.).                            | `docs: Update doc homepage`                  |
-| `refactor` | Makes better code, no functionality changes, no bug fixes, no features. | `refactor: Simplify validation logic`        |
-| `test`     | Test addition or modify.                                                | `test: Add unit tests for user model`        |
-| `build`    | Updates on build stuff.                                                 | `build: Add new plugin for optimization`     |
-| `ci`       | Updates on CI/CD config.                                                | `ci: Update workflows checkout repo`         |
-| `perf`     | Performance upgrades.                                                   | `perf: Optimize select_related`              |
-| `sec`      | Security improvements.                                                  | `sec: Handle token expiration vulnerability` |
-| `hotfix`   | Urgent... hot... fixes...                                               | `hotfix: Fix crash on empty input`           |
-| `config`   | Updates on general configs.                                             | `config: Update MkDocs dependency version`   |
+| Tag        | Description                                       | Example                                      |
+| :--------- | :------------------------------------------------ | :------------------------------------------- |
+| `feat`     | Addition of new feature.                          | `feat: Add recovery password logic`          |
+| `fix`      | Bug fixing.                                       | `fix: Correct button alignment`              |
+| `docs`     | Docs updating (README, code examples, etc.).      | `docs: Update doc homepage`                  |
+| `refactor` | Makes better code, no bug fixes, no new features. | `refactor: Simplify validation logic`        |
+| `test`     | Test addition or modify.                          | `test: Add unit tests for user model`        |
+| `build`    | Updates on build stuff.                           | `build: Add new plugin for optimization`     |
+| `ci`       | Updates on CI/CD config.                          | `ci: Update workflows checkout repo`         |
+| `perf`     | Performance upgrades.                             | `perf: Optimize select_related`              |
+| `sec`      | Security improvements.                            | `sec: Handle token expiration vulnerability` |
+| `hotfix`   | Urgent... hot... fixes...                         | `hotfix: Fix crash on empty input`           |
+| `config`   | Updates on general configs.                       | `config: Update MkDocs dependency version`   |
 
 ## Code Review
 

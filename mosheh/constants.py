@@ -88,6 +88,7 @@ ACCEPTABLE_LOWER_CONSTANTS: Final[tuple[str, ...]] = (
 )
 
 DEFAULT_MKDOCS_YML: Final[str] = """site_name: {proj_name}
+site_url: {site_url}
 repo_url: {repo_url}
 repo_name: {repo_name}
 edit_uri: "{edit_uri}"
@@ -323,13 +324,13 @@ FUNCTION_DEF_MD_STRUCT: Final[str] = """### `#!py def {name}`
 
 Type: `#!py {category}`
 
-Return Type: `#!py {rtype}`
-
 Decorators: `#!py {decorators}`
 
 Args: `#!py {args}`
 
 Kwargs: `#!py {kwargs}`
+
+Return Type: `#!py {rtype}`
 
 ??? quote "Docstring"
 

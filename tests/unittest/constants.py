@@ -54,6 +54,7 @@ def test_DEFAULT_MKDOCS_YML() -> None:
         True,
         [
             'proj_name',
+            'site_url',
             'repo_url',
             'repo_name',
             'edit_uri',

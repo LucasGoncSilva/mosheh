@@ -4,8 +4,8 @@ invokes the `typing.TypedDict` powers for leading this mission.
 
 The config JSON itself is divided at 2 parts: Documentation and IO:
 
-    - Documentation: handles the project's data and final documentation configuration
-    - IO: handles the input and output infos, such as output path and codebase root
+- Documentation: handles the project's data and final documentation configuration
+- IO: handles the input and output infos, such as output path and codebase root
 
 The idea here is to use TypedDict as a typing alias plus contract - kinda.
 """
@@ -20,6 +20,7 @@ class DocumentationJSON(TypedDict):
     repoName: str
     repoUrl: str
     editUri: str
+    siteUrl: str
     logoPath: str | None
     readmePath: str | None
     codebaseNavPath: str

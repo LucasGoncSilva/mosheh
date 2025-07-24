@@ -82,4 +82,4 @@ def update_doc(
         with open(homepage, 'w', encoding='utf-8') as f:
             f.writelines(content)
 
-        logger.info('\t"README.md" copied to documentation')
+        logger.info('"README.md" copied to documentation')

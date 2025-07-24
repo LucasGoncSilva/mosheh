@@ -20,6 +20,7 @@ DOCUMENTATION_JSON: Final[DocumentationJSON] = DocumentationJSON(
     repoName='mosheh',
     repoUrl='https://github.com/lucasgoncsilva/mosheh',
     editUri='blob/main/documentation/docs',
+    siteUrl='https://lucasgoncsilva.github.io/mosheh/',
     logoPath='./path/to/logo.svg',
     readmePath='./path/to/README.md',
     codebaseNavPath='Codebase',

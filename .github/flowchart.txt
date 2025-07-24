@@ -12,7 +12,7 @@ subgraph MOSHEH
     types{{"types/*"}}:::Mosheh
     utils{{"utils.py"}}:::Mosheh
     const("constants.py"):::Mosheh
-    doc("doc.py"):::Mosheh
+    doc("doc/*"):::Mosheh
 end
 
 

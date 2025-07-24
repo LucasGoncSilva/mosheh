@@ -739,4 +739,4 @@ def get_update_set_nav(
     }
 
     with open(mkdocs_yml, 'w', encoding='utf-8') as f:
-        f.write(yaml.dump(yml, Dumper=yaml.CDumper, sort_keys=False))
+        f.write(yaml.dump(yml, Dumper=yaml.CDumper, sort_keys=False, indent=2))

@@ -1160,7 +1160,7 @@ def wrapped_mark_methods_for_testing(node: ast.ClassDef) -> None:
     :rtype: None
     """
 
-    _mark_methods(node)
+    return _mark_methods(node)
 
 
 def wrapped_handle_std_nodes_for_testing(node: ast.AST) -> list[StandardReturn]:

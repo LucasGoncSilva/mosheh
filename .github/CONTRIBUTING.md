@@ -84,7 +84,7 @@ Do
 </th>
 <th>
 
-Do **NOT**
+Do <strong>NOT</strong>
 
 </th>
 </tr>
@@ -222,19 +222,19 @@ See also: #456, #789
 
 Scope: There is no table with _all_ possible options, it depends directly on what was commited. The idea is to define in one word where the commit changes the codebase; some possible examples below - already used ones:
 
-| Tag        | Description                                                             | Example                                      |
-| :--------- | :---------------------------------------------------------------------- | :------------------------------------------- |
-| `feat`     | Addition of new feature.                                                | `feat: Add recovery password logic`          |
-| `fix`      | Bug fixing.                                                             | `fix: Correct button alignment`              |
-| `docs`     | Docs updating (README, code examples, etc.).                            | `docs: Update doc homepage`                  |
-| `refactor` | Makes better code, no functionality changes, no bug fixes, no features. | `refactor: Simplify validation logic`        |
-| `test`     | Test addition or modify.                                                | `test: Add unit tests for user model`        |
-| `build`    | Updates on build stuff.                                                 | `build: Add new plugin for optimization`     |
-| `ci`       | Updates on CI/CD config.                                                | `ci: Update workflows checkout repo`         |
-| `perf`     | Performance upgrades.                                                   | `perf: Optimize select_related`              |
-| `sec`      | Security improvements.                                                  | `sec: Handle token expiration vulnerability` |
-| `hotfix`   | Urgent... hot... fixes...                                               | `hotfix: Fix crash on empty input`           |
-| `config`   | Updates on general configs.                                             | `config: Update MkDocs dependency version`   |
+| Tag        | Description                                       | Example                                      |
+| :--------- | :------------------------------------------------ | :------------------------------------------- |
+| `feat`     | Addition of new feature.                          | `feat: Add recovery password logic`          |
+| `fix`      | Bug fixing.                                       | `fix: Correct button alignment`              |
+| `docs`     | Docs updating (README, code examples, etc.).      | `docs: Update doc homepage`                  |
+| `refactor` | Makes better code, no bug fixes, no new features. | `refactor: Simplify validation logic`        |
+| `test`     | Test addition or modify.                          | `test: Add unit tests for user model`        |
+| `build`    | Updates on build stuff.                           | `build: Add new plugin for optimization`     |
+| `ci`       | Updates on CI/CD config.                          | `ci: Update workflows checkout repo`         |
+| `perf`     | Performance upgrades.                             | `perf: Optimize select_related`              |
+| `sec`      | Security improvements.                            | `sec: Handle token expiration vulnerability` |
+| `hotfix`   | Urgent... hot... fixes...                         | `hotfix: Fix crash on empty input`           |
+| `config`   | Updates on general configs.                       | `config: Update MkDocs dependency version`   |
 
 ## Code Review
 

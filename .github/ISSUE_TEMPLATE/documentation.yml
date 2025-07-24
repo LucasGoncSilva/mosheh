@@ -1,0 +1,71 @@
+name: Documentation Improvement
+description: Suggest improvements or report issues with the documentation
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to complete this documentation report! Please fill everything as much as you can to ensure you are providing as info as possible, for a quick review!
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Guidelines
+      description: By submitting this issue, you agree to follow our guidelines available [here](https://lucasgoncsilva.github.io/mosheh/guidelines/).
+      options:
+        - label: I agree to follow this project's Guidelines.
+          required: true
+
+  - type: input
+    id: doc-location
+    attributes:
+      label: Affected Page or Section
+      description: Which part of the documentation needs improvement?
+      placeholder: "e.g. CLI usage, install guide, config section, etc."
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Project Version
+      description: Which version does the documentation refer to?
+      placeholder: "1.0, 2.2, <=2.3, >=3.0.1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: What's the issue?
+      description: Describe the unclear, outdated, or missing information in the docs.
+      placeholder: Tell us what you found confusing, wrong, or missing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggestion for Improvement
+      description: Share your ideas or preferred changes.
+      placeholder: How can we make this documentation better?
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or Videos
+      description: Add screenshots, gifs, or videos to help explain your problem.
+      placeholder: Upload screenshots, gifs, and videos here
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Add any other useful information about the problem here.
+      placeholder: Is there any additional helpful information you can share?
+    validations:
+      required: false

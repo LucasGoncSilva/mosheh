@@ -23,7 +23,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.12"
 
       - name: Setup Environment Var
         run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
@@ -41,4 +41,5 @@ jobs:
         run: |
           pip install uv
           uv sync
+          uv run mosheh update
           uv run mkdocs gh-deploy --force

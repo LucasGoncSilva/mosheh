@@ -37,6 +37,7 @@ def create_doc(
     repo_name: str = 'GitHub',
     repo_url: str = 'https://github.com',
     codebase_nav_path: str = 'Codebase',
+    site_url: str = 'https://lucasgoncsilva.github.io/mosheh',
 ) -> None:
     """
     Generates a documentation for a Python codebase using MkDocs.
@@ -76,6 +77,8 @@ def create_doc(
     :type repo_url: str
     :param codebase_nav_path: Expected codebase nav name to be used/found.
     :type codebase_nav_path: str = 'Codebase'
+    :param site_url: URL of the documentation website
+    :type site_url: str = 'https://lucasgoncsilva.github.io/mosheh'
     :return: None
     :rtype: None
     """
@@ -108,6 +111,7 @@ def create_doc(
         repo_name,
         repo_url,
         codebase_nav_path,
+        site_url,
     )
     logger.info('Default "mkdocs.yml" created')
 
@@ -128,7 +132,7 @@ def create_doc(
         with open(homepage, 'w', encoding='utf-8') as f:
             f.writelines(content)
 
-        logger.info('\t"README.md" copied to documentation')
+        logger.info('"README.md" copied to documentation')
 
 
 def _create_default_mkdocs(
@@ -140,6 +144,7 @@ def _create_default_mkdocs(
     repo_name: str = 'GitHub',
     repo_url: str = 'https://github.com',
     codebase_nav_path: str = 'Codebase',
+    site_url: str = 'https://lucasgoncsilva.github.io/mosheh',
 ) -> None:
     with open(mkdocs_yml, 'w', encoding='utf-8') as f:
         f.write(
@@ -151,6 +156,7 @@ def _create_default_mkdocs(
                 repo_name=repo_name,
                 repo_url=repo_url,
                 codebase_nav_path=codebase_nav_path,
+                site_url=site_url,
             )
         )
 
@@ -161,6 +167,7 @@ def _default_doc_config(
     output: str,
     logo_path: str | None,
     edit_uri: str = 'blob/main/documentation/docs',
+    site_url: str = 'https://lucasgoncsilva.github.io/mosheh',
     repo_name: str = 'GitHub',
     repo_url: str = 'https://github.com/',
     codebase_nav_path: str = 'Codebase',
@@ -188,6 +195,8 @@ def _default_doc_config(
     :type edit_uri: str
     :param repo_name: Name of the code repository to be mapped, default is `'GitHub'`.
     :type repo_name: str
+    :param site_url: URL of the documentation website
+    :type site_url: str = 'https://lucasgoncsilva.github.io/mosheh'
     :param repo_url: The URL of the repository, used for linking in the documentation.
     :type repo_url: str
     :return: Formatted MkDocs YAML configuration.
@@ -216,6 +225,7 @@ def _default_doc_config(
 
     return DEFAULT_MKDOCS_YML.format(
         proj_name=proj_name,
+        site_url=site_url,
         edit_uri=edit_uri,
         repo_name=repo_name,
         repo_url=repo_url,

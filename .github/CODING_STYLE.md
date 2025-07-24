@@ -1,6 +1,6 @@
 # Coding Style
 
-> In Mosheh, consistency is essential. This guide outlines the Python conventions we follow: PEP-aligned, type-safe, readable, and testable. Clean code comes first; style is automated.
+> In Mosheh, consistency is essential. This guide outlines the Python conventions we follow: PEP-aligned, type-safe, readable, and testable. Clean code comes first.
 
 ## General Principles
 
@@ -51,7 +51,7 @@ All reported issues must be resolved before merging.
 
 - Prefix any private function/method/variable with a single underscore (`_`).
 - Private elements must **not** be used outside their intended scope.
-- If you need broader access, make it public and add proper docstrings.
+- If you need broader access, problably you do not need it; make it public in a proper way and add a proper docstrings (or just encapsulate the code for testing, if the case, following the same logic of the existing ones).
 
 ## Comments & Docstrings
 
@@ -70,9 +70,9 @@ development and documentation process.
 """
 ```
 
-### Function/method docstrings
+### Function/Method Docstrings
 
-Use the following style—with a one-line summary, blank line, details, and Sphinx-style `:param:`/`:type:`/`:returns:`/`:rtype:` sections:
+Use the following style—with a one-line summary, blank line, details, and Sphinx-style `:param:`/`:type:`/`:return:`/`:rtype:` sections:
 
 ```py
 def set_logging_config(v: int = 3) -> None:
@@ -90,15 +90,16 @@ def set_logging_config(v: int = 3) -> None:
         - 3: Info (default)
         - 4: Debug
     :type v: int
-    :returns: None.
+    :return: None
     :rtype: None
     """
+
     ...
 ```
 
 - The first line is a summary.
 - Leave a blank line, then provide details or notes.
-- Use `:param:`, `:type:`, `:returns:`, `:rtype:` — do not include `:raises:` unless warranted.
+- Use `:param:`, `:type:`, `:return:`, `:rtype:` — do not include `:raises:` unless warranted.
 - Avoid redundant comments that restate obvious code.
 
 ## Testing

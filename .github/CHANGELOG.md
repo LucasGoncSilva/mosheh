@@ -40,6 +40,41 @@ Key Components of a Changelog:
 
 -->
 
+## v2.0.0 - {DATE}
+
+### Adds
+
+- Social `.github` files such as templates and guidelines (`ISSUE_TEMPLATE/`, `TODO.md`, ...)
+- `py.typed` for defining Mosheh as a typed project
+- New command `mosheh update --json .` for updating an existing codebase documentation
+
+### Updates
+
+- CLI interface from simple commands to new logic with `init`, `create` and `mosheh.json`
+- `README.md` and other documentation properly updated
+- `mosheh.custom_types` divided into `mosheh.types` with `basic`, `contracts`, `jsoncfg` and `enums`
+- Enums inheritance change from `enum.Enum` to `enum.StrEnum`
+- `mosheh.types.basic` definition using `type` keyword
+- `handler.py` moved to `/handlers/python.py` for future convenience
+- `mosheh.handlers.python.handle_def_nodes` renamed to `handle_std_nodes`
+- `mosheh.handlers.python._handle_general` for dealing with `ast.AST` not defined on `types.contracts`
+- `commands/*` to deal with different commands instead of `main.py` raw logic
+- General docstring for new and updated files/functions/classes
+
+### Fixes
+
+- Rename variables with duplicated names
+- File path with `.dir` managed to `dir`
+- "Notation" into "Annotation" writing over codebase
+
+### Removes
+
+- `mosheh.handler` internal funcs but the ones called by `mosheh.handler.handle_std_nodes`
+
+### Security
+
+- Item
+
 ## v1.3.4 - 2025-01-07
 
 ### Adds
@@ -114,7 +149,7 @@ Key Components of a Changelog:
 |  `ast.TryStar`  |    `ast.Try`    |   `ast.TypeAlias`   | `ast.TypeVarTuple` |  `ast.TypeVar`  |     `ast.While`      |
 |   `ast.With`    | `ast.YieldFrom` |     `ast.Yield`     |
 
-- `rtype` or return type notation on `tests.unittest` test functions
+- `rtype` or return type annotation on `tests.unittest` test functions
 - New theme to Mosheh's self documentation code blocks inspired by [Dracula Theme](https://draculatheme.com/)
 - Insert logs on all the Mosheh's codebase using `mosheh.set_logging_config` and native `logging`:
   - CRITICAL: when something crashes the script
@@ -176,8 +211,8 @@ Key Components of a Changelog:
 - `list[Any] | tuple[Any]` to `collections.abc.Sequence[Any]` on `mosheh.utils.bin:universe` arg
 - `dict[Any, Any]` to `defaultdict[Any, Any]` on `mosheh.utils.nested_dict` rtype
 - `dict[Any, Any]` to `defaultdict[Any, Any]` on `mosheh.utils.add_to_dict:structure` arg and rtype
-- Changing all `moshe.doc` functions except `generate_doc` to be private (e.g. `_process_file`)
-- Changing all `moshe.handlers` functions except `handle_def_nodes` to be private (e.g. `_process_file`)
+- Changing all `moshe.doc` functions except `create_doc` to be private (e.g. `_process_file`)
+- Changing all `moshe.handlers` functions except `handle_std_nodes` to be private (e.g. `_process_file`)
 - Renaming `moshe.handlers` to `moshe.handler`
 - Changing `moshe.codebase.iterate` to be private: `moshe.codebase._iterate`
 
