@@ -1,0 +1,71 @@
+name: Refactor Suggestion
+description: Propose a refactoring idea to improve performance, maintainability, or overall code quality
+title: "[Refactor]: "
+labels: ["refactor"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to complete this bug report! Please fill everything as much as you can to ensure you are providing as info as possible, for a quick review!
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Guidelines
+      description: By submitting this issue, you agree to follow our guidelines available [here](https://lucasgoncsilva.github.io/mosheh/guidelines/).
+      options:
+        - label: I agree to follow this project's Guidelines.
+          required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context & Motivation
+      description: What prompted this refactor suggestion? Consider things like unnecessary complexity, duplication, performance bottlenecks, or strategic shifts.
+      placeholder: What led you to propose this refactor?
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current Behavior
+      description: Describe how the relevant part of the code currently works and why it might be problematic.
+      placeholder: What is the current behavior or implementation?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Refactor
+      description: Clearly outline your suggested changes or approach for improving the current implementation.
+      placeholder: What would you like to change and how?
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Expected Benefits
+      description: What improvements would this refactor bring? (e.g., better performance, code clarity, modularity)
+      placeholder: What benefits do you anticipate?
+    validations:
+      required: true
+
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Possible Trade-offs
+      description: Could this change introduce downsides? Consider things like increased complexity, breaking changes, or added dependencies.
+      placeholder: Are there any downsides or risks?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Are there other possible approaches?
+      placeholder: Can you think of any other options?
+    validations:
+      required: true

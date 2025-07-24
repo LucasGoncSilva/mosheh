@@ -3,8 +3,6 @@ site_url: https://lucasgoncsilva.github.io/mosheh/
 repo_url: https://github.com/lucasgoncsilva/mosheh
 repo_name: LucasGoncSilva/mosheh
 edit_uri: blob/main/documentation/docs
-
-
 theme:
   name: material
   language: en
@@ -12,7 +10,6 @@ theme:
   logo: img/logo.svg
   font:
     text: Ubuntu
-
   icon:
     tag:
       homepage: fontawesome/solid/house
@@ -25,7 +22,6 @@ theme:
       user: fontawesome/solid/user
       API: fontawesome/solid/gears
       browser: fontawesome/solid/desktop
-
     next: fontawesome/solid/arrow-right
     previous: fontawesome/solid/arrow-left
     top: fontawesome/solid/arrow-up
@@ -45,82 +41,57 @@ theme:
       bug: fontawesome/solid/bug
       example: fontawesome/solid/flask
       quote: fontawesome/solid/quote-left
-
   palette:
-    # Palette toggle for light mode
-    - scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: Light/Dark Mode
-      primary: brown
-      accent: green
-
-    # Palette toggle for dark mode
-    - scheme: slate
-      toggle:
-        icon: material/brightness-3
-        name: Light/Dark Mode
-      primary: black
-      accent: orange
-
-
+    scheme: slate
+    primary: black
+    accent: light blue
   features:
-    - navigation.indexes
-    - navigation.tabs
-    - navigation.top
-    # - toc.integrate
-    - header.autohide
-    - navigation.footer
-    - content.action.view
-    - content.action.edit
-    - announce.dismiss
-    - content.tabs.link
-
-
+  - navigation.indexes
+  - navigation.tabs
+  - navigation.top
+  - header.autohide
+  - navigation.footer
+  - announce.dismiss
+  - content.tabs.link
+  - content.code.copy
 markdown_extensions:
-  - attr_list
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  - pymdownx.highlight:
-      anchor_linenums: true
-      use_pygments: true
-      pygments_lang_class: true
-      auto_title: true
-      linenums: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
-  - admonition
-  - pymdownx.details
-  - attr_list
-  - md_in_html
-  - pymdownx.tabbed:
-      alternate_style: true
-  - pymdownx.arithmatex:
-      generic: true
-  - def_list
-  - pymdownx.tasklist:
-      custom_checkbox: true
-      clickable_checkbox: false
-
-
+- attr_list
+- pymdownx.emoji:
+    emoji_index: !!python/name:material.extensions.emoji.twemoji
+    emoji_generator: !!python/name:material.extensions.emoji.to_svg
+- pymdownx.highlight:
+    anchor_linenums: true
+    use_pygments: true
+    pygments_lang_class: true
+    auto_title: true
+- pymdownx.inlinehilite
+- pymdownx.snippets
+- pymdownx.superfences:
+    custom_fences:
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_code_format
+- admonition
+- pymdownx.details
+- attr_list
+- md_in_html
+- pymdownx.tabbed:
+    alternate_style: true
+- pymdownx.arithmatex:
+    generic: true
+- def_list
+- pymdownx.tasklist:
+    custom_checkbox: true
+    clickable_checkbox: false
 plugins:
-  - search
-  - tags
-  - git-revision-date-localized:
-      enable_creation_date: true
-      type: datetime
-      enabled: true
-      enable_creation_date: true
-      fallback_to_build_date: true
-      locale: en
-
-
+- search
+- tags
+- git-revision-date-localized:
+    enable_creation_date: true
+    type: datetime
+    enabled: true
+    fallback_to_build_date: true
+    locale: en
 extra:
   tags:
     Homepage: homepage
@@ -130,34 +101,48 @@ extra:
     Infra: infra
     Documentation: doc
     Legal: legal
-    Usuário: user
+    "Usu\xE1rio": user
     API: API
     Browser: browser
-
   status:
     new: Recently Added!
-
-
 extra_css:
-  - css/dracula_at_night.css
-
-
-copyright: Copyright (c) 2024 Lucas Gonçalves da Silva
-
-
+- css/dracula_at_night.css
+copyright: "Copyright (c) 2025 Lucas Gon\xE7alves da Silva"
 nav:
-  - Homepage: index.md
-  - Changelog: changelog.md
-  - Getting Started: starting.md
-
-  - Mosheh:
-    - Codebase: mosheh/index.md
-    - __init__.py: mosheh/__init__.py.md
-    - metadata.py: mosheh/metadata.py.md
-    - main.py: mosheh/main.py.md
-    - constants.py: mosheh/constants.py.md
-    - codebase.py: mosheh/codebase.py.md
-    - handler.py: mosheh/handler.py.md
-    - doc.py: mosheh/doc.py.md
-    - utils.py: mosheh/utils.py.md
-    - custom_types.py: mosheh/custom_types.py.md
+- Homepage: index.md
+- Getting Started: starting.md
+- Guidelines:
+  - Guidelines: guidelines/index.md
+  - Code of Conduct: guidelines/code_of_conduct.md
+  - Coding Style: guidelines/coding_style.md
+  - Contributing: guidelines/contributing.md
+  - To Do: guidelines/todo.md
+  - Support: guidelines/support.md
+- Changelog: changelog.md
+- Codebase:
+  - mosheh:
+    - constants.py: Codebase/mosheh/constants.py.md
+    - codebase.py: Codebase/mosheh/codebase.py.md
+    - main.py: Codebase/mosheh/main.py.md
+    - utils.py: Codebase/mosheh/utils.py.md
+    - __init__.py: Codebase/mosheh/__init__.py.md
+    - types:
+      - contracts.py: Codebase/mosheh/types/contracts.py.md
+      - basic.py: Codebase/mosheh/types/basic.py.md
+      - enums.py: Codebase/mosheh/types/enums.py.md
+      - __init__.py: Codebase/mosheh/types/__init__.py.md
+      - jsoncfg.py: Codebase/mosheh/types/jsoncfg.py.md
+    - commands:
+      - update_cmd.py: Codebase/mosheh/commands/update_cmd.py.md
+      - create_cmd.py: Codebase/mosheh/commands/create_cmd.py.md
+      - init_cmd.py: Codebase/mosheh/commands/init_cmd.py.md
+      - __init__.py: Codebase/mosheh/commands/__init__.py.md
+    - doc:
+      - update.py: Codebase/mosheh/doc/update.py.md
+      - shared.py: Codebase/mosheh/doc/shared.py.md
+      - create.py: Codebase/mosheh/doc/create.py.md
+      - __init__.py: Codebase/mosheh/doc/__init__.py.md
+    - handlers:
+      - python.py: Codebase/mosheh/handlers/python.py.md
+      - __init__.py: Codebase/mosheh/handlers/__init__.py.md

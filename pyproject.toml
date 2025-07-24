@@ -1,10 +1,6 @@
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "mosheh"
-description = "Mosheh, a tool for creating docs for projects, from Python to Python."
+description = "Mosheh, automatic and elegant documentation of Python code with MkDocs."
 readme = { file = ".github/README.md", content-type = "text/markdown" }
 license = { file = "LICENSE" }
 authors = [{ name = "LucasGonc", email = "lucasgoncsilva04@gmail.com" }]
@@ -17,18 +13,31 @@ keywords = [
     "automation",
     "generation",
 ]
-version = "1.3.4"
-requires-python = ">=3.13"
+version = "2.0.0"
+requires-python = ">=3.12"
 dependencies = [
-    "mkdocs-material>=9.5.47",
     "mkdocs>=1.6.1",
+    "mkdocs-git-revision-date-localized-plugin>=1.4.7",
+    "mkdocs-material>=9.6.15",
     "mkdocs-material-extensions>=1.3.1",
-    "mkdocs-git-revision-date-localized-plugin>=1.3.0",
-    "rich>=13.9.4",
+    "pyyaml>=6.0.2",
+    "rich>=14.0.0",
+    "stdlib-list>=0.11.1",
 ]
 
 [dependency-groups]
-dev = ["pytest>=8.3.4", "ruff>=0.8.2", "setuptools>=75.6.0", "twine>=6.0.1"]
+dev = [
+    "asciinema>=2.4.0",
+    "mypy>=1.17.0",
+    "pytest>=8.4.1",
+    "ruff>=0.12.4",
+    "taskipy>=1.14.1",
+    "types-pyyaml>=6.0.12.20250516",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project.scripts]
 mosheh = "mosheh.main:main"
@@ -38,6 +47,13 @@ Documentation = "https://lucasgoncsilva.github.io/mosheh/"
 Repository = "https://github.com/lucasGoncSilva/mosheh/"
 Issues = "https://github.com/LucasGoncSilva/mosheh/issues"
 Changelog = "https://github.com/LucasGoncSilva/mosheh/blob/main/.github/CHANGELOG.md"
+
+[tool.taskipy.tasks]
+lint = "uv run ruff check; uv run ruff format; uv run mypy mosheh"
+makedoc = "cd ./documentation/; uv run mosheh --verbose 3 update"
+pytest = "uv run pytest"
+doctest = "cd ./tests/DOC/; uv run mosheh --verbose 3 update"
+test = "uv run task pytest; uv run task doctest"
 
 [tool.ruff]
 line-length = 88
@@ -59,3 +75,12 @@ lines-after-imports = 2
 [tool.pytest.ini_options]
 addopts = "-s -vv"
 python_files = "tests/unittest/*.py"
+
+[tool.setuptools]
+packages = ["mosheh"]
+
+[tool.setuptools.package-data]
+mosheh = ["py.typed"]
+
+[tool.mypy]
+strict = true

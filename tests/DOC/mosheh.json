@@ -1,0 +1,12 @@
+{
+  "documentation": {
+    "projectName": "MoshehTest",
+    "repoName": "mosheh-test",
+    "repoUrl": "https://github.com/lucasgoncsilva/mosheh",
+    "editUri": "blob/main/documentation/docs"
+  },
+  "io": {
+    "rootDir": "../PROJECT/",
+    "outputDir": "."
+  }
+}

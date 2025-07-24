@@ -12,33 +12,34 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Configure Git Credentials
-      run: |
-        git config user.name github-actions[bot]
-        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
 
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.13'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-    - name: Setup Environment Var
-      run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
+      - name: Setup Environment Var
+        run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
 
-    - name: Setup Key
-      uses: actions/cache@v4
-      with:
-        key: mkdocs-material-${{ env.cache_id }}
-        path: .cache
-        restore-keys: |
-          mkdocs-material-
+      - name: Setup Key
+        uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
 
-    - name: Publish MkDocs
-      working-directory: ./documentation
-      run: |
-        pip install uv
-        uv sync
-        uv run mkdocs gh-deploy --force
+      - name: Publish MkDocs
+        working-directory: ./documentation
+        run: |
+          pip install uv
+          uv sync
+          uv run mosheh update
+          uv run mkdocs gh-deploy --force

@@ -44,7 +44,7 @@ def test_BUILTIN_DUNDER_METHODS() -> None:
 
 
 def test_ACCEPTABLE_LOWER_CONSTANTS() -> None:
-    assert isinstance(ACCEPTABLE_LOWER_CONSTANTS, list)
+    assert isinstance(ACCEPTABLE_LOWER_CONSTANTS, tuple)
     assert all(map(lambda x: isinstance(x, str), ACCEPTABLE_LOWER_CONSTANTS))
 
 
@@ -52,7 +52,16 @@ def test_DEFAULT_MKDOCS_YML() -> None:
     assert isinstance(DEFAULT_MKDOCS_YML, str)
     assert is_formatable_and_get_fields(DEFAULT_MKDOCS_YML) == (
         True,
-        ['proj_name', 'repo_url', 'repo_name', 'edit_uri', 'logo_path', 'logo_path'],
+        [
+            'proj_name',
+            'site_url',
+            'repo_url',
+            'repo_name',
+            'edit_uri',
+            'logo_path',
+            'logo_path',
+            'codebase_nav_path',
+        ],
     )
 
 
@@ -63,7 +72,7 @@ def test_FILE_MARKDOWN() -> None:
         [
             'filename',
             'role',
-            'filepath',
+            'file_path',
             'filedoc',
             'imports',
             'constants',
@@ -94,7 +103,7 @@ def test_CLASS_DEF_MD_STRUCT() -> None:
     assert isinstance(CLASS_DEF_MD_STRUCT, str)
     assert is_formatable_and_get_fields(CLASS_DEF_MD_STRUCT) == (
         True,
-        ['name', 'inherit', 'decorators', 'kwargs', 'docstring', 'code'],
+        ['name', 'inheritance', 'decorators', 'kwargs', 'docstring', 'code'],
     )
 
 
@@ -105,10 +114,10 @@ def test_FUNCTION_DEF_MD_STRUCT() -> None:
         [
             'name',
             'category',
-            'rtype',
             'decorators',
             'args',
             'kwargs',
+            'rtype',
             'docstring',
             'code',
         ],

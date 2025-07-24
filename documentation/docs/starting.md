@@ -70,95 +70,110 @@ As shown above, there are different ways to install Mosheh and the same happens 
 If using **PIP**, the way demonstraded below is suficient:
 
 ```sh
-mosheh [-h] -root ROOT: Path \
-      [--repo-name REPO_NAME: str] \
-      [--repo-url REPO_URL: URL] \
-      [--edit-uri EDIT_URI: str] \
-      [--logo-path LOGO_PATH: Path] \
-      [--readme-path README_PATH: Path] \
-      [--verbose VERBOSE: Literal[0 | 1 | 2 | 3 | 4]] \
-      [--output OUTPUT: Path]
+mosheh [-h] [--verbose {0,1,2,3,4}] {init,run} ...
 ```
 
 Elif using **uv**, call `mosheh` from `uv run` to be concise with the ecosystem in use:
 
 ```sh
-uv run mosheh [-h] -root ROOT: Path \
-      [--repo-name REPO_NAME: str] \
-      [--repo-url REPO_URL: URL] \
-      [--edit-uri EDIT_URI: str] \
-      [--logo-path LOGO_PATH: Path] \
-      [--readme-path README_PATH: Path] \
-      [--verbose VERBOSE: Literal[0 | 1 | 2 | 3 | 4]] \
-      [--output OUTPUT: Path]
+uv run mosheh [-h] [--verbose {0,1,2,3,4}] {init,create} ...
 ```
 
-Elif using another method installation, remenber to check if there is support for running scripts by them or you should use `mosheh` directly from terminal.
+## Commands
 
-## Parameters
+### Global Parameter
 
-The parameters for running Mosheh goes from the codebase root to the logging level. Here we are going to cover them in detail to be no doubt about the use of each one.
+Apart from command-specific parameters, there’s also one global parameter that can (and should) be used to control output verbosity.
 
-### `-root`
-
-- Mandatory: `#!py Required`
-- Type: `#!py Path`
-- Default: `#!py None`
-
-This represents the root dir, where Mosheh is going to start mining. To prevents it of search for files on a random directory or document undesired code, it's mandatory to tell where the search should start.
-
-### `--repo-name`
-
-- Mandatory: `#!py Optional`
-- Type: `#!py str`
-- Default: `#!py 'GitHub'`
-
-This tells the repository name to be annotated in the generated documentation. Usually the used value is the repository username plus the project name, such as `reu/zerg` or `LucasGoncSilva/mosheh`.
-
-### `--repo-url`
-
-- Mandatory: `#!py Optional`
-- Type: `#!py URL`
-- Default: `#!py 'https://github.com/'`
-
-As the name suggests, this one is for create the documentation with repo URL defined. Following the example above, it's value should be `https://github.com/reu/zerg` or `https://github.com/LucasGoncSilva/mosheh`.
-
-### `--edit-uri`
-
-- Mandatory: `#!py Optional`
-- Type: `#!py str`
-- Default: `#!py 'blob/main/documentation/docs'`
-
-When you visits someone's GitHub repository, the URL is the well known `https://github.com/reu/zerg`. Once you go to view/update it, the `--edit-uri` comes to it: `https://github.com/reu/zerg/blob/master/Cargo.toml`. Since this is configured to the main branch and the specific dir `documentation/docs`, any file on this sub-path will be allowed for view or edit if your ptoject desires that.
-
-### `--logo-path`
-
-- Mandatory: `#!py Optional`
-- Type: `#!py Path`
-- Default: `#!py None`
-
-There is no secret about this one. You passes the path to project's logo and Mosheh uses it as documentation logo. Just like this. If not provided, this will be using [Material MkDocs](https://squidfunk.github.io/mkdocs-material/) one.
-
-### `--readme-path`
-
-- Mandatory: `#!py Optional`
-- Type: `#!py Path`
-- Default: `#!py None`
-
-There is also no secret about this one. You passes the path to project's `README.md` and Mosheh uses it as documentation Homepage. Just like this. If not provided, this wiil be using the default MkDocs index page content.
-
-### `--verbose`
+#### `--verbose`
 
 - Mandatory: `#!py Optional`
 - Type: `#!py int`
 - Default: `#!py 3`
 
-When running the script, may be util to see what's going on under the hoods... or not. For this case, `--verbose` comes to play allowing you to choose between different types of logging, from 0 to 4: `#!py logging.CRITICAL`, `#!py logging.ERROR`, `#!py logging.WARNING`, `#!py logging.INFO` and `#!py logging.DEBUG`.
+Controls the verbosity level of the CLI output, ranging from `0` to `4`:
 
-### `--output`
+- `#!py 0`: Quiet / Critical only
+- `#!py 1`: Errors
+- `#!py 2`: Warnings
+- `#!py 3`: Default info level
+- `#!py 4`: Full debug / oversharing
+
+Use this flag depending on your context — whether you need clean output or full transparency for debugging and tracking.
+
+Mosheh currently supports two main commands that represent its usage modes: `init` and `create`. Each has its own parameters, and there’s also a global one available across executions: `--verbose`.
+
+### `init`
+
+Initializes Mosheh by creating the configuration file that enables its usage. Nothing can be done without this config file with the name of `mosheh.json`
+
+#### `--path`
 
 - Mandatory: `#!py Optional`
-- Type: `#!py Path`
+- Type: `#!py str`
 - Default: `#!py '.'`
 
-Similar to `--root`, but for the generated documentation. The path provided here is the path to find the documentation at the end of the day. Not too much about this one.
+Defines where the configuration file should be created. If nothing is informed, it defaults to the current directory (`.`). This allows flexibility to scaffold the config at any desired location inside the project. The config file generated is detailed below:
+
+```json
+{
+  "documentation": {
+    "projectName": "Mosheh",
+    "repoName": "mosheh",
+    "repoUrl": "https://github.com/lucasgoncsilva/mosheh",
+    "editUri": "blob/main/documentation/docs",
+    "siteUrl": "https://lucasgoncsilva.github.io/mosheh/",
+    "logoPath": "./path/to/logo.svg",
+    "readmePath": "./path/to/README.md",
+    "codebaseNavPath": "Codebase"
+  },
+  "io": {
+    "rootDir": "./app/",
+    "outputDir": "./path/to/output/"
+  }
+}
+```
+
+#### Section `#!json "documentation"`
+
+Documentation-related data
+
+- `#!json "projectName"`: Name of the project (e.g. "Mosheh")
+- `#!json "repoName"`: Name of the repository (e.g. "django-ninja")
+- `#!json "repoUrl"`: URL of the repository (e.g. "https://github.com/matplotlib/matplotlib")
+- `#!json "editUri"`: Editting URI (e.g. "blob/main/documentation/docs")
+- `#!json "siteUrl"`: URL of the documentation website (path included if necessary)
+- `#!json "logoPath"`: Relative path of the project's logo (inside repository)
+- `#!json "readmePath"`: Relative path of the project's README (inside repository)
+- `#!json "codebaseNavPath"`: Documentation path to the codebase section
+
+#### Section `#!json "io"`
+
+IO-related data
+
+- `#!json "rootDir"`: Relative path for the codebase dir
+- `#!json "outputDir"`: Relative path for the documentation output dir
+
+### `create`
+
+Mosheh's feature for codebase tracking and documentation creation. It runs the tool based on the configuration and setup defined. By reading the config file, evaluates the pointed codebase, registers it's data and generates the output file markdown for each file, writing every file to a path respecting the codebase path.
+
+#### `--json`
+
+- Mandatory: `#!py Optional`
+- Type: `#!py str`
+- Default: `#!py '.'`
+
+Defines where to read the configuration file from. If not provided, it will assume the current directory. This parameter enables control over which config Mosheh should consider when running.
+
+### `update`
+
+Mosheh's feature for codebase tracking and documentation updating. It runs the tool based on the configuration and setup defined. Executes almost the same logic of `create` command, but just updating the codebase markdown files instead of creating the documentation from scratch.
+
+#### `--json`
+
+- Mandatory: `#!py Optional`
+- Type: `#!py str`
+- Default: `#!py '.'`
+
+Defines where to read the configuration file from. If not provided, it will assume the current directory. This parameter enables control over which config Mosheh should consider when running.

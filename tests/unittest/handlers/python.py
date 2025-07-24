@@ -4,17 +4,21 @@ from ast import AST, ClassDef, FunctionDef, parse, walk
 from pathlib import Path
 from typing import Any
 
-from mosheh.codebase import encapsulated_mark_methods_for_unittest
-from mosheh.custom_types import (
+from mosheh.handlers.python import (
+    wrapped_handle_std_nodes_for_testing,
+    wrapped_mark_methods_for_testing,
+)
+from mosheh.types.basic import (
+    StandardReturn,
+)
+from mosheh.types.enums import (
     FunctionType,
     ImportType,
-    StandardReturn,
     Statement,
 )
-from mosheh.handler import handle_def_nodes
 
 
-def test_handle_def_nodes() -> None:
+def test_handle_std_nodes() -> None:
     with open(f'{Path(__file__).parent}/mock.py.txt', encoding='utf-8') as f:
         code: str = f.read()
 
@@ -23,12 +27,12 @@ def test_handle_def_nodes() -> None:
 
     for node in walk(tree):
         if isinstance(node, ClassDef):
-            encapsulated_mark_methods_for_unittest(node)
+            wrapped_mark_methods_for_testing(node)
 
         if isinstance(node, FunctionDef) and getattr(node, 'parent', None):
             continue
 
-        data: list[StandardReturn] = handle_def_nodes(node)
+        data: list[StandardReturn] = wrapped_handle_std_nodes_for_testing(node)
 
         if data:
             statements.extend(data)
@@ -45,7 +49,7 @@ def test_handle_def_nodes() -> None:
             'statement': Statement.Import,
             'name': 'os.path',
             'path': None,
-            'category': ImportType.TrdParty,
+            'category': ImportType.Native,
             'code': 'import os.path',
         },
         {
@@ -106,9 +110,53 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
-            'docstring': 'A simple function.',
+            'name': '__init__',
+            'category': FunctionType.Method,
+            'docstring': None,
+            'decorators': [],
+            'rtype': None,
+            'args': 'self: Unknown, data: str, optional_data: Optional[int]',
+            'kwargs': '',
+            'code': "def __init__(self, data: str, optional_data: Optional[int]=None):\n    self.data = data\n    self.optional_data = optional_data\n    self._private_attr = 'Private'",
+        },
+        {
+            'statement': Statement.FunctionDef,
+            'name': 'instance_method',
+            'category': FunctionType.Method,
+            'docstring': 'An instance method.',
+            'decorators': [],
+            'rtype': 'str',
+            'args': 'self: Unknown',
+            'kwargs': '',
+            'code': 'def instance_method(self) -> str:\n    """An instance method."""\n    return f\'Data: {self.data}\'',
+        },
+        {
+            'statement': Statement.FunctionDef,
+            'name': 'class_method',
+            'category': FunctionType.Method,
+            'docstring': 'A class method.',
+            'decorators': ['classmethod'],
+            'rtype': None,
+            'args': 'cls: Unknown',
+            'kwargs': '',
+            'code': '@classmethod\ndef class_method(cls):\n    """A class method."""\n    return \'This is a class method.\'',
+        },
+        {
+            'statement': Statement.FunctionDef,
+            'name': 'static_method',
+            'category': FunctionType.Method,
+            'docstring': 'A static method.',
+            'decorators': ['staticmethod'],
+            'rtype': None,
+            'args': '',
+            'kwargs': '',
+            'code': '@staticmethod\ndef static_method():\n    """A static method."""\n    return \'This is a static method.\'',
+        },
+        {
+            'statement': Statement.FunctionDef,
             'name': 'simple_function',
             'category': FunctionType.Function,
+            'docstring': 'A simple function.',
             'decorators': [],
             'rtype': 'int',
             'args': 'a: int, b: int',
@@ -117,9 +165,9 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
-            'docstring': 'A generator function.',
             'name': 'generator_function',
             'category': FunctionType.Generator,
+            'docstring': 'A generator function.',
             'decorators': [],
             'rtype': 'Generator[int, None, None]',
             'args': '',
@@ -128,9 +176,9 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.AsyncFunctionDef,
-            'docstring': 'An asynchronous function.',
             'name': 'async_function',
             'category': FunctionType.Coroutine,
+            'docstring': 'An asynchronous function.',
             'decorators': [],
             'rtype': 'str',
             'args': 'url: str',
@@ -139,9 +187,9 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
-            'docstring': 'A simple decorator.',
             'name': 'decorator_function',
             'category': FunctionType.Function,
+            'docstring': 'A simple decorator.',
             'decorators': [],
             'rtype': None,
             'args': 'func: Unknown',
@@ -150,9 +198,9 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
-            'docstring': 'A decorated function.',
             'name': 'decorated_function',
             'category': FunctionType.Function,
+            'docstring': 'A decorated function.',
             'decorators': ['decorator_function'],
             'rtype': None,
             'args': '',
@@ -167,9 +215,9 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
-            'docstring': None,
             'name': 'annotated_function',
             'category': FunctionType.Function,
+            'docstring': None,
             'decorators': [],
             'rtype': 'List[int]',
             'args': 'a: int, b: str',
@@ -178,9 +226,9 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
-            'docstring': 'A function with a docstring example.\n\nExample:\n    result = example_usage_function(1, 2)\n    print(result)  # Outputs 3',
             'name': 'example_usage_function',
             'category': FunctionType.Function,
+            'docstring': 'A function with a docstring example.\n\nExample:\n    result = example_usage_function(1, 2)\n    print(result)  # Outputs 3',
             'decorators': [],
             'rtype': 'int',
             'args': 'a: int, b: int',
@@ -189,9 +237,9 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
-            'docstring': 'A function with an ellipsis.',
             'name': 'ellipsis_function',
             'category': FunctionType.Function,
+            'docstring': 'A function with an ellipsis.',
             'decorators': [],
             'rtype': None,
             'args': 'a: Unknown, b: Unknown, c: Unknown',
@@ -209,47 +257,14 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
-            'docstring': None,
             'name': '__init__',
             'category': FunctionType.Method,
+            'docstring': None,
             'decorators': [],
             'rtype': None,
-            'args': 'self: Unknown, data: str, optional_data: Optional[int]',
+            'args': 'self: Unknown, value: int',
             'kwargs': '',
-            'code': "def __init__(self, data: str, optional_data: Optional[int]=None):\n    self.data = data\n    self.optional_data = optional_data\n    self._private_attr = 'Private'",
-        },
-        {
-            'statement': Statement.FunctionDef,
-            'docstring': 'An instance method.',
-            'name': 'instance_method',
-            'category': FunctionType.Method,
-            'decorators': [],
-            'rtype': 'str',
-            'args': 'self: Unknown',
-            'kwargs': '',
-            'code': 'def instance_method(self) -> str:\n    """An instance method."""\n    return f\'Data: {self.data}\'',
-        },
-        {
-            'statement': Statement.FunctionDef,
-            'docstring': 'A class method.',
-            'name': 'class_method',
-            'category': FunctionType.Method,
-            'decorators': ['classmethod'],
-            'rtype': None,
-            'args': 'cls: Unknown',
-            'kwargs': '',
-            'code': '@classmethod\ndef class_method(cls):\n    """A class method."""\n    return \'This is a class method.\'',
-        },
-        {
-            'statement': Statement.FunctionDef,
-            'docstring': 'A static method.',
-            'name': 'static_method',
-            'category': FunctionType.Method,
-            'decorators': ['staticmethod'],
-            'rtype': None,
-            'args': '',
-            'kwargs': '',
-            'code': '@staticmethod\ndef static_method():\n    """A static method."""\n    return \'This is a static method.\'',
+            'code': 'def __init__(self, value: int):\n    self.value = value',
         },
         {
             'statement': Statement.Import,
@@ -260,25 +275,14 @@ def test_handle_def_nodes() -> None:
         },
         {
             'statement': Statement.FunctionDef,
-            'docstring': None,
             'name': 'wrapper',
             'category': FunctionType.Function,
+            'docstring': None,
             'decorators': [],
             'rtype': None,
             'args': '',
             'kwargs': '',
             'code': "def wrapper(*args, **kwargs):\n    print('Function is being called')\n    return func(*args, **kwargs)",
-        },
-        {
-            'statement': Statement.FunctionDef,
-            'docstring': None,
-            'name': '__init__',
-            'category': FunctionType.Method,
-            'decorators': [],
-            'rtype': None,
-            'args': 'self: Unknown, value: int',
-            'kwargs': '',
-            'code': 'def __init__(self, value: int):\n    self.value = value',
         },
     ]
 

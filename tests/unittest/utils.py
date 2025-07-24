@@ -1,13 +1,14 @@
 from collections import defaultdict
 
-from mosheh.custom_types import StandardReturn
+from mosheh.types.basic import CodebaseDict, StandardReturn
+from mosheh.types.enums import ImportType
 from mosheh.utils import (
-    add_to_dict,
+    add_to_nested_defaultdict,
     bin,
     convert_to_regular_dict,
+    get_import_type,
     indent_code,
-    is_lib_installed,
-    nested_dict,
+    nested_defaultdict,
     standard_struct,
 )
 
@@ -17,23 +18,25 @@ def test_bin() -> None:
     assert not bin(9, [1, 2, 3, 4, 5, 6, 7, 8])
 
 
-def test_is_lib_installed() -> None:
-    assert is_lib_installed('mosheh')
-    assert not is_lib_installed('numpy')
+def test_get_import_type() -> None:
+    assert get_import_type('os') == ImportType.Native
+    assert get_import_type('stdlib_list') == ImportType.TrdParty
 
 
-def test_nested_dict() -> None:
-    assert isinstance(nested_dict(), dict)
-    assert isinstance(nested_dict(), defaultdict)
+def test_nested_defaultdict() -> None:
+    assert isinstance(nested_defaultdict(), dict)
+    assert isinstance(nested_defaultdict(), defaultdict)
 
 
-def test_add_to_dict() -> None:
-    structure: defaultdict[str, str] = nested_dict()
+def test_add_to_nested_defaultdict() -> None:
+    structure: defaultdict[str, dict[str, dict[str, list[dict[str, str]]]]] = (
+        nested_defaultdict()
+    )
     path: list[str] = ['level1', 'level2', 'level3']
     data: list[StandardReturn] = [{'key': 'value'}]
 
-    result: defaultdict[str, str | defaultdict[str, str]] = add_to_dict(
-        structure, path, data
+    result: defaultdict[str, dict[str, dict[str, list[dict[str, str]]]]] = (
+        add_to_nested_defaultdict(structure, path, data)
     )
 
     assert isinstance(result, dict)
@@ -44,11 +47,11 @@ def test_add_to_dict() -> None:
 
 
 def test_convert_to_regular_dict() -> None:
-    structure: defaultdict[str, str] = nested_dict()
-    added: defaultdict[str, str] = add_to_dict(
+    structure: defaultdict[str, str] = nested_defaultdict()
+    added: defaultdict[str, str] = add_to_nested_defaultdict(
         structure, ['level1'], [{'key': 'value'}]
     )
-    result: dict[str, dict[str, str]] = convert_to_regular_dict(added)
+    result: CodebaseDict = convert_to_regular_dict(added)
 
     assert isinstance(result, dict)
     assert not isinstance(result, defaultdict)
