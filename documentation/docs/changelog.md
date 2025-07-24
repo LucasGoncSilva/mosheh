@@ -40,7 +40,7 @@ Key Components of a Changelog:
 
 -->
 
-## v2.0.0 - {DATE}
+## v2.0.0 - 2025-07-24
 
 ### Adds
 
@@ -70,10 +70,6 @@ Key Components of a Changelog:
 ### Removes
 
 - `mosheh.handler` internal funcs but the ones called by `mosheh.handler.handle_std_nodes`
-
-### Security
-
-- Item
 
 ## v1.3.4 - 2025-01-07
 

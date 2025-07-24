@@ -76,8 +76,8 @@ def get_import_type(lib: ModuleName) -> ImportType:
     Example:
 
     ```python
-    get_import_type('fastapi')
-    # ImportType.
+    get_import_type('mkdocs')
+    # ImportType.TrdParty
     ```
 
     :param lib: The lib name, e.g. "numpy" or "numba".
