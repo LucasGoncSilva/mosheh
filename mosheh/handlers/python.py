@@ -57,7 +57,7 @@ from mosheh.types.enums import (
 from mosheh.utils import (
     add_to_nested_defaultdict,
     bin,
-    is_lib_installed,
+    get_import_type,
     standard_struct,
 )
 
@@ -353,12 +353,7 @@ def __handle_import(imported_identifier: ImportedIdentifier) -> StandardReturn:
 
     statement: Final[Statement] = Statement.Import
     path: Final[None] = None
-    category: ImportType = ImportType.Local
-
-    if bin(imported_identifier, BUILTIN_MODULES):
-        category = ImportType.Native
-    elif is_lib_installed(imported_identifier):
-        category = ImportType.TrdParty
+    category: ImportType = get_import_type(imported_identifier)
 
     contract: ImportContract = ImportContract(
         statement=statement,
@@ -462,7 +457,7 @@ def _handle_import_from(
         BUILTIN_MODULES,
     ):
         category = ImportType.Native
-    elif is_lib_installed(str(path)):
+    elif get_import_type(str(path)):
         category = ImportType.TrdParty
 
     for i in names:

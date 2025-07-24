@@ -37,35 +37,36 @@ hint to mark constants as non-overridable.
 
 import builtins
 from inspect import isclass
-from pkgutil import iter_modules
-from sys import builtin_module_names
-from sysconfig import get_paths
+from sys import version_info
 from types import BuiltinFunctionType
 from typing import Final
 
+from stdlib_list import stdlib_list
+
 
 BUILTIN_MODULES: Final[list[str]] = sorted(
-    set(builtin_module_names)
-    | {name for _, name, _ in iter_modules([get_paths()['stdlib']])}
+    stdlib_list(f'{version_info.major}.{version_info.minor}')
 )
 
 BUILTIN_FUNCTIONS: Final[list[str]] = sorted(
-    i
-    for i in dir(builtins)
-    if isinstance(getattr(builtins, i), BuiltinFunctionType)
-    or isinstance(getattr(builtins, i), type)
-    and not (
-        isinstance(getattr(builtins, i), type)
-        and issubclass(getattr(builtins, i), BaseException)
+    name
+    for name in dir(builtins)
+    if (obj := getattr(builtins, name)) is not None
+    and (
+        isinstance(obj, BuiltinFunctionType)
+        or (isinstance(obj, type) and not issubclass(obj, BaseException))
     )
 )
 
+
 BUILTIN_DUNDER_METHODS: Final[list[str]] = sorted(
-    attr
-    for name in dir(builtins)
-    if isclass(getattr(builtins, name))
-    for attr in dir(getattr(builtins, name))
-    if attr.startswith('__') and attr.endswith('__')
+    {
+        attr
+        for name in dir(builtins)
+        if (cls := getattr(builtins, name)) is not None and isclass(cls)
+        for attr in dir(cls)
+        if attr.startswith('__') and attr.endswith('__')
+    }
 )
 
 ACCEPTABLE_LOWER_CONSTANTS: Final[tuple[str, ...]] = (

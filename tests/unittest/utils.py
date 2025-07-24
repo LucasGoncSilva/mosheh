@@ -1,12 +1,13 @@
 from collections import defaultdict
 
 from mosheh.types.basic import CodebaseDict, StandardReturn
+from mosheh.types.enums import ImportType
 from mosheh.utils import (
     add_to_nested_defaultdict,
     bin,
     convert_to_regular_dict,
+    get_import_type,
     indent_code,
-    is_lib_installed,
     nested_defaultdict,
     standard_struct,
 )
@@ -17,9 +18,9 @@ def test_bin() -> None:
     assert not bin(9, [1, 2, 3, 4, 5, 6, 7, 8])
 
 
-def test_is_lib_installed() -> None:
-    assert is_lib_installed('mosheh')
-    assert not is_lib_installed('numpy')
+def test_get_import_type() -> None:
+    assert get_import_type('os') == ImportType.Native
+    assert get_import_type('stdlib_list') == ImportType.TrdParty
 
 
 def test_nested_defaultdict() -> None:

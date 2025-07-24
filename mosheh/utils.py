@@ -9,12 +9,15 @@ implementing some functionality which can be related.
 Here are usually maintained reusable code applicable everywhere.
 """
 
+import importlib.util
+import sysconfig
 from collections import defaultdict
 from collections.abc import Sequence
-from importlib.util import find_spec
 from typing import Any, cast
 
+from mosheh.constants import BUILTIN_MODULES
 from mosheh.types.basic import CodebaseDict, ModuleName, StandardReturn
+from mosheh.types.enums import ImportType
 
 
 def bin(item: Any, universe: Sequence[Any]) -> bool:
@@ -63,9 +66,9 @@ def bin(item: Any, universe: Sequence[Any]) -> bool:
     return False
 
 
-def is_lib_installed(name: ModuleName) -> bool:
+def get_import_type(lib: ModuleName) -> ImportType:
     """
-    Checks if a lib exists in the environment path.
+    Classifies the module into a valid `ImportType` alternative.
 
     By literally just... find spec using... unhh... find_spec()... searches
     for modules in the environment path and returns it.
@@ -73,20 +76,41 @@ def is_lib_installed(name: ModuleName) -> bool:
     Example:
 
     ```python
-    is_lib_installed('fastapi')
-    # False
+    get_import_type('fastapi')
+    # ImportType.
     ```
 
-    :param name: The name of the lib, e.g. numpy or numba.
-    :type name: ModuleName
-    :return: Whether the lib exists in the env.
-    :rtype: bool
+    :param lib: The lib name, e.g. "numpy" or "numba".
+    :type lib: ModuleName
+    :return: `ImportType` enum for native, 3rd party or local one.
+    :rtype: ImportType
     """
 
     try:
-        return True if find_spec(name) is not None else False
-    except (ModuleNotFoundError, ValueError):
-        return False
+        if lib in BUILTIN_MODULES:
+            return ImportType.Native
+
+        spec = importlib.util.find_spec(lib)
+        if not spec or not spec.origin:
+            return ImportType.Local
+
+        origin: str = spec.origin
+
+        if origin in ('built-in', 'frozen') or (
+            origin.endswith(('.so', '.pyd', '.dll')) and 'lib-dynload' in origin
+        ):
+            return ImportType.Native
+
+        if 'site-packages' in origin or 'dist-packages' in origin:
+            return ImportType.TrdParty
+
+        stdlib_path = sysconfig.get_paths()['stdlib']
+        if origin.startswith(stdlib_path):
+            return ImportType.Native
+
+        return ImportType.Local
+    except Exception:
+        return ImportType.Local
 
 
 def nested_defaultdict() -> defaultdict[Any, Any]:
