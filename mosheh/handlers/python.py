@@ -19,41 +19,8 @@ from mosheh.constants import (
     BUILTIN_DUNDER_METHODS,
     BUILTIN_MODULES,
 )
-from mosheh.types.basic import (
-    Annotation,
-    Args,
-    AssertionMessage,
-    AssertionTest,
-    CodeSnippet,
-    Decorator,
-    DefaultValue,
-    Docstring,
-    FilePath,
-    ImportedIdentifier,
-    Inheritance,
-    Kwargs,
-    ModulePath,
-    StandardReturn,
-    StandardReturnProcessor,
-    Token,
-    Value,
-)
-from mosheh.types.contracts import (
-    AnnAssignContract,
-    AssertContract,
-    AssignContract,
-    AsyncFunctionDefContract,
-    ClassDefContract,
-    FunctionDefContract,
-    ImportContract,
-    ImportFromContract,
-)
-from mosheh.types.enums import (
-    FileRole,
-    FunctionType,
-    ImportType,
-    Statement,
-)
+from mosheh.types import basic, contracts, enums
+
 from mosheh.utils import (
     add_to_nested_defaultdict,
     bin,
@@ -66,20 +33,20 @@ logger: Logger = getLogger('mosheh')
 
 
 def handle_python_file(
-    codebase: defaultdict[Any, Any], file: FilePath
+    codebase: defaultdict[Any, Any], file: basic.FilePath
 ) -> defaultdict[Any, Any]:
     """
     Processes the .py file and returns it's data.
 
     By receiving the codebase datastructure, empty or not, and a file_path, first
     parses the code, then defines the file metadata, such as role (from
-    `types.enums.FileRole`), navigates into it's AST nodes (statements) and calls the
+    `types.enums.enums.FileRole`), navigates into it's AST nodes (statements) and calls the
     `handle_std_nodes` function for dealing with the default observed statements.
 
     :param codebase: Nested defaultdict with the codebase data, empty or not.
     :type codebase: defaultdict[Any, Any]
     :param file: Path for the Python file to be documented.
-    :type file: FilePath
+    :type file: basic.FilePath
     :return: The same codebase data struct, with the parsed file.
     :rtype: defaultdict[Any, Any]
     """
@@ -90,13 +57,13 @@ def handle_python_file(
     tree: ast.AST = ast.parse(code, filename=file)
     logger.debug('\tCode tree parsed')
 
-    statements: list[StandardReturn] = []
+    statements: list[basic.StandardReturn] = []
 
-    __meta__: StandardReturn = {
+    __meta__: basic.StandardReturn = {
         '__role__': (
-            FileRole.PythonSourceCode
+            enums.FileRole.PythonSourceCode
             if file.endswith('.py')
-            else FileRole.PythonStubFile
+            else enums.FileRole.PythonStubFile
         ),
         '__docstring__': 'No file docstring provided.',
     }
@@ -109,7 +76,7 @@ def handle_python_file(
         elif isinstance(node, ast.FunctionDef) and getattr(node, 'parent', None):
             continue
 
-        data: list[StandardReturn] = _handle_std_nodes(node)
+        data: list[basic.StandardReturn] = _handle_std_nodes(node)
 
         if data:
             statements.extend(data)
@@ -123,7 +90,7 @@ def handle_python_file(
     return codebase
 
 
-def _handle_std_nodes(node: ast.AST) -> list[StandardReturn]:
+def _handle_std_nodes(node: ast.AST) -> list[basic.StandardReturn]:
     """
     Processes an abstract syntax tree (AST) node and returns a handler for the node.
 
@@ -142,10 +109,10 @@ def _handle_std_nodes(node: ast.AST) -> list[StandardReturn]:
     :param node: The AST node to process.
     :type node: ast.AST
     :return: An object containing information associated with the node.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
-    data: list[StandardReturn] = []
+    data: list[basic.StandardReturn] = []
 
     if not isinstance(
         node,
@@ -216,7 +183,7 @@ def _handle_std_nodes(node: ast.AST) -> list[StandardReturn]:
 
 def _handle_node(
     node: ast.AST | ast.expr | None,
-) -> list[StandardReturnProcessor] | None:
+) -> list[basic.StandardReturnProcessor] | None:
     """
     Processes various types of AST nodes and returns a standardized representation.
 
@@ -231,7 +198,7 @@ def _handle_node(
     - Dynamic Dispatch: Uses type-checking to delegate node handling to specific
       functions (e.g., `handle_import`, `handle_function_def`).
     - Data Standardization: Accumulates processed data into a consistent structure
-      (`StandardReturnProcessor`).
+      (`basic.StandardReturnProcessor`).
 
     Example:
 
@@ -248,22 +215,22 @@ def _handle_node(
     :type node: ast.AST | ast.expr | None
     :return: Standardized data list representing the processed node, `None` if no node
             is provided.
-    :rtype: list[StandardReturnProcessor] | None
+    :rtype: list[basic.StandardReturnProcessor] | None
     """
 
     if node is None:
         return node
 
-    data: list[StandardReturnProcessor] = []
+    data: list[basic.StandardReturnProcessor] = []
 
     # -------------------------
     # Imports - ast.Import | ast.ImportFrom
     # -------------------------
 
     if isinstance(node, ast.Import):
-        _handle_import(cast(list[StandardReturn], data), node)
+        _handle_import(cast(list[basic.StandardReturn], data), node)
     elif isinstance(node, ast.ImportFrom):
-        _handle_import_from(cast(list[StandardReturn], data), node)
+        _handle_import_from(cast(list[basic.StandardReturn], data), node)
 
     # -------------------------
     # Constants - ast.Assign | ast.AnnAssign
@@ -276,33 +243,33 @@ def _handle_node(
             if isinstance(i, ast.Constant)
         ]
         if any(map(str.isupper, lst)):
-            _handle_assign(cast(list[StandardReturn], data), node)
+            _handle_assign(cast(list[basic.StandardReturn], data), node)
     elif isinstance(node, ast.AnnAssign):
         if isinstance(node.target, ast.Name) and node.target.id.isupper():
-            _handle_annassign(cast(list[StandardReturn], data), node)
+            _handle_annassign(cast(list[basic.StandardReturn], data), node)
 
     # -------------------------
     # Functions - ast.FunctionDef | ast.AsyncFunctionDef
     # -------------------------
 
     elif isinstance(node, ast.FunctionDef):
-        _handle_function_def(cast(list[StandardReturn], data), node)
+        _handle_function_def(cast(list[basic.StandardReturn], data), node)
     elif isinstance(node, ast.AsyncFunctionDef):
-        _handle_async_function_def(cast(list[StandardReturn], data), node)
+        _handle_async_function_def(cast(list[basic.StandardReturn], data), node)
 
     # -------------------------
     # Classes - ast.ClassDef
     # -------------------------
 
     elif isinstance(node, ast.ClassDef):
-        _handle_class_def(cast(list[StandardReturn], data), node)
+        _handle_class_def(cast(list[basic.StandardReturn], data), node)
 
     # -------------------------
     # Assertions - ast.Assert
     # -------------------------
 
     elif isinstance(node, ast.Assert):
-        _handle_assert(cast(list[StandardReturn], data), node)
+        _handle_assert(cast(list[basic.StandardReturn], data), node)
 
     # -------------------------
     # General - any other ast.AST
@@ -314,7 +281,7 @@ def _handle_node(
     return data
 
 
-def __handle_import(imported_identifier: ImportedIdentifier) -> StandardReturn:
+def __handle_import(imported_identifier: basic.ImportedIdentifier) -> basic.StandardReturn:
     """
     Constructs a standardized dictionary representation for an import statement.
 
@@ -326,7 +293,7 @@ def __handle_import(imported_identifier: ImportedIdentifier) -> StandardReturn:
     Key concepts:
     - Import Categorization: Determines whether the library is native (built-in),
       third-party, or local.
-    - Standardized Structure: Returns a dictionary conforming to the `StandardReturn`
+    - Standardized Structure: Returns a dictionary conforming to the `basic.StandardReturn`
       format, ensuring consistency across codebase documentation.
     - Dynamic Code Generation: Constructs the import statement dynamically based on
       the library name.
@@ -334,28 +301,28 @@ def __handle_import(imported_identifier: ImportedIdentifier) -> StandardReturn:
     Example:
 
     ```python
-    data: StandardReturn = __handle_import('os')
+    data: basic.StandardReturn = __handle_import('os')
     data
     # {
-    #     'statement': Statement.Import,
+    #     'statement': enums.Statement.Import,
     #     'name': 'os',
     #     'path': None,
-    #     'category': ImportType.Native,
+    #     'category': enums.ImportType.Native,
     #     'code': 'import os',
     # }
     ```
 
     :param imported_identifier: The name of the lib, mod or element imported.
-    :type imported_identifier: ImportedIdentifier
+    :type imported_identifier: basic.ImportedIdentifier
     :return: A standardized dictionary representing the import statement.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
-    statement: Final[Statement] = Statement.Import
+    statement: Final[enums.Statement] = enums.Statement.Import
     path: Final[None] = None
-    category: ImportType = get_import_type(imported_identifier)
+    category: enums.ImportType = get_import_type(imported_identifier)
 
-    contract: ImportContract = ImportContract(
+    contract: contracts.ImportContract = contracts.ImportContract(
         statement=statement,
         name=imported_identifier,
         path=path,
@@ -363,7 +330,7 @@ def __handle_import(imported_identifier: ImportedIdentifier) -> StandardReturn:
         code=f'import {imported_identifier}',
     )
 
-    data: StandardReturn = standard_struct()
+    data: basic.StandardReturn = standard_struct()
 
     data.update(contract.as_dict)
 
@@ -371,13 +338,13 @@ def __handle_import(imported_identifier: ImportedIdentifier) -> StandardReturn:
 
 
 def _handle_import(
-    struct: list[StandardReturn], node: ast.Import
-) -> list[StandardReturn]:
+    struct: list[basic.StandardReturn], node: ast.Import
+) -> list[basic.StandardReturn]:
     """
     Updates a standard structure with information from an import statement node.
 
     This function processes an AST import node, extracts the library names being
-    imported, and updates the given `StandardReturn` structure with details about
+    imported, and updates the given `basic.StandardReturn` structure with details about
     each library. It leverages the `__handle_import` function to standardize the data
     for each imported library.
 
@@ -393,17 +360,17 @@ def _handle_import(
     import ast
 
     node: ast.AST = ast.parse('import os, sys').body[0]
-    updated_struct: list[StandardReturn] = _handle_import([], node)
+    updated_struct: list[basic.StandardReturn] = _handle_import([], node)
     updated_struct
     # Outputs standardized data for `os` and `sys` imports.
     ```
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturn]
+    :type struct: list[basic.StandardReturn]
     :param node: The AST node representing an import statement.
     :type node: ast.Import
     :return: The updated structure with information about the imported libraries.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
     for lib in [i.name for i in node.names]:
@@ -413,8 +380,8 @@ def _handle_import(
 
 
 def _handle_import_from(
-    struct: list[StandardReturn], node: ast.ImportFrom
-) -> list[StandardReturn]:
+    struct: list[basic.StandardReturn], node: ast.ImportFrom
+) -> list[basic.StandardReturn]:
     """
     Processes an `ast.ImportFrom` node and returns its data.
 
@@ -433,42 +400,42 @@ def _handle_import_from(
     import ast
 
     node: ast.AST = ast.parse('from os import environ').body[0]
-    updated_struct: list[StandardReturn] = _handle_import_from([], node)
+    updated_struct: list[basic.StandardReturn] = _handle_import_from([], node)
     updated_struct
     # Outputs standardized data for `environ` with `os` as path.
     ```
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturn]
+    :type struct: list[basic.StandardReturn]
     :param node: The AST node representing an import statement.
     :type node: ast.ImportFrom
     :return: A dict containing the statement type and categorized module information.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
-    statement: Final[Statement] = Statement.ImportFrom
-    names: Final[list[ImportedIdentifier]] = [i.name for i in node.names]
-    path: Final[ModulePath | None] = node.module
-    category: ImportType = ImportType.Local
-    code: Final[CodeSnippet] = ast.unparse(node)
+    statement: Final[enums.Statement] = enums.Statement.ImportFrom
+    names: Final[list[basic.ImportedIdentifier]] = [i.name for i in node.names]
+    path: Final[basic.ModulePath | None] = node.module
+    category: enums.ImportType = enums.ImportType.Local
+    code: Final[basic.CodeSnippet] = ast.unparse(node)
 
     if bin(
         f'{path}.'.split('.')[0],
         BUILTIN_MODULES,
     ):
-        category = ImportType.Native
+        category = enums.ImportType.Native
     elif get_import_type(str(path)):
-        category = ImportType.TrdParty
+        category = enums.ImportType.TrdParty
 
     for i in names:
-        contract: ImportFromContract = ImportFromContract(
+        contract: contracts.ImportFromContract = contracts.ImportFromContract(
             statement=statement,
             name=i,
             path=path,
             category=category,
             code=code,
         )
-        data: StandardReturn = standard_struct()
+        data: basic.StandardReturn = standard_struct()
         data.update(contract.as_dict)
 
         struct.append(data)
@@ -477,8 +444,8 @@ def _handle_import_from(
 
 
 def _handle_assign(
-    struct: list[StandardReturn], node: ast.Assign
-) -> list[StandardReturn]:
+    struct: list[basic.StandardReturn], node: ast.Assign
+) -> list[basic.StandardReturn]:
     """
     Processes an `ast.Assign` node and returns its data.
 
@@ -495,34 +462,34 @@ def _handle_assign(
     import ast
 
     node: ast.AST = ast.parse('num = 33').body[0]
-    updated_struct: list[StandardReturn] = _handle_assign([], node)
+    updated_struct: list[basic.StandardReturn] = _handle_assign([], node)
     updated_struct
     # Outputs standardized data for `num` definition.
     ```
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturn]
+    :type struct: list[basic.StandardReturn]
     :param node: The AST node representing the node statement.
     :type node: ast.Assign
     :return: A dict containing the statement type, target variables, and assigned value.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
-    statement: Final[Statement] = Statement.Assign
-    tokens: Final[list[Token]] = [
-        cast(list[Token], _handle_node(i))[0] for i in node.targets
+    statement: Final[enums.Statement] = enums.Statement.Assign
+    tokens: Final[list[basic.Token]] = [
+        cast(list[basic.Token], _handle_node(i))[0] for i in node.targets
     ]
-    value: Final[Value] = cast(list[Value], _handle_node(node.value))[0]
-    code: Final[CodeSnippet] = ast.unparse(node)
+    value: Final[basic.Value] = cast(list[basic.Value], _handle_node(node.value))[0]
+    code: Final[basic.CodeSnippet] = ast.unparse(node)
 
-    contract: AssignContract = AssignContract(
+    contract: contracts.AssignContract = contracts.AssignContract(
         statement=statement,
         tokens=tokens,
         value=value,
         code=code,
     )
 
-    data: StandardReturn = standard_struct()
+    data: basic.StandardReturn = standard_struct()
 
     data.update(contract.as_dict)
 
@@ -532,8 +499,8 @@ def _handle_assign(
 
 
 def _handle_annassign(
-    struct: list[StandardReturn], node: ast.AnnAssign
-) -> list[StandardReturn]:
+    struct: list[basic.StandardReturn], node: ast.AnnAssign
+) -> list[basic.StandardReturn]:
     """
     Processes an `ast.AnnAssign` node and returns its data.
 
@@ -552,26 +519,26 @@ def _handle_annassign(
     import ast
 
     node: ast.AST = ast.parse('num: int = 33').body[0]
-    updated_struct: list[StandardReturn] = _handle_anassign([], node)
+    updated_struct: list[basic.StandardReturn] = _handle_anassign([], node)
     updated_struct
     # Outputs standardized data for `num` definition with `int` annotation.
     ```
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturn]
+    :type struct: list[basic.StandardReturn]
     :param node: The AST node representing the node statement.
     :type node: ast.AnnAssign
     :return: A dict with the statement type, target var, type hint and assigned value.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
-    statement: Statement = Statement.AnnAssign
-    name: Token = cast(list[Token], _handle_node(node.target))[0]
-    annot: Annotation = cast(list[Annotation], _handle_node(node.annotation))[0]
-    value: Value = cast(list[Value], _handle_node(node.value))[0] if node.value else ''
-    code: CodeSnippet = ast.unparse(node)
+    statement: enums.Statement = enums.Statement.AnnAssign
+    name: basic.Token = cast(list[basic.Token], _handle_node(node.target))[0]
+    annot: basic.Annotation = cast(list[basic.Annotation], _handle_node(node.annotation))[0]
+    value: basic.Value = cast(list[basic.Value], _handle_node(node.value))[0] if node.value else ''
+    code: basic.CodeSnippet = ast.unparse(node)
 
-    contract: AnnAssignContract = AnnAssignContract(
+    contract: contracts.AnnAssignContract = contracts.AnnAssignContract(
         statement=statement,
         name=name,
         annot=annot,
@@ -579,7 +546,7 @@ def _handle_annassign(
         code=code,
     )
 
-    data: StandardReturn = standard_struct()
+    data: basic.StandardReturn = standard_struct()
 
     data.update(contract.as_dict)
 
@@ -589,8 +556,8 @@ def _handle_annassign(
 
 
 def __format_arg(
-    name: Token, annotation: Annotation | None, default: DefaultValue | None
-) -> Args:
+    name: basic.Token, annotation: basic.Annotation | None, default: basic.DefaultValue | None
+) -> basic.Args:
     """
     Formats a function argument into a string repr with optional type annotations and
     default values.
@@ -608,19 +575,19 @@ def __format_arg(
     Example:
 
     ```python
-    formatted: Args = __format_arg('param', 'int', '42')
+    formatted: basic.Args = __format_arg('param', 'int', '42')
     formatted
     # "param: int = 42"
     ```
 
     :param name: The name of the argument.
-    :type name: Token
+    :type name: basic.Token
     :param annotation: The type annotation for the argument, if any.
-    :type annotation: Annotation | None
+    :type annotation: basic.Annotation | None
     :param default: The default value of the argument, if any.
-    :type default: DefaultValue | None
+    :type default: basic.DefaultValue | None
     :return: A formatted string representing the argument.
-    :rtype: Args
+    :rtype: basic.Args
     """
 
     if annotation and default:
@@ -665,22 +632,22 @@ def __process_function_args(node_args: ast.arguments) -> str:
     :rtype: str
     """
 
-    formatted_args: list[Args] = []
+    formatted_args: list[basic.Args] = []
 
     for i, arg in enumerate(node_args.args):
-        name: Token = arg.arg
-        annotation: Annotation | None = (
-            cast(list[Annotation], _handle_node(arg.annotation))[0]
+        name: basic.Token = arg.arg
+        annotation: basic.Annotation | None = (
+            cast(list[basic.Annotation], _handle_node(arg.annotation))[0]
             if arg.annotation
             else None
         )
 
-        default: DefaultValue | None = None
+        default: basic.DefaultValue | None = None
 
         if i < len(node_args.kw_defaults):
             default_node = node_args.kw_defaults[i]
             if default_node:
-                default = str(cast(list[Args], _handle_node(default_node))[0])
+                default = str(cast(list[basic.Args], _handle_node(default_node))[0])
 
         formatted_args.append(__format_arg(name, annotation, default))
 
@@ -722,26 +689,26 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
     formatted_kwargs: list[str] = []
 
     for i, arg in enumerate(node_args.kwonlyargs):
-        name: Kwargs = arg.arg
-        annotation: Annotation | None = (
-            cast(list[Annotation], _handle_node(arg.annotation))[0]
+        name: basic.Kwargs = arg.arg
+        annotation: basic.Annotation | None = (
+            cast(list[basic.Annotation], _handle_node(arg.annotation))[0]
             if arg.annotation
             else None
         )
 
-        default: DefaultValue | None = None
+        default: basic.DefaultValue | None = None
 
         if i < len(node_args.kw_defaults):
             default_node = node_args.kw_defaults[i]
             if default_node:
-                default = str(cast(list[DefaultValue], _handle_node(default_node))[0])
+                default = str(cast(list[basic.DefaultValue], _handle_node(default_node))[0])
 
         formatted_kwargs.append(__format_arg(name, annotation, default))
 
     return ', '.join(formatted_kwargs)
 
 
-def __process_function_type(node: ast.FunctionDef, is_from_class: bool) -> FunctionType:
+def __process_function_type(node: ast.FunctionDef, is_from_class: bool) -> enums.FunctionType:
     """
     Determines the type of a function based on its context and structure.
 
@@ -757,21 +724,21 @@ def __process_function_type(node: ast.FunctionDef, is_from_class: bool) -> Funct
     :param is_from_class: Indicates if the function is defined within a class.
     :type is_from_class: bool
     :return: The type of the function (`Method`, `Generator`, or `Function`).
-    :rtype: FunctionType
+    :rtype: enums.FunctionType
     """
 
     if is_from_class or bin(node.name, BUILTIN_DUNDER_METHODS):
-        return FunctionType.Method
+        return enums.FunctionType.Method
 
     elif any(isinstance(n, ast.Yield | ast.YieldFrom) for n in ast.walk(node)):
-        return FunctionType.Generator
+        return enums.FunctionType.Generator
 
-    return FunctionType.Function
+    return enums.FunctionType.Function
 
 
 def _handle_function_def(
-    struct: list[StandardReturn], node: ast.FunctionDef, is_from_class: bool = False
-) -> list[StandardReturn]:
+    struct: list[basic.StandardReturn], node: ast.FunctionDef, is_from_class: bool = False
+) -> list[basic.StandardReturn]:
     """
     Processes an `ast.FunctionDef` node and returns its data.
 
@@ -788,38 +755,38 @@ def _handle_function_def(
     import ast
 
     node: ast.AST = ast.parse('def foo(*args: Any): pass').body[0]
-    updated_struct: list[StandardReturn] = _handle_function_def([], node)
+    updated_struct: list[basic.StandardReturn] = _handle_function_def([], node)
     updated_struct
     # Outputs standardized data for `foo` definition.
     ```
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturn]
+    :type struct: list[basic.StandardReturn]
     :param node: The AST node representing a func def statement.
     :type node: ast.FunctionDef
     :param is_from_class: The arg who tells if shoud be directly defined as a Method.
     :type is_from_class: bool = False
     :return: A dict containing the statement type and the data listed before.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
-    statement: Final[Statement] = Statement.FunctionDef
-    name: Final[Token] = node.name
-    docstring: Final[Docstring | None] = ast.get_docstring(node)
-    decos: Final[list[Decorator]] = [
-        cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
+    statement: Final[enums.Statement] = enums.Statement.FunctionDef
+    name: Final[basic.Token] = node.name
+    docstring: Final[basic.Docstring | None] = ast.get_docstring(node)
+    decos: Final[list[basic.Decorator]] = [
+        cast(list[basic.Decorator], _handle_node(i))[0] for i in node.decorator_list
     ]
-    rtype: Final[Annotation | None] = (
-        cast(list[Annotation], _handle_node(node.returns))[0] if node.returns else None
+    rtype: Final[basic.Annotation | None] = (
+        cast(list[basic.Annotation], _handle_node(node.returns))[0] if node.returns else None
     )
-    code: Final[CodeSnippet] = ast.unparse(node)
+    code: Final[basic.CodeSnippet] = ast.unparse(node)
 
-    args_str: Final[Args] = __process_function_args(node.args)
-    kwargs_str: Final[Kwargs] = __process_function_kwargs(node.args)
+    args_str: Final[basic.Args] = __process_function_args(node.args)
+    kwargs_str: Final[basic.Kwargs] = __process_function_kwargs(node.args)
 
-    category: Final[FunctionType] = __process_function_type(node, is_from_class)
+    category: Final[enums.FunctionType] = __process_function_type(node, is_from_class)
 
-    contract: FunctionDefContract = FunctionDefContract(
+    contract: contracts.FunctionDefContract = contracts.FunctionDefContract(
         statement=statement,
         name=name,
         category=category,
@@ -831,7 +798,7 @@ def _handle_function_def(
         code=code,
     )
 
-    data: StandardReturn = standard_struct()
+    data: basic.StandardReturn = standard_struct()
 
     data.update(contract.as_dict)
 
@@ -841,8 +808,8 @@ def _handle_function_def(
 
 
 def _handle_async_function_def(
-    struct: list[StandardReturn], node: ast.AsyncFunctionDef
-) -> list[StandardReturn]:
+    struct: list[basic.StandardReturn], node: ast.AsyncFunctionDef
+) -> list[basic.StandardReturn]:
     """
     Processes an `ast.AsyncFunctionDef` node and returns its data.
 
@@ -857,37 +824,37 @@ def _handle_async_function_def(
     import ast
 
     node: ast.AST = ast.parse('async def foo(*args: Any): pass').body[0]
-    updated_struct: list[StandardReturn] = _handle_assign([], node)
+    updated_struct: list[basic.StandardReturn] = _handle_assign([], node)
     updated_struct
     # Outputs standardized data for async `foo` definition.
     ```
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturn]
+    :type struct: list[basic.StandardReturn]
     :param node: The AST node representing a func def statement.
     :type node: ast.AsyncFunctionDef
     :return: A dict containing the statement type and the data listed before.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
-    statement: Final[Statement] = Statement.AsyncFunctionDef
-    name: Final[Token] = node.name
-    docstring: Final[Docstring | None] = ast.get_docstring(node)
-    decos: Final[list[Decorator]] = [
-        cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
+    statement: Final[enums.Statement] = enums.Statement.AsyncFunctionDef
+    name: Final[basic.Token] = node.name
+    docstring: Final[basic.Docstring | None] = ast.get_docstring(node)
+    decos: Final[list[basic.Decorator]] = [
+        cast(list[basic.Decorator], _handle_node(i))[0] for i in node.decorator_list
     ]
-    rtype: Final[Annotation | None] = (
-        cast(list[Annotation], _handle_node(node.returns))[0] if node.returns else None
+    rtype: Final[basic.Annotation | None] = (
+        cast(list[basic.Annotation], _handle_node(node.returns))[0] if node.returns else None
     )
-    code: Final[CodeSnippet] = ast.unparse(node)
+    code: Final[basic.CodeSnippet] = ast.unparse(node)
 
-    args_str: Final[Args] = __process_function_args(node.args)
-    kwargs_str: Final[Kwargs] = __process_function_kwargs(node.args)
+    args_str: Final[basic.Args] = __process_function_args(node.args)
+    kwargs_str: Final[basic.Kwargs] = __process_function_kwargs(node.args)
 
-    contract: AsyncFunctionDefContract = AsyncFunctionDefContract(
+    contract: contracts.AsyncFunctionDefContract = contracts.AsyncFunctionDefContract(
         statement=statement,
         name=name,
-        category=FunctionType.Coroutine,
+        category=enums.FunctionType.Coroutine,
         docstring=docstring,
         decorators=decos,
         rtype=rtype,
@@ -896,7 +863,7 @@ def _handle_async_function_def(
         code=code,
     )
 
-    data: StandardReturn = standard_struct()
+    data: basic.StandardReturn = standard_struct()
 
     data.update(contract.as_dict)
 
@@ -986,8 +953,8 @@ def __process_class_kwargs(keywords: list[ast.keyword]) -> str:
 
 
 def _handle_class_def(
-    struct: list[StandardReturn], node: ast.ClassDef
-) -> list[StandardReturn]:
+    struct: list[basic.StandardReturn], node: ast.ClassDef
+) -> list[basic.StandardReturn]:
     """
     Processes an `ast.ClassDef` node and returns its data.
 
@@ -1007,34 +974,34 @@ def _handle_class_def(
     import ast
 
     node: ast.AST = ast.parse('class Foo: pass').body[0]
-    updated_struct: list[StandardReturn] = _handle_class_def([], node)
+    updated_struct: list[basic.StandardReturn] = _handle_class_def([], node)
     updated_struct
     # Outputs standardized data for `Foo` definition.
     ```
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturn]
+    :type struct: list[basic.StandardReturn]
     :param node: The AST node representing a class definition.
     :type node: ast.ClassDef
     :return: A dict with the statement type, name, base classes, decorators, and kwargs.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
-    statement: Final[Statement] = Statement.ClassDef
-    name: Final[Token] = node.name
-    docstring: Final[Docstring | None] = ast.get_docstring(node)
-    inheritance: Final[list[Inheritance]] = [
-        cast(list[Inheritance], _handle_node(i))[0]
+    statement: Final[enums.Statement] = enums.Statement.ClassDef
+    name: Final[basic.Token] = node.name
+    docstring: Final[basic.Docstring | None] = ast.get_docstring(node)
+    inheritance: Final[list[basic.Inheritance]] = [
+        cast(list[basic.Inheritance], _handle_node(i))[0]
         for i in node.bases
         if isinstance(i, ast.Name)
     ]
-    decos: Final[list[Decorator]] = [
-        cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
+    decos: Final[list[basic.Decorator]] = [
+        cast(list[basic.Decorator], _handle_node(i))[0] for i in node.decorator_list
     ]
-    kwargs_str: Kwargs = __process_class_kwargs(node.keywords)
-    code: Final[CodeSnippet] = ast.unparse(node)
+    kwargs_str: basic.Kwargs = __process_class_kwargs(node.keywords)
+    code: Final[basic.CodeSnippet] = ast.unparse(node)
 
-    contract: ClassDefContract = ClassDefContract(
+    contract: contracts.ClassDefContract = contracts.ClassDefContract(
         statement=statement,
         name=name,
         docstring=docstring,
@@ -1044,7 +1011,7 @@ def _handle_class_def(
         code=code,
     )
 
-    data: StandardReturn = standard_struct()
+    data: basic.StandardReturn = standard_struct()
 
     data.update(contract.as_dict)
 
@@ -1052,7 +1019,7 @@ def _handle_class_def(
 
     for child in node.body:
         if isinstance(child, ast.FunctionDef):
-            function_data: StandardReturn = standard_struct()
+            function_data: basic.StandardReturn = standard_struct()
             function_data.update(_handle_function_def([], child, is_from_class=True)[0])
             struct.append(function_data)
 
@@ -1060,8 +1027,8 @@ def _handle_class_def(
 
 
 def _handle_assert(
-    struct: list[StandardReturn], node: ast.Assert
-) -> list[StandardReturn]:
+    struct: list[basic.StandardReturn], node: ast.Assert
+) -> list[basic.StandardReturn]:
     """
     Processes an `ast.Assert` node and returns its data.
 
@@ -1070,33 +1037,33 @@ def _handle_assert(
     details.
 
     Key elements of the returned data:
-    - statement: The type of statement, identified as `Statement.Assert`.
+    - statement: The type of statement, identified as `enums.Statement.Assert`.
     - test: A repr of the test expression being asserted.
     - msg: A string repr of the optional message, `None` if no message is provided.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturn]
+    :type struct: list[basic.StandardReturn]
     :param node: The AST node representing an assertion statement.
     :type node: ast.Assert
     :return: A dict with the statement type, test expression, and optional message.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
-    statement: Final[Statement] = Statement.Assert
-    test: Final[AssertionTest] = cast(AssertionTest, _handle_node(node.test))[0]
-    msg: Final[AssertionMessage | None] = (
+    statement: Final[enums.Statement] = enums.Statement.Assert
+    test: Final[basic.AssertionTest] = cast(basic.AssertionTest, _handle_node(node.test))[0]
+    msg: Final[basic.AssertionMessage | None] = (
         cast(list[str], _handle_node(node.msg))[0] if node.msg else None
     )
-    code: Final[CodeSnippet] = ast.unparse(node)
+    code: Final[basic.CodeSnippet] = ast.unparse(node)
 
-    contract: AssertContract = AssertContract(
+    contract: contracts.AssertContract = contracts.AssertContract(
         statement=statement,
         test=test,
         msg=msg,
         code=code,
     )
 
-    data: StandardReturn = standard_struct()
+    data: basic.StandardReturn = standard_struct()
 
     data.update(contract.as_dict)
 
@@ -1106,19 +1073,19 @@ def _handle_assert(
 
 
 def _handle_general(
-    struct: list[StandardReturnProcessor], node: ast.AST
-) -> list[StandardReturnProcessor]:
+    struct: list[basic.StandardReturnProcessor], node: ast.AST
+) -> list[basic.StandardReturnProcessor]:
     """
     Processes any AST node but the default ones and returns its data.
 
     This function just returns the node unparsed as `str`.
 
     :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProcessor]
+    :type struct: list[basic.StandardReturnProcessor]
     :param node: The AST node representing the node statement.
     :type node: ast.AST
     :return: The node id.
-    :rtype: list[StandardReturnProcessor]
+    :rtype: list[basic.StandardReturnProcessor]
     """
 
     struct.append(ast.unparse(node))
@@ -1158,14 +1125,14 @@ def wrapped_mark_methods_for_testing(node: ast.ClassDef) -> None:
     return _mark_methods(node)
 
 
-def wrapped_handle_std_nodes_for_testing(node: ast.AST) -> list[StandardReturn]:
+def wrapped_handle_std_nodes_for_testing(node: ast.AST) -> list[basic.StandardReturn]:
     """
     Just encapsulates `_handle_std_nodes` function, just for unittesting.
 
     :param node: The class definition node containing methods to be marked.
     :type node: ast.AST
     :return: An object containing information associated with the node.
-    :rtype: list[StandardReturn]
+    :rtype: list[basic.StandardReturn]
     """
 
     return _handle_std_nodes(node)
