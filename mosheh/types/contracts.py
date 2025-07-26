@@ -7,8 +7,7 @@ These dataclasses are used to ensure the correct value type and attribution, so 
 time each of them appears, they are going to have the desired and expected behavior.
 """
 
-from dataclasses import asdict, dataclass
-from typing import Any, Self
+from typing import NamedTuple
 
 from mosheh.types.basic import (
     Annotation,
@@ -29,17 +28,7 @@ from mosheh.types.basic import (
 from mosheh.types.enums import FunctionType, ImportType, Statement
 
 
-@dataclass
-class BaseContract:
-    """Base dataclass to shortcut `as_dict` definition."""
-
-    @property
-    def as_dict(self: Self) -> dict[str, Any]:
-        return asdict(self)
-
-
-@dataclass
-class ImportContract(BaseContract):
+class ImportContract(NamedTuple):
     """`ast.Import` contract for typing and declaration security."""
 
     statement: Statement
@@ -49,8 +38,7 @@ class ImportContract(BaseContract):
     code: CodeSnippet
 
 
-@dataclass
-class ImportFromContract(BaseContract):
+class ImportFromContract(NamedTuple):
     """`ast.ImportFrom` contract for typing and declaration security."""
 
     statement: Statement
@@ -60,8 +48,7 @@ class ImportFromContract(BaseContract):
     code: CodeSnippet
 
 
-@dataclass
-class AssignContract(BaseContract):
+class AssignContract(NamedTuple):
     """`ast.Assign` contract for typing and declaration security."""
 
     statement: Statement
@@ -70,8 +57,7 @@ class AssignContract(BaseContract):
     code: CodeSnippet
 
 
-@dataclass
-class AnnAssignContract(BaseContract):
+class AnnAssignContract(NamedTuple):
     """`ast.AnnAssign` contract for typing and declaration security."""
 
     statement: Statement
@@ -81,8 +67,7 @@ class AnnAssignContract(BaseContract):
     code: CodeSnippet
 
 
-@dataclass
-class FunctionDefContract(BaseContract):
+class FunctionDefContract(NamedTuple):
     """`ast.FunctionDef` contract for typing and declaration security."""
 
     statement: Statement
@@ -96,8 +81,7 @@ class FunctionDefContract(BaseContract):
     code: CodeSnippet
 
 
-@dataclass
-class AsyncFunctionDefContract(BaseContract):
+class AsyncFunctionDefContract(NamedTuple):
     """`ast.AsyncFunctionDef` contract for typing and declaration security."""
 
     statement: Statement
@@ -111,8 +95,7 @@ class AsyncFunctionDefContract(BaseContract):
     code: CodeSnippet
 
 
-@dataclass
-class ClassDefContract(BaseContract):
+class ClassDefContract(NamedTuple):
     """`ast.ClassDef` contract for typing and declaration security."""
 
     statement: Statement
@@ -124,8 +107,7 @@ class ClassDefContract(BaseContract):
     code: CodeSnippet
 
 
-@dataclass
-class AssertContract(BaseContract):
+class AssertContract(NamedTuple):
     """`ast.Assert` contract for typing and declaration security."""
 
     statement: Statement
