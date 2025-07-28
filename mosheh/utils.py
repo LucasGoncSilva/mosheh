@@ -11,6 +11,7 @@ Here are usually maintained reusable code applicable everywhere.
 
 import importlib.util
 import sysconfig
+from bisect import bisect_left
 from collections import defaultdict
 from collections.abc import Sequence
 from typing import Any, cast
@@ -24,13 +25,9 @@ def bin(item: Any, universe: Sequence[Any]) -> bool:
     """
     Binary Search algorithm which returns not the index, but a boolean.
 
-    It inicializes two "pointers", one for the low or start of the iterator
-    and another for the high or the end of it. Gets the middle point and
-    compares it with the asked item.
-
-    If the item is greater/after the middle the middle becomes the new low
-    and repeats, otherwise, it becomes the new high and so on and so on and
-    so on... until the item is found and returns True or not, returning False.
+    Uses Python's bisect.bisect_left function to efficiently find the insertion point
+    of the item in the sorted sequence, then checks if the item exists at that
+    position.
 
     Example:
 
@@ -49,21 +46,8 @@ def bin(item: Any, universe: Sequence[Any]) -> bool:
     :rtype: bool
     """
 
-    low: int = 0
-    high: int = len(universe) - 1
-    mid: int = 0
-
-    while low <= high:
-        mid = (high + low) // 2
-
-        if universe[mid] < item:
-            low = mid + 1
-        elif universe[mid] > item:
-            high = mid - 1
-        else:
-            return True
-
-    return False
+    i = bisect_left(universe, item)
+    return i < len(universe) and universe[i] == item
 
 
 def get_import_type(lib: ModuleName) -> ImportType:
