@@ -28,7 +28,7 @@ def test_import_contract() -> None:
     }
 
     assert isinstance(contract, ImportContract)
-    assert contract.as_dict == expected
+    assert contract._asdict() == expected
 
 
 def test_import_from_contract() -> None:
@@ -49,7 +49,7 @@ def test_import_from_contract() -> None:
     }
 
     assert isinstance(contract, ImportFromContract)
-    assert contract.as_dict == expected
+    assert contract._asdict() == expected
 
 
 def test_assign_contract() -> None:
@@ -65,7 +65,7 @@ def test_assign_contract() -> None:
     }
 
     assert isinstance(contract, AssignContract)
-    assert contract.as_dict == expected
+    assert contract._asdict() == expected
 
 
 def test_ann_assign_contract() -> None:
@@ -86,7 +86,7 @@ def test_ann_assign_contract() -> None:
     }
 
     assert isinstance(contract, AnnAssignContract)
-    assert contract.as_dict == expected
+    assert contract._asdict() == expected
 
 
 def test_class_contract() -> None:
@@ -111,7 +111,7 @@ def test_class_contract() -> None:
     }
 
     assert isinstance(contract, ClassDefContract)
-    assert contract.as_dict == expected
+    assert contract._asdict() == expected
 
 
 def test_function_contract() -> None:
@@ -140,7 +140,7 @@ def test_function_contract() -> None:
     }
 
     assert isinstance(contract, FunctionDefContract)
-    assert contract.as_dict == expected
+    assert contract._asdict() == expected
 
 
 def test_async_function_contract() -> None:
@@ -169,7 +169,7 @@ def test_async_function_contract() -> None:
     }
 
     assert isinstance(contract, FunctionDefContract)
-    assert contract.as_dict == expected
+    assert contract._asdict() == expected
 
 
 def test_assert_contract() -> None:
@@ -185,4 +185,4 @@ def test_assert_contract() -> None:
     }
 
     assert isinstance(contract, AssertContract)
-    assert contract.as_dict == expected
+    assert contract._asdict() == expected

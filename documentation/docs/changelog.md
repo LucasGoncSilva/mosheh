@@ -40,6 +40,22 @@ Key Components of a Changelog:
 
 -->
 
+## v2.0.1 - 2025-07-29
+
+### Adds
+
+- `.github/DISCUSSION_TEMPLATE` files for discussion templates: "Questions", "Showcases" and "Ideas to Features"
+
+### Updates
+
+- Replaced manual binary search implementation with `bisect.bisect_left` wrapper in `utils.bin` - [PR 7](https://github.com/LucasGoncSilva/mosheh/pull/7) - [@ClanEver](https://github.com/ClanEver)
+- Refactored dataclass implementations to use NamedTuple - [PR 6](https://github.com/LucasGoncSilva/mosheh/pull/6) - [@ClanEver](https://github.com/ClanEver)
+- Updated method calls from `.as_dict` to `._asdict()` - [PR 6](https://github.com/LucasGoncSilva/mosheh/pull/6) - [@ClanEver](https://github.com/ClanEver)
+
+### Fixes
+
+- `README.md` gif of Mosheh use
+
 ## v2.0.0 - 2025-07-24
 
 ### Adds

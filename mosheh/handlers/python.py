@@ -365,7 +365,7 @@ def __handle_import(imported_identifier: ImportedIdentifier) -> StandardReturn:
 
     data: StandardReturn = standard_struct()
 
-    data.update(contract.as_dict)
+    data.update(contract._asdict())
 
     return data
 
@@ -469,7 +469,7 @@ def _handle_import_from(
             code=code,
         )
         data: StandardReturn = standard_struct()
-        data.update(contract.as_dict)
+        data.update(contract._asdict())
 
         struct.append(data)
 
@@ -524,7 +524,7 @@ def _handle_assign(
 
     data: StandardReturn = standard_struct()
 
-    data.update(contract.as_dict)
+    data.update(contract._asdict())
 
     struct.append(data)
 
@@ -581,7 +581,7 @@ def _handle_annassign(
 
     data: StandardReturn = standard_struct()
 
-    data.update(contract.as_dict)
+    data.update(contract._asdict())
 
     struct.append(data)
 
@@ -833,7 +833,7 @@ def _handle_function_def(
 
     data: StandardReturn = standard_struct()
 
-    data.update(contract.as_dict)
+    data.update(contract._asdict())
 
     struct.append(data)
 
@@ -898,7 +898,7 @@ def _handle_async_function_def(
 
     data: StandardReturn = standard_struct()
 
-    data.update(contract.as_dict)
+    data.update(contract._asdict())
 
     struct.append(data)
 
@@ -1046,7 +1046,7 @@ def _handle_class_def(
 
     data: StandardReturn = standard_struct()
 
-    data.update(contract.as_dict)
+    data.update(contract._asdict())
 
     struct.append(data)
 
@@ -1098,7 +1098,7 @@ def _handle_assert(
 
     data: StandardReturn = standard_struct()
 
-    data.update(contract.as_dict)
+    data.update(contract._asdict())
 
     struct.append(data)
 

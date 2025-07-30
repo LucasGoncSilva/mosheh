@@ -1,0 +1,82 @@
+name: Mosheh Showcase
+description: Share how you're using Mosheh in your project or company
+labels: [showcase]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for sharing how you're using Mosheh.
+
+        Whether it's a full integration, a small tool powered by Mosheh, a creative workaround, or performance tests, this space is for the community to learn from each other.
+
+        Please make sure to include enough detail so others can understand your use case and maybe get inspired!
+
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: Share Agreement
+      description: Please confirm the following.
+      options:
+        - label: I agree to follow this project's [Guidelines](https://lucasgoncsilva.github.io/mosheh/guidelines/).
+          required: true
+        - label: I have permission to share this content publicly.
+          required: true
+        - label: I understand this is a community space and I welcome feedback or questions from others.
+          required: true
+
+  - type: input
+    id: title
+    attributes:
+      label: Project or Showcase Title
+      description: Name your showcase clearly (e.g., "Mosheh for Microservices").
+      placeholder: ...
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What Did You Build?
+      description: Give a high-level overview of your project or use case.
+      placeholder: |
+        We built an internal documentation portal for our microservices. Mosheh helped generating the codebase documentation for new devs onboard.
+
+  - type: textarea
+    id: how-used
+    attributes:
+      required: True
+      label: How Are You Using Mosheh?
+      description: Explain how Mosheh fits into your workflow. How are you using it?
+      placeholder: |
+        - Abc.
+        - Xpto.
+
+  - type: textarea
+    id: highlights
+    attributes:
+      required: True
+      label: Highlights or Insights
+      description: Share something interesting, unexpected, or especially helpful you discovered using Mosheh.
+      placeholder: |
+        - Reduced our documentation maintenance effort by x%
+        - Easily onboarded new devs just by linking the output of Mosheh
+
+  - type: textarea
+    id: benchmarks
+    attributes:
+      label: Benchmarks or Metrics
+      description: If you measured performance, productivity, or any other impact, feel free to share that here.
+      placeholder: |
+        - Reduced manual documentation time from 4h/week to 45 minutes
+        - Built and deployed docs for 12 microservices in less than 1 minute each
+
+  - type: input
+    id: repo-link
+    attributes:
+      label: Project or Repository Link (if public)
+      description: Share a link to your project, documentation site or repo if you'd like.
+      placeholder: https://github.com/your-username/your-project
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or Media
+      description: If you want, share screenshots, videos, or terminal output showing your Mosheh integration in action.

@@ -234,6 +234,7 @@ Scope: There is no table with _all_ possible options, it depends directly on wha
 | `perf`     | Performance upgrades.                             | `perf: Optimize select_related`              |
 | `sec`      | Security improvements.                            | `sec: Handle token expiration vulnerability` |
 | `hotfix`   | Urgent... hot... fixes...                         | `hotfix: Fix crash on empty input`           |
+| `chore`    | Administrative tasks, no impact on product.       | `chore: Add discussion templates`            |
 | `config`   | Updates on general configs.                       | `config: Update MkDocs dependency version`   |
 
 ## Code Review

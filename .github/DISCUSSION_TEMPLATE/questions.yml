@@ -1,0 +1,166 @@
+name: Question
+description: Ask something to the community
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Great to know you're interested in Mosheh.
+
+        Following the following instructions... fill the questions and do the steps below.
+
+        Those questions are the most repeated, but also some of the most important ones; structuring them with this form makes everything better for everyone.
+
+        Since is possible to have too many questions, incomplete submissions will be discarded, allowing everyone to focus on helping people like you that follow the whole process and help us help you.
+
+  - type: checkboxes
+    id: checking
+    attributes:
+      label: First Check
+      description: Please confirm and check all the following options.
+      options:
+        - label: I agree to follow this project's [Guidelines](https://lucasgoncsilva.github.io/mosheh/guidelines/).
+          required: true
+        - label: The title describes very well the situation.
+          required: true
+        - label: I found no similar answer searching on GitHub.
+          required: true
+        - label: I found no similar answer searching on Mosheh's documentation.
+          required: true
+        - label: I found no similar answer even following the official tutorial.
+          required: true
+        - label: I already checked if it is not related to Mosheh but to [MkDocs](https://github.com/mkdocs/mkdocs).
+          required: true
+        - label: I already checked if it is not related to Mosheh but to [Material MkDocs](https://github.com/squidfunk/mkdocs-material).
+          required: true
+
+  - type: checkboxes
+    id: helping
+    attributes:
+      label: Commit to Help
+      description: |
+        After submitting this, I commit to one of:
+
+          * Read open questions until I find 2 where I can help someone and add a comment to help there.
+          * I already hit the "watch" button in this repository to receive notifications and I commit to help at least 2 people that ask questions in the future.
+          * Review one Pull Request or comment an Issue helping someone else always following the [Guidelines](https://lucasgoncsilva.github.io/mosheh/guidelines/).
+
+      options:
+        - label: I commit to help with one of those options
+          required: true
+
+  - type: dropdown
+    id: install-method
+    attributes:
+      label: Installation Method
+      description: How did you install Mosheh?
+      options:
+        - pip/pip3
+        - uv
+        - poetry
+        - conda
+        - clone and install
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: Config File
+      description: |
+        Please add a self-contained, [minimal, reproducible example](https://stackoverflow.com/help/minimal-reproducible-example) with your use case.
+
+        If someone can copy it, run it, and see it right away, there's a much higher chance this someone will be able to help you.
+
+        Use this field to write/paste your config file; this is very useful for real analysis.
+
+      placeholder: |
+        {
+          "documentation": {
+            "projectName": "Mosheh",
+            "repoName": "mosheh",
+            "repoUrl": "https://github.com/lucasgoncsilva/mosheh",
+            "editUri": "blob/main/documentation/docs",
+            "siteUrl": "https://lucasgoncsilva.github.io/mosheh/",
+            "logoPath": "./path/to/logo.svg",
+            "readmePath": "./path/to/README.md",
+            "codebaseNavPath": "Codebase"
+          },
+          "io": {
+            "rootDir": "./app/",
+            "outputDir": "./path/to/output/"
+          }
+        }
+      render: json
+    validations:
+      required: true
+
+  - type: textarea
+    id: descripting
+    attributes:
+      label: Description
+      description: |
+        What is the problem, question, or error?
+
+        Write a short description telling me what you are doing, what you expect to happen and what is currently happening.
+
+        Enumerating the steps might be great.
+      placeholder: |
+        After x I got problem with y and it fails when z
+
+        * abc.
+        * xpto.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What operating system are you on?
+      multiple: true
+      options:
+        - Linux
+        - Windows
+        - macOS
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: os-details
+    attributes:
+      label: Operating System Details
+      description: You can add more details about your operating system here, in particular if you chose "Other".
+      placeholder: Ubuntu 22.04, Windows 11 Pro Build 22621
+
+  - type: input
+    id: version
+    attributes:
+      label: Project Version
+      description: Which project versions are affected?
+      placeholder: "1.0, 2.2, <=2.3, >=3.0.1"
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+      description: |
+        What Python version are you using?
+
+        You can find the Python version with:
+
+        ```bash
+        python --version
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any additional context information or screenshots you think are useful.
