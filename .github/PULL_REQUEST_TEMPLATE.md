@@ -28,7 +28,7 @@ so anyone reviewing this can quickly know where to look at.
 
 - Lorem ipsum dolor sit amet
 
-### Update
+### Updates
 
 - Lorem ipsum dolor sit amet
 
