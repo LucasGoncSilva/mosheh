@@ -1,0 +1,82 @@
+name: Feature Idea
+description: Propose a new feature or enhancement for Mosheh
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to suggest a feature for Mosheh.
+
+        Feature requests help the project grow in a direction that is meaningful for the community.
+
+        Please make sure your suggestion is well thought out and follows the project's [Guidelines](https://lucasgoncsilva.github.io/mosheh/guidelines/).
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before You Start
+      description: Please check all of the following.
+      options:
+        - label: I have searched existing [issues](https://github.com/lucasgoncsilva/mosheh/issues) and [discussions](https://github.com/lucasgoncsilva/mosheh/discussions) and did not find a similar request.
+          required: true
+        - label: This is a feature that would improve Mosheh's usability or flexibility.
+          required: true
+        - label: I understand this is just a suggestion and may not be implemented immediately.
+          required: true
+        - label: I understand this suggestion is going to be evaluated, not creator of it.
+          required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: Clearly describe the feature you are proposing. Focus on what it does and why it is useful.
+      required: True
+      placeholder: |
+        I'd like Mosheh to implement classe pages for each class definition, keeping all its data on a single place.
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why Is This Feature Important?
+      description: What problem does this solve? How would this help you or others in practice?
+      required: True
+      placeholder: |
+        The current implementation defines classes and its details at the same page of everything else, which can leads to really big files if lots of classes defined.
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Possible Solution or Implementation Ideas
+      description: If you have any technical suggestions on how it might be implemented, share them here. Even partial ideas are welcome.
+      required: True
+      placeholder: |
+        - Lorem ipsum dolor sit amet.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered other approaches to solving the same problem?
+      placeholder: |
+        - Abc.
+        - Xpto.
+
+  - type: dropdown
+    id: feature-scope
+    attributes:
+      label: Affected Area
+      required: True
+      description: What area of Mosheh would this feature impact?
+      options:
+        - Core Engine (config parsing, file IO)
+        - MkDocs Calling
+        - CLI Tooling
+        - Documentation System
+        - Other
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context or Screenshots
+      description: Feel free to share more information, sketches, references, or links here.

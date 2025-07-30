@@ -69,7 +69,7 @@ Inspirated by `cargodoc` - a Rust tool for code documenting - and using [MkDocs]
 
 > Specs: Mint 21.3 | Aspire A515-54 | Intel i7-10510U (8) @ 4.900GHz | RAM 19817MiB
 
-<script src="https://asciinema.org/a/vyqIEXYLEup4SyWawQ4l2Ccs3.js" id="asciicast-vyqIEXYLEup4SyWawQ4l2Ccs3" async="true"></script>
+![Visual demonstration of Mosheh](https://github.com/LucasGoncSilva/mosheh/blob/main/.github/demo.gif)
 
 This is not an alternative to MkDocs, but a complement based on it, since Mosheh lists all files you points to, saves every single notorious definition statement on each file iterated, all using Python `ast` native module for handling the AST and then generating a modern documentation respecting the dirs and files hierarchy.
 
