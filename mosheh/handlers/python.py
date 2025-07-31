@@ -178,7 +178,7 @@ def _handle_std_nodes(node: ast.AST) -> list[StandardReturn]:
     elif isinstance(node, ast.Assign):
         lst: list[str] = []
         for i in node.targets:
-            lst.extend(cast(list[str], _handle_node(i)))
+            lst.extend(_handle_node(i))
 
         if any(map(str.isupper, lst)) or any(
             map(lambda x: bin(x, ACCEPTABLE_LOWER_CONSTANTS), lst)
@@ -218,100 +218,24 @@ def _handle_node(
     node: ast.AST | ast.expr | None,
 ) -> list[StandardReturnProcessor] | None:
     """
-    Processes various types of AST nodes and returns a standardized representation.
+    Converts an AST node back into its string representation.
 
-    This function extends the capabilities of `handle_std_nodes()` by supporting a
-    wider range of Python Abstract Syntax Tree (AST) node types. It identifies the
-    node type, delegates processing to the appropriate handler function, and
-    accumulates the results into a standardized format.
-
+    This function takes an AST node and uses `ast.unparse` to convert it
+    into the equivalent source code. It returns the string inside a list
+    to maintain a consistent return type with other handlers.
+    
     Key concepts:
-    - AST Parsing: Supports multiple node types (e.g., imports, functions, classes,
-      constants).
-    - Dynamic Dispatch: Uses type-checking to delegate node handling to specific
-      functions (e.g., `handle_import`, `handle_function_def`).
-    - Data Standardization: Accumulates processed data into a consistent structure
-      (`StandardReturnProcessor`).
-
-    Example:
-
-    ```python
-    import ast
-
-    source_code = 'def my_function():\\n    pass'
-    node: ast.AST = ast.parse(source_code).body[0]
-    handle_node(node)
-    # Outputs a standardized representation of the function definition.
-    ```
-
+    - AST Parsing: The core concept is converting an AST object back to source code.
+    - Null-Safe Handling: If the node is `None`, it returns `None` to avoid errors. 
+    
     :param node: The AST node to be processed.
     :type node: ast.AST | ast.expr | None
-    :return: Standardized data list representing the processed node, `None` if no node
-            is provided.
-    :rtype: list[StandardReturnProcessor] | None
+    :return: A list containing the unparsed source code, or 'None' if the node is None.
     """
 
     if node is None:
-        return node
-
-    data: list[StandardReturnProcessor] = []
-
-    # -------------------------
-    # Imports - ast.Import | ast.ImportFrom
-    # -------------------------
-
-    if isinstance(node, ast.Import):
-        _handle_import(cast(list[StandardReturn], data), node)
-    elif isinstance(node, ast.ImportFrom):
-        _handle_import_from(cast(list[StandardReturn], data), node)
-
-    # -------------------------
-    # Constants - ast.Assign | ast.AnnAssign
-    # -------------------------
-
-    elif isinstance(node, ast.Assign):
-        lst: list[str] = [
-            cast(list[str], _handle_general([], i))[0]
-            for i in node.targets
-            if isinstance(i, ast.Constant)
-        ]
-        if any(map(str.isupper, lst)):
-            _handle_assign(cast(list[StandardReturn], data), node)
-    elif isinstance(node, ast.AnnAssign):
-        if isinstance(node.target, ast.Name) and node.target.id.isupper():
-            _handle_annassign(cast(list[StandardReturn], data), node)
-
-    # -------------------------
-    # Functions - ast.FunctionDef | ast.AsyncFunctionDef
-    # -------------------------
-
-    elif isinstance(node, ast.FunctionDef):
-        _handle_function_def(cast(list[StandardReturn], data), node)
-    elif isinstance(node, ast.AsyncFunctionDef):
-        _handle_async_function_def(cast(list[StandardReturn], data), node)
-
-    # -------------------------
-    # Classes - ast.ClassDef
-    # -------------------------
-
-    elif isinstance(node, ast.ClassDef):
-        _handle_class_def(cast(list[StandardReturn], data), node)
-
-    # -------------------------
-    # Assertions - ast.Assert
-    # -------------------------
-
-    elif isinstance(node, ast.Assert):
-        _handle_assert(cast(list[StandardReturn], data), node)
-
-    # -------------------------
-    # General - any other ast.AST
-    # -------------------------
-
-    else:
-        data = _handle_general(data, node)
-
-    return data
+        return None
+    return [ast.unparse(node)]
 
 
 def __handle_import(imported_identifier: ImportedIdentifier) -> StandardReturn:
@@ -509,10 +433,8 @@ def _handle_assign(
     """
 
     statement: Final[Statement] = Statement.Assign
-    tokens: Final[list[Token]] = [
-        cast(list[Token], _handle_node(i))[0] for i in node.targets
-    ]
-    value: Final[Value] = cast(list[Value], _handle_node(node.value))[0]
+    tokens: Final[list[Token]] = [_handle_node(i)[0] for i in node.targets]
+    value: Final[Value] = _handle_node(node.value)[0]
     code: Final[CodeSnippet] = ast.unparse(node)
 
     contract: AssignContract = AssignContract(
@@ -566,9 +488,9 @@ def _handle_annassign(
     """
 
     statement: Statement = Statement.AnnAssign
-    name: Token = cast(list[Token], _handle_node(node.target))[0]
-    annot: Annotation = cast(list[Annotation], _handle_node(node.annotation))[0]
-    value: Value = cast(list[Value], _handle_node(node.value))[0] if node.value else ''
+    name: Token = _handle_node(node.target)[0]
+    annot: Annotation = _handle_node(node.annotation)[0]
+    value: Value = _handle_node(node.value)[0] if node.value else ''
     code: CodeSnippet = ast.unparse(node)
 
     contract: AnnAssignContract = AnnAssignContract(
@@ -670,9 +592,7 @@ def __process_function_args(node_args: ast.arguments) -> str:
     for i, arg in enumerate(node_args.args):
         name: Token = arg.arg
         annotation: Annotation | None = (
-            cast(list[Annotation], _handle_node(arg.annotation))[0]
-            if arg.annotation
-            else None
+            _handle_node(arg.annotation)[0] if arg.annotation else None
         )
 
         default: DefaultValue | None = None
@@ -680,7 +600,7 @@ def __process_function_args(node_args: ast.arguments) -> str:
         if i < len(node_args.kw_defaults):
             default_node = node_args.kw_defaults[i]
             if default_node:
-                default = str(cast(list[Args], _handle_node(default_node))[0])
+                default = _handle_node(default_node)[0]
 
         formatted_args.append(__format_arg(name, annotation, default))
 
@@ -724,9 +644,7 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
     for i, arg in enumerate(node_args.kwonlyargs):
         name: Kwargs = arg.arg
         annotation: Annotation | None = (
-            cast(list[Annotation], _handle_node(arg.annotation))[0]
-            if arg.annotation
-            else None
+            _handle_node(arg.annotation)[0] if arg.annotation else None
         )
 
         default: DefaultValue | None = None
@@ -734,7 +652,7 @@ def __process_function_kwargs(node_args: ast.arguments) -> str:
         if i < len(node_args.kw_defaults):
             default_node = node_args.kw_defaults[i]
             if default_node:
-                default = str(cast(list[DefaultValue], _handle_node(default_node))[0])
+                default = _handle_node(default_node)[0]
 
         formatted_kwargs.append(__format_arg(name, annotation, default))
 
@@ -806,11 +724,9 @@ def _handle_function_def(
     statement: Final[Statement] = Statement.FunctionDef
     name: Final[Token] = node.name
     docstring: Final[Docstring | None] = ast.get_docstring(node)
-    decos: Final[list[Decorator]] = [
-        cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
-    ]
+    decos: Final[list[Decorator]] = [_handle_node(i)[0] for i in node.decorator_list]
     rtype: Final[Annotation | None] = (
-        cast(list[Annotation], _handle_node(node.returns))[0] if node.returns else None
+        _handle_node(node.returns)[0] if node.returns else None
     )
     code: Final[CodeSnippet] = ast.unparse(node)
 
@@ -873,11 +789,9 @@ def _handle_async_function_def(
     statement: Final[Statement] = Statement.AsyncFunctionDef
     name: Final[Token] = node.name
     docstring: Final[Docstring | None] = ast.get_docstring(node)
-    decos: Final[list[Decorator]] = [
-        cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
-    ]
+    decos: Final[list[Decorator]] = [_handle_node(i)[0] for i in node.decorator_list]
     rtype: Final[Annotation | None] = (
-        cast(list[Annotation], _handle_node(node.returns))[0] if node.returns else None
+        _handle_node(node.returns)[0] if node.returns else None
     )
     code: Final[CodeSnippet] = ast.unparse(node)
 
@@ -1024,13 +938,9 @@ def _handle_class_def(
     name: Final[Token] = node.name
     docstring: Final[Docstring | None] = ast.get_docstring(node)
     inheritance: Final[list[Inheritance]] = [
-        cast(list[Inheritance], _handle_node(i))[0]
-        for i in node.bases
-        if isinstance(i, ast.Name)
+        _handle_node(i)[0] for i in node.bases if isinstance(i, ast.Name)
     ]
-    decos: Final[list[Decorator]] = [
-        cast(list[Decorator], _handle_node(i))[0] for i in node.decorator_list
-    ]
+    decos: Final[list[Decorator]] = [_handle_node(i)[0] for i in node.decorator_list]
     kwargs_str: Kwargs = __process_class_kwargs(node.keywords)
     code: Final[CodeSnippet] = ast.unparse(node)
 
@@ -1083,9 +993,9 @@ def _handle_assert(
     """
 
     statement: Final[Statement] = Statement.Assert
-    test: Final[AssertionTest] = cast(AssertionTest, _handle_node(node.test))[0]
+    test: Final[AssertionTest] = _handle_node(node.test)[0]
     msg: Final[AssertionMessage | None] = (
-        cast(list[str], _handle_node(node.msg))[0] if node.msg else None
+        _handle_node(node.msg)[0] if node.msg else None
     )
     code: Final[CodeSnippet] = ast.unparse(node)
 
@@ -1103,28 +1013,6 @@ def _handle_assert(
     struct.append(data)
 
     return struct
-
-
-def _handle_general(
-    struct: list[StandardReturnProcessor], node: ast.AST
-) -> list[StandardReturnProcessor]:
-    """
-    Processes any AST node but the default ones and returns its data.
-
-    This function just returns the node unparsed as `str`.
-
-    :param struct: The structure to be updated with statement details.
-    :type struct: list[StandardReturnProcessor]
-    :param node: The AST node representing the node statement.
-    :type node: ast.AST
-    :return: The node id.
-    :rtype: list[StandardReturnProcessor]
-    """
-
-    struct.append(ast.unparse(node))
-
-    return struct
-
 
 def _mark_methods(node: ast.ClassDef) -> None:
     """
