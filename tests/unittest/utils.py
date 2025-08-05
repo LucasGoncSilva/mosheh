@@ -1,4 +1,8 @@
 from collections import defaultdict
+from typing import Any
+
+from hypothesis import given as g
+from hypothesis import strategies as st
 
 from mosheh.types.basic import CodebaseDict, StandardReturn
 from mosheh.types.enums import ImportType
@@ -13,9 +17,9 @@ from mosheh.utils import (
 )
 
 
-def test_bin() -> None:
-    assert bin(4, [1, 2, 3, 4, 5, 6, 7, 8])
-    assert not bin(9, [1, 2, 3, 4, 5, 6, 7, 8])
+@g(st.lists(st.integers(), min_size=1).map(sorted))
+def test_bin(data: list[int]) -> None:
+    assert bin(data[0], data)
 
 
 def test_get_import_type() -> None:
@@ -24,8 +28,10 @@ def test_get_import_type() -> None:
 
 
 def test_nested_defaultdict() -> None:
-    assert isinstance(nested_defaultdict(), dict)
-    assert isinstance(nested_defaultdict(), defaultdict)
+    dct: defaultdict[Any, Any] = nested_defaultdict()
+
+    assert isinstance(dct, dict)
+    assert isinstance(dct, defaultdict)
 
 
 def test_add_to_nested_defaultdict() -> None:
@@ -59,8 +65,10 @@ def test_convert_to_regular_dict() -> None:
 
 
 def test_standard_struct() -> None:
-    assert isinstance(standard_struct(), dict)
-    assert not len(standard_struct())
+    dct: dict[Any, Any] = standard_struct()
+
+    assert isinstance(dct, dict)
+    assert not len(dct)
 
 
 def test_indent_code() -> None:
