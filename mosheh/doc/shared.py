@@ -740,3 +740,40 @@ def get_update_set_nav(
 
     with open(mkdocs_yml, 'w', encoding='utf-8') as f:
         f.write(yaml.dump(yml, Dumper=yaml.CDumper, sort_keys=False, indent=2))
+
+
+def write_homepage(output_path: FilePath, readme_path: FilePath) -> None:
+    """
+    Reads the content of a given README file path and writes to the doc homepage.
+
+    As simple as can be, just add some MkDocs lines to remove (hide) both ToC and
+    navigation, so the page has nothing on the sides, giving more space for the
+    main content.
+
+    :param output_path: String for the documentation output.
+    :type output_path: FilePath
+    :param readme_path: String for the README file.
+    :type readme_path: FilePath
+    :return: None
+    :rtype: None
+    """
+
+    homepage: str = path.join(output_path, 'docs', 'index.md')
+
+    with open(readme_path, encoding='utf-8') as f:
+        content: list[str] = f.readlines()
+
+    with open(homepage, 'w', encoding='utf-8') as f:
+        readme_to_write: list[str] = [
+            '---\n',
+            'hide:\n',
+            '  - navigation\n',
+            '  - toc\n',
+            '---\n',
+            '\n',
+            '<br>\n',
+            '\n',
+        ] + content
+        f.writelines(readme_to_write)
+
+    logger.info('"README.md" copied to documentation')
