@@ -31,16 +31,19 @@ def is_formatable_and_get_fields(s: str) -> tuple[bool, list[str] | None]:
 def test_BUILTIN_MODULES() -> None:
     assert isinstance(BUILTIN_MODULES, list)
     assert all(map(lambda x: isinstance(x, str), BUILTIN_MODULES))
+    assert BUILTIN_MODULES == sorted(BUILTIN_MODULES)
 
 
 def test_BUILTIN_FUNCTIONS() -> None:
     assert isinstance(BUILTIN_FUNCTIONS, list)
     assert all(map(lambda x: isinstance(x, str), BUILTIN_FUNCTIONS))
+    assert BUILTIN_FUNCTIONS == sorted(BUILTIN_FUNCTIONS)
 
 
 def test_BUILTIN_DUNDER_METHODS() -> None:
     assert isinstance(BUILTIN_DUNDER_METHODS, list)
     assert all(map(lambda x: isinstance(x, str), BUILTIN_DUNDER_METHODS))
+    assert BUILTIN_DUNDER_METHODS == sorted(BUILTIN_DUNDER_METHODS)
 
 
 def test_ACCEPTABLE_LOWER_CONSTANTS() -> None:

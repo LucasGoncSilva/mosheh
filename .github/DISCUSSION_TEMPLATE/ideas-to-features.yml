@@ -1,5 +1,4 @@
-name: Feature Idea
-description: Propose a new feature or enhancement for Mosheh
+title: Feature Idea
 labels: [enhancement]
 body:
   - type: markdown
@@ -23,7 +22,7 @@ body:
           required: true
         - label: I understand this is just a suggestion and may not be implemented immediately.
           required: true
-        - label: I understand this suggestion is going to be evaluated, not creator of it.
+        - label: I understand this suggestion is going to be evaluated, but not the creator.
           required: true
 
   - type: textarea

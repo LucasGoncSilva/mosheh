@@ -28,6 +28,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "asciinema>=2.4.0",
+    "hypothesis>=6.136.9",
     "mypy>=1.17.0",
     "pytest>=8.4.1",
     "ruff>=0.12.4",

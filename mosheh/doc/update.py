@@ -15,7 +15,7 @@ all using internal calls for functions such as `process_codebase` and
 from logging import Logger, getLogger
 from os import path
 
-from mosheh.doc.shared import get_update_set_nav, process_codebase
+from mosheh.doc.shared import get_update_set_nav, process_codebase, write_homepage
 from mosheh.types.basic import CodebaseDict, FilePath
 from mosheh.utils import remove_abspath_from_codebase
 
@@ -38,14 +38,16 @@ def update_doc(
     configuration file and processes the provided codebase to generate documentation.
 
     Key concepts:
-    - Kwargs: By starting args with "*", this function only accepts key-word arguments.
-    - MkDocs: A static site generator that's geared towards project documentation.
-    - Codebase Processing: The function relies on `process_codebase` to handle the
-      codebase structure and populate the documentation content based on Python files
-      and their stmts.
-    - Configuration: Rebuilds a `mkdocs.yml` Nav config file with new project details.
-    - Homepage: If `readme_path` is provided, so the `index.md` file provided by MkDocs
-      is overwriten by the `README.md` found at provided `readme_path` file.
+        - Kwargs: By starting args with "*", this function only accepts key-word
+        arguments.
+        - MkDocs: A static site generator that's geared towards project documentation.
+        - Codebase Processing: The function relies on `process_codebase` to handle the
+        codebase structure and populate the documentation content based on Python files
+        and their stmts.
+        - Configuration: Rebuilds a `mkdocs.yml` Nav config file with new project
+        details.
+        - Homepage: If `readme_path` is provided, so the `index.md` file provided by
+        MkDocs is overwriten by the `README.md` found at provided `readme_path` file.
 
     :param codebase: Dict containing nodes representing `.py` files and their stmts.
     :type codebase: CodebaseDict
@@ -74,12 +76,4 @@ def update_doc(
     logger.debug('\tNav addeded to mkdocs.yml')
 
     if readme_path:
-        homepage: str = path.join(output_path, 'docs', 'index.md')
-
-        with open(readme_path, encoding='utf-8') as f:
-            content: list[str] = f.readlines()
-
-        with open(homepage, 'w', encoding='utf-8') as f:
-            f.writelines(content)
-
-        logger.info('"README.md" copied to documentation')
+        write_homepage(output_path, readme_path)

@@ -9,7 +9,8 @@ Key Components of a Changelog:
 - Adds: This section highlights new features, tools, or functionalities introduced to the project. For example, a CLI tool may include a new command or configuration option. Clearly listing these additions allows users to discover improvements and expanded capabilities.
 - Updates: Updates reflect modifications or enhancements to existing features, such as performance optimizations or UI/UX improvements. These entries help users understand what has evolved, ensuring they benefit from improved usability or efficiency.
 - Fixes: Fixes document the resolution of bugs or issues. By specifying what was corrected, users gain confidence that problems they may have encountered have been addressed, reducing frustration.
-- Removes: Sometimes, features or functionalities are deprecated or removed. Listing these changes prevents surprises, enabling users to adapt and refactor their workflows accordingly.
+- Deprecates: When something (function, approach or even feature) is replaced but still available, usually for retrocompatibility, this thing is marked as deprecated; the idea is to remove later without breaking existing use cases.
+- Removes: Sometimes, features or functionalities are removed. Listing these changes prevents surprises, enabling users to adapt and refactor their workflows accordingly.
 - Security: Security changes focus on vulnerabilities that have been mitigated or resolved. This section reassures users that the project maintains high standards for safety and data protection.
 
 ---
@@ -27,6 +28,10 @@ Key Components of a Changelog:
 - Item
 
 ### Fixes
+
+- Item
+
+### Deprecates
 
 - Item
 
@@ -61,7 +66,7 @@ Key Components of a Changelog:
 - Remove unused `_handle_general` function after refactoring - [PR 13](https://github.com/LucasGoncSilva/mosheh/pull/13) - [@MananJain39](https://github.com/MananJain39)
 - Remove unnecessary `typing.cast` calls - [PR 13](https://github.com/LucasGoncSilva/mosheh/pull/13) - [@MananJain39](https://github.com/MananJain39)
 
-## v2.0.1 - 2025-07-29
+## v2.0.1 - 2025-07-30
 
 ### Adds
 

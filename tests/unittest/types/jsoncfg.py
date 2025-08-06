@@ -1,60 +1,114 @@
+from hypothesis import given as g
+from hypothesis import strategies as st
+
 from mosheh.types.jsoncfg import IOJSON, DefaultJSON, DocumentationJSON
 
 
-def test_documentation_json_typeddict() -> None:
+@g(
+    st.characters(),
+    st.characters(),
+    st.characters(),
+    st.characters(),
+    st.characters(),
+    st.characters() | st.none(),
+    st.characters() | st.none(),
+    st.characters(),
+)
+def test_documentation_json_typeddict(
+    name: str,
+    repo: str,
+    repo_url: str,
+    site_url: str,
+    edit_uri: str,
+    logo_path: str | None,
+    readme_path: str | None,
+    codebase_nav_path: str,
+) -> None:
     cfg: DocumentationJSON = DocumentationJSON(
-        projectName='Name',
-        repoName='repo',
-        repoUrl='https://google.com',
-        editUri='edit/uri',
-        logoPath=None,
-        readmePath=None,
+        projectName=name,
+        repoName=repo,
+        repoUrl=repo_url,
+        siteUrl=site_url,
+        editUri=edit_uri,
+        logoPath=logo_path,
+        readmePath=readme_path,
+        codebaseNavPath=codebase_nav_path,
     )
 
     expected: dict[str, str | None] = {
-        'projectName': 'Name',
-        'repoName': 'repo',
-        'repoUrl': 'https://google.com',
-        'editUri': 'edit/uri',
-        'logoPath': None,
-        'readmePath': None,
+        'projectName': name,
+        'repoName': repo,
+        'repoUrl': repo_url,
+        'siteUrl': site_url,
+        'editUri': edit_uri,
+        'logoPath': logo_path,
+        'readmePath': readme_path,
+        'codebaseNavPath': codebase_nav_path,
     }
 
     assert cfg == expected
 
 
-def test_io_json_typeddict() -> None:
-    cfg: IOJSON = IOJSON(rootDir='.', outputDir='.')
+@g(st.characters(), st.characters())
+def test_io_json_typeddict(root_dir: str, output_dir: str) -> None:
+    cfg: IOJSON = IOJSON(rootDir=root_dir, outputDir=output_dir)
 
-    expected: dict[str, str] = {'rootDir': '.', 'outputDir': '.'}
+    expected: dict[str, str] = {'rootDir': root_dir, 'outputDir': output_dir}
 
     assert cfg == expected
 
 
-def test_default_json_typeddict() -> None:
+@g(
+    st.characters(),
+    st.characters(),
+    st.characters(),
+    st.characters(),
+    st.characters(),
+    st.characters() | st.none(),
+    st.characters() | st.none(),
+    st.characters(),
+    st.characters(),
+    st.characters(),
+)
+def test_default_json_typeddict(
+    name: str,
+    repo: str,
+    repo_url: str,
+    site_url: str,
+    edit_uri: str,
+    logo_path: str | None,
+    readme_path: str | None,
+    codebase_nav_path: str,
+    root_dir: str,
+    output_dir: str,
+) -> None:
     doc_cfg: DocumentationJSON = DocumentationJSON(
-        projectName='Name',
-        repoName='repo',
-        repoUrl='https://google.com',
-        editUri='edit/uri',
-        logoPath=None,
-        readmePath=None,
+        projectName=name,
+        repoName=repo,
+        repoUrl=repo_url,
+        siteUrl=site_url,
+        editUri=edit_uri,
+        logoPath=logo_path,
+        readmePath=readme_path,
+        codebaseNavPath=codebase_nav_path,
     )
 
-    io_cfg: IOJSON = IOJSON(rootDir='.', outputDir='.')
+    io_cfg: IOJSON = IOJSON(rootDir=root_dir, outputDir=output_dir)
 
     cfg: DefaultJSON = DefaultJSON(documentation=doc_cfg, io=io_cfg)
 
     doc_expected: dict[str, str | None] = {
-        'projectName': 'Name',
-        'repoName': 'repo',
-        'repoUrl': 'https://google.com',
-        'editUri': 'edit/uri',
-        'logoPath': None,
-        'readmePath': None,
+        'projectName': name,
+        'repoName': repo,
+        'repoUrl': repo_url,
+        'siteUrl': site_url,
+        'editUri': edit_uri,
+        'logoPath': logo_path,
+        'readmePath': readme_path,
+        'codebaseNavPath': codebase_nav_path,
     }
 
-    io_expected: dict[str, str] = {'rootDir': '.', 'outputDir': '.'}
+    io_expected: dict[str, str] = {'rootDir': root_dir, 'outputDir': output_dir}
 
     expected: dict[str, dict[str, str] | dict[str, str | None]] = {
         'documentation': doc_expected,
