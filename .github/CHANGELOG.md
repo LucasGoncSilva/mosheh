@@ -40,6 +40,27 @@ Key Components of a Changelog:
 
 -->
 
+## v2.0.2 - 2025-08-06
+
+### Adds
+
+- Features list to `README.md`
+
+### Updates
+
+- Refactor `_handle_node` for improved performance and readability by using `ast.unparse` directly - [PR 13](https://github.com/LucasGoncSilva/mosheh/pull/13) - [@MananJain39](https://github.com/MananJain39)
+- Moved homepage logic to `mosheh.doc.shared`
+- Test suite updates with [Hypothesis](https://hypothesis.readthedocs.io/en/latest/)
+
+### Fixes
+
+- Small documentation issues, such as Discussion Templates titles
+
+### Removes
+
+- Remove unused `_handle_general` function after refactoring - [PR 13](https://github.com/LucasGoncSilva/mosheh/pull/13) - [@MananJain39](https://github.com/MananJain39)
+- Remove unnecessary `typing.cast` calls - [PR 13](https://github.com/LucasGoncSilva/mosheh/pull/13) - [@MananJain39](https://github.com/MananJain39)
+
 ## v2.0.1 - 2025-07-29
 
 ### Adds
