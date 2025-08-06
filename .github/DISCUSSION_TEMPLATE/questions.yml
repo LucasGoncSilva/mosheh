@@ -1,5 +1,4 @@
-name: Question
-description: Ask something to the community
+title: Question
 labels: [question]
 body:
   - type: markdown
