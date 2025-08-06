@@ -17,7 +17,7 @@ from os import makedirs, path
 from shutil import copy2
 
 from mosheh.constants import DEFAULT_MKDOCS_YML
-from mosheh.doc.shared import get_update_set_nav, process_codebase
+from mosheh.doc.shared import get_update_set_nav, process_codebase, write_homepage
 from mosheh.types.basic import CodebaseDict, FilePath
 from mosheh.utils import remove_abspath_from_codebase
 
@@ -124,15 +124,7 @@ def create_doc(
     logger.debug('\tNav addeded to mkdocs.yml')
 
     if readme_path:
-        homepage: str = path.join(output_path, 'docs', 'index.md')
-
-        with open(readme_path, encoding='utf-8') as f:
-            content: list[str] = f.readlines()
-
-        with open(homepage, 'w', encoding='utf-8') as f:
-            f.writelines(content)
-
-        logger.info('"README.md" copied to documentation')
+        write_homepage(output_path, readme_path)
 
 
 def _create_default_mkdocs(

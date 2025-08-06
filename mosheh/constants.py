@@ -58,7 +58,6 @@ BUILTIN_FUNCTIONS: Final[list[str]] = sorted(
     )
 )
 
-
 BUILTIN_DUNDER_METHODS: Final[list[str]] = sorted(
     {
         attr

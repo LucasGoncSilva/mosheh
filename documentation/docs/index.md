@@ -80,7 +80,7 @@ Inspirated by `cargodoc` - a Rust tool for code documenting - and using [MkDocs]
 - **Open Source**: Free to use, fully open-source under the MIT license, and built with community in mind
 - **Integrable**: Easy to embed into CI/CD pipelines or project scaffolds for automatic documentation generation
 
-![Visual demonstration of Mosheh](https://github.com/LucasGoncSilva/mosheh/blob/main/.github/demo.gif)
+![Visual demonstration of Mosheh](https://raw.githubusercontent.com/LucasGoncSilva/mosheh/refs/heads/main/.github/demo.gif)
 
 This is not an alternative to MkDocs, but a complement based on it, since Mosheh lists all files you points to, saves every single notorious definition statement on each file iterated, all using Python `ast` native module for handling the AST and then generating a modern documentation respecting the dirs and files hierarchy.
 
@@ -137,7 +137,7 @@ At the moment, Mosheh documents only Python files (`.py`, `.pyi`), where the stu
 
 ## Contributing
 
-Before getting access to the To-Do List, Coding Style or even forking the project, we **strongly recommend** reading [Mosheh's Guidelines](https://lucasgoncsilva.github.io/mosheh/guitelines/)
+Before getting access to the To-Do List, Coding Style or even forking the project, we **strongly recommend** reading [Mosheh's Guidelines](https://lucasgoncsilva.github.io/mosheh/guidelines/)
 
 ## Arch
 

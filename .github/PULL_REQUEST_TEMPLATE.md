@@ -1,8 +1,8 @@
 ## PR's Metadata
 
-Urgency: [low | medium | high] <!-- The "must resolve this now" factor of this PR -->
-Scope: [Front-End | Back-End | Tests | Docs | DB | Other] <!-- Where this updates the codebase in general terms: Docs | DB -->
-Impact: [low | medium | high] <!-- Size of impact this updates causes -->
+Urgency: [Low | Medium | High] <!-- The "must resolve this now" factor of this PR -->
+Impact: [Low | Medium | High] <!-- Size of impact this updates causes -->
+Scope: [Doc Generation | Codebase Processing | Tests | Documentation | Logging | Other] <!-- Where this updates the codebase in general terms: Docs | DB -->
 
 Related to: [#num #num | Not Applicable] <!-- PR's or issues this one is related to: #556 #762 -->
 Implements: [#num #num | Not Applicable] <!-- PR's or issues this one is resolving: #4002 #8922 -->
@@ -24,7 +24,7 @@ Use this area to update CHANGELOG explicitly, removing what is not used
 so anyone reviewing this can quickly know where to look at.
  -->
 
-### Add
+### Adds
 
 - Lorem ipsum dolor sit amet
 
@@ -32,15 +32,15 @@ so anyone reviewing this can quickly know where to look at.
 
 - Lorem ipsum dolor sit amet
 
-### Fix
+### Fixes
 
 - Lorem ipsum dolor sit amet
 
-### Deprecate
+### Deprecates
 
 - Lorem ipsum dolor sit amet
 
-### Remove
+### Removes
 
 - Lorem ipsum dolor sit amet
 

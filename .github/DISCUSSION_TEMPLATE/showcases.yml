@@ -1,5 +1,4 @@
-name: Mosheh Showcase
-description: Share how you're using Mosheh in your project or company
+title: Mosheh Showcase
 labels: [showcase]
 body:
   - type: markdown
