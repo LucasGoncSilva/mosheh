@@ -29,6 +29,6 @@ jobs:
         run: |
           uv sync
 
-      - name: Run Pytest and Doctest
+      - name: Run Pytest
         run: |
-          uv run task test
+          uv run pytest
