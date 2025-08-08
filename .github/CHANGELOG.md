@@ -45,6 +45,12 @@ Key Components of a Changelog:
 
 -->
 
+## v2.0.3 - 2025-08-08
+
+### Fixes
+
+- Mypy report for `mosheh.handlers.python` after [PR 13](https://github.com/LucasGoncSilva/mosheh/pull/13)
+
 ## v2.0.2 - 2025-08-06
 
 ### Adds

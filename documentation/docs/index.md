@@ -69,16 +69,16 @@ Inspirated by `cargodoc` - a Rust tool for code documenting - and using [MkDocs]
 
 > Specs: Mint 21.3 | Aspire A515-54 | Intel i7-10510U (8) @ 4.900GHz | RAM 19817MiB
 
-- **Fast**: Documented NumPy (200k+ Python LoC) in just 12.2 seconds
-- **Simple**: No complex logic behind the scenes — easy to understand and trust
-- **Easy to Use**: No advanced knowledge required — document any Python codebase effortlessly
-- **Plug and Play**: No need to modify your codebase — just install Mosheh, `init`, configure `mosheh.json` and `create`
-- **Professional**: Generates MkDocs Material-based documentation — a clean, responsive, and professional website by default
-- **Modern**: Designed for modern Python — fully type-hint-aware and built using the latest Python best practices
-- **Scalable**: Handles small scripts to massive codebases without performance issues
-- **Flexible**: Works with any Python structure — does not enforce docstring formats or architectural patterns
-- **Open Source**: Free to use, fully open-source under the MIT license, and built with community in mind
-- **Integrable**: Easy to embed into CI/CD pipelines or project scaffolds for automatic documentation generation
+- **🏎 Fast**: Documented NumPy (200k+ Python LoC) in just 12.2 seconds
+- **🙂 Simple**: No complex logic behind the scenes — easy to understand and trust
+- **👌 Easy to Use**: No advanced knowledge required — document any Python codebase effortlessly
+- **🔌 Plug and Play**: No need to modify your codebase — just install Mosheh, `init`, configure `mosheh.json` and `create`
+- **💼 Professional**: Generates MkDocs Material-based documentation — a clean, responsive, and professional website by default
+- **🧑‍💻 Modern**: Designed for modern Python — fully type-hint-aware and built using the latest Python best practices
+- **📈 Scalable**: Handles small scripts to massive codebases without performance issues
+- **➰ Flexible**: Works with any Python structure — does not enforce docstring formats or architectural patterns
+- **🔓 Open Source**: Free to use, fully open-source under the MIT license, and built with community in mind
+- **🔗 Integrable**: Easy to embed into CI/CD pipelines or project scaffolds for automatic documentation generation
 
 ![Visual demonstration of Mosheh](https://raw.githubusercontent.com/LucasGoncSilva/mosheh/refs/heads/main/.github/demo.gif)
 

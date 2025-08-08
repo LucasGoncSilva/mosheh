@@ -45,6 +45,12 @@ Key Components of a Changelog:
 
 -->
 
+## v2.0.3 - 2025-08-08
+
+### Fixes
+
+- Mypy report for `mosheh.handlers.python` after [PR 13](https://github.com/LucasGoncSilva/mosheh/pull/13)
+
 ## v2.0.2 - 2025-08-06
 
 ### Adds
@@ -67,6 +73,7 @@ Key Components of a Changelog:
 - Remove unnecessary `typing.cast` calls - [PR 13](https://github.com/LucasGoncSilva/mosheh/pull/13) - [@MananJain39](https://github.com/MananJain39)
 
 ## v2.0.1 - 2025-07-30
+
 ### Adds
 
 - `.github/DISCUSSION_TEMPLATE` files for discussion templates: "Questions", "Showcases" and "Ideas to Features"
