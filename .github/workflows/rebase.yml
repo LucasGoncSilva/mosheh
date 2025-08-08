@@ -1,0 +1,53 @@
+name: Rebase Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  wait-for-all-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for other workflows to finish
+        uses: ahmadnassri/action-workflow-run-wait@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          check_interval: 10 # seconds
+          max_attempts: 30
+
+  rebase-stg-review:
+    needs: wait-for-all-checks
+    runs-on: ubuntu-latest
+    if: github.event.head_commit != null
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.REPO_PAT }}
+          fetch-depth: 0
+
+      - name: Set up Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Rebase stg and review branches
+        env:
+          GH_TOKEN: ${{ secrets.REPO_PAT }}
+        run: |
+          for branch in stg review; do
+            echo "Rebasing $branch onto main"
+
+            # Fetch branch
+            git fetch origin $branch:$branch
+
+            # Checkout the branch
+            git checkout $branch
+
+            # Rebase it on top of main
+            git rebase origin/main
+
+            # Push force to update PRs
+            git push origin $branch --force-with-lease
+          done
