@@ -1,4 +1,4 @@
-name: Run Unittest With Pytest
+name: Run Linter Process
 
 on: [push, fork, pull_request]
 
@@ -29,6 +29,14 @@ jobs:
         run: |
           uv sync
 
-      - name: Run Pytest and Doctest
+      - name: Run Ruff Check
         run: |
-          uv run task test
+          uv run ruff check
+
+      - name: Run Ruff Format
+        run: |
+          uv run ruff format
+
+      - name: Run Mypy
+        run: |
+          uv run mypy mosheh
