@@ -12,7 +12,7 @@ import ast
 from collections import defaultdict
 from logging import Logger, getLogger
 from os import sep
-from typing import Any, Final, cast
+from typing import Any, Final
 
 from mosheh.constants import (
     ACCEPTABLE_LOWER_CONSTANTS,
@@ -34,7 +34,6 @@ from mosheh.types.basic import (
     Kwargs,
     ModulePath,
     StandardReturn,
-    StandardReturnProcessor,
     Token,
     Value,
 )
@@ -214,27 +213,24 @@ def _handle_std_nodes(node: ast.AST) -> list[StandardReturn]:
     return data
 
 
-def _handle_node(
-    node: ast.AST | ast.expr | None,
-) -> list[StandardReturnProcessor] | None:
+def _handle_node(node: ast.AST) -> list[str]:
     """
     Converts an AST node back into its string representation.
 
     This function takes an AST node and uses `ast.unparse` to convert it
     into the equivalent source code. It returns the string inside a list
     to maintain a consistent return type with other handlers.
-    
+
     Key concepts:
     - AST Parsing: The core concept is converting an AST object back to source code.
-    - Null-Safe Handling: If the node is `None`, it returns `None` to avoid errors. 
-    
+    - Null-Safe Handling: If the node is `None`, it returns `None` to avoid errors.
+
     :param node: The AST node to be processed.
-    :type node: ast.AST | ast.expr | None
+    :type node: ast.AST
     :return: A list containing the unparsed source code, or 'None' if the node is None.
+    :rtype: list[str]
     """
 
-    if node is None:
-        return None
     return [ast.unparse(node)]
 
 
@@ -1013,6 +1009,7 @@ def _handle_assert(
     struct.append(data)
 
     return struct
+
 
 def _mark_methods(node: ast.ClassDef) -> None:
     """
