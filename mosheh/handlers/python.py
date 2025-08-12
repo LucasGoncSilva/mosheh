@@ -220,7 +220,7 @@ def _handle_node(node: ast.AST) -> list[str]:
     This function takes an AST node and uses `ast.unparse` to convert it
     into the equivalent source code. It returns the string inside a list
     to maintain a consistent return type with other handlers.
-
+    
     Key concepts:
     - AST Parsing: The core concept is converting an AST object back to source code.
     - Null-Safe Handling: If the node is `None`, it returns `None` to avoid errors.
@@ -230,6 +230,9 @@ def _handle_node(node: ast.AST) -> list[str]:
     :return: A list containing the unparsed source code, or 'None' if the node is None.
     :rtype: list[str]
     """
+
+    if node is None:
+        return None
 
     return [ast.unparse(node)]
 
@@ -1009,8 +1012,8 @@ def _handle_assert(
     struct.append(data)
 
     return struct
-
-
+  
+  
 def _mark_methods(node: ast.ClassDef) -> None:
     """
     Marks all functions within a given `ClassDef` node as methods.

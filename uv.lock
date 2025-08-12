@@ -158,6 +158,19 @@ wheels = [
 ]
 
 [[package]]
+name = "hypothesis"
+version = "6.136.9"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "attrs" },
+    { name = "sortedcontainers" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/62/fe/f872b3f29d5b59179c2b9c51e594703ab21e07dd22a354091b130cb863f2/hypothesis-6.136.9.tar.gz", hash = "sha256:8cc3c75a57cf3706249e3f7055b194648aa04a537deaa2099e28dc70d88da129", size = 459298, upload-time = "2025-08-04T21:54:48.774Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fb/3b/cfdc2e2f13decd9be1fb32ba58473b974f953e996e1466ae65a0cd9dd2d0/hypothesis-6.136.9-py3-none-any.whl", hash = "sha256:c052412bb8b8b5090fb00eff0a7c80bfaeab9f0364e65fd3f4d08a002e478346", size = 526167, upload-time = "2025-08-04T21:54:44.718Z" },
+]
+
+[[package]]
 name = "idna"
 version = "3.10"
 source = { registry = "https://pypi.org/simple" }
