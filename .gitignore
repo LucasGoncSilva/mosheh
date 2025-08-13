@@ -167,6 +167,10 @@ cython_debug/
 # VSCode stuff
 .vscode
 
+# uv stuff
+uv.lock
+.uv/
+
 # Local trash testing stuff
 xpto.py
 x.txt
