@@ -29,14 +29,15 @@ dependencies = [
 dev = [
     "asciinema>=2.4.0",
     "hypothesis>=6.138.0",
-    "memray>=1.18.0",
     "mypy>=1.17.1",
     "pytest>=8.4.1",
     "ruff>=0.12.8",
-    "scalene>=1.5.53",
     "taskipy>=1.14.1",
     "types-pyyaml>=6.0.12.20250809",
 ]
+
+# Unix-like OS only
+bench = ["memray>=1.18.0", "scalene>=1.5.53"]
 
 [build-system]
 requires = ["hatchling"]
@@ -104,6 +105,3 @@ mosheh = ["py.typed"]
 
 [tool.mypy]
 strict = true
-
-
-
