@@ -255,6 +255,13 @@ uv run task lint
 uv run task makedoc
 ```
 
+### Benchmarking
+
+```sh
+# Running benchmark with Memray and Scalene
+uv run task benchmark
+```
+
 ## License
 
 This project is under [MIT License](https://choosealicense.com/licenses/mit/). A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.

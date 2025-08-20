@@ -1,2 +1,5 @@
 docs/
 mkdocs.yml
+mosheh.analysis*
+profile.html
+profile.json

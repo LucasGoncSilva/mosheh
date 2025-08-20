@@ -1,0 +1,95 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block title %} Login {% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'account/css/style.css' %}" />
+{% endblock %}
+
+
+{% block body %}
+<main>
+    <div class="bg-gradients">
+        <div class="gradient-left"></div>
+        <div class="gradient-right"></div>
+    </div>
+
+    <!-- Left Side -->
+    <section class="login-left">
+        <div class="login-logo">
+            <div class="logo">
+                <img src="{% static 'shared/img/logo.svg' %}" alt="sWarden's logo" width="80px" />
+                <div class="logo-text">sWarden</div>
+            </div>
+        </div>
+
+        <div class="login-slogan">
+            <h1>No names. No tracking. Just you and your information.</h1>
+            <p>
+                From the very first step, your privacy is respected. No personal
+                details, no surveillance, just security that serves you.
+            </p>
+        </div>
+    </section>
+
+    <!-- Right Side -->
+    <section class="login-right">
+        <div class="login-form-container">
+            <h2>Anonymous Sign Up</h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Messages -->
+                {% if messages %}
+                {% for message in messages %}
+                <div class="{{ message.tags }}" role="alert">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+
+                <!-- Form Groups -->
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                    <!-- Errors -->
+                    {% if field.errors %}
+                    <div class="error">
+                        {% for error in field.errors %} {{ error }}<br />
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Fields -->
+                    {{ field }}
+
+                    <!-- Help Text -->
+                    {% if field.help_text %}
+                    <div class="help-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"
+                            aria-hidden="true">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
+                            <line x1="12" y1="10" x2="12" y2="16" stroke="currentColor" stroke-width="2" />
+                            <circle cx="12" cy="7" r="1" fill="currentColor" />
+                        </svg>
+
+                        {{ field.help_text }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <input type="submit" class="btn btn-primary login-btn" value="Confirm" />
+
+                <p class="signup-link">
+                    Already have an account?
+                    <a href="{% url 'account:login' %}">Sign in</a>
+                </p>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

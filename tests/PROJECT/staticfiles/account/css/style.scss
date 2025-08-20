@@ -1,0 +1,217 @@
+@import '../../shared/css/constants';
+
+main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    margin-top: 4rem;
+
+    @media (min-width: 1024px) {
+        flex-direction: row;
+    }
+
+    .bg-gradients {
+        position: absolute;
+        inset: 0;
+        z-index: -10;
+        overflow: hidden;
+
+        .gradient-left {
+            position: absolute;
+            top: 0;
+            left: -10rem;
+            @include bg-circle-gradient;
+        }
+
+        .gradient-right {
+            position: absolute;
+            bottom: 0;
+            right: -10rem;
+            @include bg-circle-gradient;
+        }
+    }
+}
+
+.login-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    min-height: 40vh;
+
+    @media (min-width: 1024px) {
+        flex: 1;
+        min-height: 100vh;
+        padding: 4rem;
+    }
+}
+
+.login-logo {
+    margin-bottom: 2rem;
+
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin: 0 auto;
+
+        &-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background: $gradient-primary-lighten;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            span {
+                color: $primary-foreground;
+                font-weight: bold;
+                font-size: 1.5rem;
+            }
+        }
+
+        &-text {
+            font-weight: bold;
+            font-size: 1.75rem;
+        }
+    }
+}
+
+.login-slogan {
+    max-width: 30rem;
+    margin: 0 auto;
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        @include text-gradient-white;
+    }
+
+    p {
+        color: $muted-foreground;
+        font-size: 1.125rem;
+        margin-bottom: 2rem;
+    }
+}
+
+.login-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    min-height: 60vh;
+
+    img.captcha {
+        width: 100%;
+        border-radius: $radius;
+        margin-bottom: 1rem;
+    }
+
+    @media (min-width: 1024px) {
+        flex: 1;
+        min-height: 100vh;
+        padding: 4rem;
+    }
+}
+
+.login-form-container {
+    width: 100%;
+    max-width: 28rem;
+    @include glassmorphism-background;
+    border: $border;
+    border-radius: 1rem;
+    padding: 2.5rem;
+
+    h2 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .remember-forgot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        font-size: 0.875rem;
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            input[type='checkbox'] {
+                width: 1rem;
+                height: 1rem;
+                border-radius: 0.25rem;
+                accent-color: $primary;
+            }
+        }
+
+        .forgot {
+            color: $muted-foreground;
+            transition: color 0.2s ease;
+
+            &:hover {
+                color: $primary;
+            }
+        }
+    }
+
+    .login-btn {
+        width: 100%;
+        padding: 0.75rem !important;
+        margin-bottom: 1.5rem;
+        border: none;
+        border-radius: $radius;
+        font-weight: 500 !important;
+        font-size: 1rem !important;
+        cursor: pointer;
+    }
+
+    .login-separator {
+        display: flex;
+        align-items: center;
+        margin: 1.5rem 0;
+        color: $muted-foreground;
+        font-size: 0.875rem;
+
+        &::before,
+        &::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: $white-transparent;
+        }
+
+        span {
+            padding: 0 1rem;
+        }
+    }
+
+    .signup-link {
+        text-align: center;
+        font-size: 0.875rem;
+        color: $muted-foreground;
+
+        a {
+            color: $primary;
+            font-weight: 500;
+            transition: color 0.2s ease;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}

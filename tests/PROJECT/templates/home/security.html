@@ -1,0 +1,251 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block title %} Security {% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'home/security/css/style.css' %}">
+<script src="{% static 'home/security/js/script.js' %}"></script>
+{% endblock %}
+
+
+{% block body %}
+<div id="root"></div>
+
+<main class="security">
+    <div class="section-header">
+        <h1 class="section-title text-gradient-primary">Our Security Approach</h1>
+        <p class="section-description">
+            Welcome to the Security section of sWarden. This page is a transparent, technical walkthrough of how your
+            data flows securely through our system — from your browser to our backend, to the database, and back. Each
+            step below recodesents a key step in the lifecycle of your encrypted secrets. We highlight which parts of
+            the system handle your data, how cryptographic protections are applied, and what safeguards exist at each
+            layer.
+        </p>
+    </div>
+
+    <div class="security-timeline">
+        <!-- Stop 1 - Browser -->
+        <div class="timeline-stop">
+            <div class="station">
+                <svg class="station-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                    <line x1="4" y1="8" x2="20" y2="8"></line>
+                    <line x1="8" y1="4" x2="8" y2="8"></line>
+                </svg>
+            </div>
+            <div class="stop-content right">
+                <span class="stop-number">1</span>
+                <h2 class="stop-title">Browser</h2>
+                <ul>
+                    <li>Uses Content-Security-Policy (CSP) with strict rules — no external source fetched.</li>
+                    <li>All secrets (passphrases, notes, cards) are encrypted client-side before being sent to the
+                        server.
+                    </li>
+                    <li>JavaScript encryption is powered by modern WebCrypto APIs and uses Argon2id.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Stop 2 - Local Cryptography -->
+        <div class="timeline-stop">
+            <div class="station">
+                <svg class="station-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0110 0v4"></path>
+                </svg>
+            </div>
+            <div class="stop-content left">
+                <span class="stop-number">2</span>
+                <h2 class="stop-title">Local Cryptography</h2>
+                <ul>
+                    <li>Secrets are encrypted with a key derived from your master passphrase, using
+                        <code>argon2id</code> with a secure salt.
+                    </li>
+                    <li>Each secret uses its own random IV (initialization vector).</li>
+                    <li>No plaintext secrets are ever visible outside your browser tab.</li>
+                    <li>The backend only sees encrypted blobs.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Stop 3 - HTTPS Transmission -->
+        <div class="timeline-stop">
+            <div class="station">
+                <svg class="station-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                </svg>
+            </div>
+            <div class="stop-content right">
+                <span class="stop-number">3</span>
+                <h2 class="stop-title">HTTPS Transmission</h2>
+                <ul>
+                    <li>All requests are protected by
+                        <code>TLS 1.3</code> (end-to-end encryption in transit).
+                    </li>
+                    <li>
+                        <code>HSTS</code>, <code>Referrer-Policy</code>, <code>X-Frame-Options</code>, and other secure
+                        headers enforced.
+                    </li>
+                    <li>Only essential cookies are sent (<code>csrftoken</code>, <code>sessionid</code>, etc.), all
+                        marked <code>Secure</code>, <code>HttpOnly</code>, <code>SameSite=Strict</code>.
+                    </li>
+                    <li>CSRF protection handled by Django's CSRF middleware using the
+                        <code>csrftoken</code>.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Stop 4 - Middlewares -->
+        <div class="timeline-stop">
+            <div class="station">
+                <svg class="station-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            </div>
+            <div class="stop-content left">
+                <span class="stop-number">4</span>
+                <h2 class="stop-title">Middlewares</h2>
+                <ol>
+                    <li>
+                        <code>SecurityMiddleware</code> – sets secure headers.
+                    </li>
+                    <li>
+                        <code>WhiteNoiseMiddleware</code> – serves static assets securely.
+                    </li>
+                    <li>
+                        <code>SessionMiddleware</code> – manages your encrypted, anonymous session.
+                    </li>
+                    <li>
+                        <code>CommonMiddleware</code>, <code>CSRFMiddleware</code> and
+                        <code>AuthenticationMiddleware</code> – add protection and request context.
+                    </li>
+                    <li>
+                        <code>CSPMiddleware (django-csp)</code> – blocks any unauthorized resources/scripts.
+
+                    </li>
+                    <li>
+                        <code>XFrameOptionsMiddleware</code> – codevents clickjacking.
+                    </li>
+                    <li>
+                        <code>MessageMiddleware</code> – handles secure server-side messages.
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Stop 5 - Backend Logic -->
+        <div class="timeline-stop">
+            <div class="station">
+                <svg class="station-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            </div>
+            <div class="stop-content right">
+                <span class="stop-number">5</span>
+                <h2 class="stop-title">Backend Logic</h2>
+                <ul>
+                    <li>Django, with only essential views.</li>
+                    <li>No emails, phones, or names ever requested.</li>
+                    <li>Logins use hashed credentials and session-based auth only.</li>
+                    <li>Password Hashing using <code>argon2-cffi</code> with high-cost parameters
+                        (memory/time/hardening).</li>
+                    <li>The server never knows what you're storing — it only processes opaque, encrypted payloads.</li>
+                    <li>CAPTCHA is used for bot protection, with no third-party scripts.</li>
+                    <li>Data is validated server-side but not decrypted.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Stop 6 - Database -->
+        <div class="timeline-stop">
+            <div class="station">
+                <svg class="station-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                </svg>
+            </div>
+            <div class="stop-content left">
+                <span class="stop-number">6</span>
+                <h2 class="stop-title">Database (Encrypted at Rest)</h2>
+                <ul>
+                    <li>Engine: PostgreSQL, connection via
+                        <code>psycopg2-binary</code>.
+                    </li>
+                    <li>TLS-encrypted connection channel between Django and DB (even if local).</li>
+                    <li>Are stored only encrypted secrets, metadata (timestamp) and anontmized accounts IDs.</li>
+                    <li>Cryptography data based on secret application keys using <code>argon2-cffi</code>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Stop 7 - Response to Client -->
+        <div class="timeline-stop">
+            <div class="station">
+                <svg class="station-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                    <line x1="4" y1="8" x2="20" y2="8"></line>
+                    <line x1="8" y1="4" x2="8" y2="8"></line>
+                </svg>
+            </div>
+            <div class="stop-content right">
+                <span class="stop-number">7</span>
+                <h2 class="stop-title">Response to Client</h2>
+                <ul>
+                    <li>Response returns encrypted data — still unreadable by the server.</li>
+                    <li>Only the browser with the correct passphrase-derived key can decrypt it.</li>
+                    <li>No tracking pixels, third-party beacons, or behavior analytics are injected.</li>
+                    <li>Static assets (JS/CSS/fonts) are served by WhiteNoise and never via CDNs.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="security-info-boxes">
+        <!-- Philosophy Box -->
+        <div class="info-box philosophy-box">
+            <h3>Our Security Philosophy</h3>
+            <p>
+                At sWarden, we believe in security by design. Our approach is built on four core principles:
+            </p>
+            <ol>
+                <li><strong>Zero-Knowledge Architecture:</strong> We can never access your unencrypted data.</li>
+                <li><strong>End-to-End Encryption:</strong> Your data is encrypted before it leaves your device.</li>
+                <li><strong>Transparency:</strong> Our security practices and code are open to review.</li>
+                <li><strong>Defense in Depth:</strong> Multiple security layers protect against various threats.</li>
+            </ol>
+        </div>
+
+        <!-- Warning Box -->
+        <div class="info-box warning-box">
+            <h3>Account Recovery Warning</h3>
+            <p>
+                Due to our zero-knowledge encryption model, we cannot restore your account access if you forget it's
+                passphrase and lose your 12-words recovery list. There is no backdoor to your encrypted data.
+            </p>
+            <ol>
+                <li>Make sure your master passphrase is something hard to guess but easy for you to remember.</li>
+                <li>Keep your 12-words recovery list in a safe place <strong>OUTSIDE</strong> the digital world.</li>
+                <li>Consider setting up emergency access for trusted contacts.</li>
+                <li>Regularly test your recovery methods.</li>
+                <li>
+                    Losing your master passphrase and 12-words recovery list means permanently losing access to your
+                    data.
+                </li>
+            </ol>
+        </div>
+    </div>
+</main>
+{% endblock %}

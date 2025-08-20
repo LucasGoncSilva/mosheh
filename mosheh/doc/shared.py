@@ -18,7 +18,7 @@ from logging import Logger, getLogger
 from os import makedirs, path, sep
 from typing import Any, cast
 
-import yaml
+from yaml import CDumper, CLoader, dump, load
 
 from mosheh.constants import (
     ASSERT_MD_STRUCT,
@@ -724,7 +724,7 @@ def get_update_set_nav(
     """
 
     with open(mkdocs_yml, encoding='utf-8') as f:
-        yml: dict[str, list[Any]] = yaml.load(f.read(), Loader=yaml.CLoader)
+        yml: dict[str, list[Any]] = load(f.read(), Loader=CLoader)
 
         try:
             nav_section_index: int = list(list(i.keys())[0] for i in yml['nav']).index(
@@ -739,7 +739,7 @@ def get_update_set_nav(
     }
 
     with open(mkdocs_yml, 'w', encoding='utf-8') as f:
-        f.write(yaml.dump(yml, Dumper=yaml.CDumper, sort_keys=False, indent=2))
+        f.write(dump(yml, Dumper=CDumper, sort_keys=False, indent=2))
 
 
 def write_homepage(output_path: FilePath, readme_path: FilePath) -> None:
