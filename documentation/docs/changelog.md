@@ -45,6 +45,16 @@ Key Components of a Changelog:
 
 -->
 
+## v2.0.4 - 2025-08-19
+
+### Adds
+
+- Internal development command for benchmarking with [Memray](https://bloomberg.github.io/memray/) and [Scalene](https://github.com/plasma-umass/scalene)
+
+### Updates
+
+- `tests.PROJECT` replaced to a real project's codebase
+
 ## v2.0.3 - 2025-08-11
 
 ### Fixes
