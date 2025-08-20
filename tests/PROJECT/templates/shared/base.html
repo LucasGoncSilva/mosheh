@@ -1,0 +1,201 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Store less in your mind. More in sWarden | sWarden" />
+    <meta name="description"
+        content="sWarden securely encrypts and protects your passwords, API keys, and sensitive data using trusted, modern cryptography." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://swarden.onrender.com/" />
+    <meta property="og:title" content="Store less in your mind. More in sWarden | sWarden" />
+    <meta property="og:description"
+        content="sWarden securely encrypts and protects your passwords, API keys, and sensitive data using trusted, modern cryptography." />
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/LucasGoncSilva/swarden/main/readme_banner.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://swarden.onrender.com/" />
+    <meta property="twitter:title" content="Store less in your mind. More in sWarden | sWarden" />
+    <meta property="twitter:description"
+        content="sWarden securely encrypts and protects your passwords, API keys, and sensitive data using trusted, modern cryptography." />
+    <meta property="twitter:image"
+        content="https://raw.githubusercontent.com/LucasGoncSilva/swarden/main/readme_banner.png" />
+
+    <!-- Title -->
+    <title>
+        {% block title %} Store less in your mind. More in sWarden {% endblock %}
+        | sWarden
+    </title>
+
+    <!-- Page icon -->
+    <link rel="shortcut icon" href="{% static 'shared/img/logo.svg' %}" type="image/x-icon" />
+
+    <!-- Imports -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{% static 'shared/css/base.css' %}" />
+    <script src="{% static 'shared/js/script.js' %}"></script>
+
+    {% block head %} {% endblock %}
+</head>
+
+<body>
+    <nav>
+        <div class="container">
+            <a href="{% url 'home:index' %}">
+                <div class="logo">
+                    <img src="{% static 'shared/img/logo.svg' %}" alt="sWarden's logo" width="40px" />
+                    <span class="logo-text">sWarden</span>
+                </div>
+            </a>
+
+            {% if user.is_authenticated %}
+            <div class="nav-links">
+                <a href="{% url 'secret:credential_list_view' %}" class="nav-link">
+                    Credentials
+                </a>
+                <a href="{% url 'secret:card_list_view' %}" class="nav-link">
+                    Payment Cards
+                </a>
+                <a href="{% url 'secret:note_list_view' %}" class="nav-link">
+                    Security Notes
+                </a>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-outline">Check Profile</button>
+                <a href="{% url 'account:logout' %}" class="btn btn-error">
+                    Logout
+                </a>
+            </div>
+            {% elif not user.is_authenticated %}
+            <div class="nav-links">
+                <a href="{% url 'home:index' %}#features" class="nav-link">Features</a>
+                <a href="{% url 'home:security' %}" class="nav-link">Security</a>
+                <a href="{% url 'plans:index' %}" class="nav-link">Pricing</a>
+                <a href="https://github.com/LucasGoncSilva/swarden/" class="nav-link">
+                    Github
+                </a>
+            </div>
+
+            <div class="nav-buttons">
+                <a href="{% url 'account:login' %}" class="btn btn-ghost">Login</a>
+                <a href="{% url 'account:register' %}" class="btn btn-primary">
+                    Get Started
+                </a>
+            </div>
+            {% endif %}
+
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" x2="20" y1="12" y2="12"></line>
+                    <line x1="4" x2="20" y1="6" y2="6"></line>
+                    <line x1="4" x2="20" y1="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    {% block body %} {% endblock %}
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="logo">
+                        <img src="{% static 'shared/img/logo.svg' %}" alt="sWarden's logo" width="60px" />
+                        <span class="logo-text">sWarden</span>
+                    </div>
+                    <p class="footer-description">
+                        Protect what matters most. Designed for privacy. Powered by
+                        encryption. Made for everyone.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <h3 class="footer-heading">Product</h3>
+                    <ul>
+                        <li>
+                            <a href="https://github.com/LucasGoncSilva/swarden/issues">
+                                Open Issue
+                            </a>
+                        </li>
+                        <li><a href="{% url 'home:security' %}">Security</a></li>
+                        <li><a href="{% url 'plans:index' %}">Pricing</a></li>
+                        <li>
+                            <a href="https://github.com/LucasGoncSilva/swarden/">
+                                Github
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul>
+                        <li>
+                            <a href="https://github.com/LucasGoncSilva/swarden/blob/main/.github/README.md">
+                                Documentation
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/LucasGoncSilva/swarden/blob/main/.github/CHANGELOG.md">
+                                Changelog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/LucasGoncSilva/swarden/blob/main/.github/CONTRIBUTING.md">
+                                Contributing
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/LucasGoncSilva/swarden/blob/main/.github/CODE_OF_CONDUCT.md">
+                                Code of Conduct
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h3 class="footer-heading">Other</h3>
+                    <ul>
+                        <li><a href="{% url 'home:faq' %}">FAQ</a></li>
+                        <li><a href="#">Internationalization</a></li>
+                        <li><a href="#">Security Report</a></li>
+                        <li>
+                            <a href="https://github.com/LucasGoncSilva/swarden/actions/workflows/django_unittest.yml">
+                                Automated Testing
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="copyright">
+                    © <span class="current-year"></span> sWarden. All rights reserved.
+                </p>
+                <div class="footer-legal">
+                    <a href="{% url 'home:privacy' %}" class="legal-link">Privacy</a>
+                    <a href="{% url 'home:terms' %}" class="legal-link">Terms</a>
+                    <a href="{% url 'home:cookies' %}" class="legal-link">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

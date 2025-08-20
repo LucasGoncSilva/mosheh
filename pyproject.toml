@@ -56,7 +56,7 @@ Changelog = "https://github.com/LucasGoncSilva/mosheh/blob/main/.github/CHANGELO
 lint = "uv run ruff check; uv run ruff format; uv run mypy mosheh"
 makedoc = "cd ./documentation/; uv run mosheh --verbose 3 update"
 pytest = "uv run pytest"
-doctest = "cd ./tests/DOC/; uv run mosheh --verbose 3 update"
+doctest = "cd ./tests/DOC/; uv run mosheh --verbose 2 update"
 test = "uv run task pytest; uv run task doctest"
 benchmark = "uv run task scalene; uv run task memray"
 
@@ -78,7 +78,7 @@ summary = "uv run memray summary -r 15 mosheh.analysis"
 
 [tool.ruff]
 line-length = 88
-exclude = [".env", ".venv"]
+exclude = [".env", ".venv", "**/PROJECT/**"]
 fix = true
 
 [tool.ruff.format]

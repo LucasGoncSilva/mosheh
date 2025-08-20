@@ -1,0 +1,174 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block title %} Homepage {% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'home/index/css/style.css' %}" />
+{% endblock %}
+
+{% block body %}
+
+<main class="dashboard">
+
+    <!-- Messages -->
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {{ message.tags }}" style="text-align: center;" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>
+                Access granted:
+                <span class="text-gradient-primary">{{ user.username|truncatechars:16 }}</span>
+            </h1>
+
+            <p class="text-gradient">
+                Secrets unlocked. Manage your sensitive information securely.
+            </p>
+        </div>
+
+        <div class="dashboard-content">
+            <!-- Credentials Section -->
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>Credentials</h2>
+
+                        <span class="counter" id="credentials-counter">
+                            {{ credentials_counter }}
+                        </span>
+                    </div>
+
+                    <div class="section-actions">
+                        <a href="{% url 'secret:credential_list_view' %}" class="btn btn-outline"
+                            id="view-all-credentials">
+                            View all
+                        </a>
+
+                        <a href="{% url 'secret:credential_create_view' %}" class="btn btn-primary"
+                            id="add-new-credential">
+                            Add new
+                        </a>
+                    </div>
+                </div>
+
+                <div class="items-grid" id="credentials-grid">
+                    {% for cred in credentials %}
+                    <div class="item-card">
+                        <h3 class="item-title">{{ cred.name }}</h3>
+                        <p class="item-detail">{{ cred.get_service_display }}</p>
+                        <p class="item-meta">Last updated: {{ cred.updated}}</p>
+
+                        <br />
+
+                        <div class="item-actions">
+                            <a href="{% url 'secret:credential_detail_view' cred.slug %}" class="item-action-btn">
+                                Details
+                            </a>
+                        </div>
+                    </div>
+
+                    {% empty %}
+                    <div class="empty-state">
+                        <p>No credentials yet. Click "Add new" to get started.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Cards Section -->
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>Payment Cards</h2>
+
+                        <span class="counter" id="cards-counter">
+                            {{ cards_counter }}
+                        </span>
+                    </div>
+
+                    <div class="section-actions">
+                        <a href="{% url 'secret:card_list_view' %}" class="btn btn-outline" id="view-all-cards">
+                            View all
+                        </a>
+
+                        <a href="{% url 'secret:card_create_view' %}" class="btn btn-primary" id="add-new-card">
+                            Add new
+                        </a>
+                    </div>
+                </div>
+
+                <div class="items-grid" id="cards-grid">
+                    {% for card in cards %}
+                    <div class="item-card">
+                        <h3 class="item-title">{{ card.name }}</h3>
+                        <p class="item-detail">{{ card.number }}</p>
+                        <p class="item-meta">Expires: {{ card.expiration }}</p>
+
+                        <div class="item-actions">
+                            <a href="{% url 'secret:card_detail_view' card.slug %}" class="item-action-btn">
+                                Details
+                            </a>
+                        </div>
+                    </div>
+
+                    {% empty %}
+                    <div class="empty-state">
+                        <p>No cards yet. Click "Add new" to get started.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Notes Section -->
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>Notes</h2>
+
+                        <span class="counter" id="notes-counter">
+                            {{ notes_counter }}
+                        </span>
+                    </div>
+
+                    <div class="section-actions">
+                        <a href="{% url 'secret:note_list_view' %}" class="btn btn-outline" id="view-all-notes">
+                            View all
+                        </a>
+
+                        <a href="{% url 'secret:note_create_view' %}" class="btn btn-primary" id="add-new-note">
+                            Add new
+                        </a>
+                    </div>
+                </div>
+
+                <div class="items-grid" id="notes-grid">
+                    {% for note in notes %}
+                    <div class="item-card">
+                        <h3 class="item-title">{{ note.title }}</h3>
+                        <p class="item-detail">{{ note.content|truncatechars:40 }}</p>
+                        <p class="item-meta">Last updated: {{ note.updated }}</p>
+
+                        <div class="item-actions">
+                            <a href="{% url 'secret:note_detail_view' note.slug %}" class="item-action-btn">
+                                Details
+                            </a>
+                        </div>
+                    </div>
+
+                    {% empty %}
+                    <div class="empty-state">
+                        <p>No notes yet. Click "Add new" to get started.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+{% endblock %}
