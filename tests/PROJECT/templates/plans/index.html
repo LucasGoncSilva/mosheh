@@ -1,0 +1,158 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'plans/css/style.css' %}">
+{% endblock %}
+
+
+{% block body %}
+<main>
+    <section class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Simple, Transparent Pricing</h2>
+                <p class="section-description">Choose the plan that's right for you and start protecting your
+                    credentials today.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Free Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-card-header">
+                        <h3 class="pricing-plan-name">Free</h3>
+                        <div class="pricing-plan-price">
+                            <span class="price">$0</span>
+                            <span class="period">/forever</span>
+                        </div>
+                        <p class="pricing-plan-description">Perfect for personal use</p>
+                    </div>
+
+                    <div class="pricing-card-body">
+                        <ul class="pricing-features">
+                            {% for text in free %}
+                            <li class="pricing-feature">
+                                <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>{{ text }}</span>
+                            </li>
+                            {% endfor %}
+
+                            {% for text in free_disabled %}
+                            <li class="pricing-feature disabled">
+                                <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                <span>{{ text }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="pricing-card-footer">
+                        <a href="#" class="btn btn-outline btn-lg">Get Started</a>
+                    </div>
+                </div>
+
+                <!-- Monthly Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-card-header">
+                        <h3 class="pricing-plan-name">Monthly</h3>
+                        <div class="pricing-plan-price">
+                            <span class="price">$2.99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="pricing-plan-description">For serious credential security</p>
+                    </div>
+
+                    <div class="pricing-card-body">
+                        <ul class="pricing-features">
+                            {% for text in monthly %}
+                            <li class="pricing-feature">
+                                <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>{{ text }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="pricing-card-footer">
+                        <a href="#" class="btn btn-primary btn-lg">Subscribe Now</a>
+                    </div>
+                </div>
+
+                <!-- Annual Plan -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                            </path>
+                        </svg>
+                        <span>Best Value</span>
+                    </div>
+
+                    <div class="pricing-card-header">
+                        <h3 class="pricing-plan-name">Annual</h3>
+                        <div class="pricing-plan-price">
+                            <span class="price">$29.99</span>
+                            <span class="period">/year</span>
+                        </div>
+                        <div class="discount-badge">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="19" y1="5" x2="5" y2="19"></line>
+                                <circle cx="6.5" cy="6.5" r="2.5"></circle>
+                                <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                            </svg>
+                            <span>Save 16%</span>
+                        </div>
+                        <p class="pricing-plan-description">Our most popular plan</p>
+                    </div>
+
+                    <div class="pricing-card-body">
+                        <ul class="pricing-features">
+                            {% for text in annual %}
+                            <li class="pricing-feature">
+                                <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>{{ text }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="pricing-card-footer">
+                        <a href="https://github.com" class="btn btn-primary btn-lg">Subscribe Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-guarantee">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <p>30-day money-back guarantee. No questions asked.</p>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

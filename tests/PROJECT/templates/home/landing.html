@@ -1,0 +1,246 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'home/landing/css/style.css' %}" />
+<script src="{% static 'home/landing/js/script.js' %}"></script>
+{% endblock %}
+
+
+{% block body %}
+<!-- Landing Section -->
+<section class="hero">
+    <div class="bg-gradients">
+        <div class="gradient-left"></div>
+        <div class="gradient-right"></div>
+    </div>
+
+    <div class="container hero-container">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="text-gradient-primary">Store</span> less in your mind. More
+                in <span class="text-gradient-primary">sWarden</span>.
+            </h1>
+            <p class="hero-description">
+                <span class="text-gradient">sWarden</span> securely encrypts and
+                protects your passwords, API keys, and sensitive data using trusted,
+                modern cryptography.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="{% url 'account:register' %}" class="btn btn-primary btn-lg">
+                    Start for free
+                </a>
+                <a href="{% url 'home:security' %}" class="btn btn-outline btn-lg">
+                    How it works
+                </a>
+            </div>
+
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feature-icon">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                    </svg>
+                    <span>Security access</span>
+                </div>
+                <div class="divider"></div>
+                <div class="hero-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feature-icon">
+                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <span>Encrypted information</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <div class="app-mockup">
+                <div class="app-mockup-main">
+                    <div class="app-mockup-header">
+                        <div class="window-controls">
+                            <div class="control red"></div>
+                            <div class="control yellow"></div>
+                            <div class="control green"></div>
+                        </div>
+                    </div>
+                    <div class="app-mockup-content">
+                        <div class="mockup-user">
+                            <div class="mockup-user-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="mockup-user-info">
+                                <div class="mockup-line long"></div>
+                                <div class="mockup-line short"></div>
+                            </div>
+                        </div>
+
+                        <div class="mockup-items">
+                            <div class="mockup-item">
+                                <div class="mockup-item-header">
+                                    <div class="mockup-line medium"></div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </div>
+                                <div class="mockup-line short"></div>
+                            </div>
+                            <div class="mockup-item">
+                                <div class="mockup-item-header">
+                                    <div class="mockup-line medium"></div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </div>
+                                <div class="mockup-line short"></div>
+                            </div>
+                            <div class="mockup-item">
+                                <div class="mockup-item-header">
+                                    <div class="mockup-line medium"></div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </div>
+                                <div class="mockup-line short"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-mockup-back first"></div>
+                <div class="app-mockup-back second"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features">
+    <div class="bg-circle"></div>
+
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">All Your Secrets, Perfectly Protected</h2>
+            <p class="section-description">
+                <span class="text-gradient">sWarden</span> is more than just a password
+                manager. It's a complete solution for all your sensitive information.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feature-icon">
+                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Password Manager</h3>
+                <p class="feature-description">
+                    Store and generate strong, unique passwords for all your accounts.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feature-icon">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Secure Notes</h3>
+                <p class="feature-description">
+                    Keep sensitive information like security codes and recovery keys safe.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feature-icon">
+                        <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+                        <path d="M2 10h20"></path>
+                        <path d="M6 14h6"></path>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Cards Data</h3>
+                <p class="feature-description">
+                    Safely manage your payment cards in one encrypted place.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feature-icon">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                        </path>
+                        <path d="M2 12h20"></path>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Cross-Platform</h3>
+                <p class="feature-description">
+                    Access your secrets from any device, anywhere, anytime.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feature-icon">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Timed Access</h3>
+                <p class="feature-description">
+                    Share secrets securely with temporary access links.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feature-icon">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Team Sharing</h3>
+                <p class="feature-description">
+                    Securely share credentials with your team members.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

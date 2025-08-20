@@ -1,0 +1,331 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block title %} Term of Use {% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'home/terms/css/style.css' %}">
+{% endblock %}
+
+
+{% block body %}
+<main class="terms">
+    <div class="section-header">
+        <h1 class="section-title text-gradient-primary">Terms of Use</h1>
+        <p class="section-description text-gradient">
+            Please read these terms and conditions carefully before using our service.
+        </p>
+    </div>
+
+    <div class="terms-container">
+        <section class="terms-section" id="introduction">
+            <h2>1. Introduction</h2>
+            <p>
+                Welcome to sWarden ("Service") — a browser-based, encrypted secret manager designed for storing login
+                credentials, payment card data and personal notes. This service is built to prioritize privacy,
+                anonymity and data security. By creating an account or using any part of the platform, you agree to be
+                bound by these Terms of Use ("Terms"). If you do not agree with these Terms, do not use the service.
+            </p>
+        </section>
+
+        <section class="terms-section" id="eligibility">
+            <h2>2. Eligibility</h2>
+            <p>
+                To use this service, you must be at least 16 years of age. By using the platform, you represent and
+                warrant that you meet this requirement.
+            </p>
+            <div class="highlight">
+                <p>
+                    You are solely responsible for safeguarding your <strong>12-words recovery list</strong> and
+                    account <strong>passphrase</strong>. If you lose both, your access to the service and stored
+                    data will be <strong>permanently lost</strong>, with no possibility of recovery.
+                </p>
+            </div>
+        </section>
+
+        <section class="terms-section" id="account">
+            <h2>3. Account and Access</h2>
+            <p>
+                Accounts are created anonymously through the generation of a unique <strong>12-words recovery
+                    list</strong>. This list, in combination with your chosen passphrase, constitutes your full access
+                credentials.
+            </p>
+            <p>
+                We do not store personal identifiers such as names or email addresses.
+            </p>
+            <p>
+                The service is available in both <strong>free</strong> and <strong>paid</strong> tiers:
+            </p>
+            <ul>
+                <li>Free users can store a limited number of secrets.</li>
+                <li>Paid plans unlock unlimited storage and additional features.</li>
+            </ul>
+            <p>
+                It's your responsability to:
+            </p>
+            <ul>
+                <li>Keep your passphrase confidential and secure</li>
+                <li>Be solely responsible for all activities that occur under your account</li>
+            </ul>
+            <p>
+                All accounts are bound by the same data security and anonymity principles, regardless of plan.
+            </p>
+        </section>
+
+        <section class="terms-section" id="service-description">
+            <h2>4. Service Description</h2>
+            <p>
+                sWarden provides a secure digital vault for storing sensitive information allowing the following
+                features:
+            </p>
+            <ul>
+                <li>Store login credentials (e.g., usernames and passphrases)</li>
+                <li>Store payment card details</li>
+                <li>Save plain text notes</li>
+                <li>Cross-device access</li>
+                <li>Temporary secret sharing using temporary link - <strong>paid tier</strong></li>
+                <li>Access to Organizations, a sharing group - <strong>paid tier</strong></li>
+            </ul>
+            <div class="highlight">
+                <p>
+                    Secrets are decrypted <strong>only on-demand</strong>, during user sessions. They are never stored
+                    in plain text and <strong>no administrator or developer has access to decrypted content at any
+                        time</strong>.
+                </p>
+            </div>
+        </section>
+
+        <section class="terms-section" id="data-privacy">
+            <h2>5. Data and Privacy</h2>
+            <p>
+                We are committed to respecting your privacy:
+            </p>
+            <ul>
+                <li>No personal information (such as name, email, IP, or location) is collected</li>
+                <li>No usage analytics or tracking technologies are implemented</li>
+                <li>No third-party cookies or advertising tools are used</li>
+                <li>No data is sold, shared, or monetized in any way</li>
+                <li>No admin has access to any secret</li>
+            </ul>
+            <p>
+                We implement a variety of security measures to maintain the safety of your personal information.
+                However, <strong>no method</strong> of electronic storage or transmission over the internet is
+                <strong>100% secure</strong>. For more information, please refer to our [Privacy Policy](./privacy.md).
+                <!-- TODO Privacy -->
+            </p>
+        </section>
+
+        <section class="terms-section" id="user-responsibilities">
+            <h2>6. User Responsibilities</h2>
+            <p>
+                By using this service, you agree to:
+            </p>
+            <ul>
+                <li>Keep your passphrase and 12-words recovery list <strong>secure and private</strong>, preferably
+                    storing them <strong>off the digital environment</strong></li>
+                <li>Understand that account recovery is <strong>not possible</strong> if both are lost</li>
+                <li>Use the service only for lawful purposes</li>
+                <li>Refrain from storing, sharing, or transmitting any illegal, abusive, or harmful content</li>
+            </ul>
+            <p>
+                Where sharing features are available (e.g., temporary shareable links), you assume full responsibility
+                for managing and controlling access to your secrets.
+            </p>
+            <p>
+                When using our Service, you agree not to:
+            </p>
+            <ul>
+                <li>Violate any applicable laws or regulations</li>
+                <li>Infringe upon the rights of others</li>
+                <li>Use the Service for any illegal or unauthorized purpose</li>
+                <li>Attempt to probe, scan, or test the vulnerability of the Service</li>
+                <li>Interfere with or disrupt the integrity or performance of the Service</li>
+                <li>Attempt to gain unauthorized access to the Service or related systems</li>
+                <li>Collect or harvest any information from the Service not intended for you</li>
+                <li>Use the Service in a way that could damage, disable, overburden, or impair it</li>
+            </ul>
+        </section>
+
+        <section class="terms-section" id="security">
+            <h2>7. Security Practices</h2>
+            <p>
+                We employ robust security practices, including:
+            </p>
+            <ul>
+                <li><strong>Quarterly white-box security audits</strong>, simulating real-world attack vectors</li>
+                <li>Data encryption at rest and in transit</li>
+                <li>Minimal attack surface and strict isolation of user sessions</li>
+                <li>Compliance with industry security standards</li>
+            </ul>
+            <div class="highlight">
+                <p>
+                    While we implement extensive security measures, we cannot guarantee absolute security, <strong>no
+                        system is 100% immune to vulnerabilities</strong>. You are responsible for maintaining the
+                    security of your master passphrase and 12-words recovery list.
+                </p>
+                <p>
+                    Users are encouraged to report any discovered issues via our public
+                    <a href="https://github.com/LucasGoncSilva/swarden/?tab=security-ov-file">SECURITY.md</a> file on
+                    GitHub.
+                </p>
+            </div>
+        </section>
+
+        <section class="terms-section" id="limitations">
+            <h2>8. Limitations of Liability</h2>
+            <p>
+                This platform is provided <strong>“as is” and “as available”</strong>, without warranties of any kind,
+                either express or implied.
+            </p>
+            <p>We do not garantee:</p>
+            <ul>
+                <li>Recovery of lost accounts or data</li>
+                <li>Continuous availability or uptime</li>
+                <li>Compatibility with all devices or browsers</li>
+            </ul>
+            <p>
+                We are not liable for:
+            </p>
+            <ul>
+                <li>Loss of secrets due to <strong>forgotten credentials</strong></li>
+                <li>Indirect, incidental, or consequential damages arising from use of the service</li>
+                <li>User-generated content or misuse of the platform</li>
+            </ul>
+            <p>
+                To the maximum extent permitted by law, sWarden and its affiliates, officers, employees,
+                agents, partners, and licensors will not be liable for any indirect, incidental, special,
+                consequential, or punitive damages, including without limitation, loss of profits, data, use,
+                goodwill, or other intangible losses, resulting from:
+            </p>
+            <ol>
+                <li>Your access to or use of or inability to access or use the Service</li>
+                <li>Any conduct or content of any third party on the Service</li>
+                <li>Any content obtained from the Service</li>
+                <li>Unauthorized access, use, or alteration of your transmissions or content</li>
+                <li>Any other matter relating to the Service</li>
+            </ol>
+        </section>
+
+        <section class="terms-section" id="modifications">
+            <h2>9. Modifications to the Service</h2>
+            <p>
+                We reserve the right to modify, suspend, or discontinue the platform, its features, pricing, or access
+                levels at any time, with or without prior notice. We are not liable to you or to any third party for any
+                modification, suspension, or discontinuance of the Service or any part thereof.
+            </p>
+            <p>
+                We may revise these Terms from time to time. The most current version will always be posted on our
+                website. By continuing to access or use the Service after any revisions become effective, you agree
+                to be bound by the revised terms.
+            </p>
+            <p>
+                Any changes to these Terms will be reflected on this page. Continued use of the service after updates
+                constitutes acceptance of the new Terms.
+            </p>
+        </section>
+
+        <section class="terms-section" id="subscription">
+            <h2>10. Subscription and Billing</h2>
+            <p>
+                We offer various subscription plans, including a free tier and premium paid options. By selecting a
+                premium plan, you agree to pay the subscription fees as described at the time of purchase.
+            </p>
+            <p>
+                Subscription fees are billed in advance on a monthly or annual basis, depending on the plan
+                selected. Important details:
+            </p>
+            <ul>
+                <li>Paid subscriptions <strong>do not auto-renew</strong></li>
+                <li>Users may cancel paid subscriptions at any time</li>
+                <li>Upon expiration, access to premium features is revoked</li>
+                <li>No personal payment information is stored by the platform</li>
+                <li>Price changes will be notified to you in advance and will apply at the next billing cycle</li>
+            </ul>
+        </section>
+
+        <section class="terms-section" id="termination">
+            <h2>11. Termination</h2>
+            <p>
+                We may terminate or suspend your account immediately, without prior notice or liability, for any
+                reason whatsoever, including without limitation if you breach these Terms.
+            </p>
+            <p>
+                Upon termination, your right to use the Service will immediately cease. If you wish to terminate your
+                account, you may simply discontinue using the Service or delete it from profile menu, deleting also all
+                your associated data.
+            </p>
+            <p>
+                All provisions of the Terms which by their nature should survive termination shall survive
+                termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity,
+                and limitations of liability.
+            </p>
+        </section>
+
+        <section class="terms-section" id="governing-law">
+            <h2>12. Governing Law</h2>
+            <p>
+                These Terms shall be governed by and construed in accordance with the laws of the Federative Republic of
+                Brazil, without regard to conflict of law principles.
+            </p>
+            <div class="highlight">
+                <p>
+                    Any legal disputes, claims, or proceedings arising out of or relating to these Terms or the use of
+                    the Service shall be submitted to the exclusive jurisdiction of the competent courts of the District
+                    of São Paulo, State of São Paulo, Brazil.
+                </p>
+                <p>
+                    By using the Service, you consent to the jurisdiction and venue of such courts.
+                </p>
+            </div>
+        </section>
+
+        <section class="terms-section" id="open-source">
+            <h2>13. Open Source Notice</h2>
+            <p>This platform is an <strong>open source project</strong>, built with transparency and a community-driven
+                spirit.
+            </p>
+            <ul>
+                <li>
+                    The source code is publicly available at
+                    <a href="https://github.com/LucasGoncSilva/swarden/">GitHub</a>
+                </li>
+                <li>It is licensed under the <strong>Business Source License 1.1 (BSL-1.1)</strong></li>
+            </ul>
+            <div class="highlight">
+                <h3>Key Points of the License:</h3>
+                <ol>
+                    <li>You may <strong>view, fork, and contribute</strong> to the source code for personal,
+                        educational, or development purposes.</li>
+                    <li>Commercial use, redistribution, or offering the project as a paid service (SaaS) is <strong>not
+                            permitted</strong> without explicit permission from the project maintainers.</li>
+                    <li>After the "Change Date" (2028-01-01), the license may convert to a permissive
+                        license such as MIT, as defined in the license header.</li>
+                    <li>All usage of the codebase is <strong>at your own risk</strong>.</li>
+                    <li>Contributions are welcome and must follow the project’s contribution guidelines outlined in the
+                        GitHub repository.</li>
+                </ol>
+                <p>This licensing model aims to foster collaboration while protecting the integrity and original intent
+                    of the platform.</p>
+            </div>
+        </section>
+
+        <section class="terms-section" id="contact">
+            <h2>14. Contact</h2>
+            <p>
+                Due to our anonymous-first model, <strong>we do not offer email-based support</strong>.
+            </p>
+            <p>
+                For questions, bug reports, or contributions, please refer to:
+            </p>
+            <ul>
+                <li>GitHub Repository: <a href="https://github.com/LucasGoncSilva/swarden/">
+                        https://github.com/LucasGoncSilva/swarden/
+                    </a></li>
+                <li>Documentation and community guidelines available via the repository</li>
+            </ul>
+        </section>
+    </div>
+</main>
+{% endblock %}

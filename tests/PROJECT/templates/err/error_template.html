@@ -1,0 +1,28 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block title %} Erro {{ code }}: {{ message1 }} {% endblock %}
+
+
+{% block body %}
+<div class="text-center mt-5">
+    <h1>Erro Identificado:</h1>
+
+    <br><br>
+
+    <h3>{{ message1 }}</h3>
+    <h3>{{ message2 }}</h3>
+
+    <br><br>
+
+    <img style="width: 100px;" src="/static/err/img/{{ code }}.png" alt="Ícone relativo ao erro de código {{ code }}.">
+    <h6>status code: {{ code }}</h6>
+
+    <br><br>
+
+    <a href="{% url 'home:index' %}" class="btn btn-primary btn-lg px-3">Homepage</a>
+    <br>
+    <button type="button" onclick="history.back()" class="my-2 btn btn-secondary btn-lg px-3">Última página</button>
+</div>
+{% endblock %}

@@ -1,0 +1,248 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block title %} Privacy Policy {% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'home/terms/css/style.css' %}">
+{% endblock %}
+
+
+{% block body %}
+<main class="terms">
+    <div class="section-header">
+        <h1 class="section-title text-gradient-primary">Privacy Policy</h1>
+        <p class="section-description text-gradient">
+            Please read these terms and conditions carefully before using our service.
+        </p>
+    </div>
+
+    <div class="terms-container">
+        <section class="terms-section" id="introduction">
+            <h2>1. Introduction</h2>
+            <p>
+                This Privacy Policy describes how your data is (or more accurately, <strong>is not</strong>) collected,
+                used, and
+                protected when you use the <strong>sWarden</strong> platform — a browser-based, encrypted, and anonymous
+                secret
+                manager for storing passphrases, notes, and card information.
+            </p>
+            <p>
+                We are committed to privacy by design. This means:
+            </p>
+            <ul>
+                <li>We do not collect personally identifiable information (PII)</li>
+                <li>We do not track users</li>
+                <li>We do not access your secrets — only you can</li>
+            </ul>
+            <p>
+                By using this platform, you agree to the practices outlined below.
+            </p>
+        </section>
+
+        <section class="terms-section" id="do-not-collect">
+            <h2>2. Information We Do Not Collect</h2>
+            <p>
+                We designed sWarden to avoid collecting or storing any personal identifiers. Specifically, we <strong>do
+                    not</strong> collect:
+            </p>
+            <ul>
+                <li>Names</li>
+                <li>Email addresses</li>
+                <li>Phone numbers</li>
+                <li>IP addresses</li>
+                <li>Device identifiers</li>
+                <li>Location data</li>
+                <li>Behavioral or profiling data</li>
+            </ul>
+            <p>
+                We do not use:
+            </p>
+            <ul>
+                <li>Advertising or analytics scripts</li>
+                <li>Browser fingerprinting</li>
+                <li>Third-party cookies</li>
+                <li>Session replays or keystroke trackers</li>
+            </ul>
+        </section>
+
+        <section class="terms-section" id="do-collect">
+            <h2>3. Information We Collect</h2>
+            <p>
+                The platform is intentionally designed to minimize data collection. The only information processed is
+                strictly necessary to provide core functionality:
+            </p>
+            <ul>
+                <li>12-words recovery list and user passphrase are never sent to the server. They remain solely on your
+                    device and are essential for encryption/decryption</li>
+                <li>Stored secrets (passphrases, notes, cards) are encrypted <strong>client-side</strong> (in your
+                    browser) or at rest
+                    using a private key derived from your passphrase</li>
+                <li>Encrypted vault data may be stored server-side, but never in plain text.</li>
+                <li></strong>No admin, developer, or third party</strong> can view, decrypt, or access your secrets.
+                </li>
+            </ul>
+            <p>In short: <strong>you are the only person who can decrypt your data</strong>.</p>
+        </section>
+
+        <section class="terms-section" id="use-of-information">
+            <h2>4. Use of Information</h2>
+            <p>
+                All information handled by the platform is used <strong>only to provide core service
+                    functionality</strong>.
+                Specifically:
+            </p>
+            <ul>
+                <li>We <strong>do not analyze</strong> or inspect your secrets</li>
+                <li>We <strong>do not monetize</strong> any data</li>
+                <li>We <strong>do not share</strong> any data with third parties</li>
+                <li>We <strong>do not require identity or contact information</strong>, even for paid accounts</li>
+                <li>No marketing, profiling, or targeted messaging is performed</li>
+            </ul>
+        </section>
+
+        <section class="terms-section" id="data-privacy">
+            <h2>5. Cookies and Tracking</h2>
+            <p>
+                We do not use tracking technologies. Specifically:
+            </p>
+            <ul>
+                <li>No third-party cookies</li>
+                <li>No marketing or retargeting scripts</li>
+                <li>No fingerprinting or behavioral analytics</li>
+            </ul>
+            <p>
+                The platform may use <strong>strictly necessary</strong> first-party session cookies to maintain
+                anonymous login
+                sessions. These cookies <strong>do not</strong> store sensitive data and are <strong>not used to
+                    identify you</strong>.
+            </p>
+        </section>
+
+        <section class="terms-section" id="data-security">
+            <h2>6. Data Security</h2>
+            <p>
+                We take data protection seriously. Our security model includes:
+            </p>
+            <ul>
+                <li>Encryption at rest: Encrypted vaults are stored using a private key derived from your passphrase and
+                    never exposed in plain text</li>
+                <li>Client-side encryption: Your secrets are encrypted before ever leaving your device</li>
+                <li>Zero-knowledge design: We cannot access, view, or reset your data — ever</li>
+                <li>Quarterly black-box audits: Independent testers conduct regular vulnerability assessments</li>
+                <li>A public [Security Report](#) is available for transparency</li>
+            </ul>
+            <p>
+                There is <strong>no plaintext backup or access</strong> to your secrets by any system component,
+                administrator, or
+                contributor.
+            </p>
+        </section>
+
+        <section class="terms-section" id="user-control-and-access">
+            <h2>7. User Control and Access</h2>
+            <ol>
+                <li>Users are in full control of their secrets, vaults, and recovery credentials</li>
+                <li>Accounts are created anonymously using a <strong>12-words recovery list</strong> and passphrase. If
+                    both are lost,
+                    the account <strong>cannot</strong> be recovered</li>
+                <li>Secrets can be deleted at any time via your profile.</li>
+                <li>Sharing secrets via temporary links is user-controlled and time-limited.</li>
+            </ol>
+        </section>
+
+        <section class="terms-section" id="data-sharing-and-disclosure">
+            <h2>8. Data Sharing and Disclosure</h2>
+            <ol>
+                <li>We <strong>do not sell</strong>, rent, or disclose your data to any third party</li>
+                <li>There is no access to your secrets, even by administrators</li>
+                <li>Any content obtained from the Service</li>
+            </ol>
+            <div class="highlight">
+                <p>
+                    We will not share user's secrets with governments or law enforcement <strong>except</strong> when
+                    legally
+                    compelled by a valid court order, and even then, we may be unable to comply due to encryption and
+                    anonymity.
+                </p>
+            </div>
+        </section>
+
+        <section class="terms-section" id="children">
+            <h2>9. Children’s Privacy</h2>
+            <p>
+                sWarden is not designed for or directed to children under the age of <strong>16</strong>. We do not
+                collect age
+                information since it's an anonymous-first system, but every user must confirm being 16 or older when
+                creating an account.
+            </p>
+        </section>
+
+        <section class="terms-section" id="international-data">
+            <h2>10. International Data Transfers</h2>
+            <p>
+                sWarden is operated and maintained in Brazil.
+            </p>
+            <p>
+                By using this service, you consent to the <strong>processing and storage</strong> of encrypted data in
+                the
+                jurisdictions where we operate servers.
+            </p>
+            <div class="highlight">
+                <p>
+                    All data remains encrypted and anonymous regardless of geographic storage location.
+                </p>
+            </div>
+        </section>
+
+        <section class="terms-section" id="legal-basis">
+            <h2>11. Legal Basis for Data Processing</h2>
+            <p>
+                Under GDPR, data processing is based on:
+            </p>
+            <ol>
+                <li>Performance of a contract: Data storage is required to fulfill the core service</li>
+                <li>Legitimate interest: Maintaining the security, integrity, and usability of the platform</li>
+            </ol>
+            <p>
+                Because no personal data is collected, GDPR, CCPA, and LGPD rights (access, rectification, erasure) are
+                <strong>inherently fulfilled by the platform design</strong>.
+            </p>
+        </section>
+
+        <section class="terms-section" id="changes">
+            <h2>12. Changes to This Policy</h2>
+            <p>
+                We may update this Privacy Policy from time to time. When we do:
+            </p>
+            <ul>
+                <li>Changes will be published in the [changelog](#) and/or visible via a banner on the site.</li>
+                <li>We recommend users review this policy periodically.</li>
+            </ul>
+            <div class="highlight">
+                <p>
+                    Your continued use of the platform signifies your acceptance of the updated terms.
+                </p>
+            </div>
+        </section>
+
+        <section class="terms-section" id="contact">
+            <h2>14. Contact</h2>
+            <p>
+                Due to our anonymous-first model, <strong>we do not offer email-based support</strong>.
+            </p>
+            <p>
+                For questions, bug reports, or contributions, please refer to:
+            </p>
+            <ul>
+                <li>GitHub Repository: <a href="https://github.com/LucasGoncSilva/swarden/">
+                        https://github.com/LucasGoncSilva/swarden/
+                    </a></li>
+                <li>Documentation and community guidelines available via the repository</li>
+            </ul>
+        </section>
+    </div>
+</main>
+{% endblock %}
