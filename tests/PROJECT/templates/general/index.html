@@ -1,0 +1,85 @@
+{% extends 'shared/base.html' %}
+
+
+{% block title %} Geral {% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center mb-5">Geral</h1>
+
+    <h2>Pessoal</h2>
+
+    <hr class="me-5 border-primary opacity-25">
+    <a href="#" class="text-decoration-none">
+        <h5 class="mt-4">Informações Gerais</h5>
+    </a>
+    <details>
+        <summary>Detalhes sobre Informações Gerais</summary>
+        <p>Aqui é onde você pode revisar suas informações gerais, como nome e sobrenome, nome de usuário e e-mail</p>
+    </details>
+
+
+
+    <h2 class="mt-5">Segurança</h2>
+
+    <hr class="me-5 border-primary opacity-25">
+    <a href="#" class="text-decoration-none">
+        <h5>MFA (Autenticação Multi-Fatores):
+            {% if 'banana' == 'banana' %}
+            <span class="px-2 bg-success text-light rounded">Ativo</span>
+            {% else %}
+            <span class="px-2 bg-danger text-light rounded">Inativo</span>
+            {% endif %}
+        </h5>
+    </a>
+    <details>
+        <summary>Detalhes sobre MFA</summary>
+        <p>Ou ainda "Autenticação de Dois Fatores", atribui maior segurança à sua conta adicionando uma camada extra de
+            proteção sempre que um novo dispositivo tenta realizar login com suas credenciais. Utilizando de confirmação
+            por e-mail ou via sms, o sistema verifica e garanti que quem está tentando acessar sua conta realmente é
+            você.</p>
+    </details>
+
+    <a href="#" class="text-decoration-none">
+        <h5 class="mt-4">Redefinição de Senha</h5>
+    </a>
+    <details>
+        <summary>Detalhes sobre Redefinição de Senha</summary>
+        <p>Por muito tempo foi uma recomendação geral de segurança que as senhas nunca sejam mantidas sem serem trocadas
+            por muito tempo. Apesar de não ser necessariamente uma ajuda quanto à segurança, é aqui que você pode
+            fazê-lo, seja uma troca periódica ou por acreditar que a atual é insegura.</p>
+    </details>
+
+    <a href="#" class="text-decoration-none">
+        <h5 class="mt-4">Dashboard dos Segredos</h5>
+    </a>
+    <details>
+        <summary>Detalhes sobre Dashboard dos Segredos</summary>
+        <p>Aqui serão apresentadas informações gerais sobre seus segredos aqui cadastrados, como quantidade por tipo em
+            comparação direta, quantidade por serviço, tipos de cartão e demais informações que podem ser úteis para
+            avaliação pessoal.</p>
+    </details>
+
+
+
+    <h2 class="mt-5">sup!</h2>
+
+    <hr class="me-5 border-primary opacity-25">
+    <a href="#" class="text-decoration-none">
+        <h5>sup!</h5>
+    </a>
+    <details>
+        <summary>Detalhes sobre sup!</summary>
+        <p>Lorem ipsum dolor sit amet.</p>
+    </details>
+
+    <a href="#" class="text-decoration-none">
+        <h5 class="mt-4">sup!</h5>
+    </a>
+    <details>
+        <summary>Detalhes sobre sup!</summary>
+        <p>Lorem ipsum dolor sit amet.</p>
+    </details>
+</div>
+{% endblock %}

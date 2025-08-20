@@ -18,23 +18,26 @@ requires-python = ">=3.12"
 dependencies = [
     "mkdocs>=1.6.1",
     "mkdocs-git-revision-date-localized-plugin>=1.4.7",
-    "mkdocs-material>=9.6.15",
+    "mkdocs-material>=9.6.16",
     "mkdocs-material-extensions>=1.3.1",
     "pyyaml>=6.0.2",
-    "rich>=14.0.0",
+    "rich>=14.1.0",
     "stdlib-list>=0.11.1",
 ]
 
 [dependency-groups]
 dev = [
     "asciinema>=2.4.0",
-    "hypothesis>=6.136.9",
-    "mypy>=1.17.0",
+    "hypothesis>=6.138.0",
+    "mypy>=1.17.1",
     "pytest>=8.4.1",
-    "ruff>=0.12.4",
+    "ruff>=0.12.8",
     "taskipy>=1.14.1",
-    "types-pyyaml>=6.0.12.20250516",
+    "types-pyyaml>=6.0.12.20250809",
 ]
+
+# Unix-like OS only
+bench = ["memray>=1.18.0", "scalene>=1.5.53"]
 
 [build-system]
 requires = ["hatchling"]
@@ -53,12 +56,29 @@ Changelog = "https://github.com/LucasGoncSilva/mosheh/blob/main/.github/CHANGELO
 lint = "uv run ruff check; uv run ruff format; uv run mypy mosheh"
 makedoc = "cd ./documentation/; uv run mosheh --verbose 3 update"
 pytest = "uv run pytest"
-doctest = "cd ./tests/DOC/; uv run mosheh --verbose 3 update"
+doctest = "cd ./tests/DOC/; uv run mosheh --verbose 2 update"
 test = "uv run task pytest; uv run task doctest"
+benchmark = "uv run task scalene; uv run task memray"
+
+# =========================
+# \/ INTERNAL USE ONLY \/
+# =========================
+
+scalene = "cd ./tests/DOC/; uv run scalene --cpu --html -m mosheh.main --verbose 0 update"
+memray = "cd ./tests/DOC/; uv run memray run --native -o mosheh.analysis -m mosheh.main --verbose 0 update; uv run task memray_profile"
+memray_profile = "uv run task flamegraph; uv run task table; uv run task stats; uv run task summary"
+flamegraph = "uv run memray flamegraph -f -o mosheh.analysis.flamegraph.html mosheh.analysis; open mosheh.analysis.flamegraph.html"
+table = "uv run memray table -f -o mosheh.analysis.table.html mosheh.analysis; open mosheh.analysis.table.html"
+stats = "uv run memray stats -f --json --output mosheh.analysis.stats.json mosheh.analysis; uv run memray stats mosheh.analysis"
+summary = "uv run memray summary -r 15 mosheh.analysis"
+
+# =========================
+# /\ INTERNAL USE ONLY /\
+# =========================
 
 [tool.ruff]
 line-length = 88
-exclude = [".env", ".venv"]
+exclude = [".env", ".venv", "**/PROJECT/**"]
 fix = true
 
 [tool.ruff.format]

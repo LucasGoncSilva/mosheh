@@ -1,0 +1,55 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block title %} FAQ - Frequent Asked Questions {% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'home/FAQ/css/style.css' %}">
+<script src="{% static 'home/FAQ/js/script.js' %}"></script>
+{% endblock %}
+
+
+{% block body %}
+<div id="root">
+    <div class="app">
+        <main class="faq-container">
+            <div class="container">
+                <div class="section-header">
+                    <h1 class="section-title">Frequently Asked Questions</h1>
+                    <p class="section-description">Find answers to common questions about using our Credential
+                        Manager</p>
+                </div>
+
+                <div class="faq-content">
+                    {% for title, data in FAQ.items %}
+                    <div class="faq-group">
+                        <h2 class="faq-group-title">{{ title }}</h2>
+
+                        {% for q, a in data.items %}
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>{{ q }}</h3>
+                                <button class="toggle-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="plus-icon">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>{{ a }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
