@@ -1,0 +1,36 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block title %} Logout {% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'account/css/style.css' %}" />
+{% endblock %}
+
+
+{% block body %}
+<div class="login-form-container" style="
+    text-align: center;
+    margin: 10vh auto;
+    height: fit-content;
+    width: fit-content;
+  ">
+    <div>
+        <img src="{% static 'shared/img/logo.svg' %}" alt="sWarden's logo" style="margin: auto" />
+    </div>
+
+    <form action="{% url 'account:logout' %}" method="post">
+        {% csrf_token %}
+
+        <h2>Do you confirm exiting?</h2>
+
+        <input type="submit" autofocus value="Exit" class="btn btn-outline" />
+
+        <button type="button" class="btn btn-primary" onclick="history.back()">
+            Go back
+        </button>
+    </form>
+</div>
+{% endblock %}

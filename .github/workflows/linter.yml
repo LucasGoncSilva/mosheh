@@ -30,7 +30,7 @@ jobs:
 
       - name: Sync Dependencies
         run: |
-          uv sync
+          uv sync --no-group bench
 
       - name: Run Ruff Check
         run: |

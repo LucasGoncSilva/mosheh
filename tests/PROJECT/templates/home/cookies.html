@@ -1,0 +1,192 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+
+{% block title %} Cookies Policy {% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'home/terms/css/style.css' %}">
+{% endblock %}
+
+
+{% block body %}
+<main class="terms">
+    <div class="section-header">
+        <h1 class="section-title text-gradient-primary">Cookies Policy</h1>
+        <p class="section-description text-gradient">
+            Please read these terms and conditions carefully before using our service.
+        </p>
+    </div>
+
+    <div class="terms-container">
+        <section class="terms-section" id="introduction">
+            <h2>1. Introduction</h2>
+            <p>
+                This Cookie Policy explains how <strong>sWarden</strong> uses cookies and similar technologies on its
+                web-based
+                platform.
+            </p>
+            <p>
+                <strong>sWarden</strong> is a fully anonymous, open-source password and secret manager that prioritizes
+                your privacy
+                and security. Our use of cookies is minimal, strictly limited to those necessary for the platform to
+                function securely and effectively.
+            </p>
+            <p>
+                We <strong>do not</strong> use cookies for analytics, advertising, or behavioral tracking. No personal
+                data is stored or collected through cookies.
+            </p>
+        </section>
+
+        <section class="terms-section" id="our-use-of-cookies">
+            <h2>2. Our Use of Cookies</h2>
+            <p>
+                sWarden only uses <strong>first-party, strictly necessary cookies</strong>. These are required to:
+            </p>
+            <ul>
+                <li>Maintain secure login sessions</li>
+                <li>Prevent cross-site request forgery (CSRF)</li>
+                <li>Validate CAPTCHA submissions (to prevent abuse)</li>
+            </ul>
+            <p>
+                We do not use:
+            </p>
+            <ul>
+                <li>Tracking cookies</li>
+                <li>Third-party cookies</li>
+                <li>Analytics tools</li>
+                <li>Fingerprinting scripts</li>
+                <li>Social media plugins</li>
+            </ul>
+            <p>
+                Every cookie in use is essential for the operation and security of the platform.
+            </p>
+        </section>
+
+        <section class="terms-section" id="cookie-table">
+            <h2>3. Cookie Table</h2>
+            <p>
+                Below is a transparent list of the cookies sWarden uses:
+            </p>
+            <table>
+                <tr>
+                    <th>Cookie Name</th>
+                    <th>Type</th>
+                    <th>Essential</th>
+                    <th>Expiration</th>
+                    <th>Set By</th>
+                </tr>
+                <tr>
+                    <td><code>sessionid</code></td>
+                    <td>Session</td>
+                    <td>Yes</td>
+                    <td>End of session</td>
+                    <td>Django</td>
+                </tr>
+                <tr>
+                    <td><code>csrftoken</code></td>
+                    <td>Security</td>
+                    <td>Yes</td>
+                    <td>1 year</td>
+                    <td>Django</td>
+                </tr>
+                <tr>
+                    <td><code>messages</code></td>
+                    <td>Functional</td>
+                    <td>Yes</td>
+                    <td>End of session</td>
+                    <td>Django</td>
+                </tr>
+                <tr>
+                    <td><code>captcha_*</code></td>
+                    <td>Security</td>
+                    <td>Yes</td>
+                    <td>5–30min</td>
+                    <td>django-simple-captcha</td>
+                </tr>
+            </table>
+            <ol>
+                <li><code>sessionid</code> maintains the user&#39;s authenticated session securely</li>
+                <li><code>csrftoken</code> protects against cross-site request forgery attacks</li>
+                <li><code>messages</code> stores one-time notifications or messages to be shown to the user</li>
+                <li><code>captcha_*</code> validates CAPTCHA responses to block automated abuse</li>
+            </ol>
+        </section>
+
+        <section class="terms-section" id="third-party-cookies">
+            <h2>4. No Third-Party Cookies</h2>
+            <p>
+                <strong>sWarden does not</strong> use:
+            </p>
+            <ul>
+                <li>Google Analytics</li>
+                <li>Facebook Pixel</li>
+                <li>Advertising or remarketing trackers</li>
+                <li>Embedded third-party content that sets cookies</li>
+            </ul>
+            <p>
+                Your activity is never tracked across other websites. We don’t collect, share, or sell any cookie data
+                but the ones listed above.
+            </p>
+        </section>
+
+        <section class="terms-section" id="data-security">
+            <h2>5. Your Cookie Controls</h2>
+            <p>
+                You can control or delete cookies at any time using your browser settings. However, since sWarden relies
+                only on essential cookies, disabling them may result in:
+            </p>
+            <ul>
+                <li>Inability to log in</li>
+                <li>Loss of session functionality</li>
+                <li>CAPTCHA challenges not working</li>
+            </ul>
+            <p>
+                For full functionality and protection, we recommend allowing sWarden's cookies without removing them.
+                Check out the source code for more in-code details at GitHub (footer).
+            </p>
+        </section>
+
+        <section class="terms-section" id="legal-compliance">
+            <h2>6. Legal Compliance</h2>
+            <p>
+                sWarden is designed in alignment with <strong>GDPR (EU), LGPD (Brazil), and CCPA (California)</strong>.
+                Under applicable law:
+            </p>
+            <ol>
+                <li>Strictly necessary cookies <strong>do not</strong> require prior user consent</li>
+                <li>sWarden’s cookies are set <strong>solely to provide core service functionality</strong></li>
+                <li>No user profiling, tracking, or personal data processing occurs through cookies</li>
+            </ol>
+            <div class="highlight">
+                <p>
+                    Legal basis for processing:
+                </p>
+                <ul>
+                    <li><strong>Performance of a contract</strong>: Cookies are required to deliver the secure,
+                        logged-in experience
+                    </li>
+                    <li><strong>Legitimate interest</strong>: Security, spam prevention, and session integrity</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="terms-section" id="contact">
+            <h2>7. Contact</h2>
+            <p>
+                Due to our anonymous-first model, <strong>we do not offer email-based support</strong>.
+            </p>
+            <p>
+                For questions, bug reports, or contributions, please refer to:
+            </p>
+            <ul>
+                <li>GitHub Repository: <a href="https://github.com/LucasGoncSilva/swarden/">
+                        https://github.com/LucasGoncSilva/swarden/
+                    </a></li>
+                <li>Documentation and community guidelines available via the repository</li>
+            </ul>
+        </section>
+    </div>
+</main>
+{% endblock %}

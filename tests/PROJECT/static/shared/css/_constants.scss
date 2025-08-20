@@ -1,0 +1,85 @@
+$background: #0e121a;
+$foreground: #edf2f7;
+
+$card: #11161f;
+$card-foreground: #edf2f7;
+
+$primary: #34d399;
+$primary-foreground: #11161f;
+$primary-darken: #008b69;
+$primary-lighten: lighten($primary, 20%);
+$primary-background-transparent: #34d3991a;
+$gradient-primary-lighten: linear-gradient(to bottom right, $primary, $primary-lighten);
+
+$secondary: #1a2739;
+$secondary-foreground: #edf2f7;
+
+$error: #ff6467;
+$error-background-transparent: #dc26260d;
+$error-lighten: lighten($error, 10%);
+$error-darken: darken($error, 40%);
+$gradient-error-lighten: linear-gradient(to bottom right, $error, $error-lighten);
+
+$white: #fff;
+$white-transparent: #fff1;
+$white-transparent-lighten: #fff3;
+$white-translucid: #fffb;
+$gradient-white: linear-gradient(to bottom right, $white, $white-translucid);
+
+$muted: #1a2739;
+$muted-foreground: #a1a7b6;
+
+$background-glassmorphism: #00000066;
+$radius: 0.5rem;
+$border: 1px solid $white-transparent;
+$blur-glassmorphism: 12px;
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/static/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/static/fonts/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: italic;
+}
+
+@mixin glassmorphism-background {
+    backdrop-filter: blur($blur-glassmorphism);
+    -webkit-backdrop-filter: blur($blur-glassmorphism);
+    background-color: $background-glassmorphism;
+}
+
+@mixin text-gradient-white {
+    background: $gradient-white;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@mixin text-gradient-primary {
+    background: $gradient-primary-lighten;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@mixin text-gradient-error {
+    background: $gradient-error-lighten;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@mixin bg-circle-gradient {
+    width: 40rem;
+    height: 40rem;
+    background-color: $primary-background-transparent;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1;
+}
